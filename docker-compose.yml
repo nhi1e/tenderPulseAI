@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tenderpulse
+      POSTGRES_USER: tenderpulse
+      POSTGRES_PASSWORD: tenderpulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - tenderpulse-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tenderpulse"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://tenderpulse:tenderpulse@database:5432/tenderpulse
+      CORS_ORIGINS: http://localhost:3000,http://localhost:4173
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+
+volumes:
+  tenderpulse-data:
+
