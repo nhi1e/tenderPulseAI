@@ -181,7 +181,7 @@ function SearchHome({ loading, error, onSearch }: { loading: boolean; error?: st
     <p>Mỗi lượt tìm kiếm sẽ lấy dữ liệu trúng thầu công khai mới nhất và tính toán dashboard trực tiếp từ kết quả trả về.</p>
     <ProductSearch loading={loading} error={error} onSearch={onSearch} />
     <div className="keyword-row"><span>Từ khóa phổ biến</span>{suggestions.slice(0, 4).map((item) => <button key={item.name} onClick={() => onSearch(item.name)} disabled={loading}>{item.name}</button>)}</div>
-    <div className="source-line"><Database /> Dữ liệu trực tiếp từ Mua Sắm Công · không sử dụng số liệu cố định</div>
+    <div className="source-line"><Database /> Dữ liệu trực tiếp từ Mua Sắm Công</div>
   </section><div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" /></main>;
 }
 function RankingPanel({ eyebrow, title, items, currency = true, company = false }: { eyebrow: string; title: string; items: NamedValue[]; currency?: boolean; company?: boolean }) {
@@ -261,7 +261,7 @@ function Dashboard({ product, loading, error, onBack, onSearch }: { product: Pro
       <RankingPanel eyebrow="NHU CẦU SẢN PHẨM" title="Top 5 model theo số lượng trúng" items={product.topProducts} currency={false} /><RankingPanel eyebrow="NHÀ THẦU" title="Top 5 nhà thầu trúng theo giá trị" items={product.topSuppliers} />
     </div>
     <div className="insight-grid"><article className="insight-card"><div className="insight-icon"><Sparkles /></div><div><span>NHẬN ĐỊNH TENDERPULSE</span><p>{product.insight}</p></div></article><article className="quality-card"><CircleAlert /><div><span>LƯU Ý CHẤT LƯỢNG DỮ LIỆU</span><p>{product.qualityNote}</p></div></article></div>
-    <p className="dashboard-footnote">{product.truncated ? `Kết quả trên cổng vượt giới hạn an toàn; dashboard được tính từ ${product.lineItems.toLocaleString("vi-VN")} bản ghi đầu tiên.` : "Toàn bộ số liệu được tính sau mỗi lượt tìm kiếm từ dữ liệu trúng thầu công khai; không sử dụng số liệu dashboard cố định."}</p>
+    <p className="dashboard-footnote">{product.truncated ? `Kết quả trên cổng vượt giới hạn an toàn; dashboard được tính từ ${product.lineItems.toLocaleString("vi-VN")} bản ghi đầu tiên.` : "Toàn bộ số liệu được tính sau mỗi lượt tìm kiếm từ dữ liệu trúng thầu từ Mua Sắm Công"}</p>
   </section></main>;
 }
 
