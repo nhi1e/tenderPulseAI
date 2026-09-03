@@ -1,2624 +1,2843 @@
 [
-	{
-		"id": 1,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "dao siêu âm",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 2,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "dao mổ siêu âm",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 3,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "tay dao siêu âm",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 4,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "tay dao mổ siêu âm",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 5,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "dao siêu âm mổ mở",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 6,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "dao siêu âm mổ nội soi",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 7,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "dao cắt cầm máu siêu âm",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 8,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "dao siêu âm không dây",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 9,
-		"subOu": "VS&D",
-		"productGroup": "Dao siêu âm",
-		"keyword": "tay dao siêu âm không dây",
-		"excludes": [
-			"CUSA",
-			"máy hút siêu âm",
-			"dây dao",
-			"dây nối",
-			"cáp",
-			"phụ kiện",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
-	},
-	{
-		"id": 10,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "dao hàn mạch",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 11,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao hàn mạch",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 12,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao cắt hàn mạch",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 13,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao hàn mạch máu",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 14,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao hàn mạch mổ mở",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 15,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao hàn mạch mổ nội soi",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 16,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao cắt hàn mạch mổ mở",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 17,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "tay dao cắt hàn mạch nội soi",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 18,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "dao cắt hàn mạch",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 19,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "dụng cụ hàn mạch",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 20,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "dụng cụ cắt hàn mạch",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 21,
-		"subOu": "VS&D",
-		"productGroup": "Dao hàn mạch",
-		"keyword": "dao hàn mô",
-		"excludes": [
-			"dao siêu âm",
-			"CUSA",
-			"dây",
-			"cáp",
-			"phụ kiện",
-			"adapter",
-			"bộ phát",
-			"máy phát"
-		],
-		"note": "Không nhận dây/cáp/phụ kiện rời"
-	},
-	{
-		"id": 22,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu cắt nối nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 23,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ cắt khâu nối nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 24,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu cắt nối thẳng nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 25,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ cắt khâu nối thẳng nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 26,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu cắt nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 27,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ cắt khâu nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 28,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu cắt nối nội soi đa năng",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 29,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu cắt nối nội soi gập góc",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 30,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu cắt nối nội soi sử dụng pin",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 31,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ cắt khâu nối tự động dùng trong phẫu thuật nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 32,
-		"subOu": "Endo Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối nội soi",
-		"keyword": "dụng cụ khâu nối thẳng nội soi",
-		"excludes": [
-			"mổ mở",
-			"khâu nối tròn",
-			"khâu cắt nối tròn",
-			"khâu nối vòng"
-		],
-		"note": "Các cụm đã có nội soi không cần xác nhận lần hai"
-	},
-	{
-		"id": 33,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 34,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim cắt khâu nối nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 35,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim khâu cắt nối nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 36,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim cho dụng cụ khâu cắt nối thẳng nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 37,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim dùng cho dụng cụ cắt khâu nối mổ nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 38,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim dùng trong phẫu thuật nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 39,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim khâu cắt mạch máu nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 40,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng đạn khâu cắt nối thẳng dùng trong mổ nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 41,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng đạn cho dụng cụ khâu cắt nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 42,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "reload nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 43,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "cartridge nội soi",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 44,
-		"subOu": "Endo Stapling",
-		"productGroup": "Băng ghim nội soi",
-		"keyword": "băng ghim nội soi tăng cường giữ mô",
-		"excludes": ["mổ mở", "khâu nối tròn", "khâu nối vòng"],
-		"note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
-	},
-	{
-		"id": 45,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu cắt nối mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 46,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ cắt khâu nối mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 47,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu cắt nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 48,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ cắt khâu nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 49,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu cắt nối thẳng dùng trong mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 50,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu cắt nối dùng cho mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 51,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu nối tiêu hóa dùng cho mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 52,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu cắt thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 53,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 54,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ cắt nối tự động dùng trong mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 55,
-		"subOu": "Open Stapling",
-		"productGroup": "Dụng cụ khâu cắt nối mổ mở",
-		"keyword": "dụng cụ khâu thẳng dùng trong mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Bao gồm các cách đảo thứ tự khâu/cắt"
-	},
-	{
-		"id": 56,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 57,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim cắt khâu mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 58,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim khâu cắt mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 59,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim cắt khâu nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 60,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim khâu cắt nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 61,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim cho dụng cụ khâu cắt nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 62,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim cắt khâu tiêu hóa dùng cho mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 63,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim khâu máy cắt nối tự động dùng trong mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 64,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng ghim dùng cho dụng cụ cắt khâu nối dùng cho mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 65,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "băng đạn của dụng cụ khâu cắt nối thẳng mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 66,
-		"subOu": "Open Stapling",
-		"productGroup": "Băng ghim mổ mở",
-		"keyword": "ghim khâu máy mổ mở",
-		"excludes": ["nội soi", "khâu nối tròn", "khâu nối vòng", "Longo"],
-		"note": "Không dùng Longo làm keyword"
-	},
-	{
-		"id": 67,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu nối tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 68,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu cắt nối tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 69,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ cắt khâu nối tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 70,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu nối tiêu hóa tự động tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 71,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ cắt khâu nối tiêu hóa tự động tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 72,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu cắt nối tiêu hóa đầu tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 73,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu cắt nối ống tiêu hóa tự động tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 74,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu cắt nối vòng",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 75,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu nối vòng",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 76,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu cắt nối tròn đầu cong",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 77,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "dụng cụ khâu cắt nối ruột dạng tròn đầu cong",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 78,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "máy khâu nối tròn",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 79,
-		"subOu": "Open Stapling",
-		"productGroup": "Khâu nối tròn/vòng",
-		"keyword": "máy khâu nối vòng",
-		"excludes": ["nội soi", "Longo"],
-		"note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
-	},
-	{
-		"id": 80,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới thoát vị",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 81,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới điều trị thoát vị",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 82,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "miếng lưới điều trị thoát vị",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 83,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới điều trị thoát vị bẹn",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 84,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới thoát vị bẹn",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 85,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới phẫu thuật thoát vị bẹn",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 86,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới chống dính điều trị thoát vị",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 87,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới thoát vị thành bụng",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 88,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới chống dính điều trị thoát vị thành bụng",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 89,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới đặt thoát vị thành bụng",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 90,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "mảnh ghép điều trị thoát vị",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 91,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "mảnh ghép thoát vị bẹn",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 92,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "mảnh ghép thoát vị thành bụng",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 93,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới thoát vị tự dính",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 94,
-		"subOu": "Hernia",
-		"productGroup": "Lưới thoát vị",
-		"keyword": "lưới thoát vị chống dính tạng",
-		"excludes": [
-			"lưới tiết niệu",
-			"lưới phụ khoa",
-			"lưới nâng",
-			"lưới tái tạo thành ngực"
-		],
-		"note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
-	},
-	{
-		"id": 95,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "dụng cụ cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 96,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "dụng cụ ghim khâu cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 97,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "bộ ghim cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 98,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "bộ ghim khâu cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 99,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "dụng cụ cố định lưới điều trị thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 100,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "dụng cụ cố định tấm lưới dùng trong phẫu thuật thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 101,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "dụng cụ nội soi cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 102,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "súng cố định lưới trong phẫu thuật thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 103,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "ghim cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 104,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "ghim tan cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 105,
-		"subOu": "Hernia",
-		"productGroup": "Dụng cụ cố định lưới thoát vị",
-		"keyword": "ghim không tiêu cố định lưới thoát vị",
-		"excludes": ["dụng cụ cố định lưới không dùng cho thoát vị"],
-		"note": "Bao gồm tacker tan và không tan"
-	},
-	{
-		"id": 106,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 107,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật tự tiêu",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 108,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật không tiêu",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 109,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật tan",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 110,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật không tan",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 111,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật tự tiêu tổng hợp",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 112,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật không tan tổng hợp",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 113,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật tan tổng hợp đa sợi",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 114,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật không tan tổng hợp đơn sợi",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 115,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ khâu phẫu thuật",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 116,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ khâu tự tiêu",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 117,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ khâu không tiêu",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 118,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ tan tổng hợp",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 119,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ không tan tổng hợp",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 120,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ tiêu tổng hợp",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 121,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ không tiêu",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 122,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ nylon phẫu thuật",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 123,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ polypropylene phẫu thuật",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 124,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ polyester phẫu thuật",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 125,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ polyglactin phẫu thuật",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 126,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ phẫu thuật mạch máu",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 127,
-		"subOu": "Suture",
-		"productGroup": "Chỉ phẫu thuật",
-		"keyword": "chỉ bện dùng trong phẫu thuật nội soi",
-		"excludes": [
-			"chỉ nha khoa",
-			"chỉ chỉnh nha",
-			"chỉ nâng cơ",
-			"chỉ thẩm mỹ",
-			"chỉ đánh dấu",
-			"chỉ thị màu"
-		],
-		"note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
-	},
-	{
-		"id": 128,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar phẫu thuật nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 129,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 130,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar nội soi không dao",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 131,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar nhựa không dao dùng trong phẫu thuật nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 132,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar dùng trong phẫu thuật nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 133,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar nội soi có dao",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 134,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar nội soi khớp",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 135,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "trocar chuyên dụng trong nội soi khớp",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 136,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "ống trocar nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 137,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "nòng trocar nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 138,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "vỏ trocar nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 139,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "van trocar nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 140,
-		"subOu": "A&I",
-		"productGroup": "Trocar",
-		"keyword": "cổng trocar nội soi",
-		"excludes": [
-			"trocar sinh thiết",
-			"trocar chọc dò",
-			"bơm xi măng",
-			"đốt sống",
-			"nắp trocar",
-			"nút cao su",
-			"van rời",
-			"phụ kiện trocar"
-		],
-		"note": "Không dùng từ trocar đứng một mình để auto-map"
-	},
-	{
-		"id": 141,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "túi đựng bệnh phẩm nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 142,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "túi đựng bệnh phẩm dùng cho phẫu thuật nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 143,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "bao túi đựng bệnh phẩm nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 144,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "túi bệnh phẩm nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 145,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "túi thu hồi bệnh phẩm nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 146,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "dụng cụ lấy bệnh phẩm nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 147,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "túi lấy bệnh phẩm nội soi",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 148,
-		"subOu": "A&I",
-		"productGroup": "Túi đựng bệnh phẩm",
-		"keyword": "túi đựng bệnh phẩm phẫu thuật",
-		"excludes": [
-			"túi lấy máu",
-			"túi chứa nước tiểu",
-			"cốc",
-			"lọ",
-			"hộp",
-			"ống nghiệm",
-			"EDTA",
-			"túi zip",
-			"xét nghiệm"
-		],
-		"note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
-	},
-	{
-		"id": 149,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ bảo vệ vết mổ",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 150,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ bảo vệ thành vết mổ",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 151,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ nong và bảo vệ vết mổ",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 152,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ banh miệng và bảo vệ thành vết mổ nội soi",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 153,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ bảo vệ vết mổ dùng trong phẫu thuật",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 154,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ bảo vệ vết mổ dùng trong phẫu thuật VATS",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 155,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ bảo vệ vết mổ trong phẫu thuật ít xâm lấn",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 156,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ bảo vệ nong vết mổ có nắp",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 157,
-		"subOu": "A&I",
-		"productGroup": "Túi bảo vệ vết mổ",
-		"keyword": "dụng cụ nong và bảo vệ vết mổ có nắp",
-		"excludes": [
-			"băng bảo vệ vết thương",
-			"màng bảo vệ da",
-			"miếng dán vết thương"
-		],
-		"note": "Bao gồm wound protector có hoặc không có nắp"
-	},
-	{
-		"id": 158,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "tay dao mổ điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 159,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "tay dao điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 160,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "tay dao cắt đốt điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 161,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "tay dao đốt điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 162,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "dao mổ điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 163,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "dao đốt điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 164,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "dao điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 165,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "điện cực đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 166,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "điện cực cắt đốt đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 167,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "đầu đốt đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 168,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "lưỡi dao mổ điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 169,
-		"subOu": "ES",
-		"productGroup": "Đơn cực",
-		"keyword": "dây dao điện đơn cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"laser",
-			"dao lạnh",
-			"kéo lạnh",
-			"hút khói"
-		],
-		"note": "Không nhận adapter và bút dao điện tích hợp hút khói"
-	},
-	{
-		"id": 170,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "kẹp lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 171,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "kẹp cầm máu lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 172,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "kẹp phẫu tích lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 173,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "kẹp đốt lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 174,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "kẹp lưỡng cực chống dính",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 175,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "kẹp lưỡng cực không dính",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 176,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "hàm kẹp lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 177,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "ruột kẹp lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 178,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "ruột kẹp đốt lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 179,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "ruột kẹp phẫu tích lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 180,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "điện cực lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 181,
-		"subOu": "ES",
-		"productGroup": "Kẹp lưỡng cực",
-		"keyword": "dây nối kẹp lưỡng cực",
-		"excludes": [
-			"dao hàn mạch",
-			"hàn mô",
-			"LigaSure",
-			"dao siêu âm",
-			"CUSA",
-			"plasma",
-			"adapter"
-		],
-		"note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
-	},
-	{
-		"id": 182,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "tấm điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 183,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "bản cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 184,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 185,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "bản điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 186,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "thảm điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 187,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "miếng dán điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 188,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "tấm lót điện cực thu hồi",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 189,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "tấm lót điện cực thu hồi dạng tụ điện",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 190,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "tấm đệm kết hợp thu hồi điện cực",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 191,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "tấm điện cực trung tính loại kép",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 192,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "điện cực trung tính loại kép",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 193,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "tấm điện cực trung tính REM",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 194,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "dây nối tấm điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 195,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "cáp nối điện cực trung tính",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	},
-	{
-		"id": 196,
-		"subOu": "ES",
-		"productGroup": "Tấm điện cực trung tính",
-		"keyword": "dây nối tấm lót điện cực thu hồi",
-		"excludes": [
-			"điện cực ECG",
-			"điện cực tim",
-			"điện cực thần kinh",
-			"điện cực châm cứu",
-			"điện cực máy sốc điện",
-			"điện cực siêu âm",
-			"điện cực RF thẩm mỹ"
-		],
-		"note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
-	}
+  {
+    "id": 1,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "dao siêu âm",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 2,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "dao mổ siêu âm",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 3,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "tay dao siêu âm",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 4,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "tay dao mổ siêu âm",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 5,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "dao siêu âm mổ mở",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 6,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "dao siêu âm mổ nội soi",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 7,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "dao cắt cầm máu siêu âm",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 8,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "dao siêu âm không dây",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 9,
+    "subOu": "VS&D",
+    "productGroup": "Dao siêu âm",
+    "keyword": "tay dao siêu âm không dây",
+    "excludes": [
+      "CUSA",
+      "máy hút siêu âm",
+      "dây dao",
+      "dây nối",
+      "cáp",
+      "phụ kiện",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Chỉ nhận chính dao/tay dao; không nhận dây và hệ thống CUSA"
+  },
+  {
+    "id": 10,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "dao hàn mạch",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 11,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao hàn mạch",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 12,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao cắt hàn mạch",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 13,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao hàn mạch máu",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 14,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao hàn mạch mổ mở",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 15,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao hàn mạch mổ nội soi",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 16,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao cắt hàn mạch mổ mở",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 17,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "tay dao cắt hàn mạch nội soi",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 18,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "dao cắt hàn mạch",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 19,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "dụng cụ hàn mạch",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 20,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "dụng cụ cắt hàn mạch",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 21,
+    "subOu": "VS&D",
+    "productGroup": "Dao hàn mạch",
+    "keyword": "dao hàn mô",
+    "excludes": [
+      "dao siêu âm",
+      "CUSA",
+      "dây",
+      "cáp",
+      "phụ kiện",
+      "adapter",
+      "bộ phát",
+      "máy phát"
+    ],
+    "note": "Không nhận dây/cáp/phụ kiện rời"
+  },
+  {
+    "id": 22,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu cắt nối nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 23,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ cắt khâu nối nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 24,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu cắt nối thẳng nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 25,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ cắt khâu nối thẳng nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 26,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu cắt nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 27,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ cắt khâu nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 28,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu cắt nối nội soi đa năng",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 29,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu cắt nối nội soi gập góc",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 30,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu cắt nối nội soi sử dụng pin",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 31,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ cắt khâu nối tự động dùng trong phẫu thuật nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 32,
+    "subOu": "Endo Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối nội soi",
+    "keyword": "dụng cụ khâu nối thẳng nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu cắt nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Các cụm đã có nội soi không cần xác nhận lần hai"
+  },
+  {
+    "id": 33,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 34,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim cắt khâu nối nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 35,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim khâu cắt nối nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 36,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim cho dụng cụ khâu cắt nối thẳng nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 37,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim dùng cho dụng cụ cắt khâu nối mổ nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 38,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim dùng trong phẫu thuật nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 39,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim khâu cắt mạch máu nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 40,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng đạn khâu cắt nối thẳng dùng trong mổ nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 41,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng đạn cho dụng cụ khâu cắt nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 42,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "reload nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 43,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "cartridge nội soi",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 44,
+    "subOu": "Endo Stapling",
+    "productGroup": "Băng ghim nội soi",
+    "keyword": "băng ghim nội soi tăng cường giữ mô",
+    "excludes": [
+      "mổ mở",
+      "khâu nối tròn",
+      "khâu nối vòng"
+    ],
+    "note": "Reload, băng đạn và cartridge được coi là cùng nhóm"
+  },
+  {
+    "id": 45,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu cắt nối mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 46,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ cắt khâu nối mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 47,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu cắt nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 48,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ cắt khâu nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 49,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu cắt nối thẳng dùng trong mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 50,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu cắt nối dùng cho mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 51,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu nối tiêu hóa dùng cho mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 52,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu cắt thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 53,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 54,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ cắt nối tự động dùng trong mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 55,
+    "subOu": "Open Stapling",
+    "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+    "keyword": "dụng cụ khâu thẳng dùng trong mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Bao gồm các cách đảo thứ tự khâu/cắt"
+  },
+  {
+    "id": 56,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 57,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim cắt khâu mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 58,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim khâu cắt mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 59,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim cắt khâu nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 60,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim khâu cắt nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 61,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim cho dụng cụ khâu cắt nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 62,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim cắt khâu tiêu hóa dùng cho mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 63,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim khâu máy cắt nối tự động dùng trong mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 64,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng ghim dùng cho dụng cụ cắt khâu nối dùng cho mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 65,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "băng đạn của dụng cụ khâu cắt nối thẳng mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 66,
+    "subOu": "Open Stapling",
+    "productGroup": "Băng ghim mổ mở",
+    "keyword": "ghim khâu máy mổ mở",
+    "excludes": [
+      "nội soi",
+      "khâu nối tròn",
+      "khâu nối vòng",
+      "Longo"
+    ],
+    "note": "Không dùng Longo làm keyword"
+  },
+  {
+    "id": 67,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu nối tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 68,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu cắt nối tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 69,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ cắt khâu nối tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 70,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu nối tiêu hóa tự động tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 71,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ cắt khâu nối tiêu hóa tự động tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 72,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu cắt nối tiêu hóa đầu tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 73,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu cắt nối ống tiêu hóa tự động tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 74,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu cắt nối vòng",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 75,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu nối vòng",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 76,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu cắt nối tròn đầu cong",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 77,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "dụng cụ khâu cắt nối ruột dạng tròn đầu cong",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 78,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "máy khâu nối tròn",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 79,
+    "subOu": "Open Stapling",
+    "productGroup": "Khâu nối tròn/vòng",
+    "keyword": "máy khâu nối vòng",
+    "excludes": [
+      "nội soi",
+      "Longo"
+    ],
+    "note": "Circular Stapling được gán vào Open Stapling theo phạm vi đã thống nhất"
+  },
+  {
+    "id": 80,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới thoát vị",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 81,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới điều trị thoát vị",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 82,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "miếng lưới điều trị thoát vị",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 83,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới điều trị thoát vị bẹn",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 84,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới thoát vị bẹn",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 85,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới phẫu thuật thoát vị bẹn",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 86,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới chống dính điều trị thoát vị",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 87,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới thoát vị thành bụng",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 88,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới chống dính điều trị thoát vị thành bụng",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 89,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới đặt thoát vị thành bụng",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 90,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "mảnh ghép điều trị thoát vị",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 91,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "mảnh ghép thoát vị bẹn",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 92,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "mảnh ghép thoát vị thành bụng",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 93,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới thoát vị tự dính",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 94,
+    "subOu": "Hernia",
+    "productGroup": "Lưới thoát vị",
+    "keyword": "lưới thoát vị chống dính tạng",
+    "excludes": [
+      "lưới tiết niệu",
+      "lưới phụ khoa",
+      "lưới nâng",
+      "lưới tái tạo thành ngực"
+    ],
+    "note": "Các cụm đã chứa thoát vị không cần xác nhận thêm"
+  },
+  {
+    "id": 95,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "dụng cụ cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 96,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "dụng cụ ghim khâu cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 97,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "bộ ghim cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 98,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "bộ ghim khâu cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 99,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "dụng cụ cố định lưới điều trị thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 100,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "dụng cụ cố định tấm lưới dùng trong phẫu thuật thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 101,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "dụng cụ nội soi cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 102,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "súng cố định lưới trong phẫu thuật thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 103,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "ghim cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 104,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "ghim tan cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 105,
+    "subOu": "Hernia",
+    "productGroup": "Dụng cụ cố định lưới thoát vị",
+    "keyword": "ghim không tiêu cố định lưới thoát vị",
+    "excludes": [
+      "dụng cụ cố định lưới không dùng cho thoát vị"
+    ],
+    "note": "Bao gồm tacker tan và không tan"
+  },
+  {
+    "id": 106,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 107,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật tự tiêu",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 108,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật không tiêu",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 109,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật tan",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 110,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật không tan",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 111,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật tự tiêu tổng hợp",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 112,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật không tan tổng hợp",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 113,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật tan tổng hợp đa sợi",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 114,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật không tan tổng hợp đơn sợi",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 115,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ khâu phẫu thuật",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 116,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ khâu tự tiêu",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 117,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ khâu không tiêu",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 118,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ tan tổng hợp",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 119,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ không tan tổng hợp",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 120,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ tiêu tổng hợp",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 121,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ không tiêu",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 122,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ nylon phẫu thuật",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 123,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ polypropylene phẫu thuật",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 124,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ polyester phẫu thuật",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 125,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ polyglactin phẫu thuật",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 126,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ phẫu thuật mạch máu",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 127,
+    "subOu": "Suture",
+    "productGroup": "Chỉ phẫu thuật",
+    "keyword": "chỉ bện dùng trong phẫu thuật nội soi",
+    "excludes": [
+      "chỉ nha khoa",
+      "chỉ chỉnh nha",
+      "chỉ nâng cơ",
+      "chỉ thẩm mỹ",
+      "chỉ đánh dấu",
+      "chỉ thị màu"
+    ],
+    "note": "Với keyword rất rộng như chỉ nylon cần có xác nhận phẫu thuật/khâu"
+  },
+  {
+    "id": 128,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar phẫu thuật nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 129,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 130,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar nội soi không dao",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 131,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar nhựa không dao dùng trong phẫu thuật nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 132,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar dùng trong phẫu thuật nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 133,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar nội soi có dao",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 134,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar nội soi khớp",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 135,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "trocar chuyên dụng trong nội soi khớp",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 136,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "ống trocar nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 137,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "nòng trocar nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 138,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "vỏ trocar nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 139,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "van trocar nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 140,
+    "subOu": "A&I",
+    "productGroup": "Trocar",
+    "keyword": "cổng trocar nội soi",
+    "excludes": [
+      "trocar sinh thiết",
+      "trocar chọc dò",
+      "bơm xi măng",
+      "đốt sống",
+      "nắp trocar",
+      "nút cao su",
+      "van rời",
+      "phụ kiện trocar"
+    ],
+    "note": "Không dùng từ trocar đứng một mình để auto-map"
+  },
+  {
+    "id": 141,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "túi đựng bệnh phẩm nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 142,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "túi đựng bệnh phẩm dùng cho phẫu thuật nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 143,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "bao túi đựng bệnh phẩm nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 144,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "túi bệnh phẩm nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 145,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "túi thu hồi bệnh phẩm nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 146,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "dụng cụ lấy bệnh phẩm nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 147,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "túi lấy bệnh phẩm nội soi",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 148,
+    "subOu": "A&I",
+    "productGroup": "Túi đựng bệnh phẩm",
+    "keyword": "túi đựng bệnh phẩm phẫu thuật",
+    "excludes": [
+      "túi lấy máu",
+      "túi chứa nước tiểu",
+      "cốc",
+      "lọ",
+      "hộp",
+      "ống nghiệm",
+      "EDTA",
+      "túi zip",
+      "xét nghiệm"
+    ],
+    "note": "File nguồn có nhiễu xét nghiệm; chỉ nhận túi thu hồi bệnh phẩm phẫu thuật"
+  },
+  {
+    "id": 149,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ bảo vệ vết mổ",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 150,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ bảo vệ thành vết mổ",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 151,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ nong và bảo vệ vết mổ",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 152,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ banh miệng và bảo vệ thành vết mổ nội soi",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 153,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ bảo vệ vết mổ dùng trong phẫu thuật",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 154,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ bảo vệ vết mổ dùng trong phẫu thuật VATS",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 155,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ bảo vệ vết mổ trong phẫu thuật ít xâm lấn",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 156,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ bảo vệ nong vết mổ có nắp",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 157,
+    "subOu": "A&I",
+    "productGroup": "Túi bảo vệ vết mổ",
+    "keyword": "dụng cụ nong và bảo vệ vết mổ có nắp",
+    "excludes": [
+      "băng bảo vệ vết thương",
+      "màng bảo vệ da",
+      "miếng dán vết thương"
+    ],
+    "note": "Bao gồm wound protector có hoặc không có nắp"
+  },
+  {
+    "id": 158,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "tay dao mổ điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 159,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "tay dao điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 160,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "tay dao cắt đốt điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 161,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "tay dao đốt điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 162,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "dao mổ điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 163,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "dao đốt điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 164,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "dao điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 165,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "điện cực đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 166,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "điện cực cắt đốt đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 167,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "đầu đốt đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 168,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "lưỡi dao mổ điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 169,
+    "subOu": "ES",
+    "productGroup": "Đơn cực",
+    "keyword": "dây dao điện đơn cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "laser",
+      "dao lạnh",
+      "kéo lạnh",
+      "hút khói"
+    ],
+    "note": "Không nhận adapter và bút dao điện tích hợp hút khói"
+  },
+  {
+    "id": 170,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "kẹp lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 171,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "kẹp cầm máu lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 172,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "kẹp phẫu tích lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 173,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "kẹp đốt lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 174,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "kẹp lưỡng cực chống dính",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 175,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "kẹp lưỡng cực không dính",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 176,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "hàm kẹp lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 177,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "ruột kẹp lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 178,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "ruột kẹp đốt lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 179,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "ruột kẹp phẫu tích lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 180,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "điện cực lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 181,
+    "subOu": "ES",
+    "productGroup": "Kẹp lưỡng cực",
+    "keyword": "dây nối kẹp lưỡng cực",
+    "excludes": [
+      "dao hàn mạch",
+      "hàn mô",
+      "LigaSure",
+      "dao siêu âm",
+      "CUSA",
+      "plasma",
+      "adapter"
+    ],
+    "note": "Lưỡng cực thông thường; không nhận thiết bị hàn mạch"
+  },
+  {
+    "id": 182,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "tấm điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 183,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "bản cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 184,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 185,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "bản điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 186,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "thảm điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 187,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "miếng dán điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 188,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "tấm lót điện cực thu hồi",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 189,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "tấm lót điện cực thu hồi dạng tụ điện",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 190,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "tấm đệm kết hợp thu hồi điện cực",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 191,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "tấm điện cực trung tính loại kép",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 192,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "điện cực trung tính loại kép",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 193,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "tấm điện cực trung tính REM",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 194,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "dây nối tấm điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 195,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "cáp nối điện cực trung tính",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  },
+  {
+    "id": 196,
+    "subOu": "ES",
+    "productGroup": "Tấm điện cực trung tính",
+    "keyword": "dây nối tấm lót điện cực thu hồi",
+    "excludes": [
+      "điện cực ECG",
+      "điện cực tim",
+      "điện cực thần kinh",
+      "điện cực châm cứu",
+      "điện cực máy sốc điện",
+      "điện cực siêu âm",
+      "điện cực RF thẩm mỹ"
+    ],
+    "note": "Bao gồm tấm/bản/thảm thu hồi và dây nối của tấm"
+  }
 ]

@@ -1,8 +1,21 @@
+import keywordMasterJson from "@/data/keyword-master.json";
+
 const SEARCH_URL =
   "https://muasamcong.mpi.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
 
 const PAGE_SIZE = 1000;
 const MAX_PAGES = 25;
+
+type KeywordMasterRule = {
+  id: number;
+  subOu: string;
+  productGroup: string;
+  keyword: string;
+  excludes: string[];
+  note: string;
+};
+
+const keywordMaster = keywordMasterJson as KeywordMasterRule[];
 
 export type WinningBidFilters = {
   dateFrom?: string;
@@ -53,6 +66,39 @@ type PortalPage = {
   totalPages?: number;
 };
 
+function normalizeSearchText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function keywordRuleFor(keyword: string) {
+  const normalizedKeyword = normalizeSearchText(keyword);
+  return keywordMaster.find((rule) => normalizeSearchText(rule.keyword) === normalizedKeyword);
+}
+
+function recordSearchText(record: WinningBidRecord) {
+  return normalizeSearchText([
+    record.tenThietBi,
+    record.maHs,
+    record.kyMaHieu,
+    record.nhanHieu,
+    record.hangSanXuat,
+    record.chungLoai,
+    record.cauHinh,
+  ].filter(Boolean).join(" | "));
+}
+
+function followsKeywordRule(record: WinningBidRecord, rule: KeywordMasterRule) {
+  const text = recordSearchText(record);
+  if (!text.includes(normalizeSearchText(rule.keyword))) return false;
+  return !rule.excludes.some((exclude) => text.includes(normalizeSearchText(exclude)));
+}
+
 function portalFilters(filters: WinningBidFilters) {
   const result: Array<Record<string, unknown>> = [];
 
@@ -75,7 +121,7 @@ function portalFilters(filters: WinningBidFilters) {
 
 function companySearch(company: string | undefined) {
   const searches: Record<string, string> = {
-    medtronic: "Covidien Medtronic",
+    medtronic: "Covidien Medtronic LigaSure",
     ethicon: "Johnson Ethicon Harmonic",
     applied: "Applied Medical",
     bbraun: "B Braun Aesculap",
@@ -173,17 +219,34 @@ async function fetchPage(keyword: string, pageNumber: number, filters: WinningBi
 export async function collectWinningBids(keyword: string, filters: WinningBidFilters = {}) {
   const firstPage = await fetchPage(keyword, 0, filters);
   const totalPages = Math.min(firstPage.totalPages ?? 1, MAX_PAGES);
-  const records = [...firstPage.content];
+  const portalRecords = [...firstPage.content];
 
   for (let pageNumber = 1; pageNumber < totalPages; pageNumber += 1) {
     await wait(200);
     const page = await fetchPage(keyword, pageNumber, filters);
-    records.push(...page.content);
+    portalRecords.push(...page.content);
   }
+
+  const keywordRule = keywordRuleFor(keyword);
+  const records = keywordRule
+    ? portalRecords.filter((record) => followsKeywordRule(record, keywordRule))
+    : portalRecords;
 
   return {
     records,
-    totalElements: firstPage.totalElements ?? records.length,
+    totalElements: keywordRule ? records.length : firstPage.totalElements ?? records.length,
+    portalTotalElements: firstPage.totalElements ?? portalRecords.length,
+    excludedRecords: portalRecords.length - records.length,
+    keywordRule: keywordRule
+      ? {
+          id: keywordRule.id,
+          subOu: keywordRule.subOu,
+          productGroup: keywordRule.productGroup,
+          keyword: keywordRule.keyword,
+          excludes: keywordRule.excludes,
+          note: keywordRule.note,
+        }
+      : undefined,
     totalPages: firstPage.totalPages ?? 1,
     truncated: (firstPage.totalPages ?? 1) > MAX_PAGES,
   };
