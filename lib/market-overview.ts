@@ -5,6 +5,19 @@ import {
   type WinningBidFilters,
   type WinningBidRecord,
 } from "@/lib/winning-bids";
+import {
+  aggregateOverviewFacts,
+  type OverviewFact,
+  type OverviewSubOu,
+} from "@/lib/market-overview-aggregate";
+
+export type {
+  OverviewFact,
+  OverviewHospital,
+  OverviewNamedValue,
+  OverviewSubOu,
+  OverviewTender,
+} from "@/lib/market-overview-aggregate";
 
 export const SUB_OU_ORDER = [
   "VS&D",
@@ -32,52 +45,9 @@ export type OverviewFilters = WinningBidFilters & {
   productGroup?: string;
 };
 
-export type OverviewNamedValue = {
-  name: string;
-  value: number;
-  units: number;
-};
-
-export type OverviewHospital = OverviewNamedValue & {
-  products: number;
-  tenders: number;
-};
-
-export type OverviewTender = {
-  id: string;
-  hospital: string;
-  value: number;
-  products: number;
-};
-
-export type OverviewSubOu = {
-  name: string;
-  marketSize: number;
-  totalUnits: number;
-  medtronicValue: number;
-  medtronicUnits: number;
-  medtronicValueShare: number;
-  medtronicUnitShare: number;
-  tenderCount: number;
-  hospitalCount: number;
-  productCount: number;
-  competitors: OverviewNamedValue[];
-  hospitals: OverviewHospital[];
-  suppliers: OverviewNamedValue[];
-  tenders: OverviewTender[];
-  sourceRecords: number;
-  sourceTotalElements: number;
-  truncated: boolean;
-  failedQueries: string[];
-};
-
-type ClassifiedRecord = {
-  record: WinningBidRecord;
-  rule: KeywordRule;
-};
-
 const keywordRules = keywordMasterJson as KeywordRule[];
 const OVERVIEW_MAX_PAGES_PER_SEED = 6;
+const SEGMENT_PAGE_SIZE = 3;
 
 // Portal search seeds keep the live request set bounded. Every returned record is
 // then checked against all 196 approved include/exclude rules before aggregation.
@@ -199,12 +169,41 @@ function productKey(record: WinningBidRecord) {
   );
 }
 
-function addNamedValue(map: Map<string, OverviewNamedValue>, name: string, record: WinningBidRecord) {
-  const key = name.trim() || "Chưa xác định";
-  const current = map.get(key) || { name: key, value: 0, units: 0 };
-  current.value += valueOf(record);
-  current.units += quantityOf(record);
-  map.set(key, current);
+function overviewRequestPlan(subOu: string, filters: OverviewFilters) {
+  const requestedRules = keywordRules.filter((rule) =>
+    rule.subOu === subOu &&
+    (!filters.productGroup || filters.productGroup === "all" || rule.productGroup === filters.productGroup),
+  );
+  const productGroups = [...new Set(requestedRules.map((rule) => rule.productGroup))];
+  const seeds = [...new Set(productGroups.flatMap((group) => GROUP_SEARCH_SEEDS[group] || [group]))];
+  const portalFilters: WinningBidFilters = {
+    dateFrom: filters.dateFrom,
+    dateTo: filters.dateTo,
+    company: filters.company,
+  };
+  return { productGroups, seeds, portalFilters };
+}
+
+function overviewFacts(
+  subOu: string,
+  productGroups: string[],
+  records: WinningBidRecord[],
+): OverviewFact[] {
+  return records.flatMap((record) => {
+    const rule = classifyRecord(record);
+    if (!rule || rule.subOu !== subOu || !productGroups.includes(rule.productGroup)) return [];
+    const hospital = record.tenCdtBmt?.trim() || "Chưa xác định";
+    return [{
+      key: recordKey(record),
+      company: companyOf(record),
+      supplier: listText(record.winningName),
+      hospital,
+      tender: record.maTbmt?.trim() || `Không có mã · ${hospital}`,
+      product: productKey(record),
+      value: valueOf(record),
+      units: quantityOf(record),
+    }];
+  });
 }
 
 async function collectSeeds(
@@ -232,7 +231,7 @@ async function collectSeeds(
         return;
       }
       sourceTotalElements += result.value.totalElements;
-      truncated ||= result.value.truncated;
+      truncated ||= result.value.truncated || result.value.nextPage !== undefined;
       result.value.records.forEach((record) => records.set(recordKey(record), record));
     });
     if (start + batch.length < seeds.length) {
@@ -252,117 +251,39 @@ export async function buildMarketOverviewSlice(
   subOu: string,
   filters: OverviewFilters,
 ): Promise<OverviewSubOu> {
-  const requestedRules = keywordRules.filter((rule) =>
-    rule.subOu === subOu &&
-    (!filters.productGroup || filters.productGroup === "all" || rule.productGroup === filters.productGroup),
-  );
-  const productGroups = [...new Set(requestedRules.map((rule) => rule.productGroup))];
-  const seeds = [...new Set(productGroups.flatMap((group) => GROUP_SEARCH_SEEDS[group] || [group]))];
-  const portalFilters: WinningBidFilters = {
-    dateFrom: filters.dateFrom,
-    dateTo: filters.dateTo,
-    hospital: filters.hospital,
-    company: filters.company,
-  };
+  const { productGroups, seeds, portalFilters } = overviewRequestPlan(subOu, filters);
   const source = await collectSeeds(seeds, portalFilters);
-  const classified: ClassifiedRecord[] = [];
-
-  source.records.forEach((record) => {
-    const rule = classifyRecord(record);
-    if (!rule || rule.subOu !== subOu || !productGroups.includes(rule.productGroup)) return;
-    classified.push({ record, rule });
-  });
-
-  const companyTotals = new Map<string, OverviewNamedValue>();
-  const supplierTotals = new Map<string, OverviewNamedValue>();
-  const hospitalTotals = new Map<string, OverviewHospital & { productKeys: Set<string>; tenderKeys: Set<string> }>();
-  const tenderTotals = new Map<string, OverviewTender & { productKeys: Set<string> }>();
-  const allProducts = new Set<string>();
-  const allTenders = new Set<string>();
-  let marketSize = 0;
-  let totalUnits = 0;
-  let medtronicValue = 0;
-  let medtronicUnits = 0;
-
-  classified.forEach(({ record }) => {
-    const value = valueOf(record);
-    const units = quantityOf(record);
-    const company = companyOf(record);
-    const product = productKey(record);
-    const hospital = record.tenCdtBmt?.trim() || "Chưa xác định";
-    const tender = record.maTbmt?.trim() || `Không có mã · ${hospital}`;
-    marketSize += value;
-    totalUnits += units;
-    allProducts.add(product);
-    allTenders.add(tender);
-    addNamedValue(companyTotals, company, record);
-    addNamedValue(supplierTotals, listText(record.winningName), record);
-
-    if (company === "Medtronic") {
-      medtronicValue += value;
-      medtronicUnits += units;
-    }
-
-    const hospitalEntry = hospitalTotals.get(hospital) || {
-      name: hospital,
-      value: 0,
-      units: 0,
-      products: 0,
-      tenders: 0,
-      productKeys: new Set<string>(),
-      tenderKeys: new Set<string>(),
-    };
-    hospitalEntry.value += value;
-    hospitalEntry.units += units;
-    hospitalEntry.productKeys.add(product);
-    hospitalEntry.tenderKeys.add(tender);
-    hospitalTotals.set(hospital, hospitalEntry);
-
-    const tenderEntry = tenderTotals.get(tender) || {
-      id: tender,
-      hospital,
-      value: 0,
-      products: 0,
-      productKeys: new Set<string>(),
-    };
-    tenderEntry.value += value;
-    tenderEntry.productKeys.add(product);
-    tenderTotals.set(tender, tenderEntry);
-  });
-
-  const hospitals = [...hospitalTotals.values()]
-    .map(({ productKeys, tenderKeys, ...entry }) => ({
-      ...entry,
-      products: productKeys.size,
-      tenders: tenderKeys.size,
-    }))
-    .sort((left, right) => right.value - left.value);
-  const tenders = [...tenderTotals.values()]
-    .map(({ productKeys, ...entry }) => ({ ...entry, products: productKeys.size }))
-    .sort((left, right) => right.value - left.value);
-  const competitors = [...companyTotals.values()]
-    .filter((entry) => entry.name !== "Medtronic" && entry.name !== "Chưa xác định")
-    .sort((left, right) => right.value - left.value)
-    .slice(0, 3);
-
-  return {
-    name: subOu,
-    marketSize,
-    totalUnits,
-    medtronicValue,
-    medtronicUnits,
-    medtronicValueShare: marketSize ? (medtronicValue / marketSize) * 100 : 0,
-    medtronicUnitShare: totalUnits ? (medtronicUnits / totalUnits) * 100 : 0,
-    tenderCount: allTenders.size,
-    hospitalCount: hospitals.filter((entry) => entry.name !== "Chưa xác định").length,
-    productCount: allProducts.size,
-    competitors,
-    hospitals,
-    suppliers: [...supplierTotals.values()].sort((left, right) => right.value - left.value),
-    tenders,
-    sourceRecords: source.records.length,
+  const facts = overviewFacts(subOu, productGroups, source.records);
+  return aggregateOverviewFacts(subOu, facts, {
     sourceTotalElements: source.sourceTotalElements,
     truncated: source.truncated,
     failedQueries: source.failedQueries,
+  });
+}
+
+export async function buildMarketOverviewSegment(
+  subOu: string,
+  filters: OverviewFilters,
+  seedIndex: number,
+  startPage: number,
+) {
+  const { productGroups, seeds, portalFilters } = overviewRequestPlan(subOu, filters);
+  const seed = seeds[seedIndex];
+  if (!seed) throw new Error("Invalid overview segment.");
+
+  const result = await collectWinningBids(seed, portalFilters, {
+    startPage,
+    maxPages: SEGMENT_PAGE_SIZE,
+  });
+
+  return {
+    seed,
+    seedIndex,
+    seedCount: seeds.length,
+    startPage,
+    nextPage: result.nextPage,
+    facts: overviewFacts(subOu, productGroups, result.records),
+    sourceTotalElements: startPage === 0 ? result.portalTotalElements : 0,
+    truncated: result.truncated,
   };
 }

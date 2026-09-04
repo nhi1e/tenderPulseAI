@@ -28,6 +28,7 @@ export type WinningBidFilters = {
 
 export type CollectWinningBidOptions = {
   maxPages?: number;
+  startPage?: number;
 };
 
 export type WinningBidRecord = {
@@ -225,12 +226,15 @@ export async function collectWinningBids(
   filters: WinningBidFilters = {},
   options: CollectWinningBidOptions = {},
 ) {
-  const firstPage = await fetchPage(keyword, 0, filters);
+  const startPage = Math.max(0, Math.floor(options.startPage ?? 0));
+  const firstPage = await fetchPage(keyword, startPage, filters);
   const maxPages = Math.max(1, Math.min(options.maxPages ?? MAX_PAGES, MAX_PAGES));
-  const totalPages = Math.min(firstPage.totalPages ?? 1, maxPages);
+  const portalPageCount = firstPage.totalPages ?? 1;
+  const safetyEndPage = Math.min(portalPageCount, MAX_PAGES);
+  const endPage = Math.min(safetyEndPage, startPage + maxPages);
   const portalRecords = [...firstPage.content];
 
-  for (let pageNumber = 1; pageNumber < totalPages; pageNumber += 1) {
+  for (let pageNumber = startPage + 1; pageNumber < endPage; pageNumber += 1) {
     await wait(200);
     const page = await fetchPage(keyword, pageNumber, filters);
     portalRecords.push(...page.content);
@@ -256,7 +260,8 @@ export async function collectWinningBids(
           note: keywordRule.note,
         }
       : undefined,
-    totalPages: firstPage.totalPages ?? 1,
-    truncated: (firstPage.totalPages ?? 1) > maxPages,
+    totalPages: portalPageCount,
+    nextPage: endPage < safetyEndPage ? endPage : undefined,
+    truncated: portalPageCount > MAX_PAGES,
   };
 }

@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import keywordMasterJson from "@/data/keyword-master.json";
 import type { OverviewHospital, OverviewNamedValue, OverviewSubOu, OverviewTender } from "@/lib/market-overview";
+import { aggregateOverviewFacts, type OverviewFact } from "@/lib/market-overview-aggregate";
 
 type NamedValue = { name: string; value: number };
 type SearchFilters = {
@@ -60,7 +61,7 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.keyword),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v1";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v2";
 const LanguageContext = createContext<Language>("en");
 
 type OverviewCacheEntry = {
@@ -512,6 +513,68 @@ function MarketOverview() {
   const [showAllHospitals, setShowAllHospitals] = useState<Set<string>>(new Set());
   const started = useRef(false);
 
+  async function fetchSubOuSlice(
+    subOu: string,
+    nextFilters: OverviewFilterState,
+    completedSubOus: number,
+    totalSubOus: number,
+  ) {
+    const facts = new Map<string, OverviewFact>();
+    let seedIndex = 0;
+    let seedCount = 1;
+    let sourceTotalElements = 0;
+    let truncated = false;
+    let fetchedAt: string | undefined;
+
+    while (seedIndex < seedCount) {
+      let nextPage: number | undefined = 0;
+      while (nextPage !== undefined) {
+        const startPage = nextPage;
+        setLoadProgress({
+          completed: completedSubOus,
+          total: totalSubOus,
+          current: [`${subOu} · ${copy(language, "query", "truy vấn")} ${seedIndex + 1}/${seedCount}`],
+        });
+        const response = await fetch("/api/market-overview/segment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...nextFilters, subOu, seedIndex, startPage }),
+        });
+        const fallback = copy(language, `Could not update ${subOu}.`, `Không thể cập nhật ${subOu}.`);
+        const data = await readJsonResponse<{
+          error?: string;
+          fetchedAt?: string;
+          segment?: {
+            seedCount: number;
+            nextPage?: number;
+            facts: OverviewFact[];
+            sourceTotalElements: number;
+            truncated: boolean;
+          };
+        }>(response, fallback, language);
+        if (!data.segment) throw new Error(language === "vi" ? data.error || fallback : fallback);
+
+        seedCount = data.segment.seedCount;
+        data.segment.facts.forEach((fact) => facts.set(fact.key, fact));
+        sourceTotalElements += data.segment.sourceTotalElements;
+        truncated ||= data.segment.truncated;
+        fetchedAt = data.fetchedAt || fetchedAt;
+        nextPage = data.segment.nextPage;
+        if (nextPage !== undefined) await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+      seedIndex += 1;
+    }
+
+    return {
+      fetchedAt,
+      slice: aggregateOverviewFacts(subOu, [...facts.values()], {
+        sourceTotalElements,
+        truncated,
+        failedQueries: [],
+      }),
+    };
+  }
+
   async function loadOverview(nextFilters: OverviewFilterState, availableCatalog = catalog, forceRefresh = false) {
     const matchingCatalog = availableCatalog.length ? availableCatalog : overviewKeywordCatalog;
     const targets = matchingCatalog
@@ -553,19 +616,12 @@ function MarketOverview() {
       const batch = targets.slice(index, index + 1);
       setLoadProgress({ completed, total: targets.length, current: batch });
       const responses = await Promise.allSettled(batch.map(async (subOu) => {
-        const response = await fetch("/api/market-overview", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...nextFilters, subOu }),
-        });
-        const fallback = copy(language, `Could not update ${subOu}.`, `Không thể cập nhật ${subOu}.`);
-        const data = await readJsonResponse<{ error?: string; fetchedAt?: string; slice?: OverviewSubOu }>(response, fallback, language);
-        if (!data.slice) throw new Error(language === "vi" ? data.error || fallback : fallback);
-        if (data.fetchedAt) {
-          latestFetchedAt = data.fetchedAt;
-          setUpdatedAt(data.fetchedAt);
+        const result = await fetchSubOuSlice(subOu, nextFilters, completed, targets.length);
+        if (result.fetchedAt) {
+          latestFetchedAt = result.fetchedAt;
+          setUpdatedAt(result.fetchedAt);
         }
-        return data.slice;
+        return result.slice;
       }));
       responses.forEach((result, batchIndex) => {
         if (result.status === "fulfilled") {

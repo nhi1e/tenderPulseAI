@@ -46,4 +46,4 @@ npx wrangler deploy --config dist/server/wrangler.json
 
 Keep the generated `dist/server` Worker and `dist/client` assets together. Deploying only `dist/client` removes the live API routes.
 
-The overview loads Sub-OUs sequentially and limits pages per keyword seed so broad groups such as Suture and ES stay within Cloudflare Worker request and memory budgets. When a portal result set exceeds that bound, the dashboard marks the affected Sub-OU as limited rather than presenting it as complete.
+The overview loads Sub-OUs sequentially. Each keyword seed is retrieved in batches of no more than three portal pages per Worker invocation, then deduplicated and aggregated in the browser. This keeps broad groups such as Suture, A&I, and ES within Cloudflare's per-invocation resource budget. The existing 25-page safety limit still applies to exceptionally large individual keyword searches; the dashboard marks those results as limited rather than presenting them as complete.
