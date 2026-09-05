@@ -7,9 +7,11 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - Live product searches through the Mua Sắm Công public search endpoint
 - Market overview organized across 7 Sub-OUs
 - 196 Vietnamese keyword-master rules with automatic exclusions
-- Date, brand, supplier, company, Sub-OU, and product-group filters
-- Excel export for search and overview results
-- Expandable hospital details
+- Date, hospital, brand, supplier, company, Sub-OU, and product-group filters
+- Excel export for search and overview results, including one-click hospital exports
+- Expandable hospital details with per-hospital product, result, unit, and value totals
+- Covidien/LigaSure mapped to Medtronic and Ethicon mapped to Johnson & Johnson before KPI calculations
+- Competitor aliases normalized before value-share and unit-share calculations
 - One completed overview load per filter scope is cached for the current browser session
 - Force-refresh control to bypass and replace the session cache
 - English interface by default with a persistent English/Vietnamese switch

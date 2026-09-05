@@ -1,4 +1,5 @@
 import keywordMasterJson from "@/data/keyword-master.json";
+import { mappedCompanyName } from "@/lib/company-mapping";
 
 import {
   collectWinningBids,
@@ -102,6 +103,7 @@ function searchableText(record: WinningBidRecord) {
     record.hangSanXuat,
     record.chungLoai,
     record.cauHinh,
+    listText(record.winningName),
   ].filter(Boolean).join(" | "));
 }
 
@@ -140,15 +142,7 @@ function listText(value: string[] | string | undefined) {
 
 function companyOf(record: WinningBidRecord) {
   const text = searchableText(record);
-  if (/covidien|coviden|medtronic|ligasure/.test(text)) return "Medtronic";
-  if (/johnson.{0,5}johnson|ethicon|harmonic/.test(text)) return "Johnson & Johnson / Ethicon";
-  if (/b[. ]?braun|aesculap/.test(text)) return "B. Braun / Aesculap";
-  if (/boston scientific/.test(text)) return "Boston Scientific";
-  if (/applied medical|applied/.test(text)) return "Applied Medical";
-  if (/olympus/.test(text)) return "Olympus";
-  if (/miconvey/.test(text)) return "Miconvey";
-  if (/innolcon/.test(text)) return "Innolcon";
-  return record.hangSanXuat?.trim() || "Chưa xác định";
+  return mappedCompanyName(text, record.hangSanXuat || "") || "Chưa xác định";
 }
 
 function recordKey(record: WinningBidRecord) {
@@ -179,6 +173,7 @@ function overviewRequestPlan(subOu: string, filters: OverviewFilters) {
   const portalFilters: WinningBidFilters = {
     dateFrom: filters.dateFrom,
     dateTo: filters.dateTo,
+    hospital: filters.hospital,
     company: filters.company,
   };
   return { productGroups, seeds, portalFilters };
@@ -200,6 +195,13 @@ function overviewFacts(
       hospital,
       tender: record.maTbmt?.trim() || `Không có mã · ${hospital}`,
       product: productKey(record),
+      productName: record.tenThietBi?.trim() || "",
+      model: (record.kyMaHieu || record.chungLoai || "").trim(),
+      brand: record.nhanHieu?.trim() || "",
+      manufacturer: record.hangSanXuat?.trim() || "",
+      unitOfMeasure: record.donViTinh?.trim() || "",
+      unitPrice: toNumber(record.donGia ?? record.donGiaDuThau),
+      publishedAt: record.ngayDangTaiKqlcnt || "",
       value: valueOf(record),
       units: quantityOf(record),
     }];

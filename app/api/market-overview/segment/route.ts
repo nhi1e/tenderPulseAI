@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     const filters: OverviewFilters = {
       dateFrom: clean(body.dateFrom, 10),
       dateTo: clean(body.dateTo, 10),
+      hospital: clean(body.hospital),
       productGroup: clean(body.productGroup, 100),
       company: clean(body.company, 30),
       subOu,

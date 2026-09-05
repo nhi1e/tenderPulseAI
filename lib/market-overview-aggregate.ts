@@ -1,3 +1,5 @@
+import { companyGroupingKey } from "@/lib/company-mapping";
+
 export type OverviewNamedValue = {
   name: string;
   value: number;
@@ -35,6 +37,7 @@ export type OverviewSubOu = {
   sourceTotalElements: number;
   truncated: boolean;
   failedQueries: string[];
+  facts?: OverviewFact[];
 };
 
 export type OverviewFact = {
@@ -44,6 +47,13 @@ export type OverviewFact = {
   hospital: string;
   tender: string;
   product: string;
+  productName: string;
+  model: string;
+  brand: string;
+  manufacturer: string;
+  unitOfMeasure: string;
+  unitPrice: number;
+  publishedAt: string;
   value: number;
   units: number;
 };
@@ -53,9 +63,11 @@ function addNamedValue(
   name: string,
   value: number,
   units: number,
+  groupSimilarNames = false,
 ) {
-  const key = name.trim() || "Chưa xác định";
-  const current = map.get(key) || { name: key, value: 0, units: 0 };
+  const displayName = name.trim() || "Chưa xác định";
+  const key = groupSimilarNames ? companyGroupingKey(displayName) : displayName;
+  const current = map.get(key) || { name: displayName, value: 0, units: 0 };
   current.value += value;
   current.units += units;
   map.set(key, current);
@@ -86,7 +98,7 @@ export function aggregateOverviewFacts(
     totalUnits += fact.units;
     allProducts.add(fact.product);
     allTenders.add(fact.tender);
-    addNamedValue(companyTotals, fact.company, fact.value, fact.units);
+    addNamedValue(companyTotals, fact.company, fact.value, fact.units, true);
     addNamedValue(supplierTotals, fact.supplier, fact.value, fact.units);
 
     if (fact.company === "Medtronic") {
@@ -151,5 +163,6 @@ export function aggregateOverviewFacts(
     sourceTotalElements: metadata.sourceTotalElements,
     truncated: metadata.truncated,
     failedQueries: metadata.failedQueries,
+    facts,
   };
 }
