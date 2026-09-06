@@ -36,7 +36,7 @@ npm run build
 npm run start
 ```
 
-The live search requires the server/API routes. A static-only host such as GitHub Pages cannot run them.
+The live search requires the Cloudflare Worker proxy. A static-only host such as GitHub Pages cannot run it.
 
 ## Cloudflare Worker deployment
 
@@ -46,6 +46,16 @@ npx wrangler login
 npx wrangler deploy --config dist/server/wrangler.json
 ```
 
-Keep the generated `dist/server` Worker and `dist/client` assets together. Deploying only `dist/client` removes the live API routes.
+Keep the generated `dist/server` Worker and `dist/client` assets together. Deploying only `dist/client` removes live data access.
 
-The overview loads Sub-OUs sequentially. Each keyword seed is retrieved in batches of no more than three portal pages per Worker invocation, then deduplicated and aggregated in the browser. This keeps broad groups such as Suture, A&I, and ES within Cloudflare's per-invocation resource budget. The existing 25-page safety limit still applies to exceptionally large individual keyword searches; the dashboard marks those results as limited rather than presenting them as complete.
+### Cloudflare Free architecture
+
+Cloudflare Workers Free allows very little CPU time per request, so the deployed Worker deliberately does not parse thousands of award rows, classify 196 keyword rules, aggregate the dashboard, or generate Excel files.
+
+- `/api/portal-search-page` validates one request, retrieves one page from the public portal, and streams the JSON response.
+- Successful portal pages are cached at the Cloudflare edge for 30 minutes. **Force refresh** bypasses that cache and replaces it.
+- The browser requests pages in small batches and displays progress while it classifies, deduplicates, and aggregates results locally.
+- Excel workbooks are generated in the browser from the already-loaded filtered records, including the per-hospital exports.
+- The completed overview is also cached in `sessionStorage`, so returning to the tab during the same browser session does not repeat the full load.
+
+This removes the former `/api/winning-bids` and `/api/market-overview/segment` CPU bottlenecks that caused HTTP 503 errors for larger Sub-OUs on the Free plan. An individual search is capped at 25 portal pages; the interface marks the result as limited if the portal reports more pages.

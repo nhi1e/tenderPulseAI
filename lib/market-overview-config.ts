@@ -1,0 +1,18 @@
+export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> = {
+  "Dao siêu âm": ["dao siêu âm"],
+  "Dao hàn mạch": ["hàn mạch", "hàn mô"],
+  "Dụng cụ khâu cắt nối nội soi": ["khâu cắt nối nội soi", "cắt khâu nối nội soi", "khâu cắt nội soi", "cắt khâu nội soi", "khâu nối nội soi"],
+  "Băng ghim nội soi": ["băng ghim nội soi", "băng đạn nội soi", "reload nội soi", "cartridge nội soi"],
+  "Dụng cụ khâu cắt nối mổ mở": ["khâu cắt nối mổ mở", "cắt khâu nối mổ mở", "khâu nối mổ mở", "khâu cắt mổ mở", "cắt nối mổ mở", "khâu thẳng mổ mở"],
+  "Băng ghim mổ mở": ["băng ghim mổ mở", "băng đạn mổ mở", "ghim khâu máy mổ mở"],
+  "Khâu nối tròn/vòng": ["khâu nối tròn", "khâu cắt nối tròn", "khâu nối vòng"],
+  "Lưới thoát vị": ["lưới thoát vị", "mảnh ghép thoát vị"],
+  "Dụng cụ cố định lưới thoát vị": ["cố định lưới thoát vị", "ghim cố định lưới"],
+  "Chỉ phẫu thuật": ["chỉ phẫu thuật", "chỉ khâu", "chỉ tan", "chỉ không tan", "chỉ tiêu", "chỉ không tiêu"],
+  Trocar: ["trocar"],
+  "Túi đựng bệnh phẩm": ["túi đựng bệnh phẩm", "túi bệnh phẩm", "túi lấy bệnh phẩm", "túi thu hồi bệnh phẩm", "dụng cụ lấy bệnh phẩm"],
+  "Túi bảo vệ vết mổ": ["bảo vệ vết mổ", "bảo vệ thành vết mổ", "bảo vệ nong vết mổ"],
+  "Đơn cực": ["đơn cực"],
+  "Kẹp lưỡng cực": ["lưỡng cực"],
+  "Tấm điện cực trung tính": ["điện cực trung tính", "bản cực trung tính", "tấm lót điện cực thu hồi", "thu hồi điện cực"],
+};
