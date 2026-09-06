@@ -5,6 +5,8 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 ## Included
 
 - Live product searches through the Mua Sắm Công public search endpoint
+- Accent-insensitive product autocomplete from the approved keyword master plus brands and models learned from live results
+- Hospital autocomplete using exact portal names and organization IDs learned from live results and saved on the current device
 - Market overview organized across 7 Sub-OUs
 - 196 Vietnamese keyword-master rules with automatic exclusions
 - Date, hospital, brand, supplier, company, Sub-OU, and product-group filters
@@ -15,6 +17,8 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - One completed overview load per filter scope is cached for the current browser session
 - Force-refresh control to bypass and replace the session cache
 - English interface by default with a persistent English/Vietnamese switch
+
+Autocomplete remains optional: users can still submit a custom product, brand, model, hospital name, or organization ID. The local suggestion directories update after each completed portal query and do not create additional Worker requests.
 
 ## Run locally
 

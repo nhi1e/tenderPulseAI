@@ -5,7 +5,10 @@ import {
   ArrowLeft, Building2, CheckCircle2, CircleAlert,
   Database, Download, Filter, LoaderCircle, RefreshCw, Search, Sparkles, Trophy,
 } from "lucide-react";
-import { Command, CommandInput } from "@/components/ui/command";
+import {
+  Combobox, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput,
+  ComboboxItem, ComboboxLabel, ComboboxList,
+} from "@/components/ui/combobox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import keywordMasterJson from "@/data/keyword-master.json";
@@ -75,6 +78,9 @@ type KeywordCatalogItem = { subOu: string; productGroups: string[]; keywords: st
 type KeywordMasterRule = { id: number; subOu: string; productGroup: string; keyword: string; excludes: string[]; note: string };
 type ActivityItem = { id: string; keyword: string; searchedAt: string; filters: SearchFilters };
 type OverviewLoadProgress = { completed: number; total: number; current: string[] };
+type HospitalDirectoryEntry = { name: string; id?: string };
+type LearnedProductEntry = { value: string; kind: "brand" | "model" };
+type ProductSuggestion = { value: string; kind: "keyword" | "brand" | "model"; subOu?: string; productGroup?: string };
 type Language = "en" | "vi";
 
 const subOuOrder = ["VS&D", "Endo Stapling", "Open Stapling", "Hernia", "Suture", "A&I", "ES"];
@@ -85,6 +91,19 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.keyword),
 }));
 const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v3";
+const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
+const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
+const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
+const initialHospitals: HospitalDirectoryEntry[] = [
+  { name: "Bệnh viện Bạch Mai" },
+  { name: "Bệnh viện Chợ Rẫy" },
+  { name: "Bệnh viện Đại học Y Hà Nội" },
+  { name: "Bệnh viện Hữu nghị Việt Đức" },
+  { name: "Bệnh viện Nhân dân 115" },
+  { name: "Bệnh viện Trung ương Huế" },
+  { name: "Bệnh viện Trung ương Quân đội 108" },
+  { name: "Bệnh viện 30-4" },
+];
 const LanguageContext = createContext<Language>("en");
 
 type OverviewCacheEntry = {
@@ -110,6 +129,108 @@ function emptyFilters(): SearchFilters {
 
 function normalize(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim().toLowerCase();
+}
+function readStoredDirectory<T>(key: string): T[] {
+  try {
+    const value = JSON.parse(window.localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value as T[] : [];
+  } catch {
+    return [];
+  }
+}
+function usefulDirectoryValue(value: string | undefined, maxLength: number) {
+  const cleaned = String(value || "").replace(/\s+/g, " ").trim();
+  if (cleaned.length < 2 || cleaned.length > maxLength) return "";
+  if (["không xác định", "chưa xác định", "n/a", "na"].includes(normalize(cleaned))) return "";
+  return cleaned;
+}
+function rememberAutocompleteValues(records: WinningBidRecord[]) {
+  if (typeof window === "undefined" || !records.length) return;
+  try {
+    const hospitals = new Map<string, HospitalDirectoryEntry>();
+    [...initialHospitals, ...readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY)].forEach((entry) => {
+      const name = usefulDirectoryValue(entry.name, 180);
+      if (name) hospitals.set(normalize(name), { name, id: usefulDirectoryValue(entry.id, 80) || undefined });
+    });
+    records.forEach((record) => {
+      const name = usefulDirectoryValue(record.tenCdtBmt, 180);
+      if (!name) return;
+      const key = normalize(name);
+      const existing = hospitals.get(key);
+      hospitals.set(key, { name, id: usefulDirectoryValue(record.maCdt, 80) || existing?.id });
+    });
+
+    const products = new Map<string, LearnedProductEntry>();
+    readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY).forEach((entry) => {
+      const value = usefulDirectoryValue(entry.value, 100);
+      if (value && (entry.kind === "brand" || entry.kind === "model")) products.set(normalize(value), { value, kind: entry.kind });
+    });
+    records.forEach((record) => {
+      const values: LearnedProductEntry[] = [
+        { value: usefulDirectoryValue(record.nhanHieu, 100), kind: "brand" },
+        { value: usefulDirectoryValue(record.kyMaHieu, 100), kind: "model" },
+        { value: usefulDirectoryValue(record.chungLoai, 100), kind: "model" },
+      ];
+      values.forEach((entry) => {
+        if (entry.value) products.set(normalize(entry.value), entry);
+      });
+    });
+
+    window.localStorage.setItem(HOSPITAL_DIRECTORY_KEY, JSON.stringify([...hospitals.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")).slice(0, 2000)));
+    window.localStorage.setItem(PRODUCT_DIRECTORY_KEY, JSON.stringify([...products.values()].sort((a, b) => a.value.localeCompare(b.value, "vi")).slice(0, 3000)));
+    window.dispatchEvent(new Event(DIRECTORY_UPDATE_EVENT));
+  } catch {
+    // Autocomplete is optional; live search still works if storage is unavailable.
+  }
+}
+function useAutocompleteDirectories() {
+  const [hospitals, setHospitals] = useState<HospitalDirectoryEntry[]>(initialHospitals);
+  const [learnedProducts, setLearnedProducts] = useState<LearnedProductEntry[]>([]);
+  useEffect(() => {
+    const load = () => {
+      const storedHospitals = readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY);
+      const hospitalMap = new Map<string, HospitalDirectoryEntry>();
+      [...initialHospitals, ...storedHospitals].forEach((entry) => {
+        if (entry?.name) hospitalMap.set(normalize(entry.name), entry);
+      });
+      setHospitals([...hospitalMap.values()]);
+      setLearnedProducts(readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY));
+    };
+    load();
+    window.addEventListener(DIRECTORY_UPDATE_EVENT, load);
+    return () => window.removeEventListener(DIRECTORY_UPDATE_EVENT, load);
+  }, []);
+  return { hospitals, learnedProducts };
+}
+function rankedMatch(value: string, query: string) {
+  const normalizedValue = normalize(value);
+  const normalizedQuery = normalize(query);
+  if (!normalizedQuery) return 2;
+  if (normalizedValue === normalizedQuery) return 0;
+  if (normalizedValue.startsWith(normalizedQuery)) return 1;
+  if (normalizedValue.includes(normalizedQuery)) return 2;
+  return 3;
+}
+function hospitalSuggestionsFor(hospitals: HospitalDirectoryEntry[], query: string) {
+  return hospitals
+    .filter((entry) => rankedMatch(`${entry.name} ${entry.id || ""}`, query) < 3)
+    .sort((left, right) => rankedMatch(left.name, query) - rankedMatch(right.name, query) || left.name.localeCompare(right.name, "vi"))
+    .slice(0, 10);
+}
+function productSuggestionsFor(learnedProducts: LearnedProductEntry[], query: string) {
+  const suggestions = new Map<string, ProductSuggestion>();
+  keywordMaster.forEach((rule) => {
+    const key = normalize(rule.keyword);
+    if (!suggestions.has(key)) suggestions.set(key, { value: rule.keyword, kind: "keyword", subOu: rule.subOu, productGroup: rule.productGroup });
+  });
+  learnedProducts.forEach((entry) => {
+    const key = normalize(entry.value);
+    if (!suggestions.has(key)) suggestions.set(key, entry);
+  });
+  return [...suggestions.values()]
+    .filter((entry) => rankedMatch(entry.value, query) < 3)
+    .sort((left, right) => rankedMatch(left.value, query) - rankedMatch(right.value, query) || Number(Boolean(right.subOu)) - Number(Boolean(left.subOu)) || left.value.localeCompare(right.value, "vi"))
+    .slice(0, 14);
 }
 function keywordRuleFor(keyword: string) {
   const normalizedKeyword = normalize(keyword);
@@ -196,6 +317,8 @@ async function collectLiveWinningBids(
     pages.forEach((page) => rawRecords.push(...page.content));
     records = publish(start + pages.length);
   }
+
+  rememberAutocompleteValues(rawRecords);
 
   return {
     records,
@@ -512,22 +635,82 @@ function TrendChart({ data }: { data: ProductData["trend"] }) {
   </svg>;
 }
 
+function HospitalAutocomplete({ value, onChange, language, compact = false }: {
+  value: string;
+  onChange: (value: string) => void;
+  language: Language;
+  compact?: boolean;
+}) {
+  const { hospitals } = useAutocompleteDirectories();
+  const suggestions = useMemo(() => hospitalSuggestionsFor(hospitals, value), [hospitals, value]);
+  const selected = hospitals.find((entry) => normalize(entry.name) === normalize(value))?.name || null;
+  return <Combobox<string>
+    items={suggestions.map((entry) => entry.name)}
+    inputValue={value}
+    value={selected}
+    filter={null}
+    autoHighlight
+    onInputValueChange={(next) => onChange(next)}
+    onValueChange={(next) => onChange(next || "")}
+  >
+    <ComboboxInput
+      className={`hospital-autocomplete ${compact ? "is-compact" : ""}`}
+      showClear={Boolean(value)}
+      placeholder={copy(language, "Type a hospital name or ID", "Nhập tên hoặc mã bệnh viện")}
+      aria-label={copy(language, "Hospital or buyer", "Bệnh viện hoặc chủ đầu tư")}
+    />
+    <ComboboxContent className="autocomplete-popup hospital-autocomplete-popup">
+      <ComboboxList>
+        <ComboboxGroup>
+          <ComboboxLabel>{copy(language, "Hospital names found in portal data", "Tên bệnh viện đã tìm thấy trên cổng")}</ComboboxLabel>
+          {suggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.name} key={`${entry.name}-${entry.id || ""}`}>
+            <div><strong>{entry.name}</strong>{entry.id && <span>{copy(language, "Organization ID", "Mã đơn vị")}: {entry.id}</span>}</div>
+          </ComboboxItem>)}
+        </ComboboxGroup>
+        <ComboboxEmpty>{copy(language, "No saved match. You can still enter the exact name.", "Chưa có gợi ý phù hợp. Bạn vẫn có thể nhập tên chính xác.")}</ComboboxEmpty>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>;
+}
+
 function ProductSearch({ loading, error, status, onSearch }: { loading: boolean; error?: string; status?: string; onSearch: (query: string) => void }) {
   const language = useLanguage();
   const [query, setQuery] = useState("");
+  const { learnedProducts } = useAutocompleteDirectories();
+  const suggestions = useMemo(() => productSuggestionsFor(learnedProducts, query), [learnedProducts, query]);
+  const masterSuggestions = suggestions.filter((entry) => entry.subOu);
+  const learnedSuggestions = suggestions.filter((entry) => !entry.subOu);
+  const selectedSuggestion = suggestions.find((entry) => normalize(entry.value) === normalize(query));
   const selectedRule = keywordMaster.find((rule) => normalize(rule.keyword) === normalize(query));
   const submit = () => { if (query.trim() && !loading) onSearch(query.trim()); };
   return <div className="search-shell">
-    <Command shouldFilter={false} className="product-command">
+    <div className="product-command">
       <div className="direct-search-head"><strong>{copy(language, "Enter a product, brand, or model", "Nhập sản phẩm, brand hoặc model")}</strong><span>{copy(language, "Approved keyword rules are applied automatically when available.", "Quy tắc trong bộ từ khóa chuẩn sẽ được áp dụng tự động khi có.")}</span></div>
       <form onSubmit={(event) => { event.preventDefault(); submit(); }}><div className="search-input-row">
-        <CommandInput value={query} onValueChange={setQuery} placeholder={copy(language, "Example: LigaSure, lưới thoát vị, LF1937…", "Ví dụ: LigaSure, lưới thoát vị, LF1937…")} aria-label={copy(language, "Live product search", "Tìm kiếm sản phẩm trực tiếp")} />
+        <Combobox<string>
+          items={suggestions.map((entry) => entry.value)}
+          inputValue={query}
+          value={selectedSuggestion?.value || null}
+          filter={null}
+          autoHighlight
+          onInputValueChange={setQuery}
+          onValueChange={(next) => { if (next) setQuery(next); }}
+        >
+          <ComboboxInput className="product-autocomplete" showTrigger={false} placeholder={copy(language, "Example: LigaSure, lưới thoát vị, LF1937…", "Ví dụ: LigaSure, lưới thoát vị, LF1937…")} aria-label={copy(language, "Live product search", "Tìm kiếm sản phẩm trực tiếp")} />
+          <ComboboxContent className="autocomplete-popup product-autocomplete-popup">
+            <ComboboxList>
+              {masterSuggestions.length > 0 && <ComboboxGroup><ComboboxLabel>{copy(language, "Approved keyword master", "Bộ từ khóa chuẩn")}</ComboboxLabel>{masterSuggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.value} key={`master-${normalize(entry.value)}`}><div><strong>{entry.value}</strong><span>{entry.subOu} · {entry.productGroup}</span></div></ComboboxItem>)}</ComboboxGroup>}
+              {learnedSuggestions.length > 0 && <ComboboxGroup><ComboboxLabel>{copy(language, "Brands and models found in live results", "Brand và model tìm thấy trong dữ liệu trực tiếp")}</ComboboxLabel>{learnedSuggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.value} key={`learned-${entry.kind}-${normalize(entry.value)}`}><div><strong>{entry.value}</strong><span>{entry.kind === "brand" ? "Brand" : "Model"}</span></div></ComboboxItem>)}</ComboboxGroup>}
+              <ComboboxEmpty>{copy(language, "No saved suggestion. You can still search this exact phrase.", "Chưa có gợi ý phù hợp. Bạn vẫn có thể tìm theo cụm từ này.")}</ComboboxEmpty>
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
         <button className="search-button" type="submit" disabled={loading || !query.trim()}>{loading ? <LoaderCircle className="spin" /> : <Search />}<span>{loading ? copy(language, "Searching…", "Đang tìm…") : copy(language, "Search", "Tìm kiếm")}</span></button>
       </div></form>
       {query.trim() && <div className={`keyword-rule-preview ${selectedRule ? "is-master-rule" : "is-custom-rule"}`}>
         {selectedRule ? <><div><strong>{copy(language, "Applying rule", "Áp dụng quy tắc")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.note}</p>{selectedRule.excludes.length > 0 && <div className="exclude-list"><span>{copy(language, "Automatic exclusions:", "Loại trừ tự động:")}</span>{selectedRule.excludes.map((term) => <b key={term}>{term}</b>)}</div>}<p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: the portal may return records containing the same words but describing accessories, cables, generators, CUSA systems, or another approved exclusion. A record is removed only when its product description contains one of the exclusion terms above; missing manufacturer or price data alone does not remove it.", "‘Đã loại’ nghĩa là gì: cổng có thể trả về các bản ghi chứa cùng từ nhưng thực tế mô tả phụ kiện, dây/cáp, bộ phát, hệ thống CUSA hoặc mặt hàng khác nằm trong điều kiện loại trừ đã duyệt. Hệ thống chỉ loại khi mô tả sản phẩm chứa một trong các cụm từ loại trừ ở trên; không loại chỉ vì thiếu hãng sản xuất hoặc giá.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, "Outside the 196-keyword catalog", "Không thuộc danh mục 196 từ khóa")}</span></div><p>{copy(language, "Results will use your exact search phrase without keyword-master exclusions.", "Kết quả sẽ được lấy theo cụm từ bạn nhập và không áp dụng điều kiện loại trừ từ keyword master.")}</p></>}
       </div>}
-    </Command>
+    </div>
     {loading && status && <p className="search-loading-status"><LoaderCircle className="spin" />{status}</p>}
     {error && <p className="search-message">{error}</p>}
   </div>;
@@ -562,7 +745,7 @@ function FilterBar({ initial, loading, onApply }: { initial: SearchFilters; load
     <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Sent to the portal", "Gửi trực tiếp tới cổng")}</small></span></div>
     <label className="filter-field"><small>{copy(language, "FROM DATE", "TỪ NGÀY")}</small><input type="date" value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
     <label className="filter-field"><small>{copy(language, "TO DATE", "ĐẾN NGÀY")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
-    <label className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><input type="text" value={filters.hospital} onChange={(event) => update("hospital", event.target.value)} placeholder={copy(language, "Name or organization ID", "Tên hoặc mã định danh")} /></label>
+    <div className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><HospitalAutocomplete value={filters.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label className="filter-field"><small>{copy(language, "BRAND / MANUFACTURER", "BRAND / HÃNG SẢN XUẤT")}</small><input type="text" value={filters.brand} onChange={(event) => update("brand", event.target.value)} placeholder={copy(language, "Example: LigaSure", "Ví dụ: LigaSure")} /></label>
     <label className="filter-field"><small>{copy(language, "WINNING SUPPLIER", "NHÀ THẦU TRÚNG")}</small><input type="text" value={filters.supplier} onChange={(event) => update("supplier", event.target.value)} placeholder={copy(language, "Enter name or ID", "Nhập tên hoặc mã")} /></label>
     <div className="filter-field"><small>{copy(language, "COMPANY", "CÔNG TY")}</small><Select value={filters.company} onValueChange={(value) => update("company", value)}><SelectTrigger className="company-select"><SelectValue /></SelectTrigger><SelectContent>
@@ -723,7 +906,7 @@ function OverviewFilterBar({ filters, catalog, loading, onApply }: {
   return <form className="overview-filter" onSubmit={(event) => { event.preventDefault(); onApply(draft); }}>
     <label><span>{copy(language, "From", "Từ ngày")}</span><input type="date" value={draft.dateFrom} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
     <label><span>{copy(language, "To", "Đến ngày")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
-    <label><span>{copy(language, "Hospital", "Bệnh viện")}</span><input type="text" value={draft.hospital} onChange={(event) => update("hospital", event.target.value)} placeholder={copy(language, "All hospitals", "Tất cả bệnh viện")} /></label>
+    <div className="overview-filter-field"><span>{copy(language, "Hospital", "Bệnh viện")}</span><HospitalAutocomplete value={draft.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label><span>Sub-OU</span><select value={draft.subOu} onChange={(event) => update("subOu", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{subOuOrder.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
     <label><span>{copy(language, "Product group", "Nhóm sản phẩm")}</span><select value={draft.productGroup} onChange={(event) => update("productGroup", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{groups.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
     <label><span>{copy(language, "Company", "Công ty")}</span><select value={draft.company} onChange={(event) => update("company", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option><option value="medtronic">Medtronic</option><option value="ethicon">J&amp;J / Ethicon</option><option value="bbraun">B. Braun / Aesculap</option><option value="applied">Applied Medical</option><option value="olympus">Olympus</option></select></label>
