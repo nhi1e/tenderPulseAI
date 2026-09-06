@@ -207,6 +207,10 @@ button:disabled { cursor: wait; opacity: .66; }
 .autocomplete-option > div { display: grid; min-width: 0; gap: 3px; }
 .autocomplete-option strong { overflow: hidden; color: #243a5d; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .autocomplete-option span { color: #7d8aa0; font-size: 11px; }
+.hospital-autocomplete-popup { width: min(520px, calc(100vw - 24px)) !important; min-width: min(420px, calc(100vw - 24px)) !important; }
+.hospital-autocomplete-popup .autocomplete-option { min-height: 54px; align-items: flex-start; }
+.hospital-autocomplete-popup .autocomplete-option strong { overflow: visible; text-overflow: clip; white-space: normal; line-height: 1.35; }
+.hospital-autocomplete-popup .autocomplete-option span { line-height: 1.35; }
 
 .search-button {
   display: inline-flex;

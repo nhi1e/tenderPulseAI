@@ -130,6 +130,9 @@ function emptyFilters(): SearchFilters {
 function normalize(value: string) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim().toLowerCase();
 }
+function searchableText(value: string) {
+  return normalize(value).replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+}
 function readStoredDirectory<T>(key: string): T[] {
   try {
     const value = JSON.parse(window.localStorage.getItem(key) || "[]");
@@ -203,17 +206,21 @@ function useAutocompleteDirectories() {
   return { hospitals, learnedProducts };
 }
 function rankedMatch(value: string, query: string) {
-  const normalizedValue = normalize(value);
-  const normalizedQuery = normalize(query);
-  if (!normalizedQuery) return 2;
-  if (normalizedValue === normalizedQuery) return 0;
-  if (normalizedValue.startsWith(normalizedQuery)) return 1;
-  if (normalizedValue.includes(normalizedQuery)) return 2;
-  return 3;
+  const candidate = searchableText(value);
+  const target = searchableText(query);
+  if (!target) return 3;
+  if (candidate === target) return 0;
+  if (candidate.startsWith(target)) return 1;
+
+  const candidateTokens = candidate.split(" ").filter(Boolean);
+  const queryTokens = target.split(" ").filter(Boolean);
+  if (queryTokens.every((token) => candidateTokens.includes(token))) return 2;
+  if (queryTokens.every((token) => candidateTokens.some((candidateToken) => candidateToken.startsWith(token)))) return 3;
+  return 4;
 }
 function hospitalSuggestionsFor(hospitals: HospitalDirectoryEntry[], query: string) {
   return hospitals
-    .filter((entry) => rankedMatch(`${entry.name} ${entry.id || ""}`, query) < 3)
+    .filter((entry) => !query.trim() || rankedMatch(`${entry.name} ${entry.id || ""}`, query) < 4)
     .sort((left, right) => rankedMatch(left.name, query) - rankedMatch(right.name, query) || left.name.localeCompare(right.name, "vi"))
     .slice(0, 10);
 }
@@ -228,7 +235,7 @@ function productSuggestionsFor(learnedProducts: LearnedProductEntry[], query: st
     if (!suggestions.has(key)) suggestions.set(key, entry);
   });
   return [...suggestions.values()]
-    .filter((entry) => rankedMatch(entry.value, query) < 3)
+    .filter((entry) => !query.trim() || rankedMatch(entry.value, query) < 4)
     .sort((left, right) => rankedMatch(left.value, query) - rankedMatch(right.value, query) || Number(Boolean(right.subOu)) - Number(Boolean(left.subOu)) || left.value.localeCompare(right.value, "vi"))
     .slice(0, 14);
 }
@@ -643,12 +650,15 @@ function HospitalAutocomplete({ value, onChange, language, compact = false }: {
 }) {
   const { hospitals } = useAutocompleteDirectories();
   const suggestions = useMemo(() => hospitalSuggestionsFor(hospitals, value), [hospitals, value]);
+  const suggestionValues = useMemo(() => suggestions.map((entry) => entry.name), [suggestions]);
   const selected = hospitals.find((entry) => normalize(entry.name) === normalize(value))?.name || null;
   return <Combobox<string>
-    items={suggestions.map((entry) => entry.name)}
+    items={suggestionValues}
+    filteredItems={suggestionValues}
     inputValue={value}
     value={selected}
     filter={null}
+    autoComplete="none"
     autoHighlight
     onInputValueChange={(next) => onChange(next)}
     onValueChange={(next) => onChange(next || "")}
@@ -678,6 +688,7 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
   const [query, setQuery] = useState("");
   const { learnedProducts } = useAutocompleteDirectories();
   const suggestions = useMemo(() => productSuggestionsFor(learnedProducts, query), [learnedProducts, query]);
+  const suggestionValues = useMemo(() => suggestions.map((entry) => entry.value), [suggestions]);
   const masterSuggestions = suggestions.filter((entry) => entry.subOu);
   const learnedSuggestions = suggestions.filter((entry) => !entry.subOu);
   const selectedSuggestion = suggestions.find((entry) => normalize(entry.value) === normalize(query));
@@ -688,10 +699,12 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
       <div className="direct-search-head"><strong>{copy(language, "Enter a product, brand, or model", "Nhập sản phẩm, brand hoặc model")}</strong><span>{copy(language, "Approved keyword rules are applied automatically when available.", "Quy tắc trong bộ từ khóa chuẩn sẽ được áp dụng tự động khi có.")}</span></div>
       <form onSubmit={(event) => { event.preventDefault(); submit(); }}><div className="search-input-row">
         <Combobox<string>
-          items={suggestions.map((entry) => entry.value)}
+          items={suggestionValues}
+          filteredItems={suggestionValues}
           inputValue={query}
           value={selectedSuggestion?.value || null}
           filter={null}
+          autoComplete="none"
           autoHighlight
           onInputValueChange={setQuery}
           onValueChange={(next) => { if (next) setQuery(next); }}
