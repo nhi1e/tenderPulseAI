@@ -211,6 +211,8 @@ button:disabled { cursor: wait; opacity: .66; }
 .hospital-autocomplete-popup .autocomplete-option { min-height: 54px; align-items: flex-start; }
 .hospital-autocomplete-popup .autocomplete-option strong { overflow: visible; text-overflow: clip; white-space: normal; line-height: 1.35; }
 .hospital-autocomplete-popup .autocomplete-option span { line-height: 1.35; }
+.company-autocomplete-popup { width: min(430px, calc(100vw - 24px)) !important; min-width: min(340px, calc(100vw - 24px)) !important; }
+.company-autocomplete-popup .autocomplete-option strong { overflow: visible; text-overflow: clip; white-space: normal; line-height: 1.35; }
 
 .search-button {
   display: inline-flex;
@@ -362,9 +364,8 @@ button:disabled { cursor: wait; opacity: .66; }
 .filter-field input { width: 100%; min-width: 0; height: 33px; padding: 0 8px; border: 1px solid #d8e0eb; border-radius: 7px; background: #fff; color: #35445e; font-size: 12px; outline: none; }
 .filter-field input:focus { border-color: #85a9ed; box-shadow: 0 0 0 2px rgba(24, 91, 216, .08); }
 .filter-field input::placeholder { color: #a1aabb; }
-.filter-field .hospital-autocomplete { width: 100%; height: 33px; border-color: #d8e0eb; border-radius: 7px; box-shadow: none; }
-.filter-field .hospital-autocomplete [data-slot="input-group-control"] { height: 31px; padding: 0 7px; border: 0; box-shadow: none; }
-.company-select { width: 100% !important; height: 33px !important; min-width: 0; border-color: #d8e0eb !important; border-radius: 7px !important; box-shadow: none !important; font-size: 12px !important; }
+.filter-field .hospital-autocomplete, .filter-field .company-autocomplete { width: 100%; height: 33px; border-color: #d8e0eb; border-radius: 7px; box-shadow: none; }
+.filter-field .hospital-autocomplete [data-slot="input-group-control"], .filter-field .company-autocomplete [data-slot="input-group-control"] { height: 31px; padding: 0 7px; border: 0; box-shadow: none; }
 .filter-actions { display: grid; align-content: center; gap: 5px; min-width: 76px; padding: 8px; border-left: 1px solid var(--line); }
 .apply-filter, .clear-filter { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 31px; padding: 0 10px; border-radius: 7px; font-size: 11px; font-weight: 800; }
 .apply-filter { border: 0; background: var(--blue); color: #fff; }
@@ -505,8 +506,8 @@ button:disabled { cursor: wait; opacity: .66; }
 .overview-filter label > span, .overview-filter-field > span { margin-bottom: 5px; color: #637087; font-size: 11px; font-weight: 800; }
 .overview-filter input, .overview-filter select { width: 100%; min-width: 0; height: 30px; padding: 0; border: 0; background: #fff; color: #1f3150; font-size: 13px; font-weight: 650; outline: 0; }
 .overview-filter input::placeholder { color: #9da6b5; }
-.overview-filter .hospital-autocomplete { height: 31px; border: 0; box-shadow: none; }
-.overview-filter .hospital-autocomplete [data-slot="input-group-control"] { height: 30px; padding: 0; }
+.overview-filter .hospital-autocomplete, .overview-filter .company-autocomplete { height: 31px; border: 0; box-shadow: none; }
+.overview-filter .hospital-autocomplete [data-slot="input-group-control"], .overview-filter .company-autocomplete [data-slot="input-group-control"] { height: 30px; padding: 0; }
 .overview-apply { min-width: 108px; border: 0; background: #123f84; color: #fff; font-size: 12px; font-weight: 800; }
 .overview-apply:hover:not(:disabled) { background: #0c326d; }
 .overview-loading { display: grid; gap: 8px; margin-bottom: 12px; padding: 13px 15px; border: 1px solid #b9d0ef; border-radius: 10px; background: #f4f8ff; color: #173a70; }
@@ -566,12 +567,18 @@ button:disabled { cursor: wait; opacity: .66; }
 .hospital-detail-head strong { color: #173a70; font-size: 13px; }
 .hospital-detail-head span { color: #8792a4; font-size: 11px; }
 .hospital-detail-head button, .show-more-hospitals { border: 0; background: transparent; color: #2863bb; font-size: 11px; font-weight: 750; }
-.hospital-mini-table { overflow: hidden; border: 1px solid #e3e8ef; border-radius: 8px; }
-.hospital-mini-head, .hospital-mini-row { display: grid; grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(80px, .55fr)) minmax(130px, .8fr); align-items: center; gap: 12px; padding: 9px 11px; }
+.hospital-mini-table { overflow-x: auto; border: 1px solid #e3e8ef; border-radius: 8px; }
+.hospital-mini-head, .hospital-mini-row { display: grid; grid-template-columns: minmax(240px, 1.5fr) minmax(72px, .4fr) minmax(72px, .4fr) minmax(310px, 1.8fr) minmax(86px, .5fr) minmax(125px, .75fr); min-width: 980px; align-items: center; gap: 12px; padding: 9px 11px; }
 .hospital-mini-head { background: #f6f8fb; color: #737f92; font-size: 10px; font-weight: 850; text-transform: uppercase; }
 .hospital-mini-row { border-top: 1px solid #edf0f4; color: #4c5c73; font-size: 11px; }
 .hospital-mini-row strong { color: #263a5a; font-size: 12px; }
 .hospital-mini-row span:last-child { color: #173a70; font-weight: 750; }
+.hospital-competitor-stack { display: grid; gap: 4px; }
+.hospital-competitor-stack > div { display: grid; grid-template-columns: minmax(135px, 1fr) auto auto; align-items: center; gap: 7px; }
+.hospital-competitor-stack strong { overflow: hidden; color: #394963; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.hospital-competitor-stack span { color: #173a70; font-size: 10px; font-weight: 750; white-space: nowrap; }
+.hospital-competitor-stack small { color: #8a95a7; font-size: 10px; white-space: nowrap; }
+.hospital-no-competitor { color: #8a95a7; font-size: 10px; }
 .hospital-name-cell { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 10px; }
 .hospital-name-cell strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hospital-export-button { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border: 1px solid #cbd8ea; border-radius: 7px; background: #fff; color: #1b5cad; }

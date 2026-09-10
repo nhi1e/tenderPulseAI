@@ -37,16 +37,22 @@ function clean(value: string | null, max = 200) {
 }
 
 function companySearch(company: string | undefined) {
-  const searches: Record<string, string> = {
-    medtronic: "Covidien Medtronic LigaSure",
-    ethicon: "Johnson Ethicon Harmonic",
-    applied: "Applied Medical",
-    bbraun: "B Braun Aesculap",
-    olympus: "Olympus",
-    miconvey: "Miconvey",
-    innolcon: "Innolcon",
-  };
-  return company ? searches[company] : undefined;
+  if (!company) return undefined;
+  const normalized = company
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+  if (/medtronic|covidien|coviden|ligasure/.test(normalized)) return "Covidien Medtronic LigaSure";
+  if (/johnsonjohnson|ethicon|harmonic/.test(normalized)) return "Johnson Ethicon Harmonic";
+  if (/bbraun|aesculap/.test(normalized)) return "B Braun Aesculap";
+  if (/bostonscientific/.test(normalized)) return "Boston Scientific";
+  if (/appliedmedical/.test(normalized)) return "Applied Medical";
+  if (/olympus/.test(normalized)) return "Olympus";
+  if (/miconvey/.test(normalized)) return "Miconvey";
+  if (/innolcon/.test(normalized)) return "Innolcon";
+  return company;
 }
 
 function portalFilters(filters: PortalFilters) {
@@ -126,7 +132,7 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
     hospital: clean(url.searchParams.get("hospital")),
     brand: clean(url.searchParams.get("brand")),
     supplier: clean(url.searchParams.get("supplier")),
-    company: clean(url.searchParams.get("company"), 30),
+    company: clean(url.searchParams.get("company"), 180),
   };
   if (!keyword) return Response.json({ error: "Vui lòng nhập từ khóa sản phẩm." }, { status: 400 });
   if ((filters.dateFrom && !/^\d{4}-\d{2}-\d{2}$/.test(filters.dateFrom)) ||

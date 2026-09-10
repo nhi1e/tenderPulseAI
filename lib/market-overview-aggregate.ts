@@ -9,6 +9,7 @@ export type OverviewNamedValue = {
 export type OverviewHospital = OverviewNamedValue & {
   products: number;
   tenders: number;
+  competitors: OverviewNamedValue[];
 };
 
 export type OverviewTender = {
@@ -30,6 +31,7 @@ export type OverviewSubOu = {
   hospitalCount: number;
   productCount: number;
   competitors: OverviewNamedValue[];
+  companies: OverviewNamedValue[];
   hospitals: OverviewHospital[];
   suppliers: OverviewNamedValue[];
   tenders: OverviewTender[];
@@ -84,7 +86,11 @@ export function aggregateOverviewFacts(
 ): OverviewSubOu {
   const companyTotals = new Map<string, OverviewNamedValue>();
   const supplierTotals = new Map<string, OverviewNamedValue>();
-  const hospitalTotals = new Map<string, OverviewHospital & { productKeys: Set<string>; tenderKeys: Set<string> }>();
+  const hospitalTotals = new Map<string, OverviewHospital & {
+    productKeys: Set<string>;
+    tenderKeys: Set<string>;
+    companyTotals: Map<string, OverviewNamedValue>;
+  }>();
   const tenderTotals = new Map<string, OverviewTender & { productKeys: Set<string> }>();
   const allProducts = new Set<string>();
   const allTenders = new Set<string>();
@@ -112,13 +118,16 @@ export function aggregateOverviewFacts(
       units: 0,
       products: 0,
       tenders: 0,
+      competitors: [],
       productKeys: new Set<string>(),
       tenderKeys: new Set<string>(),
+      companyTotals: new Map<string, OverviewNamedValue>(),
     };
     hospitalEntry.value += fact.value;
     hospitalEntry.units += fact.units;
     hospitalEntry.productKeys.add(fact.product);
     hospitalEntry.tenderKeys.add(fact.tender);
+    addNamedValue(hospitalEntry.companyTotals, fact.company, fact.value, fact.units, true);
     hospitalTotals.set(fact.hospital, hospitalEntry);
 
     const tenderEntry = tenderTotals.get(fact.tender) || {
@@ -134,14 +143,24 @@ export function aggregateOverviewFacts(
   });
 
   const hospitals = [...hospitalTotals.values()]
-    .map(({ productKeys, tenderKeys, ...entry }) => ({ ...entry, products: productKeys.size, tenders: tenderKeys.size }))
+    .map(({ productKeys, tenderKeys, companyTotals: hospitalCompanyTotals, ...entry }) => ({
+      ...entry,
+      products: productKeys.size,
+      tenders: tenderKeys.size,
+      competitors: [...hospitalCompanyTotals.values()]
+        .filter((company) => company.name !== "Medtronic" && company.name !== "Chưa xác định" && company.name !== "Unknown / review needed")
+        .sort((left, right) => right.value - left.value)
+        .slice(0, 3),
+    }))
     .sort((left, right) => right.value - left.value);
   const tenders = [...tenderTotals.values()]
     .map(({ productKeys, ...entry }) => ({ ...entry, products: productKeys.size }))
     .sort((left, right) => right.value - left.value);
-  const competitors = [...companyTotals.values()]
-    .filter((entry) => entry.name !== "Medtronic" && entry.name !== "Chưa xác định")
-    .sort((left, right) => right.value - left.value)
+  const companies = [...companyTotals.values()]
+    .filter((entry) => entry.name !== "Chưa xác định" && entry.name !== "Unknown / review needed")
+    .sort((left, right) => right.value - left.value);
+  const competitors = companies
+    .filter((entry) => entry.name !== "Medtronic")
     .slice(0, 3);
 
   return {
@@ -156,6 +175,7 @@ export function aggregateOverviewFacts(
     hospitalCount: hospitals.filter((entry) => entry.name !== "Chưa xác định").length,
     productCount: allProducts.size,
     competitors,
+    companies,
     hospitals,
     suppliers: [...supplierTotals.values()].sort((left, right) => right.value - left.value),
     tenders,
