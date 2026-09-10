@@ -560,6 +560,11 @@ button:disabled { cursor: wait; opacity: .66; }
 .hospital-expand strong { font-size: 13px; }
 .hospital-expand small { color: #8994a5; font-size: 10px; }
 .hospital-expand > b { color: #2863bb; font-size: 11px; }
+.subou-hospital-actions { display: flex; min-width: 0; align-items: stretch; gap: 6px; }
+.subou-hospital-actions .hospital-expand { min-width: 0; flex: 1; }
+.subou-export-button { display: grid; width: 34px; min-width: 34px; place-items: center; border: 1px solid #cbd8ea; border-radius: 8px; background: #fff; color: #1b5cad; }
+.subou-export-button:hover:not(:disabled) { border-color: #8eaddb; background: #edf4ff; }
+.subou-export-button svg { width: 14px; height: 14px; }
 .hospital-detail-row > td { padding: 0; border-bottom: 1px solid #dfe6f0; background: #f6f9ff; }
 .hospital-detail { margin: 0 13px 13px 53px; padding: 14px; border: 1px solid #cfdaeb; border-radius: 10px; background: #fff; }
 .hospital-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 11px; }

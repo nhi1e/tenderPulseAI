@@ -1095,6 +1095,7 @@ function MarketOverview() {
   const [loadProgress, setLoadProgress] = useState<OverviewLoadProgress>({ completed: 0, total: 0, current: [] });
   const [lastLoadSummary, setLastLoadSummary] = useState<{ succeeded: number; total: number }>();
   const [exporting, setExporting] = useState(false);
+  const [exportingSubOu, setExportingSubOu] = useState<string>();
   const [exportingHospital, setExportingHospital] = useState<string>();
   const [error, setError] = useState<string>();
   const [updatedAt, setUpdatedAt] = useState<string>();
@@ -1324,6 +1325,62 @@ function MarketOverview() {
     }
   }
 
+  async function exportSubOu(sourceSlice: OverviewSubOu) {
+    setExportingSubOu(sourceSlice.name);
+    setError(undefined);
+    try {
+      let exportSlice = sourceSlice;
+      if (!exportSlice.facts) {
+        const result = await fetchSubOuSlice(sourceSlice.name, filters, 0, 1);
+        exportSlice = result.slice;
+      }
+      const facts = exportSlice.facts || [];
+      if (!facts.length) {
+        throw new Error(copy(language, "No detailed rows are available for this Sub-OU under the active filters.", "Không có dữ liệu chi tiết của Sub-OU này theo bộ lọc hiện tại."));
+      }
+      const detailRows = facts.map(overviewDetailExcelRow);
+      const hospitalRows = exportSlice.hospitals.map((hospital) => ({
+        "Sub-OU": safeExcelText(exportSlice.name),
+        "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
+        "Số sản phẩm": hospital.products,
+        "Số KQLCNT": hospital.tenders,
+        "Số lượng": hospital.units,
+        "Market Size (VND)": hospital.value,
+        "Top 1 đối thủ": safeExcelText(hospital.competitors?.[0]?.name),
+        "Top 1 MS Value": hospital.value ? (hospital.competitors?.[0]?.value || 0) / hospital.value : 0,
+        "Top 1 MS Unit": hospital.units ? (hospital.competitors?.[0]?.units || 0) / hospital.units : 0,
+        "Top 2 đối thủ": safeExcelText(hospital.competitors?.[1]?.name),
+        "Top 2 MS Value": hospital.value ? (hospital.competitors?.[1]?.value || 0) / hospital.value : 0,
+        "Top 2 MS Unit": hospital.units ? (hospital.competitors?.[1]?.units || 0) / hospital.units : 0,
+        "Top 3 đối thủ": safeExcelText(hospital.competitors?.[2]?.name),
+        "Top 3 MS Value": hospital.value ? (hospital.competitors?.[2]?.value || 0) / hospital.value : 0,
+        "Top 3 MS Unit": hospital.units ? (hospital.competitors?.[2]?.units || 0) / hospital.units : 0,
+      }));
+      const infoRows = [
+        ["Thông tin xuất dữ liệu", ""],
+        ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Sub-OU", safeExcelText(exportSlice.name)],
+        ["Từ ngày", filters.dateFrom || "Tất cả"],
+        ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
+        ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
+        ["Công ty", safeExcelText(filters.company !== "all" ? filters.company : "Tất cả")],
+        ["Số bệnh viện", exportSlice.hospitalCount],
+        ["Số dòng chi tiết", facts.length],
+        ["Nguồn", "Cổng Mua Sắm Công"],
+      ];
+      await downloadWorkbook([
+        { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 46, 16, 16, 16, 22, 34, 18, 18, 34, 18, 18, 34, 18, 18] },
+        { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(exportSlice.name)}.xlsx`);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not create the Sub-OU Excel file.", "Không thể tạo file Excel cho Sub-OU."));
+    } finally {
+      setExportingSubOu(undefined);
+    }
+  }
+
   async function exportHospital(subOu: string, hospital: string) {
     const exportKey = `${subOu}::${hospital}`;
     setExportingHospital(exportKey);
@@ -1378,7 +1435,7 @@ function MarketOverview() {
     : undefined;
 
   return <main className="overview-page"><section className="overview-shell">
-    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, "Award data classified using 196 approved keywords and exclusion rules.", "Dữ liệu trúng thầu được phân loại theo bộ 196 từ khóa và điều kiện loại trừ.")}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Updating live data", "Đang cập nhật dữ liệu trực tiếp") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void loadOverview(filters, catalog, true)} disabled={loading || filtersDirty}><RefreshCw />{copy(language, "Force refresh", "Làm mới dữ liệu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
+    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, "Award data classified using 196 approved keywords and exclusion rules.", "Dữ liệu trúng thầu được phân loại theo bộ 196 từ khóa và điều kiện loại trừ.")}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Updating live data", "Đang cập nhật dữ liệu trực tiếp") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void loadOverview(filters, catalog, true)} disabled={loading || filtersDirty || Boolean(exportingSubOu)}><RefreshCw />{copy(language, "Force refresh", "Làm mới dữ liệu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || Boolean(exportingSubOu) || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
     <OverviewFilterBar key={`${filters.dateFrom}-${filters.dateTo}-${filters.hospital}-${filters.subOu}-${filters.productGroup}-${filters.company}`} filters={filters} catalog={catalog} loading={loading} onApply={loadOverview} onDirtyChange={setFiltersDirty} />
     {filtersDirty && <div className="overview-notice pending-filter-notice" role="status">{copy(language, "Filters have changed. Select Apply before exporting so the dashboard and Excel use the new values.", "Bộ lọc đã thay đổi. Hãy chọn Áp dụng trước khi xuất để dashboard và Excel cùng dùng giá trị mới.")}</div>}
     {loading && <div className="overview-loading" role="status" aria-live="polite">
@@ -1406,9 +1463,9 @@ function MarketOverview() {
             <td><strong>{percent(slice.medtronicValueShare, language)} <em>{copy(language, "value", "giá trị")}</em></strong><small>{percent(slice.medtronicUnitShare, language)} {copy(language, "units", "số lượng")}</small></td>
             <td><div className="competitor-stack">{slice.competitors.length ? slice.competitors.map((item, rank) => <div key={item.name}><span>{rank + 1}. {item.name}</span><b>MS Value {percent(slice.marketSize ? (item.value / slice.marketSize) * 100 : 0, language)}</b><small>MS Unit {percent(slice.totalUnits ? (item.units / slice.totalUnits) * 100 : 0, language)}</small></div>) : <span>{copy(language, "Insufficient data", "Chưa đủ dữ liệu")}</span>}</div></td>
             <td><strong>{slice.tenderCount.toLocaleString(localeFor(language))}</strong></td>
-            <td><button className="hospital-expand" type="button" onClick={() => toggleRow(slice.name)} aria-expanded={openRows.has(slice.name)}><span><strong>{slice.hospitalCount.toLocaleString(localeFor(language))}</strong><small>{copy(language, "hospitals", "bệnh viện")}</small></span><b>{openRows.has(slice.name) ? copy(language, "Collapse", "Thu gọn") : copy(language, "View", "Xem")}</b></button></td>
+            <td><div className="subou-hospital-actions"><button className="hospital-expand" type="button" onClick={() => toggleRow(slice.name)} aria-expanded={openRows.has(slice.name)}><span><strong>{slice.hospitalCount.toLocaleString(localeFor(language))}</strong><small>{copy(language, "hospitals", "bệnh viện")}</small></span><b>{openRows.has(slice.name) ? copy(language, "Collapse", "Thu gọn") : copy(language, "View", "Xem")}</b></button><button className="subou-export-button" type="button" title={copy(language, `Export all ${slice.name} data`, `Xuất toàn bộ dữ liệu ${slice.name}`)} aria-label={copy(language, `Export all ${slice.name} data to Excel`, `Xuất toàn bộ dữ liệu ${slice.name} ra Excel`)} disabled={loading || filtersDirty || exporting || Boolean(exportingSubOu) || Boolean(exportingHospital)} onClick={() => void exportSubOu(slice)}>{exportingSubOu === slice.name ? <LoaderCircle className="spin" /> : <Download />}</button></div></td>
           </tr>
-          {openRows.has(slice.name) && <tr className="hospital-detail-row"><td colSpan={6}><div className="hospital-detail"><div className="hospital-detail-head"><div><strong>{copy(language, "Hospitals in", "Bệnh viện thuộc")} {slice.name}</strong><span>{copy(language, "Product count reflects distinct models/codes after classification. Competitor shares are calculated within each hospital. Export uses this hospital and every active dashboard filter.", "Số sản phẩm là số model/mã hiệu riêng biệt sau phân loại. Thị phần đối thủ được tính riêng trong từng bệnh viện. File xuất áp dụng bệnh viện này và toàn bộ bộ lọc hiện tại.")}</span></div><button type="button" onClick={() => toggleRow(slice.name)}>{copy(language, "Close", "Đóng")}</button></div><div className="hospital-mini-table"><div className="hospital-mini-head"><span>{copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")}</span><span>{copy(language, "Products", "Sản phẩm")}</span><span>{copy(language, "Results", "KQLCNT")}</span><span>{copy(language, "Top competitors", "Đối thủ hàng đầu")}</span><span>{copy(language, "Units", "Số lượng")}</span><span>{copy(language, "Value", "Giá trị")}</span></div>{slice.hospitals.slice(0, showAllHospitals.has(slice.name) ? undefined : 8).map((hospital) => { const exportKey = `${slice.name}::${hospital.name}`; return <div className="hospital-mini-row" key={hospital.name}><div className="hospital-name-cell"><strong>{hospital.name}</strong><button className="hospital-export-button" type="button" title={filtersDirty ? copy(language, "Apply the changed filters before exporting", "Áp dụng bộ lọc mới trước khi xuất") : copy(language, "Export this hospital", "Xuất Excel bệnh viện này")} aria-label={copy(language, `Export ${hospital.name} to Excel`, `Xuất Excel cho ${hospital.name}`)} disabled={loading || filtersDirty || Boolean(exportingHospital)} onClick={() => void exportHospital(slice.name, hospital.name)}>{exportingHospital === exportKey ? <LoaderCircle className="spin" /> : <Download />}</button></div><span>{hospital.products.toLocaleString(localeFor(language))}</span><span>{hospital.tenders.toLocaleString(localeFor(language))}</span><HospitalCompetitorSummary hospital={hospital} language={language} /><span>{Math.round(hospital.units).toLocaleString(localeFor(language))}</span><span>{formatVnd(hospital.value, language)}</span></div>; })}</div>{slice.hospitals.length > 8 && <button className="show-more-hospitals" type="button" onClick={() => toggleAllHospitals(slice.name)}>{showAllHospitals.has(slice.name) ? copy(language, "Show first 8 hospitals", "Hiện 8 bệnh viện đầu") : copy(language, `View all ${slice.hospitals.length} hospitals`, `Xem toàn bộ ${slice.hospitals.length} bệnh viện`)}</button>}</div></td></tr>}
+          {openRows.has(slice.name) && <tr className="hospital-detail-row"><td colSpan={6}><div className="hospital-detail"><div className="hospital-detail-head"><div><strong>{copy(language, "Hospitals in", "Bệnh viện thuộc")} {slice.name}</strong><span>{copy(language, "Product count reflects distinct models/codes after classification. Competitor shares are calculated within each hospital. Export uses this hospital and every active dashboard filter.", "Số sản phẩm là số model/mã hiệu riêng biệt sau phân loại. Thị phần đối thủ được tính riêng trong từng bệnh viện. File xuất áp dụng bệnh viện này và toàn bộ bộ lọc hiện tại.")}</span></div><button type="button" onClick={() => toggleRow(slice.name)}>{copy(language, "Close", "Đóng")}</button></div><div className="hospital-mini-table"><div className="hospital-mini-head"><span>{copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")}</span><span>{copy(language, "Products", "Sản phẩm")}</span><span>{copy(language, "Results", "KQLCNT")}</span><span>{copy(language, "Top competitors", "Đối thủ hàng đầu")}</span><span>{copy(language, "Units", "Số lượng")}</span><span>{copy(language, "Value", "Giá trị")}</span></div>{slice.hospitals.slice(0, showAllHospitals.has(slice.name) ? undefined : 8).map((hospital) => { const exportKey = `${slice.name}::${hospital.name}`; return <div className="hospital-mini-row" key={hospital.name}><div className="hospital-name-cell"><strong>{hospital.name}</strong><button className="hospital-export-button" type="button" title={filtersDirty ? copy(language, "Apply the changed filters before exporting", "Áp dụng bộ lọc mới trước khi xuất") : copy(language, "Export this hospital", "Xuất Excel bệnh viện này")} aria-label={copy(language, `Export ${hospital.name} to Excel`, `Xuất Excel cho ${hospital.name}`)} disabled={loading || filtersDirty || Boolean(exportingHospital) || Boolean(exportingSubOu)} onClick={() => void exportHospital(slice.name, hospital.name)}>{exportingHospital === exportKey ? <LoaderCircle className="spin" /> : <Download />}</button></div><span>{hospital.products.toLocaleString(localeFor(language))}</span><span>{hospital.tenders.toLocaleString(localeFor(language))}</span><HospitalCompetitorSummary hospital={hospital} language={language} /><span>{Math.round(hospital.units).toLocaleString(localeFor(language))}</span><span>{formatVnd(hospital.value, language)}</span></div>; })}</div>{slice.hospitals.length > 8 && <button className="show-more-hospitals" type="button" onClick={() => toggleAllHospitals(slice.name)}>{showAllHospitals.has(slice.name) ? copy(language, "Show first 8 hospitals", "Hiện 8 bệnh viện đầu") : copy(language, `View all ${slice.hospitals.length} hospitals`, `Xem toàn bộ ${slice.hospitals.length} bệnh viện`)}</button>}</div></td></tr>}
         </Fragment>)}
         {loading && !slices.length && Array.from({ length: 3 }, (_, index) => <tr className="subou-skeleton-row" key={`skeleton-${index}`} aria-hidden="true">
           <td><span className="skeleton-block skeleton-name" /></td><td><span className="skeleton-block skeleton-value" /></td><td><span className="skeleton-block skeleton-value" /></td><td><span className="skeleton-block skeleton-wide" /></td><td><span className="skeleton-block skeleton-short" /></td><td><span className="skeleton-block skeleton-short" /></td>
