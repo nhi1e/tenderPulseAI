@@ -565,22 +565,77 @@ function overviewFactFor(record: WinningBidRecord, rules: KeywordMasterRule[]): 
   const hospital = record.tenCdtBmt?.trim() || "Chưa xác định";
   return {
     key: recordKey(record),
+    subOu: rule.subOu,
+    productGroup: rule.productGroup,
+    classificationKeyword: rule.keyword,
     company: companyOf(record),
     supplier: formatList(record.winningName),
+    supplierCode: formatList(record.winningCode),
     hospital,
+    buyerId: record.maCdt?.trim() || "",
     tender: record.maTbmt?.trim() || `Không có mã · ${hospital}`,
     product: productKey(record),
     productName: record.tenThietBi?.trim() || "",
-    model: (record.kyMaHieu || record.chungLoai || "").trim(),
+    productCode: record.kyMaHieu?.trim() || "",
+    model: record.chungLoai?.trim() || "",
     brand: record.nhanHieu?.trim() || "",
     manufacturer: record.hangSanXuat?.trim() || "",
+    origin: record.xuatXu?.trim() || "",
+    hsCode: record.maHs?.trim() || "",
+    circulationNumber: record.soLuuHanh?.trim() || "",
+    productionYear: String(record.namSanXuat || "").trim(),
+    configuration: record.cauHinh?.trim() || "",
     unitOfMeasure: record.donViTinh?.trim() || "",
     unitPrice: toNumber(record.donGia ?? record.donGiaDuThau),
+    bidForm: record.bidForm?.trim() || "",
     publishedAt: record.ngayDangTaiKqlcnt || "",
+    decisionNumber: record.soQuyetDinh?.trim() || "",
+    decisionDate: record.ngayBanHanhQuyetDinh || "",
+    participantCount: toNumber(record.soNhaThauThamDu),
+    location: formatLocation(record.diaDiem),
     value: valueOf(record),
     units: toNumber(record.khoiLuongDouble ?? record.khoiLuong),
   };
 }
+
+function overviewDetailExcelRow(row: OverviewFact) {
+  return {
+    "Sub-OU": safeExcelText(row.subOu),
+    "Nhóm sản phẩm": safeExcelText(row.productGroup),
+    "Mã TBMT": safeExcelText(row.tender),
+    "Mã định danh CĐT": safeExcelText(row.buyerId),
+    "Tên CĐT": safeExcelText(row.hospital),
+    "Từ khóa phân loại": safeExcelText(row.classificationKeyword),
+    "Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
+    "Đơn vị tính": safeExcelText(row.unitOfMeasure),
+    "Khối lượng": row.units,
+    "Xuất xứ": safeExcelText(row.origin),
+    "Mã HS": safeExcelText(row.hsCode),
+    "Ký mã hiệu": safeExcelText(row.productCode),
+    "Nhãn hiệu": safeExcelText(row.brand),
+    "Hãng sản xuất": safeExcelText(row.manufacturer),
+    "Chủng loại (model)": safeExcelText(row.model),
+    "Số lưu hành / giấy phép nhập khẩu": safeExcelText(row.circulationNumber),
+    "Năm sản xuất": safeExcelText(row.productionYear),
+    "Cấu hình, tính năng kỹ thuật": safeExcelText(row.configuration),
+    "Đơn giá trúng thầu": row.unitPrice,
+    "Thành tiền ước tính": row.value,
+    "Công ty quy đổi": safeExcelText(row.company),
+    "Mã định danh NT trúng thầu": safeExcelText(row.supplierCode),
+    "Tên NT trúng thầu": safeExcelText(row.supplier),
+    "Hình thức LCNT": safeExcelText(bidFormNames[row.bidForm] || row.bidForm),
+    "Ngày đăng tải KQLCNT": safeExcelText(row.publishedAt),
+    "Số quyết định": safeExcelText(row.decisionNumber),
+    "Ngày ban hành quyết định": safeExcelText(row.decisionDate),
+    "Số nhà thầu tham dự": row.participantCount || "",
+    "Địa điểm": safeExcelText(row.location),
+  };
+}
+
+const overviewDetailColumnWidths = [
+  18, 28, 20, 22, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24,
+  30, 16, 60, 20, 22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
+];
 function groupFor(keyword: string, language: Language = "en") {
   const value = normalize(keyword);
   if (/luoi|hernia/.test(value)) return "Thoát vị";
@@ -868,6 +923,9 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
         const unitPrice = toNumber(record.donGia ?? record.donGiaDuThau);
         return {
           STT: index + 1,
+          "Mã TBMT": safeExcelText(record.maTbmt),
+          "Mã định danh CĐT": safeExcelText(record.maCdt),
+          "Tên CĐT": safeExcelText(record.tenCdtBmt),
           "Tên thiết bị, vật tư y tế": safeExcelText(record.tenThietBi),
           "Đơn vị tính": safeExcelText(record.donViTinh),
           "Khối lượng": quantity,
@@ -876,6 +934,7 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
           "Ký mã hiệu": safeExcelText(record.kyMaHieu),
           "Nhãn hiệu": safeExcelText(record.nhanHieu),
           "Hãng sản xuất": safeExcelText(record.hangSanXuat),
+          "Công ty quy đổi": safeExcelText(companyOf(record)),
           "Chủng loại (model)": safeExcelText(record.chungLoai),
           "Số lưu hành / giấy phép nhập khẩu": safeExcelText(record.soLuuHanh),
           "Năm sản xuất": safeExcelText(record.namSanXuat),
@@ -884,9 +943,6 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
           "Thành tiền ước tính": quantity * unitPrice,
           "Mã định danh NT trúng thầu": safeExcelText(formatList(record.winningCode)),
           "Tên NT trúng thầu": safeExcelText(formatList(record.winningName)),
-          "Mã TBMT": safeExcelText(record.maTbmt),
-          "Mã định danh CĐT": safeExcelText(record.maCdt),
-          "Tên CĐT": safeExcelText(record.tenCdtBmt),
           "Hình thức LCNT": safeExcelText(record.bidForm ? bidFormNames[record.bidForm] || record.bidForm : ""),
           "Ngày đăng tải KQLCNT": safeExcelText(record.ngayDangTaiKqlcnt),
           "Số quyết định": safeExcelText(record.soQuyetDinh),
@@ -909,7 +965,7 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
         ["Nguồn dữ liệu", "Cổng Mua Sắm Công"],
       ];
       await downloadWorkbook([
-        { name: "Kết quả", rows: resultRows, columns: [7, 44, 14, 14, 24, 13, 22, 22, 32, 22, 28, 15, 60, 20, 20, 26, 42, 18, 22, 38, 34, 20, 22, 22, 18, 38] },
+        { name: "Kết quả", rows: resultRows, columns: [7, 20, 22, 38, 44, 14, 14, 24, 13, 22, 22, 32, 28, 22, 28, 15, 60, 20, 20, 26, 42, 34, 20, 22, 22, 18, 38] },
         { name: "Thông tin tìm kiếm", rows: infoRows, columns: [28, 65], matrix: true },
       ], `${formatDownloadDate(new Date())}-${filenameSlug(product.keyword)}.xlsx`);
     } catch (caught) {
@@ -1216,8 +1272,20 @@ function MarketOverview() {
 
   async function exportExcel() {
     setExporting(true);
+    setError(undefined);
     try {
       if (!slices.length) throw new Error(copy(language, "There is no overview data to export.", "Chưa có dữ liệu tổng quan để xuất."));
+      const detailedFacts: OverviewFact[] = [];
+      for (let index = 0; index < slices.length; index += 1) {
+        const slice = slices[index];
+        let facts = slice.facts;
+        if (!facts) {
+          const result = await fetchSubOuSlice(slice.name, filters, index, slices.length);
+          facts = result.slice.facts;
+        }
+        detailedFacts.push(...(facts || []));
+      }
+      const detailRows = detailedFacts.map(overviewDetailExcelRow);
       const subOuRows = slices.map((slice) => ({
         "Sub-OU": safeExcelText(slice.name), "Market Size (VND)": slice.marketSize,
         "Market Share Medtronic (VND)": slice.medtronicValueShare / 100,
@@ -1243,6 +1311,7 @@ function MarketOverview() {
         ["Công ty", safeExcelText(filters.company !== "all" ? filters.company : "Tất cả")], ["Nguồn", "Cổng Mua Sắm Công"],
       ];
       await downloadWorkbook([
+        { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
         { name: "Tổng quan Sub-OU", rows: subOuRows, columns: [22, ...Array(15).fill(22)] },
         { name: "Bệnh viện", rows: hospitalRows, columns: [22, 48, 16, 16, 16, 22] },
         { name: "Nhà phân phối", rows: supplierRows, columns: [22, 48, 16, 22] },
@@ -1271,13 +1340,7 @@ function MarketOverview() {
       if (!rows.length) {
         throw new Error(copy(language, "No detailed rows are available for this hospital under the active filters.", "Không có dữ liệu chi tiết của bệnh viện này theo bộ lọc hiện tại."));
       }
-      const detailRows = rows.map((row) => ({
-        "Sub-OU": safeExcelText(row.subOu), "Bệnh viện / chủ đầu tư": safeExcelText(row.hospital), "Mã TBMT": safeExcelText(row.tender),
-        "Tên sản phẩm": safeExcelText(row.productName), "Model / mã hiệu": safeExcelText(row.model), "Nhãn hiệu": safeExcelText(row.brand),
-        "Hãng sản xuất": safeExcelText(row.manufacturer), "Công ty quy đổi": safeExcelText(row.company), "Nhà thầu trúng": safeExcelText(row.supplier),
-        "Đơn vị tính": safeExcelText(row.unitOfMeasure), "Số lượng": row.units, "Đơn giá trúng thầu": row.unitPrice,
-        "Giá trị trúng thầu": row.value, "Ngày đăng KQLCNT": safeExcelText(row.publishedAt),
-      }));
+      const detailRows = rows.map(overviewDetailExcelRow);
       const infoRows = [
         ["Bệnh viện / chủ đầu tư", safeExcelText(hospital)], ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
         ["Từ ngày", filters.dateFrom || "Tất cả"], ["Đến ngày", filters.dateTo || "Tất cả"],
@@ -1286,7 +1349,7 @@ function MarketOverview() {
         ["Công ty", filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả"], ["Nguồn", "Cổng Mua Sắm Công"],
       ];
       await downloadWorkbook([
-        { name: "Chi tiết bệnh viện", rows: detailRows, columns: [18, 46, 20, 54, 24, 22, 36, 30, 42, 16, 16, 22, 22, 20] },
+        { name: "Chi tiết bệnh viện", rows: detailRows, columns: overviewDetailColumnWidths },
         { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
       ], `${formatDownloadDate(new Date())}-${filenameSlug(hospital)}.xlsx`);
     } catch (caught) {

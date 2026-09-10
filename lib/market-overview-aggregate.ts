@@ -44,18 +44,34 @@ export type OverviewSubOu = {
 
 export type OverviewFact = {
   key: string;
+  subOu: string;
+  productGroup: string;
+  classificationKeyword: string;
   company: string;
   supplier: string;
+  supplierCode: string;
   hospital: string;
+  buyerId: string;
   tender: string;
   product: string;
   productName: string;
+  productCode: string;
   model: string;
   brand: string;
   manufacturer: string;
+  origin: string;
+  hsCode: string;
+  circulationNumber: string;
+  productionYear: string;
+  configuration: string;
   unitOfMeasure: string;
   unitPrice: number;
+  bidForm: string;
   publishedAt: string;
+  decisionNumber: string;
+  decisionDate: string;
+  participantCount: number;
+  location: string;
   value: number;
   units: number;
 };
