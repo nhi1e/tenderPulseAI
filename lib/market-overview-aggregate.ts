@@ -6,10 +6,17 @@ export type OverviewNamedValue = {
   units: number;
 };
 
+export type OverviewCompetitor = OverviewNamedValue & {
+  hospitalCount: number;
+  productCount: number;
+  tenderCount: number;
+  topHospitals: OverviewNamedValue[];
+};
+
 export type OverviewHospital = OverviewNamedValue & {
   products: number;
   tenders: number;
-  competitors: OverviewNamedValue[];
+  competitors: OverviewCompetitor[];
 };
 
 export type OverviewTender = {
@@ -101,6 +108,15 @@ export function aggregateOverviewFacts(
   },
 ): OverviewSubOu {
   const companyTotals = new Map<string, OverviewNamedValue>();
+  const companyDetails = new Map<string, {
+    name: string;
+    value: number;
+    units: number;
+    hospitalKeys: Set<string>;
+    productKeys: Set<string>;
+    tenderKeys: Set<string>;
+    hospitalTotals: Map<string, OverviewNamedValue>;
+  }>();
   const supplierTotals = new Map<string, OverviewNamedValue>();
   const hospitalTotals = new Map<string, OverviewHospital & {
     productKeys: Set<string>;
@@ -121,6 +137,23 @@ export function aggregateOverviewFacts(
     allProducts.add(fact.product);
     allTenders.add(fact.tender);
     addNamedValue(companyTotals, fact.company, fact.value, fact.units, true);
+    const companyKey = companyGroupingKey(fact.company);
+    const companyDetail = companyDetails.get(companyKey) || {
+      name: fact.company,
+      value: 0,
+      units: 0,
+      hospitalKeys: new Set<string>(),
+      productKeys: new Set<string>(),
+      tenderKeys: new Set<string>(),
+      hospitalTotals: new Map<string, OverviewNamedValue>(),
+    };
+    companyDetail.value += fact.value;
+    companyDetail.units += fact.units;
+    companyDetail.hospitalKeys.add(fact.hospital);
+    companyDetail.productKeys.add(fact.product);
+    companyDetail.tenderKeys.add(fact.tender);
+    addNamedValue(companyDetail.hospitalTotals, fact.hospital, fact.value, fact.units);
+    companyDetails.set(companyKey, companyDetail);
     addNamedValue(supplierTotals, fact.supplier, fact.value, fact.units);
 
     if (fact.company === "Medtronic") {
@@ -175,9 +208,17 @@ export function aggregateOverviewFacts(
   const companies = [...companyTotals.values()]
     .filter((entry) => entry.name !== "Chưa xác định" && entry.name !== "Unknown / review needed")
     .sort((left, right) => right.value - left.value);
-  const competitors = companies
-    .filter((entry) => entry.name !== "Medtronic")
-    .slice(0, 3);
+  const competitors = [...companyDetails.values()]
+    .filter((entry) => entry.name !== "Medtronic" && entry.name !== "Chưa xác định" && entry.name !== "Unknown / review needed")
+    .sort((left, right) => right.value - left.value)
+    .slice(0, 3)
+    .map(({ hospitalKeys, productKeys, tenderKeys, hospitalTotals: competitorHospitalTotals, ...entry }) => ({
+      ...entry,
+      hospitalCount: hospitalKeys.size,
+      productCount: productKeys.size,
+      tenderCount: tenderKeys.size,
+      topHospitals: [...competitorHospitalTotals.values()].sort((left, right) => right.value - left.value).slice(0, 5),
+    }));
 
   return {
     name: subOu,
