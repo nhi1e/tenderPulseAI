@@ -258,6 +258,8 @@ button:disabled { cursor: wait; opacity: .66; }
 .exclude-list { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
 .exclude-list > span { margin-right: 2px; color: #7a879a; font-size: 10px; font-weight: 800; text-transform: uppercase; }
 .exclude-list > b { padding: 4px 7px; border: 1px solid #d7e1ef; border-radius: 999px; background: #fff; color: #53647e; font-size: 10px; font-weight: 700; }
+.rule-baskets { display: grid; gap: 7px; max-height: 142px; padding-right: 4px; overflow: auto; }
+.confirmation-list > b { border-color: #cbe1d5; background: #f1faf5; color: #2f6e4d; }
 .search-message { margin: 10px 8px 0; color: #b23b42; font-size: 12px; }
 .search-loading-status {
   display: flex;

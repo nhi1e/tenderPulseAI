@@ -1,3 +1,5 @@
+import { mappedManufacturerFromMaster, normalizedManufacturerName } from "@/lib/classification-rules";
+
 export function normalizeCompanyText(value: string) {
   return value
     .normalize("NFD")
@@ -10,21 +12,24 @@ export function normalizeCompanyText(value: string) {
 }
 
 export function mappedCompanyName(searchableText: string, fallback = "") {
+  const workbookMappedManufacturer = mappedManufacturerFromMaster(fallback);
+  if (workbookMappedManufacturer) return workbookMappedManufacturer;
+
   const normalized = normalizeCompanyText(searchableText);
   const compact = normalized.replace(/\s/g, "");
 
-  if (/medtronic|covidien|coviden|ligasure/.test(compact)) return "Medtronic";
+  if (/medtronic|covidien|coviden|covididen|ligasure/.test(compact)) return "Medtronic";
   if (/johnsonjohnson|ethicon|harmonic/.test(compact) || /(^|\s)j\s*j(\s|$)/.test(normalized)) {
-    return "Johnson & Johnson / Ethicon";
+    return "Johnson & Johnson";
   }
-  if (/bbraun|aesculap/.test(compact)) return "B. Braun / Aesculap";
+  if (/bbraun|aesculap/.test(compact)) return "B. Braun";
   if (/bostonscientific/.test(compact)) return "Boston Scientific";
   if (/appliedmedical/.test(compact)) return "Applied Medical";
   if (/olympus/.test(compact)) return "Olympus";
   if (/miconvey/.test(compact)) return "Miconvey";
   if (/innolcon/.test(compact)) return "Innolcon";
 
-  return fallback.trim();
+  return normalizedManufacturerName(fallback);
 }
 
 export function companyGroupingKey(value: string) {

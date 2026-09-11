@@ -1,0 +1,211 @@
+{
+  "source": {
+    "workbook": "rule_phan_nhom_san_pham_10_9.xlsx",
+    "sheet": "Danh mục rule keyword",
+    "version": "2026-09-10",
+    "normalization": "Unicode NFC, lowercase, replace line breaks with spaces, collapse whitespace, trim, preserve Vietnamese diacritics"
+  },
+  "rules": [
+    {
+      "id": 1,
+      "priority": 1,
+      "subOu": "VS&D",
+      "productGroup": "Dao siêu âm",
+      "keywords": ["Dao siêu âm", "Dao mổ siêu âm", "Tay ( lưỡi) dao siêu âm", "Lưỡi dao siêu âm", "Dao cắt siêu âm", "Dao cắt cầm máu siêu âm", "Lưỡi dao"],
+      "confirmations": ["Siêu âm"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["Dây dẫn", "bộ phát", "bộ dây", "bộ phận chuyển đổi", "pin sạc", "sạc pin", "khay hấp", "khay lắp", "hệ thống", "bộ phận truyền xung động", "Phụ kiện", "ống chụp"] },
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["CUSA", "robot"] }
+      ],
+      "method": "Tên sản phẩm phải có một cụm trong rổ keyword và Tên/Nhãn hiệu/Cấu hình phải có “siêu âm”. Loại phụ kiện, hệ thống, CUSA và robot theo đúng phạm vi trường được duyệt."
+    },
+    {
+      "id": 2,
+      "priority": 2,
+      "subOu": "VS&D",
+      "productGroup": "Dao hàn mạch",
+      "keywords": ["Tay dao hàn mạch", "Tay dao phẫu thuật hàn mạch", "Dao hàn mạch", "Dao cắt hàn mạch", "Tay dao cắt hàn mạch", "Bộ tay dao hàn mạch"],
+      "confirmations": ["Hàn mạch"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["cáp", "dây nối", "máy", "hệ thống", "bộ phát", "bộ nguồn", "bàn đạp", "phụ kiện", "điện cực"] },
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["Siêu âm", "Dao mổ plasma", "dao mổ cao tần", "Hệ thống dao mổ điện", "Tấm điện cực", "Dao mổ siêu âm", "Dao mổ tích hợp hàn mạch", "Thunderbeat", "GEN11", "Generator", "USG-410", "ESG-410"] }
+      ],
+      "method": "Tên sản phẩm phải có keyword hàn mạch và đạt confirmation. Dao siêu âm được phân loại trước; loại máy, dây, phụ kiện và các công nghệ nằm trong rổ exclude."
+    },
+    {
+      "id": 3,
+      "priority": 3,
+      "subOu": "Endo Stapling",
+      "productGroup": "Băng ghim nội soi",
+      "keywords": ["Băng ghim", "Băng đạn", "Băng ( đạn)", "Ghim khâu", "Ghim"],
+      "confirmations": ["Nội soi"],
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "circular", "longo"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler"] }
+      ],
+      "method": "Nhận băng/ghim có xác nhận nội soi; loại dụng cụ, máy, mổ mở, nối tròn và Longo."
+    },
+    {
+      "id": 4,
+      "priority": 4,
+      "subOu": "Endo Stapling",
+      "productGroup": "Dụng cụ khâu cắt nối nội soi",
+      "keywords": ["Dụng cụ", "Máy cắt nối", "Stapler nội soi"],
+      "confirmations": ["nội soi"],
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "circular", "longo"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu"] }
+      ],
+      "method": "Nhận dụng cụ có xác nhận nội soi; loại băng ghim, mổ mở, nối tròn và Longo."
+    },
+    {
+      "id": 5,
+      "priority": 5,
+      "subOu": "Open Stapling",
+      "productGroup": "Băng ghim mổ mở",
+      "keywords": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim"],
+      "confirmations": ["mổ mở", "mổ hở"],
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "circular", "longo"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler"] }
+      ],
+      "method": "Nhận băng/ghim có xác nhận mổ mở hoặc mổ hở; loại dụng cụ, nội soi, nối tròn và Longo. Không dùng riêng từ Endo để loại."
+    },
+    {
+      "id": 6,
+      "priority": 6,
+      "subOu": "Open Stapling",
+      "productGroup": "Dụng cụ khâu cắt nối mổ mở",
+      "keywords": ["dụng cụ", "máy cắt nối", "stapler mổ mở"],
+      "confirmations": ["mổ mở", "mổ hở"],
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "circular", "longo"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim cho máy"] }
+      ],
+      "method": "Nhận dụng cụ có xác nhận mổ mở hoặc mổ hở; loại băng ghim, nội soi, nối tròn và Longo. Không dùng riêng từ Endo để loại."
+    },
+    {
+      "id": 7,
+      "priority": 7,
+      "subOu": "Open Stapling",
+      "productGroup": "Dụng cụ khâu nối tròn",
+      "keywords": ["dụng cụ khâu nối tròn", "dụng cụ cắt nối tròn", "máy khâu nối tròn", "máy cắt nối tròn", "stapler nối tròn", "dụng cụ", "máy cắt nối", "ghim cắt khâu nối tròn", "băng đạn", "ghim khâu"],
+      "confirmations": ["nối tròn", "nối vòng", "nối ống tiêu hóa tròn"],
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["longo"] }
+      ],
+      "method": "Confirmation nối tròn/nối vòng/nối ống tiêu hóa tròn tách nhóm khỏi dụng cụ khâu cắt nối thẳng; loại Longo."
+    },
+    {
+      "id": 8,
+      "priority": 8,
+      "subOu": "Suture",
+      "productGroup": "Chỉ phẫu thuật",
+      "keywords": ["chỉ khâu", "chỉ phẫu thuật", "chỉ thép khâu", "chỉ tan", "chỉ tự tiêu", "chỉ không tiêu", "chỉ catgut", "chỉ silk", "chỉ nylon", "chỉ nilon", "chỉ prolene", "chỉ vicryl", "chỉ kháng khuẩn", "chỉ polyester"],
+      "confirmations": ["khâu", "phẫu thuật"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "bộ dụng cụ", "máy"] }
+      ],
+      "method": "Nhận chỉ có confirmation khâu hoặc phẫu thuật; loại dụng cụ, bộ dụng cụ và máy."
+    },
+    {
+      "id": 9,
+      "priority": 9,
+      "subOu": "Hernia",
+      "productGroup": "Lưới thoát vị",
+      "keywords": ["lưới", "miếng lưới", "tấm lưới", "mảnh lưới", "miếng thoát vị", "mảnh ghép", "mảnh ghép thoát vị", "mesh", "màng nâng", "tấm nâng"],
+      "confirmations": ["thoát vị"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "contains", "terms": ["cố định lưới"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "bộ ghim", "súng", "ghim"] }
+      ],
+      "method": "Nhận lưới có confirmation thoát vị; chỉ dùng Tên thiết bị để tách dụng cụ cố định lưới."
+    },
+    {
+      "id": 10,
+      "priority": 10,
+      "subOu": "Hernia",
+      "productGroup": "Dụng cụ cố định lưới thoát vị",
+      "keywords": ["dụng cụ", "bộ ghim", "bộ ghim khâu", "súng", "ghim", "ghim tan"],
+      "confirmations": ["cố định lưới"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWithUnlessContains", "terms": ["lưới", "miếng lưới", "tấm lưới", "mảnh lưới"], "unlessTerms": ["cố định"] }
+      ],
+      "method": "Nhận dụng cụ/ghim có confirmation cố định lưới; giữ dụng cụ có sẵn ghim và loại lưới cấy ghép không có từ cố định."
+    },
+    {
+      "id": 11,
+      "priority": 11,
+      "subOu": "A&I",
+      "productGroup": "Trocar",
+      "keywords": ["trocar"],
+      "confirmations": [],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["nắp", "nắp đậy", "van", "nút", "vỏ", "nòng", "ống ngoài", "kim chọc dò", "ống dẫn lưu", "bình dẫn lưu", "dụng cụ đưa", "bộ mở", "bộ dẫn", "gioăng", "hộp", "đinh", "val"] }
+      ],
+      "method": "Trocar là keyword đặc hiệu nên không cần confirmation; loại linh kiện và sản phẩm khác có trocar đi kèm theo đầu Tên thiết bị."
+    },
+    {
+      "id": 12,
+      "priority": 12,
+      "subOu": "A&I",
+      "productGroup": "Túi lấy bệnh phẩm",
+      "keywords": ["túi lấy bệnh phẩm", "túi đựng bệnh phẩm", "túi bệnh phẩm", "túi đựng mẫu bệnh phẩm"],
+      "confirmations": [],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["cốc", "lọ", "hộp", "túi lấy máu", "túi zip", "túi camera", "bao túi"] },
+        { "fields": ["productName", "configuration"], "match": "contains", "terms": ["nước tiểu", "ống nghiệm", "xét nghiệm"] }
+      ],
+      "method": "Các cụm keyword xác định trực tiếp sản phẩm; loại vật chứa và sản phẩm xét nghiệm theo đúng trường."
+    },
+    {
+      "id": 13,
+      "priority": 13,
+      "subOu": "A&I",
+      "productGroup": "Túi bảo vệ vết thương",
+      "keywords": ["túi bảo vệ vết thương", "túi bảo vệ thành vết mổ"],
+      "confirmations": ["bảo vệ vết thương", "bảo vệ thành vết mổ", "wound protector", "vết rạch", "nong phẫu trường"],
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["túi đựng bệnh phẩm", "túi lấy bệnh phẩm", "specimen retrieval"] }
+      ],
+      "method": "Confirmation xác nhận chức năng bảo vệ vết thương/vết mổ; loại túi lấy bệnh phẩm."
+    },
+    {
+      "id": 14,
+      "priority": 14,
+      "subOu": "ES",
+      "productGroup": "Tấm điện cực trung tính",
+      "keywords": ["tấm điện cực", "điện cực trung tính", "miếng dán điện cực", "bản cực trung tính", "tấm dán điện", "thảm điện cực", "mash điện", "tấm lắc đôi điện cực"],
+      "confirmations": ["trung tính"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dây nối", "cáp nối", "dây cáp"] }
+      ],
+      "method": "Nhận tấm điện cực có confirmation trung tính; chỉ loại dây/cáp khi nằm ở đầu Tên thiết bị."
+    },
+    {
+      "id": 15,
+      "priority": 15,
+      "subOu": "ES",
+      "productGroup": "Tay dao mổ điện đơn cực",
+      "keywords": ["tay dao mổ điện", "tay dao điện", "tay dao đơn cực", "tay dao đốt", "tay dao cắt đốt", "dao mổ điện đơn cực", "dao đốt điện", "móc đốt", "điện cực cắt", "điện cực cầm máu", "điện cực cắt đốt", "điện cực móc đốt", "điện cực bóc tách và đốt cầm máu", "que phẫu tích đơn cực", "dụng cụ phẫu tích", "Dụng cụ nội soi đốt điện", "lưỡi cắt đốt"],
+      "confirmations": ["đơn cực"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dây", "cáp", "máy", "đầu đốt", "kim", "phụ kiện", "kim đốt", "tấm điện cực", "sợi"] },
+        { "fields": ["productName"], "match": "contains", "terms": ["kẹp lưỡng cực", "hàn mạch", "siêu âm", "rung nhĩ", "nối đất"] }
+      ],
+      "method": "Nhận tay dao/điện cực có confirmation đơn cực; loại dây, máy, kim, phụ kiện và các nhóm công nghệ khác chỉ theo Tên thiết bị."
+    },
+    {
+      "id": 16,
+      "priority": 16,
+      "subOu": "ES",
+      "productGroup": "Kẹp lưỡng cực",
+      "keywords": ["kẹp lưỡng cực", "hàm forcep", "kẹp đốt điện", "kẹp cầm máu", "kẹp phẫu tích", "ruột kẹp"],
+      "confirmations": ["lưỡng cực"],
+      "exclusions": [
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dây nối", "cáp", "dây cáp", "phụ kiện", "bộ dụng cụ", "vỏ"] }
+      ],
+      "method": "Nhận kẹp có confirmation lưỡng cực; loại dây, cáp, phụ kiện, bộ dụng cụ và vỏ khi nằm ở đầu Tên thiết bị."
+    }
+  ]
+}

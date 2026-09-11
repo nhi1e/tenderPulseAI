@@ -10,8 +10,17 @@ import {
   ComboboxItem, ComboboxLabel, ComboboxList,
 } from "@/components/ui/combobox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import keywordMasterJson from "@/data/keyword-master.json";
 import { companyGroupingKey, mappedCompanyName } from "@/lib/company-mapping";
+import {
+  classificationRules,
+  classifyProductRecord,
+  evaluateProductRule,
+  flattenedExclusionTerms,
+  manufacturerMappedRows,
+  manufacturerUnmappedRows,
+  ruleForSearchTerm,
+  type ProductClassificationRule,
+} from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
 import {
   aggregateOverviewFacts,
@@ -44,12 +53,18 @@ type WinningBidRecord = {
   diaDiem?: Array<{ wardName?: string; districtName?: string; provName?: string }>;
 };
 type PortalPage = { content: WinningBidRecord[]; totalElements?: number; totalPages?: number };
+type ClassificationAudit = {
+  missingProductKeyword: number;
+  missingConfirmation: number;
+  matchedExclusion: number;
+};
 type LiveCollectionProgress = {
   completedPages: number;
   totalPages: number;
   records: WinningBidRecord[];
   portalTotalElements: number;
   excludedRecords: number;
+  classificationAudit?: ClassificationAudit;
   keywordRule?: KeywordMasterRule;
   truncated: boolean;
 };
@@ -57,6 +72,7 @@ type ProductData = {
   keyword: string; group: string; fetchedAt: string; truncated: boolean;
   records: WinningBidRecord[];
   keywordRule?: KeywordMasterRule; excludedRecords: number; portalTotalElements: number;
+  classificationAudit?: ClassificationAudit;
   filters: SearchFilters;
   lineItems: number; totalElements: number; totalValue: number; totalQuantity: number;
   tenders: number; hospitals: number; medtronicValue: number; medtronicShare: number;
@@ -75,7 +91,7 @@ type OverviewFilterState = {
   company: string;
 };
 type KeywordCatalogItem = { subOu: string; productGroups: string[]; keywords: string[] };
-type KeywordMasterRule = { id: number; subOu: string; productGroup: string; keyword: string; excludes: string[]; note: string };
+type KeywordMasterRule = ProductClassificationRule;
 type ActivityItem = { id: string; keyword: string; searchedAt: string; filters: SearchFilters };
 type OverviewLoadProgress = { completed: number; total: number; current: string[] };
 type HospitalDirectoryEntry = { name: string; id?: string };
@@ -85,13 +101,14 @@ type ProductSuggestion = { value: string; kind: "keyword" | "brand" | "model"; s
 type Language = "en" | "vi";
 
 const subOuOrder = ["VS&D", "Endo Stapling", "Open Stapling", "Hernia", "Suture", "A&I", "ES"];
-const keywordMaster = keywordMasterJson as KeywordMasterRule[];
+const keywordMaster = classificationRules;
+const approvedKeywordCount = keywordMaster.reduce((total, rule) => total + rule.keywords.length, 0);
 const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => ({
   subOu,
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
-  keywords: keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.keyword),
+  keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v5";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v6";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
 const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v1";
@@ -108,8 +125,8 @@ const initialHospitals: HospitalDirectoryEntry[] = [
 ];
 const initialCompanies: CompanyDirectoryEntry[] = [
   { name: "Medtronic" },
-  { name: "Johnson & Johnson / Ethicon" },
-  { name: "B. Braun / Aesculap" },
+  { name: "Johnson & Johnson" },
+  { name: "B. Braun" },
   { name: "Boston Scientific" },
   { name: "Applied Medical" },
   { name: "Olympus" },
@@ -264,8 +281,10 @@ function companySuggestionsFor(companies: CompanyDirectoryEntry[], query: string
 function productSuggestionsFor(learnedProducts: LearnedProductEntry[], query: string) {
   const suggestions = new Map<string, ProductSuggestion>();
   keywordMaster.forEach((rule) => {
-    const key = normalize(rule.keyword);
-    if (!suggestions.has(key)) suggestions.set(key, { value: rule.keyword, kind: "keyword", subOu: rule.subOu, productGroup: rule.productGroup });
+    rule.keywords.forEach((keyword) => {
+      const key = normalize(keyword);
+      if (!suggestions.has(key)) suggestions.set(key, { value: keyword, kind: "keyword", subOu: rule.subOu, productGroup: rule.productGroup });
+    });
   });
   learnedProducts.forEach((entry) => {
     const key = normalize(entry.value);
@@ -277,29 +296,31 @@ function productSuggestionsFor(learnedProducts: LearnedProductEntry[], query: st
     .slice(0, 14);
 }
 function keywordRuleFor(keyword: string) {
-  const normalizedKeyword = normalize(keyword);
-  return keywordMaster.find((rule) => normalize(rule.keyword) === normalizedKeyword);
+  return ruleForSearchTerm(keyword);
 }
-function recordSearchText(record: WinningBidRecord) {
-  return normalize([
-    record.tenThietBi,
-    record.maHs,
-    record.kyMaHieu,
-    record.nhanHieu,
-    record.hangSanXuat,
-    record.chungLoai,
-    record.cauHinh,
-  ].filter(Boolean).join(" | "));
+function classificationRecord(record: WinningBidRecord) {
+  return {
+    productName: record.tenThietBi,
+    brand: record.nhanHieu,
+    configuration: record.cauHinh,
+  };
 }
-function matchesAllKeywordWords(text: string, keyword: string) {
-  const textWords = new Set(searchableText(text).split(" ").filter(Boolean));
-  const keywordWords = searchableText(keyword).split(" ").filter(Boolean);
-  return keywordWords.length > 0 && keywordWords.every((word) => textWords.has(word));
-}
-function followsKeywordRule(record: WinningBidRecord, rule: KeywordMasterRule) {
-  const text = recordSearchText(record);
-  if (!matchesAllKeywordWords(text, rule.keyword)) return false;
-  return !rule.excludes.some((exclude) => text.includes(normalize(exclude)));
+function applyKeywordRule(records: WinningBidRecord[], rule: KeywordMasterRule | undefined) {
+  const audit: ClassificationAudit = {
+    missingProductKeyword: 0,
+    missingConfirmation: 0,
+    matchedExclusion: 0,
+  };
+  if (!rule) return { records: [...records], audit };
+  const matched = records.filter((record) => {
+    const evaluation = evaluateProductRule(classificationRecord(record), rule);
+    if (evaluation.matched) return true;
+    if (evaluation.reason === "product-keyword") audit.missingProductKeyword += 1;
+    if (evaluation.reason === "confirmation") audit.missingConfirmation += 1;
+    if (evaluation.reason === "exclusion") audit.matchedExclusion += 1;
+    return false;
+  });
+  return { records: matched, audit };
 }
 function portalPageUrl(keyword: string, page: number, filters: SearchFilters, forceRefresh = false) {
   const params = new URLSearchParams({ keyword, page: String(page), pageSize: "1000" });
@@ -344,7 +365,8 @@ async function collectLiveWinningBids(
   const rawRecords = [...firstPage.content];
   const rule = options.applyKeywordRule === false ? undefined : keywordRuleFor(keyword);
   const publish = (completedPages: number) => {
-    const ruleRecords = rule ? rawRecords.filter((record) => followsKeywordRule(record, rule)) : [...rawRecords];
+    const classified = applyKeywordRule(rawRecords, rule);
+    const ruleRecords = classified.records;
     const records = filters.company && filters.company !== "all"
       ? ruleRecords.filter((record) => companyGroupingKey(companyOf(record)) === companyGroupingKey(filters.company))
       : ruleRecords;
@@ -354,6 +376,7 @@ async function collectLiveWinningBids(
       records,
       portalTotalElements,
       excludedRecords: rawRecords.length - ruleRecords.length,
+      classificationAudit: classified.audit,
       keywordRule: rule,
       truncated: portalTotalPages > maxPages,
     });
@@ -372,11 +395,13 @@ async function collectLiveWinningBids(
 
   rememberAutocompleteValues(rawRecords);
 
+  const finalClassification = applyKeywordRule(rawRecords, rule);
   return {
     records,
     totalElements: rule || (filters.company && filters.company !== "all") ? records.length : portalTotalElements,
     portalTotalElements,
-    excludedRecords: rule ? rawRecords.length - rawRecords.filter((record) => followsKeywordRule(record, rule)).length : 0,
+    excludedRecords: rule ? rawRecords.length - finalClassification.records.length : 0,
+    classificationAudit: rule ? finalClassification.audit : undefined,
     keywordRule: rule,
     totalPages: portalTotalPages,
     truncated: portalTotalPages > maxPages,
@@ -428,9 +453,9 @@ const bidFormNames: Record<string, string> = {
 };
 const companyDisplayNames: Record<string, string> = {
   medtronic: "Medtronic",
-  ethicon: "J&J / Ethicon",
+  ethicon: "Johnson & Johnson",
   applied: "Applied Medical",
-  bbraun: "B. Braun / Aesculap",
+  bbraun: "B. Braun",
   olympus: "Olympus",
   miconvey: "Miconvey",
   innolcon: "Innolcon",
@@ -558,17 +583,15 @@ function productKey(record: WinningBidRecord) {
   return normalize(record.kyMaHieu || record.chungLoai || record.nhanHieu || record.tenThietBi || recordKey(record));
 }
 function overviewFactFor(record: WinningBidRecord, rules: KeywordMasterRule[]): OverviewFact | undefined {
-  const text = recordSearchText(record);
-  const rule = rules
-    .filter((candidate) => matchesAllKeywordWords(text, candidate.keyword) && !candidate.excludes.some((exclude) => text.includes(normalize(exclude))))
-    .sort((left, right) => right.keyword.length - left.keyword.length)[0];
-  if (!rule) return undefined;
+  const classification = classifyProductRecord(classificationRecord(record), rules);
+  if (!classification) return undefined;
+  const { rule, evaluation } = classification;
   const hospital = record.tenCdtBmt?.trim() || "Chưa xác định";
   return {
     key: recordKey(record),
     subOu: rule.subOu,
     productGroup: rule.productGroup,
-    classificationKeyword: rule.keyword,
+    classificationKeyword: evaluation.matchedKeyword || "",
     company: companyOf(record),
     supplier: formatList(record.winningName),
     supplierCode: formatList(record.winningCode),
@@ -668,7 +691,7 @@ function summarize(
   totalElements: number,
   truncated: boolean,
   filters: SearchFilters,
-  source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number } = {},
+  source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number; classificationAudit?: ClassificationAudit } = {},
   language: Language = "en",
 ): ProductData {
   const totalValue = records.reduce((sum, record) => sum + valueOf(record), 0);
@@ -696,8 +719,13 @@ function summarize(
   const dateRange = firstDate && lastDate ? `${firstDate.toLocaleDateString(locale)}–${lastDate.toLocaleDateString(locale)}` : copy(language, "All available dates", "Tất cả thời gian có dữ liệu");
   const medtronicShare = totalValue ? (medtronicValue / totalValue) * 100 : 0;
   const medtronicQuantityShare = totalQuantity ? (medtronicQuantity / totalQuantity) * 100 : 0;
+  const audit = source.classificationAudit;
   const exclusionNote = source.keywordRule && source.excludedRecords
-    ? copy(language, ` The approved exclusion terms removed ${source.excludedRecords.toLocaleString(locale)} false-positive matches: records containing the search words but describing a different item.`, ` Các điều kiện loại trừ đã duyệt loại ${source.excludedRecords.toLocaleString(locale)} kết quả trùng từ nhưng mô tả mặt hàng khác.`)
+    ? copy(
+      language,
+      ` The approved classification rule removed ${source.excludedRecords.toLocaleString(locale)} portal rows (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} without a product-name keyword, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} without confirmation, and ${(audit?.matchedExclusion || 0).toLocaleString(locale)} matching an exclusion).`,
+      ` Rule phân loại đã duyệt loại ${source.excludedRecords.toLocaleString(locale)} dòng trên cổng (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} dòng không có keyword trong Tên thiết bị, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} dòng thiếu Confirmation và ${(audit?.matchedExclusion || 0).toLocaleString(locale)} dòng trúng điều kiện exclude).`,
+    )
     : "";
   return {
     keyword,
@@ -708,6 +736,7 @@ function summarize(
     filters,
     keywordRule: source.keywordRule,
     excludedRecords: source.excludedRecords || 0,
+    classificationAudit: source.classificationAudit,
     portalTotalElements: source.portalTotalElements || totalElements,
     lineItems: records.length,
     totalElements,
@@ -723,7 +752,7 @@ function summarize(
     insight: medtronicValue
       ? copy(language, `Medtronic-related product labels represent approximately ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of the recorded awarded value in this live search.`, `Các nhãn sản phẩm liên quan đến Medtronic chiếm khoảng ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu ghi nhận trong kết quả tìm kiếm trực tiếp này.`)
       : copy(language, "No current records were classified as Medtronic from the available product fields.", "Chưa có bản ghi nào được phân loại là Medtronic từ các trường sản phẩm hiện có."),
-    qualityNote: copy(language, `The data contains ${units.size} units of measure; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of awarded value has no manufacturer information.${exclusionNote} Company market share remains an estimate until the name mappings are confirmed.`, `Dữ liệu có ${units.size} loại đơn vị tính; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu không có thông tin hãng sản xuất.${exclusionNote} Thị phần công ty vẫn là ước tính cho tới khi danh sách tên quy đổi được xác nhận.`),
+    qualityNote: copy(language, `The data contains ${units.size} units of measure; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of awarded value has no manufacturer information.${exclusionNote} Manufacturer names are normalized with ${manufacturerMappedRows.toLocaleString(locale)} populated mapping rows before company shares are calculated; ${manufacturerUnmappedRows.toLocaleString(locale)} workbook rows without a target remain unchanged.`, `Dữ liệu có ${units.size} loại đơn vị tính; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu không có thông tin hãng sản xuất.${exclusionNote} Tên hãng được chuẩn hóa bằng ${manufacturerMappedRows.toLocaleString(locale)} dòng quy đổi có kết quả trước khi tính thị phần công ty; ${manufacturerUnmappedRows.toLocaleString(locale)} dòng chưa có hãng đích trong file được giữ nguyên.`),
   };
 }
 
@@ -835,7 +864,7 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
   const masterSuggestions = suggestions.filter((entry) => entry.subOu);
   const learnedSuggestions = suggestions.filter((entry) => !entry.subOu);
   const selectedSuggestion = suggestions.find((entry) => normalize(entry.value) === normalize(query));
-  const selectedRule = keywordMaster.find((rule) => normalize(rule.keyword) === normalize(query));
+  const selectedRule = keywordRuleFor(query);
   const submit = () => { if (query.trim() && !loading) onSearch(query.trim()); };
   return <div className="search-shell">
     <div className="product-command">
@@ -864,7 +893,7 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
         <button className="search-button" type="submit" disabled={loading || !query.trim()}>{loading ? <LoaderCircle className="spin" /> : <Search />}<span>{loading ? copy(language, "Searching…", "Đang tìm…") : copy(language, "Search", "Tìm kiếm")}</span></button>
       </div></form>
       {query.trim() && <div className={`keyword-rule-preview ${selectedRule ? "is-master-rule" : "is-custom-rule"}`}>
-        {selectedRule ? <><div><strong>{copy(language, "Applying rule", "Áp dụng quy tắc")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.note}</p>{selectedRule.excludes.length > 0 && <div className="exclude-list"><span>{copy(language, "Automatic exclusions:", "Loại trừ tự động:")}</span>{selectedRule.excludes.map((term) => <b key={term}>{term}</b>)}</div>}<p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: the portal may return records containing the same words but describing accessories, cables, generators, CUSA systems, or another approved exclusion. A record is removed only when its product description contains one of the exclusion terms above; missing manufacturer or price data alone does not remove it.", "‘Đã loại’ nghĩa là gì: cổng có thể trả về các bản ghi chứa cùng từ nhưng thực tế mô tả phụ kiện, dây/cáp, bộ phát, hệ thống CUSA hoặc mặt hàng khác nằm trong điều kiện loại trừ đã duyệt. Hệ thống chỉ loại khi mô tả sản phẩm chứa một trong các cụm từ loại trừ ở trên; không loại chỉ vì thiếu hãng sản xuất hoặc giá.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, "Outside the 196-keyword catalog", "Không thuộc danh mục 196 từ khóa")}</span></div><p>{copy(language, "Results will use your exact search phrase without keyword-master exclusions.", "Kết quả sẽ được lấy theo cụm từ bạn nhập và không áp dụng điều kiện loại trừ từ keyword master.")}</p></>}
+        {selectedRule ? <><div><strong>{copy(language, "Applying approved rule", "Áp dụng quy tắc đã duyệt")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.method}</p><div className="rule-baskets"><div className="exclude-list"><span>{copy(language, "Keyword basket:", "Rổ keyword:")}</span>{selectedRule.keywords.map((term) => <b key={`keyword-${term}`}>{term}</b>)}</div>{selectedRule.confirmations.length > 0 && <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation basket:", "Rổ Confirmation:")}</span>{selectedRule.confirmations.map((term) => <b key={`confirmation-${term}`}>{term}</b>)}</div>}{flattenedExclusionTerms(selectedRule).length > 0 && <div className="exclude-list"><span>{copy(language, "Exclusion basket:", "Rổ exclude:")}</span>{flattenedExclusionTerms(selectedRule).map((term) => <b key={`exclude-${term}`}>{term}</b>)}</div>}</div><p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.", "‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, `Outside the ${approvedKeywordCount}-keyword catalog`, `Không thuộc danh mục ${approvedKeywordCount} keyword`)}</span></div><p>{copy(language, "Results will use your exact search phrase without the approved classification gates.", "Kết quả sẽ được lấy theo cụm từ bạn nhập và không áp dụng các bước phân loại đã duyệt.")}</p></>}
       </div>}
     </div>
     {loading && status && <p className="search-loading-status"><LoaderCircle className="spin" />{status}</p>}
@@ -898,7 +927,7 @@ function FilterBar({ initial, loading, onApply }: { initial: SearchFilters; load
   const hasFilters = Object.entries(filters).some(([key, value]) => key === "company" ? value !== "all" : Boolean(value));
 
   return <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); onApply(filters); }}>
-    <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Sent to the portal", "Gửi trực tiếp tới cổng")}</small></span></div>
+    <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Applied to live results", "Áp dụng trên dữ liệu trực tiếp")}</small></span></div>
     <label className="filter-field"><small>{copy(language, "FROM DATE", "TỪ NGÀY")}</small><input type="date" value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
     <label className="filter-field"><small>{copy(language, "TO DATE", "ĐẾN NGÀY")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
     <div className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><HospitalAutocomplete value={filters.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
@@ -955,6 +984,14 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
       const infoRows = [
         ["Thông tin xuất dữ liệu", ""],
         ["Từ khóa", safeExcelText(product.keyword)],
+        ...(product.keywordRule ? [
+          ["Rule phân loại", `#${product.keywordRule.id} · ${product.keywordRule.subOu} · ${product.keywordRule.productGroup}`],
+          ["Dòng trên cổng không đạt rule", product.excludedRecords],
+          ["Không có keyword trong Tên thiết bị", product.classificationAudit?.missingProductKeyword || 0],
+          ["Không có Confirmation bắt buộc", product.classificationAudit?.missingConfirmation || 0],
+          ["Trúng điều kiện exclude", product.classificationAudit?.matchedExclusion || 0],
+        ] : []),
+        ["Quy đổi hãng sản xuất", `${manufacturerMappedRows} dòng có hãng đích; ${manufacturerUnmappedRows} dòng chưa có hãng đích được giữ nguyên`],
         ["Thời gian xuất", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
         ["Số dòng kết quả", product.records.length],
         ["Từ ngày", product.filters.dateFrom || "Tất cả"],
@@ -979,7 +1016,7 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
   return <main className="dashboard-page"><div className="search-result-toolbar"><div className="result-route"><span>{copy(language, "Product search result", "Kết quả tra cứu sản phẩm")}</span><strong>{product.keyword}</strong></div><button className="new-search" onClick={onBack}><ArrowLeft /> {copy(language, "New search", "Tra cứu mới")}</button></div><section className="dashboard-shell">
     {loading && <div className="live-banner"><LoaderCircle className="spin" /> {status || copy(language, "Retrieving the latest portal data…", "Đang lấy dữ liệu mới nhất từ cổng…")}</div>}{error && <div className="live-banner live-banner-error"><CircleAlert /> {error}</div>}
     {exportError && <div className="live-banner live-banner-error"><CircleAlert /> {exportError}</div>}
-    <div className="dashboard-heading"><div><div className="result-kicker"><span>{copy(language, "MEDTRONIC MARKET OVERVIEW", "TỔNG QUAN THỊ TRƯỜNG MEDTRONIC")}</span><i /><span>{product.group}</span></div><h1>{product.keyword}</h1><p>{product.lineItems.toLocaleString(localeFor(language))} {copy(language, "result rows", "dòng kết quả")} · {product.dateRange} · {copy(language, "Updated", "Cập nhật lúc")} {new Date(product.fetchedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}</p>{product.keywordRule && <div className="applied-master-rule"><strong>Keyword master #{product.keywordRule.id}</strong><span>{product.excludedRecords.toLocaleString(localeFor(language))} {copy(language, "false-positive matches removed using the approved exclusion terms", "kết quả trùng từ nhưng sai mặt hàng đã được loại bằng điều kiện loại trừ đã duyệt")}</span></div>}</div><button className="export-button" type="button" disabled={loading || exporting} onClick={downloadExcel}>{exporting ? <LoaderCircle className="spin" /> : <Download />}<span>{exporting ? copy(language, "Creating Excel…", "Đang tạo Excel…") : copy(language, "Export Excel", "Xuất Excel")}</span></button></div>
+    <div className="dashboard-heading"><div><div className="result-kicker"><span>{copy(language, "MEDTRONIC MARKET OVERVIEW", "TỔNG QUAN THỊ TRƯỜNG MEDTRONIC")}</span><i /><span>{product.group}</span></div><h1>{product.keyword}</h1><p>{product.lineItems.toLocaleString(localeFor(language))} {copy(language, "result rows", "dòng kết quả")} · {product.dateRange} · {copy(language, "Updated", "Cập nhật lúc")} {new Date(product.fetchedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}</p>{product.keywordRule && <div className="applied-master-rule"><strong>{copy(language, "Approved rule", "Rule đã duyệt")} #{product.keywordRule.id}</strong><span>{product.excludedRecords.toLocaleString(localeFor(language))} {copy(language, "portal rows did not pass the keyword, confirmation, and exclusion gates", "dòng trên cổng không đạt đủ các bước keyword, Confirmation và exclude")}</span></div>}</div><button className="export-button" type="button" disabled={loading || exporting} onClick={downloadExcel}>{exporting ? <LoaderCircle className="spin" /> : <Download />}<span>{exporting ? copy(language, "Creating Excel…", "Đang tạo Excel…") : copy(language, "Export Excel", "Xuất Excel")}</span></button></div>
     <FilterBar key={product.fetchedAt} initial={product.filters} loading={loading} onApply={(filters) => onSearch(product.keyword, filters)} />
     <div className="metric-grid">
       <article className="metric-card"><div className="metric-icon blue"><Trophy /></div><span>{copy(language, "Total awarded value", "Tổng giá trị trúng thầu")}</span><strong>{formatVnd(product.totalValue, language)}</strong><small>{copy(language, "Calculated from the current search results", "Tính trực tiếp từ kết quả tìm kiếm")}</small></article>
@@ -1545,7 +1582,7 @@ function MarketOverview() {
     : undefined;
 
   return <main className="overview-page"><section className="overview-shell">
-    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, "Award data classified using 196 approved keywords and exclusion rules.", "Dữ liệu trúng thầu được phân loại theo bộ 196 từ khóa và điều kiện loại trừ.")}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Updating live data", "Đang cập nhật dữ liệu trực tiếp") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void loadOverview(filters, catalog, true)} disabled={loading || filtersDirty || Boolean(exportingSubOu) || Boolean(exportingCompetitor)}><RefreshCw />{copy(language, "Force refresh", "Làm mới dữ liệu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
+    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, `Award data classified with ${approvedKeywordCount} approved product phrases, confirmation gates, field-specific exclusions, and ${manufacturerMappedRows} populated manufacturer mappings.`, `Dữ liệu trúng thầu được phân loại bằng ${approvedKeywordCount} cụm keyword, rổ Confirmation, điều kiện exclude theo từng trường và ${manufacturerMappedRows} dòng quy đổi hãng có kết quả.`)}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Updating live data", "Đang cập nhật dữ liệu trực tiếp") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void loadOverview(filters, catalog, true)} disabled={loading || filtersDirty || Boolean(exportingSubOu) || Boolean(exportingCompetitor)}><RefreshCw />{copy(language, "Force refresh", "Làm mới dữ liệu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
     <OverviewFilterBar key={`${filters.dateFrom}-${filters.dateTo}-${filters.hospital}-${filters.subOu}-${filters.productGroup}-${filters.company}`} filters={filters} catalog={catalog} loading={loading} onApply={loadOverview} onDirtyChange={setFiltersDirty} />
     {filtersDirty && <div className="overview-notice pending-filter-notice" role="status">{copy(language, "Filters have changed. Select Apply before exporting so the dashboard and Excel use the new values.", "Bộ lọc đã thay đổi. Hãy chọn Áp dụng trước khi xuất để dashboard và Excel cùng dùng giá trị mới.")}</div>}
     {loading && <div className="overview-loading" role="status" aria-live="polite">
@@ -1610,7 +1647,7 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
     totalElements: number;
     truncated: boolean;
     filters: SearchFilters;
-    source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number };
+    source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number; classificationAudit?: ClassificationAudit };
   } | undefined>(undefined);
   async function searchLive(keyword: string, filters: SearchFilters = emptyFilters()) {
     setLoading(true); setError(undefined); setLoadingStatus(copy(language, "Connecting to Mua Sắm Công…", "Đang kết nối Cổng Mua Sắm Công…"));
@@ -1630,6 +1667,7 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
               keywordRule: progress.keywordRule,
               excludedRecords: progress.excludedRecords,
               portalTotalElements: progress.portalTotalElements,
+              classificationAudit: progress.classificationAudit,
             }, language));
           }
         },
@@ -1647,6 +1685,7 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
           keywordRule: data.keywordRule,
           excludedRecords: data.excludedRecords,
           portalTotalElements: data.portalTotalElements,
+          classificationAudit: data.classificationAudit,
         },
       };
       lastResult.current = result;

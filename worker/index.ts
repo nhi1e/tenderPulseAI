@@ -36,25 +36,6 @@ function clean(value: string | null, max = 200) {
   return String(value || "").trim().slice(0, max);
 }
 
-function companySearch(company: string | undefined) {
-  if (!company) return undefined;
-  const normalized = company
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[đĐ]/g, "d")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "");
-  if (/medtronic|covidien|coviden|ligasure/.test(normalized)) return "Covidien Medtronic LigaSure";
-  if (/johnsonjohnson|ethicon|harmonic/.test(normalized)) return "Johnson Ethicon Harmonic";
-  if (/bbraun|aesculap/.test(normalized)) return "B Braun Aesculap";
-  if (/bostonscientific/.test(normalized)) return "Boston Scientific";
-  if (/appliedmedical/.test(normalized)) return "Applied Medical";
-  if (/olympus/.test(normalized)) return "Olympus";
-  if (/miconvey/.test(normalized)) return "Miconvey";
-  if (/innolcon/.test(normalized)) return "Innolcon";
-  return company;
-}
-
 function portalFilters(filters: PortalFilters) {
   const result: Array<Record<string, unknown>> = [];
   if (filters.dateFrom || filters.dateTo) {
@@ -86,14 +67,15 @@ function queryClause(keyword: string, matchFields: string[], filters: PortalFilt
 function portalPayload(keyword: string, pageNumber: number, pageSize: number, filters: PortalFilters) {
   const queries = [queryClause(
     keyword,
-    ["ten_thiet_bi", "ma_hs", "xuat_xu", "ma_tbmt", "ky_ma_hieu", "nhan_hieu", "hang_san_xuat"],
+    ["ten_thiet_bi", "ma_hs", "xuat_xu", "ma_tbmt", "ky_ma_hieu", "nhan_hieu", "hang_san_xuat", "cau_hinh"],
     filters,
   )];
   if (filters.hospital) queries.push(queryClause(filters.hospital, ["ten_cdt_bmt", "ma_cdt"], filters));
   if (filters.brand) queries.push(queryClause(filters.brand, ["nhan_hieu", "hang_san_xuat"], filters));
   if (filters.supplier) queries.push(queryClause(filters.supplier, ["winning_name", "winning_code"], filters));
-  const company = companySearch(filters.company);
-  if (company) queries.push(queryClause(company, ["ten_thiet_bi", "nhan_hieu", "hang_san_xuat", "ky_ma_hieu"], filters, "any-1"));
+  // Company is filtered after collection using the approved manufacturer alias
+  // workbook. Sending the display name to the portal would omit rows stored under
+  // source aliases such as Covidien, Nypro or Jabil.
   return [{ pageSize, pageNumber, query: queries }];
 }
 

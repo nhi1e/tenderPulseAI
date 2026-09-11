@@ -1,0 +1,1614 @@
+{
+  "source": {
+    "workbook": "rule_phan_nhom_san_pham_10_9.xlsx",
+    "sheet": "danh mục quy đổi hãng sản xuất",
+    "version": "2026-09-10"
+  },
+  "entries": [
+    {
+      "sourceRow": 2,
+      "source": "Covidien",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 3,
+      "source": "Covidien/ Medtronic",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 4,
+      "source": "Medtronic",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 5,
+      "source": "Covidien (Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 6,
+      "source": "Covidien/ Mỹ",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 7,
+      "source": "Coviden",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 8,
+      "source": "Hãng sản xuất (máy chính): Covidien (Medtronic)/ Mỹ",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 9,
+      "source": "Covidien - Mỹ; Spectrum Plastics Group - Mỹ; Symmetry Medical Manufacturing, Inc - Mỹ",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 10,
+      "source": "Hãng sản xuất (máy chính): Covidien",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 11,
+      "source": "Hãng sản xuất/ Cơ sở sản xuất thiết bị chính: Covidien",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 12,
+      "source": "Coviden Spectrum Plastics Group",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 13,
+      "source": "Cadex Electronics Inc.",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 14,
+      "source": "Hãng sản xuất máy chính: Covidien LLC",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 15,
+      "source": "Máy chính: Covidien (Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 16,
+      "source": "- SCG7AA, SCBA: Covidien\n- SCSTA: Symmetry Medical Manufacturing, Inc.\n- SCBIGA: Spectrum Plastics Group",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 17,
+      "source": "Cadex Electronics, Inc.",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 18,
+      "source": "Covidien\n(Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 19,
+      "source": "Hãng sản xuất/ Cơ sở sản xuất (máy chính): Covidien LLC",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 20,
+      "source": "Covidien (Medtronic); Cadex Electronics Inc. và Symmetry Medical Manufacturing Inc.",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 21,
+      "source": "- CBCA: Cadex Electronics Inc\n- SCGAA, SCBA, SCSTA:\n Covidien\n- SCBIGA: Spectrum Plastics Group",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 22,
+      "source": "- SCGAA/ SCBA: Covidien\n- SCBIGA: Spectrum Plastics Group",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 23,
+      "source": "- SCGxx/ SCGxxx; SCBA: Covidien\n- SCBIGA: Spectrum Plastics Group",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 24,
+      "source": "Cadex Electronics Inc, Spectrum Plastics Group, Covidien,  Symmetry Medical, Inc.",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 25,
+      "source": "Covidien LLC",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 26,
+      "source": "Covdien Medical Products (Shanghai) Manufacturing, LLC",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 27,
+      "source": "Medtronic (Covidien)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 28,
+      "source": "Covidien Medical Products (Shanghai) Manufacturing, LLC",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 29,
+      "source": "Covidien Medical Products (Shanghai) Manufacturing, LLC (Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 30,
+      "source": "Covidien (Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 31,
+      "source": "Covidien Medical Products (Shanghai) Manufacturing L.L.C.",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 32,
+      "source": "Covidien (Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 33,
+      "source": "Covidien Medical Products (Shanghai) Manufacturing, LLC (Medtronic)",
+      "target": "Medtronic"
+    },
+    {
+      "sourceRow": 34,
+      "source": "Nypro Healthcare Baja Inc.",
+      "target": "Johnson& Johnson"
+    },
+    {
+      "sourceRow": 35,
+      "source": "Nypro Healthcare Baja Inc",
+      "target": "Johnson& Johnson"
+    },
+    {
+      "sourceRow": 36,
+      "source": "Nypro Healthcare Baja Inc., Mexico",
+      "target": "Johnson& Johnson"
+    },
+    {
+      "sourceRow": 37,
+      "source": "Nypro Healthcare Baja Inc.,",
+      "target": "Johnson& Johnson"
+    },
+    {
+      "sourceRow": 38,
+      "source": "Lexington Medical, Inc.",
+      "target": "Lexington"
+    },
+    {
+      "sourceRow": 39,
+      "source": "Lexington Medical, Inc/ Mỹ",
+      "target": "Lexington"
+    },
+    {
+      "sourceRow": 40,
+      "source": "Lexington\nMedical, Inc./ Mỹ",
+      "target": "Lexington"
+    },
+    {
+      "sourceRow": 41,
+      "source": "Lexington\nMedical, Inc.",
+      "target": "Lexington"
+    },
+    {
+      "sourceRow": 42,
+      "source": "Changzhou Waston Medical Appliance Co., Ltd./ Trung Quốc",
+      "target": "Waston"
+    },
+    {
+      "sourceRow": 43,
+      "source": "Changzhou Waston Medical Appliance Co., Ltd.",
+      "target": "Waston"
+    },
+    {
+      "sourceRow": 44,
+      "source": "Changzhou Waston Medical Appliance Co., Ltd. - Trung Quốc",
+      "target": "Waston"
+    },
+    {
+      "sourceRow": 45,
+      "source": "Changzhou Waston Medical Appliance Co., Ltd",
+      "target": "Waston"
+    },
+    {
+      "sourceRow": 46,
+      "source": "Wuxi Beien Surgery Device Co., Ltd",
+      "target": "Wuxi Beien"
+    },
+    {
+      "sourceRow": 47,
+      "source": "B. J. ZH. F. Panther Medical Equipment Co., Ltd.",
+      "target": "Panther"
+    },
+    {
+      "sourceRow": 48,
+      "source": "B. J. ZH. F. Panther Medical Equipment",
+      "target": "Panther"
+    },
+    {
+      "sourceRow": 49,
+      "source": "B. J. ZH. F. Panther Medical Equipment Co., Ltd",
+      "target": "Panther"
+    },
+    {
+      "sourceRow": 50,
+      "source": "Sinolinks Medical Innovation,Inc.",
+      "target": "Sinolinks"
+    },
+    {
+      "sourceRow": 51,
+      "source": "Sinolinks Medial Innnovation Inc/ Trung Quốc",
+      "target": "Sinolinks"
+    },
+    {
+      "sourceRow": 52,
+      "source": "Sinolinks Medical Innovation, Inc.",
+      "target": "Sinolinks"
+    },
+    {
+      "sourceRow": 53,
+      "source": "Sinolinks Medical Innovation, Inc./ Trung Quốc",
+      "target": "Sinolinks"
+    },
+    {
+      "sourceRow": 54,
+      "source": "Sinolinks Medical Innovation, Inc",
+      "target": "Sinolinks"
+    },
+    {
+      "sourceRow": 55,
+      "source": "Sinolinks Medical Innovation, Inc.",
+      "target": "Sinolinks"
+    },
+    {
+      "sourceRow": 56,
+      "source": "Jiangsu Brightness Medical Devices Co., Ltd",
+      "target": "Jiangsu"
+    },
+    {
+      "sourceRow": 57,
+      "source": "Jiangsu Ripe Medical Instruments Technology Co., Ltd",
+      "target": "Jiangsu"
+    },
+    {
+      "sourceRow": 58,
+      "source": "Jiangsu Ripe Medical Instruments Technology Co., Ltd  - Trung Quốc",
+      "target": "Jiangsu"
+    },
+    {
+      "sourceRow": 59,
+      "source": "Jiangsu Qianjing Medical Equipment Co.,Ltd/ Trung Quốc",
+      "target": "Jiangsu"
+    },
+    {
+      "sourceRow": 60,
+      "source": "Ezisurg Medical Co.,Ltd",
+      "target": "Ezisurg"
+    },
+    {
+      "sourceRow": 61,
+      "source": "Ezisurg Medical Co., Ltd",
+      "target": "Ezisurg"
+    },
+    {
+      "sourceRow": 62,
+      "source": "Microcure (Suzhou) Medical Technology Co.,Ltd",
+      "target": "Microcure"
+    },
+    {
+      "sourceRow": 63,
+      "source": "Microcure (Suzhou) Medical Technology Co., Ltd",
+      "target": "Microcure"
+    },
+    {
+      "sourceRow": 64,
+      "source": "Microcure (Suzhou) Medical Technology Co., Ltd.",
+      "target": "Microcure"
+    },
+    {
+      "sourceRow": 65,
+      "source": "Meril Endo Surgery Pvt. Ltd",
+      "target": "Meril"
+    },
+    {
+      "sourceRow": 66,
+      "source": "Meril Endo Surgery Pvt",
+      "target": "Meril"
+    },
+    {
+      "sourceRow": 67,
+      "source": "Purple Surgical International Limited",
+      "target": "Purple Surgical"
+    },
+    {
+      "sourceRow": 68,
+      "source": "ConMed Corporation",
+      "target": "ConMed"
+    },
+    {
+      "sourceRow": 69,
+      "source": "BOWA-electronic GmbH & Co. KG",
+      "target": "BOWA"
+    },
+    {
+      "sourceRow": 70,
+      "source": "Bowa",
+      "target": "BOWA"
+    },
+    {
+      "sourceRow": 71,
+      "source": "BOWA­electronic GmbH & Co. KG",
+      "target": "BOWA"
+    },
+    {
+      "sourceRow": 72,
+      "source": "NISSHA Medical Technologies Ltd",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 73,
+      "source": "Nissha Medical Technologies Limited",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 74,
+      "source": "Nissha Medical Technologies Ltd.",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 75,
+      "source": "\"Nisha/ Anh\"",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 76,
+      "source": "NISSHA Medical Technologies Ltd.",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 77,
+      "source": "Nissha Medical \nTechnologies Ltd",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 78,
+      "source": "NISSHA Medical Technologies Ltd. - Anh",
+      "target": "NISSHA"
+    },
+    {
+      "sourceRow": 79,
+      "source": "Bio Protech",
+      "target": "Bio Protech"
+    },
+    {
+      "sourceRow": 80,
+      "source": "Zhejiang Jinhua HUATONG MEDICAL Appliance Co.,Ltd.,/ Trung Quốc",
+      "target": "Zhejiang Jinhua HUATONG"
+    },
+    {
+      "sourceRow": 81,
+      "source": "Zhejiang Jinhua HUATONG MEDICAL Appliance Co.,Ltd.",
+      "target": "Zhejiang Jinhua HUATONG"
+    },
+    {
+      "sourceRow": 82,
+      "source": "MEDICAL Appliance Co.,Ltd",
+      "target": "Zhejiang Jinhua HUATONG"
+    },
+    {
+      "sourceRow": 83,
+      "source": "Cathay manufacturing corp.,",
+      "target": "Cathay"
+    },
+    {
+      "sourceRow": 84,
+      "source": "Cathay manufacturing corp",
+      "target": "Cathay"
+    },
+    {
+      "sourceRow": 85,
+      "source": "LEONHARD LANG GmBH",
+      "target": "LEONHARD"
+    },
+    {
+      "sourceRow": 86,
+      "source": "Baisheng Medical Co., Ltd",
+      "target": "Baisheng"
+    },
+    {
+      "sourceRow": 87,
+      "source": "Baisheng Medical Co., Ltd.",
+      "target": "Baisheng"
+    },
+    {
+      "sourceRow": 88,
+      "source": "TELIC, S.A.U",
+      "target": "TELIC"
+    },
+    {
+      "sourceRow": 89,
+      "source": "TELIC S.A.U",
+      "target": "TELIC"
+    },
+    {
+      "sourceRow": 90,
+      "source": "Covididen",
+      "target": "Covididen"
+    },
+    {
+      "sourceRow": 91,
+      "source": "Hãng sản xuất/Chủ sở hữu: KLS Martin SE & Co. KG / Đức",
+      "target": "KLS Martin SE & Co"
+    },
+    {
+      "sourceRow": 92,
+      "source": "Greetmed",
+      "target": "Greetmed"
+    },
+    {
+      "sourceRow": 93,
+      "source": "Shenzhen MedKe \nTechnology Co., Ltd",
+      "target": "Shenzhen"
+    },
+    {
+      "sourceRow": 94,
+      "source": "Shenzhen Upnmed",
+      "target": "Shenzhen"
+    },
+    {
+      "sourceRow": 95,
+      "source": "Shenzhen Lontek Electronic Technology Co.,Ltd",
+      "target": "Shenzhen"
+    },
+    {
+      "sourceRow": 96,
+      "source": "Shenzhen Mecun Medical Supply Co., Ltd.",
+      "target": "Shenzhen"
+    },
+    {
+      "sourceRow": 97,
+      "source": "Shenzhen Mecun Medical Supply Co., Ltd./ Trung Quốc",
+      "target": "Shenzhen"
+    },
+    {
+      "sourceRow": 98,
+      "source": "SHENZHEN YKD TECHNOLOGY CO.,LTD; Trung Quốc",
+      "target": "Shenzhen"
+    },
+    {
+      "sourceRow": 99,
+      "source": "Leonhard Lang GimbH",
+      "target": "Leonhard"
+    },
+    {
+      "sourceRow": 100,
+      "source": "Shaoxing Shangyu Xinyue Medical Appliance Co,. Ltd",
+      "target": "Shaoxing"
+    },
+    {
+      "sourceRow": 101,
+      "source": "Beijing Jinhengwei Technology Development Co.,Ltd",
+      "target": "Beijing"
+    },
+    {
+      "sourceRow": 102,
+      "source": "Zhejiang Jinhua Huatong Medical Appliance Co., Ltd.",
+      "target": "Zhejiang"
+    },
+    {
+      "sourceRow": 103,
+      "source": "Zhejiang Jinhua Huatong Medical Appliance Co., Ltd.",
+      "target": "Zhejiang"
+    },
+    {
+      "sourceRow": 104,
+      "source": "Zhejiang Jinhua HUATONG MEDICAL Appliance Co., Ltd./ Trung Quốc",
+      "target": "Zhejiang"
+    },
+    {
+      "sourceRow": 105,
+      "source": "Erbe Elektromedizin GmbH",
+      "target": "Erbe"
+    },
+    {
+      "sourceRow": 106,
+      "source": "LeoNhard Lang GmbH - Ấo",
+      "target": "LeoNhard Lang"
+    },
+    {
+      "sourceRow": 107,
+      "source": "Granite Microsystems, Inc.",
+      "target": "Granite Microsystems"
+    },
+    {
+      "sourceRow": 108,
+      "source": "Granite Microsystems, Inc.",
+      "target": "Granite Microsystems"
+    },
+    {
+      "sourceRow": 109,
+      "source": "AJU MEDICAL Co., Ltd.",
+      "target": "AJU"
+    },
+    {
+      "sourceRow": 110,
+      "source": "Aju Medical Co., Ltd",
+      "target": "AJU"
+    },
+    {
+      "sourceRow": 111,
+      "source": "AJU PHARM CO., LTD.",
+      "target": "AJU"
+    },
+    {
+      "sourceRow": 112,
+      "source": "GENMED ENTERPRISES INTERNATINOAL LTD",
+      "target": "Genmed"
+    },
+    {
+      "sourceRow": 113,
+      "source": "DORATEK MEDIKAL ELEKTRIK MAKINA IMALATI TURIZM INSAAT SAN. TIC. LTD. STI.",
+      "target": "DORATEK"
+    },
+    {
+      "sourceRow": 114,
+      "source": "Sejong Medical Co., Ltd.",
+      "target": "Sejong"
+    },
+    {
+      "sourceRow": 115,
+      "source": "Hangzhou Mindray Medical Technology Co., Ltd\n/ Trung Quốc",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 116,
+      "source": "Hangzhou Kangji Medical Instrument Co., Ltd/ Trung Quốc",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 117,
+      "source": "Hangzhou Valued Medtech Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 118,
+      "source": "Hangzhou Kangji Medical Instrument Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 119,
+      "source": "CHANGZHOU ANKANG MEDICAL INSTRUMENTS CO., LTD",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 120,
+      "source": "Hangzhou Boer Medical Instrument Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 121,
+      "source": "Hangzhou Mindray Medical Technology Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 122,
+      "source": "HangZhou Kangji Medical Instrument Co., Ltd.",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 123,
+      "source": "Changzhou Xin Neng Yuan Medical Stapler Co., Ltd.",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 124,
+      "source": "Hangzhou Valued Medtech Co., Ltd.",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 125,
+      "source": "Hangzhou Valued Medtech",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 126,
+      "source": "Hangzhou Mindray Medical Technology Co., Ltd.",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 127,
+      "source": "Hangzhou Kangji",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 128,
+      "source": "Hangzhou Boer Medical Instrument Co.,Ltd.,",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 129,
+      "source": "Changzhou Haida Medical Equipment Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 130,
+      "source": "Shenzhen Enmind Medical Instrument Co., Ltd.",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 131,
+      "source": "Hangzhou Kangji Medical Instruments Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 132,
+      "source": "Hangzhou Kangji Medical Instrument Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 133,
+      "source": "Hangzhou Mindray Medical Technology Co.,Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 134,
+      "source": "Yangzhou Beswin Medical Equipment Co.,Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 135,
+      "source": "Shenzhen Purwell Medical Technology Co., Ltd",
+      "target": "Mindray"
+    },
+    {
+      "sourceRow": 136,
+      "source": "Conmed Corporation/ Hoa Kỳ",
+      "target": "Conmed"
+    },
+    {
+      "sourceRow": 137,
+      "source": "Conmed Corporation",
+      "target": "Conmed"
+    },
+    {
+      "sourceRow": 138,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 139,
+      "source": "Ethicon Endo- Surgery S.A. de C.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 140,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 141,
+      "source": "Nypro Healthcare Baja Inc.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 142,
+      "source": "Nypro Healthcare Baja Inc",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 143,
+      "source": "Ethicon, Inc.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 144,
+      "source": "NPA de Mexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 145,
+      "source": "Jabil, Inc.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 146,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II; NPA de Mexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 147,
+      "source": "+ Ethicon Endo- Surgery S.A. de C.V. Planta II + NPA de Mexico S. de R.L. de C.V",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 148,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, Mexico/\nNPA de Mexico S. de R.L. de C.V., Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 149,
+      "source": "Ethicon EndoSurgery S.A. de C.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 150,
+      "source": "NPA de Mexico S. de R.L. de C.V",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 151,
+      "source": "NPA de Mexico S. de R.L. de C.V.,",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 152,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II,",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 153,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, Mexico/ NPA de Mexico S. de R.L. de C.V, Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 154,
+      "source": "NPA de Mexico S.de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 155,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 156,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II/ NPA de Mexico S. de R.L. de C.V",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 157,
+      "source": "NPA de Mexico S.de R.L. de C.V",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 158,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II NPA de Mexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 159,
+      "source": "NPA de Mexico S. de R.L. de C.V., Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 160,
+      "source": "Ethicon Endo- Surgery S.A. de C.V. Planta II,",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 161,
+      "source": "Ethicon Endo- Surgery, LLC",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 162,
+      "source": "NPA de\nMexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 163,
+      "source": "NPA de Mexico S. de R.L. de C.V.; Ethicon Endo-Surgery S.A. de C.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 164,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II/\nNPA de Mexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 165,
+      "source": "+ Ethicon Endo-Surgery S.A. de C.V. Planta II\n+ NPA de Mexico S.de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 166,
+      "source": "Jabil, Inc.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 167,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, Mexico/\nNPA de Mexico S. de R.L. de C.V, Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 168,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, Mexico; NPA de Mexico S. de R.L. de C.V., Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 169,
+      "source": "NPA de Mexico S. de R.L. de C.V.; Ethicon Endo-Surgery S.A. de C.V. Planta II - Mexico",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 170,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, ;\n NPA de Mexico S. de R.L. de C.V.,",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 171,
+      "source": "+\n Ethicon Endo-Surgery S.A. de C.V. Planta II\n+ \nNPA de Mexico S.de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 172,
+      "source": "+ Ethicon Endo-Surgery S.A. de C.V. Planta II\n+ NPA de Mexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 173,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 174,
+      "source": "NPA de Mexico s. de R.L. de C.V.; Ethicon Endo-Surgery S.A. deC.V. Planta II",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 175,
+      "source": "- Ethicon EndoSurgery S.A. de C.V. Planta II\n- NPA de Mexico S. de R.L. de C.V.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 176,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 177,
+      "source": "Ethicon Endo-Surgery S.A. de C.V. Planta II, Mexico/\nNPA de Mexico S. de R.L. de C.V, Mexico.",
+      "target": "Johnson & Johnson"
+    },
+    {
+      "sourceRow": 178,
+      "source": "Tianjin LeadRun Medical Technology Co.,Ltd",
+      "target": "Tianjin"
+    },
+    {
+      "sourceRow": 179,
+      "source": "Arthrex, Inc.",
+      "target": "Arthrex"
+    },
+    {
+      "sourceRow": 180,
+      "source": "Arthrex, Inc",
+      "target": "Arthrex"
+    },
+    {
+      "sourceRow": 181,
+      "source": "Guangzhou T.K Medical Instrument Co.,Ltd",
+      "target": "Guangzhou"
+    },
+    {
+      "sourceRow": 182,
+      "source": "Guangzhou TK Medical Instrument Co., Ltd.",
+      "target": "Guangzhou"
+    },
+    {
+      "sourceRow": 183,
+      "source": "Guangzhou T.K Medical Instrument Co.Ltd",
+      "target": "Guangzhou"
+    },
+    {
+      "sourceRow": 184,
+      "source": "Guangzhou T.K Medical Instrument Co., Ltd",
+      "target": "Guangzhou"
+    },
+    {
+      "sourceRow": 185,
+      "source": "Guangzhou T.K Medical Instrument Co., Ltd.,",
+      "target": "Guangzhou"
+    },
+    {
+      "sourceRow": 186,
+      "source": "Tulpar",
+      "target": "Tulpar"
+    },
+    {
+      "sourceRow": 187,
+      "source": "Tulpar medical solutions import and export industry and trade limited company",
+      "target": "Tulpar"
+    },
+    {
+      "sourceRow": 188,
+      "source": "Tulpar\n Medical Solutions Import and Export Industry and Trade Limited Company",
+      "target": "Tulpar"
+    },
+    {
+      "sourceRow": 189,
+      "source": "Tulpar Medical\nSolutions Import and Export Industry and Trade Limited Company",
+      "target": "Tulpar"
+    },
+    {
+      "sourceRow": 190,
+      "source": "KARL STORZ SE & Co. KG",
+      "target": "KARL STORZ"
+    },
+    {
+      "sourceRow": 191,
+      "source": "Karl Storz SE & Co KG",
+      "target": "KARL STORZ"
+    },
+    {
+      "sourceRow": 192,
+      "source": "STORZ Endoskop Produktions GmbH, Thụy Sỹ hãng chủ sở hữu: KARL STORZ SE & Co. KG / Đức",
+      "target": "KARL STORZ"
+    },
+    {
+      "sourceRow": 193,
+      "source": "Karl Storz SE & Co KG / Đức",
+      "target": "KARL STORZ"
+    },
+    {
+      "sourceRow": 194,
+      "source": "Karl Storz SE &\nCo KG",
+      "target": "KARL STORZ"
+    },
+    {
+      "sourceRow": 195,
+      "source": "KARL STORZ SE & Co. KG, Đức",
+      "target": "KARL STORZ"
+    },
+    {
+      "sourceRow": 196,
+      "source": "RZ Medizintechnik GmbH",
+      "target": "RZ Medizintechnik"
+    },
+    {
+      "sourceRow": 197,
+      "source": "Tonglu Qianyan Medtech Co.,Ltd",
+      "target": "Tonglu"
+    },
+    {
+      "sourceRow": 198,
+      "source": "SurgiCore Co.,Ltd.",
+      "target": "SurgiCore"
+    },
+    {
+      "sourceRow": 199,
+      "source": "Cơ sở sản xuất: SMC Medical Manufacturing Private Limited Hãng sở hữu (Legal Manufacturer): Smith & Nephew, Inc. Endoscopy",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 200,
+      "source": "SMC Medical Manufacturing Private Limited \n(Smith & Nephew, Inc)",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 201,
+      "source": "SMC Medical Manufacturing Private Limited.",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 202,
+      "source": "Cơ sở sản xuất: SMC Medical Manufacturing Private Limited\nHãng sản xuất (Legal Manufacturer): Smith & Nephew, Inc. Endoscopy",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 203,
+      "source": "SMC Medical Manufacturing Private Limited (Smith & Nephew, Inc)",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 204,
+      "source": "Cơ sở sản xuất (được thuê sản xuất): SMC Medical Manufacturing Private Limited\nHãng sản xuất (Legal Manufacturer): Smith and Nephew, Inc. Endoscopy\nDivision",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 205,
+      "source": "Smith & Nephew Inc., EndoScopy Division hoặc\nSMC Medical Manufacturing Private Limited",
+      "target": "Smith & Nephew,"
+    },
+    {
+      "sourceRow": 206,
+      "source": "SCIENCEMEDIC CO., LTD.",
+      "target": "SCIENCEMEDIC"
+    },
+    {
+      "sourceRow": 207,
+      "source": "SCIENCEMEDIC CO., LTD",
+      "target": "SCIENCEMEDIC"
+    },
+    {
+      "sourceRow": 208,
+      "source": "Nhà máy của Hãng B.Braun / Aesculap",
+      "target": "B.Braun"
+    },
+    {
+      "sourceRow": 209,
+      "source": "AESCULAP AG",
+      "target": "B.Braun"
+    },
+    {
+      "sourceRow": 210,
+      "source": "AESCULAP AG (Đức)",
+      "target": "B.Braun"
+    },
+    {
+      "sourceRow": 211,
+      "source": "Aesculap AG – Bbraun",
+      "target": "B.Braun"
+    },
+    {
+      "sourceRow": 212,
+      "source": "Onarge",
+      "target": "Onarge"
+    },
+    {
+      "sourceRow": 213,
+      "source": "Gimmi GmbH",
+      "target": "Gimmi"
+    },
+    {
+      "sourceRow": 214,
+      "source": "Consolidated Medical Equipment Company",
+      "target": "Consolidated"
+    },
+    {
+      "sourceRow": 215,
+      "source": "LaproSurge Limited",
+      "target": "LaproSurge"
+    },
+    {
+      "sourceRow": 216,
+      "source": "Medi Line S.R.L",
+      "target": "Medi Line"
+    },
+    {
+      "sourceRow": 217,
+      "source": "Medi Line S.L.R",
+      "target": "Medi Line"
+    },
+    {
+      "sourceRow": 218,
+      "source": "Mediline S.R.L",
+      "target": "Medi Line"
+    },
+    {
+      "sourceRow": 219,
+      "source": "Applied Medical Resourses Corporation",
+      "target": "Applied"
+    },
+    {
+      "sourceRow": 220,
+      "source": "Applied Medical Resources Corporation",
+      "target": "Applied"
+    },
+    {
+      "sourceRow": 221,
+      "source": "XINHUA SURGICAL INSTRUMENT CO., LTD",
+      "target": "XINHUA"
+    },
+    {
+      "sourceRow": 222,
+      "source": "Suru International Pvt. Ltd.",
+      "target": "Suru"
+    },
+    {
+      "sourceRow": 223,
+      "source": "Biometrix Ltd.",
+      "target": "Biometrix"
+    },
+    {
+      "sourceRow": 224,
+      "source": "B. J. ZH. F. Panther Medical Equipment Co., Ltd.",
+      "target": "Panther"
+    },
+    {
+      "sourceRow": 225,
+      "source": "Unimicro Medical Systems (Shenzhen) Co., Ltd.",
+      "target": "Unimicro"
+    },
+    {
+      "sourceRow": 226,
+      "source": "Unimicro Medical Systems (Shenzhen) Co., Ltd",
+      "target": "Unimicro"
+    },
+    {
+      "sourceRow": 227,
+      "source": "Unimicro Medical\nSystems (Shenzhen)\nCo., Ltd",
+      "target": "Unimicro"
+    },
+    {
+      "sourceRow": 228,
+      "source": "Landanger",
+      "target": "Landanger"
+    },
+    {
+      "sourceRow": 229,
+      "source": "Global Medikit Limited",
+      "target": "Global Medikit"
+    },
+    {
+      "sourceRow": 230,
+      "source": "Amnotec International Medical GmbH / Đức",
+      "target": "AMNOTEC"
+    },
+    {
+      "sourceRow": 231,
+      "source": "AMNOTEC international medical GmbH",
+      "target": "AMNOTEC"
+    },
+    {
+      "sourceRow": 232,
+      "source": "Richard Wolf GmbH",
+      "target": "Richard Wolf"
+    },
+    {
+      "sourceRow": 233,
+      "source": "Gangzhou T. K Medical Instrument Co., Ltd",
+      "target": "Gangzhou"
+    },
+    {
+      "sourceRow": 234,
+      "source": "Welfare Medical Ltd",
+      "target": "Welfare"
+    },
+    {
+      "sourceRow": 235,
+      "source": "TGS Medical Co., Ltd.",
+      "target": "TGS"
+    },
+    {
+      "sourceRow": 236,
+      "source": "YUWONMEDITECH Co,Ldt",
+      "target": "YUWONMEDITECH"
+    },
+    {
+      "sourceRow": 237,
+      "source": "Taiwan Surgical Corporation",
+      "target": "Taiwan Surgical"
+    },
+    {
+      "sourceRow": 238,
+      "source": "Besmed/Fortune",
+      "target": "Besmed"
+    },
+    {
+      "sourceRow": 239,
+      "source": "Teleflex medical",
+      "target": "Teleflex"
+    },
+    {
+      "sourceRow": 240,
+      "source": "SURU INTERNATIONAL PVT.LTD",
+      "target": "Suru International"
+    },
+    {
+      "sourceRow": 241,
+      "source": "Osaki Medical Corporation",
+      "target": "Osaki Medical"
+    },
+    {
+      "sourceRow": 242,
+      "source": "Teknimed SAS; Adria S.r.l",
+      "target": "Teknimed Sas"
+    },
+    {
+      "sourceRow": 243,
+      "source": "Urovision",
+      "target": "Urovision"
+    },
+    {
+      "sourceRow": 244,
+      "source": "Dufner",
+      "target": "Dufner"
+    },
+    {
+      "sourceRow": 245,
+      "source": "CN Cty TNHH Dược Phẩm Nhân Xuân",
+      "target": "Dược phẩm Nhân Xuân"
+    },
+    {
+      "sourceRow": 246,
+      "source": "Công ty cổ phần Thương mại - Dịch vụ - Xuất nhập khẩu Viên Phát",
+      "target": "Viên Phát"
+    },
+    {
+      "sourceRow": 247,
+      "source": "Viên Phát",
+      "target": "Viên Phát"
+    },
+    {
+      "sourceRow": 248,
+      "source": "Công Ty Cổ Phần Thương Mại- Dịch Vụ - Xuất Nhập Khẩu Viên Phát",
+      "target": "Viên Phát"
+    },
+    {
+      "sourceRow": 249,
+      "source": "Công ty TNHH Thương mại và Thiết bị y tế Nhật Minh",
+      "target": "Nhật Minh"
+    },
+    {
+      "sourceRow": 250,
+      "source": "Nhật Minh",
+      "target": "Nhật Minh"
+    },
+    {
+      "sourceRow": 251,
+      "source": "Công ty TNHH Thương Mại & Thiết Bị Y Tế Nhật Minh",
+      "target": "Nhật Minh"
+    },
+    {
+      "sourceRow": 252,
+      "source": "Công ty TNHH Trang thiết bị Y tế Thời Thanh Bình",
+      "target": "Thanh Bình"
+    },
+    {
+      "sourceRow": 253,
+      "source": "Cty TNHH DP Nhân Xuân",
+      "target": "Nhân Xuân"
+    },
+    {
+      "sourceRow": 254,
+      "source": "Tianchang Ganor Medical Device Co., Ltd",
+      "target": "Tianchang Ganor"
+    },
+    {
+      "sourceRow": 255,
+      "source": "Tương Lai",
+      "target": "Tương Lai"
+    },
+    {
+      "sourceRow": 256,
+      "source": "Công ty TNHH Tương Lai",
+      "target": "Tương Lai"
+    },
+    {
+      "sourceRow": 257,
+      "source": "Nhân xuân",
+      "target": "Nhân xuân"
+    },
+    {
+      "sourceRow": 258,
+      "source": "Veol Medical Technologies Pvt. Ltd.",
+      "target": "VEOL"
+    },
+    {
+      "sourceRow": 259,
+      "source": "CÔNG TY TNHH DƯỢC PHẨM NHÂN XUÂN",
+      "target": "NHÂN XUÂN"
+    },
+    {
+      "sourceRow": 260,
+      "source": "Zener Medtec (Changzhou) Co., Ltd.",
+      "target": "Zener"
+    },
+    {
+      "sourceRow": 261,
+      "source": "BioHealth Medical Technology Co.Ltd",
+      "target": "BioHealth"
+    },
+    {
+      "sourceRow": 262,
+      "source": "BioHealth Medical Technology Co.Ltd.",
+      "target": "BioHealth"
+    },
+    {
+      "sourceRow": 263,
+      "source": "BioHealth Medical Technology Co.Ltd./Trung Quốc",
+      "target": "BioHealth"
+    },
+    {
+      "sourceRow": 264,
+      "source": "BioHealth Medical Technology Co.Ltd./ Trung Quốc",
+      "target": "BioHealth"
+    },
+    {
+      "sourceRow": 265,
+      "source": "MAJNMAR MEDICAL PRODUCTS",
+      "target": "MANJMAR"
+    },
+    {
+      "sourceRow": 266,
+      "source": "Hãng sản xuất máy chính: Shirakawa Olympus Co., Ltd",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 267,
+      "source": "Aomori Olympus Co.,Ltd",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 268,
+      "source": "Hãng sản xuất thiết bị chính: Olympus Winter & Ibe GmbH",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 269,
+      "source": "Olympus Medical Systems Corp. / Nhật Bản",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 270,
+      "source": "Aomori Olympus Co., Ltd",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 271,
+      "source": "Hãng sản xuất máy chính: Shirakawa Olympus Co.,Ltd; Hãng-Nước chủ sở hữu: Olympus Medical Systems Corp - Nhật Bản",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 272,
+      "source": "Aomori Olympus Co., Ltd.",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 273,
+      "source": "Shirakawa Olympus Co.,Ltd",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 274,
+      "source": "Shirakawa Olympus Co., Ltd",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 275,
+      "source": "Shirakawa Olympus Co., Ltd.",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 276,
+      "source": "Shirakawa Olympus",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 277,
+      "source": "Aomori Olympus Co.,Ltd",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 278,
+      "source": "Hãng sản xuất máy chính: Olympus Winter & Ibe GmbH",
+      "target": "Olympus"
+    },
+    {
+      "sourceRow": 279,
+      "source": "Engine Medical Equipment Manufacturing (Shanghai) Corporation",
+      "target": "Engine"
+    },
+    {
+      "sourceRow": 280,
+      "source": "Innolcon Medical Technology (Suzhou) Co., Ltd.",
+      "target": "Innolcon"
+    },
+    {
+      "sourceRow": 281,
+      "source": "Innolcon Medical Technology (Suzhou) Co., Ltd",
+      "target": "Innolcon"
+    },
+    {
+      "sourceRow": 282,
+      "source": "Innolcon Medical Technology (Suzhou)  Co., Ltd.",
+      "target": "Innolcon"
+    },
+    {
+      "sourceRow": 283,
+      "source": "Miconvey Technologies Co., Ltd.",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 284,
+      "source": "Miconvey technologies co.,ltd.",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 285,
+      "source": "Miconvey technologies co.,ltd",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 286,
+      "source": "Miconvey technologies co.,ltd. - Trung Quốc",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 287,
+      "source": "MiconveyTechnologies co.,ltd",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 288,
+      "source": "Miconvey technologies Co.,Ltd; Trung Quốc",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 289,
+      "source": "Miconvey Technologies co., ltd - Trung Quốc",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 290,
+      "source": "Miconvey Technologies Co., Ltd",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 291,
+      "source": "Miconvey\ntechnologies\nco.,ltd.",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 292,
+      "source": "Miconvey technologies co.,ltd. – Trung Quốc",
+      "target": "Miconvey"
+    },
+    {
+      "sourceRow": 293,
+      "source": "Integra LifeSciences (Ireland) Limited",
+      "target": "CUSA"
+    },
+    {
+      "sourceRow": 294,
+      "source": "Integra NeuroSciences PR (cho Integra LifeSciences (Ireland) Limited, Ireland)",
+      "target": "CUSA"
+    },
+    {
+      "sourceRow": 295,
+      "source": "Integra NeuroSciences PR - Mỹ\n(cho Integra LifeSciences (Ireland) Limited - Ireland)",
+      "target": "CUSA"
+    },
+    {
+      "sourceRow": 296,
+      "source": "Integra LifeSciences Corporation\n(cho Integra LifeSciences (Ireland) Limited, Ireland)",
+      "target": "CUSA"
+    },
+    {
+      "sourceRow": 297,
+      "source": "Integra LifeSciences Corporation",
+      "target": "CUSA"
+    },
+    {
+      "sourceRow": 298,
+      "source": "Integra NeuroSciences PR",
+      "target": "CUSA"
+    },
+    {
+      "sourceRow": 299,
+      "source": "Hãng sản xuất (máy chính): Celestica (Romania) S.R.L",
+      "target": "Celestica"
+    },
+    {
+      "sourceRow": 300,
+      "source": "Söring GmbH",
+      "target": "Söring"
+    },
+    {
+      "sourceRow": 301,
+      "source": "Sterlab",
+      "target": "Sterlab"
+    },
+    {
+      "sourceRow": 302,
+      "source": "Symmetry Medical Manufacturing, Inc",
+      "target": "Symmetry"
+    },
+    {
+      "sourceRow": 303,
+      "source": "Symmetry Medical Inc,. - Manchester",
+      "target": "Symmetry"
+    },
+    {
+      "sourceRow": 304,
+      "source": "Hãng sản xuất/ Nhà sản xuất máy chính: Integra LifeSciences (Ireland) Limited",
+      "target": ""
+    },
+    {
+      "sourceRow": 305,
+      "source": "Hãng sản xuất/ Nhà sản xuất máy chính: Shirakawa Olympus Co., Ltd.",
+      "target": ""
+    },
+    {
+      "sourceRow": 306,
+      "source": "Hãng sản xuất máy chính: Integra LifeSciences (Ireland) Limited",
+      "target": ""
+    },
+    {
+      "sourceRow": 307,
+      "source": "Hãng sản xuất máy chính (CUSAEXCEL9): Integra LifeSciences (Ireland) Limited",
+      "target": ""
+    },
+    {
+      "sourceRow": 308,
+      "source": "Hunan Secure Medical Technology Co., Ltd",
+      "target": "Hunan"
+    },
+    {
+      "sourceRow": 309,
+      "source": "Linemaster Switch Corp",
+      "target": "Linemaster"
+    },
+    {
+      "sourceRow": 310,
+      "source": "ArthroCare Corporation",
+      "target": "ArthroCare"
+    },
+    {
+      "sourceRow": 311,
+      "source": "Fujian Secure Medical Technology Co.,LTD",
+      "target": "Fujian"
+    },
+    {
+      "sourceRow": 312,
+      "source": "SRA Developments Ltd",
+      "target": "SRA"
+    },
+    {
+      "sourceRow": 313,
+      "source": "LeadSurgical Medical Technology Co.,",
+      "target": "LeadSurgical"
+    },
+    {
+      "sourceRow": 314,
+      "source": "Spectrum Plastics Group",
+      "target": "Spectrum"
+    },
+    {
+      "sourceRow": 315,
+      "source": "Surgnova Healthcare Technologies (Zhejiang) Co., Ltd",
+      "target": "Surgnova"
+    },
+    {
+      "sourceRow": 316,
+      "source": "Intuitive Surgical S.De R.L.De C.V.",
+      "target": "Intuitive"
+    },
+    {
+      "sourceRow": 317,
+      "source": "Hunan Secure Medical Technology Co., Ltd",
+      "target": "Hunan Secure"
+    },
+    {
+      "sourceRow": 318,
+      "source": "Reach Surgical, Inc.",
+      "target": "Reach Surgical"
+    },
+    {
+      "sourceRow": 319,
+      "source": "Erbe Elektromedizin GmbH",
+      "target": "Erbe"
+    },
+    {
+      "sourceRow": 320,
+      "source": "Hãng sản xuất: Erbe Electromedizin GmbH",
+      "target": "Erbe"
+    },
+    {
+      "sourceRow": 321,
+      "source": "New Deantronics Taiwan Ltd",
+      "target": "New Deantronics"
+    },
+    {
+      "sourceRow": 322,
+      "source": "NextPhase Medical Devices, LLC",
+      "target": "NextPhase"
+    }
+  ]
+}
