@@ -1027,8 +1027,7 @@ function overviewDetailExcelRow(row: OverviewFact) {
 		"Nhóm sản phẩm": safeExcelText(row.productGroup),
 		"Mã TBMT": safeExcelText(row.tender),
 		"Mã định danh CĐT": safeExcelText(row.buyerId),
-		"Tên CĐT": safeExcelText(row.sourceHospital),
-		"Tên bệnh viện gộp theo mã CĐT": safeExcelText(row.hospital),
+		"Tên CĐT": safeExcelText(row.hospital),
 		"Từ khóa phân loại": safeExcelText(row.classificationKeyword),
 		"Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
 		"Đơn vị tính": safeExcelText(row.unitOfMeasure),
@@ -1057,8 +1056,8 @@ function overviewDetailExcelRow(row: OverviewFact) {
 }
 
 const overviewDetailColumnWidths = [
-	18, 28, 20, 22, 42, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60,
-	20, 22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
+	18, 28, 20, 22, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60, 20,
+	22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
 ];
 function groupFor(keyword: string, language: Language = "en") {
 	const value = normalize(keyword);
@@ -2073,7 +2072,9 @@ function Dashboard({
 					STT: index + 1,
 					"Mã TBMT": safeExcelText(record.maTbmt),
 					"Mã định danh CĐT": safeExcelText(record.maCdt),
-					"Tên CĐT": safeExcelText(record.tenCdtBmt),
+					"Tên CĐT": safeExcelText(
+						hospitalName(record.maCdt || "", record.tenCdtBmt || ""),
+					),
 					"Tên thiết bị, vật tư y tế": safeExcelText(record.tenThietBi),
 					"Đơn vị tính": safeExcelText(record.donViTinh),
 					"Khối lượng": quantity,
