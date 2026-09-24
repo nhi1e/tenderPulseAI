@@ -1,8 +1,11 @@
 import classificationRulesJson from "@/data/classification-rules.json";
 import manufacturerMappingJson from "@/data/manufacturer-mapping.json";
+import staffClassificationOverridesJson from "@/data/staff-classification-overrides.json";
 
 export type ClassificationField = "productName" | "brand" | "configuration";
-export type ClassificationRecord = Partial<Record<ClassificationField, string | undefined>>;
+export type ClassificationRecord = Partial<Record<ClassificationField, string | undefined>> & {
+  sourceId?: string;
+};
 export type ExclusionMatch = "contains" | "startsWith" | "startsWithUnlessContains";
 
 export type RuleExclusion = {
@@ -25,10 +28,23 @@ export type ProductClassificationRule = {
 
 export type RuleEvaluation = {
   matched: boolean;
-  reason: "matched" | "product-keyword" | "confirmation" | "exclusion";
+  reason: "matched" | "staff-review" | "product-keyword" | "confirmation" | "exclusion";
   matchedKeyword?: string;
   matchedConfirmation?: string;
   matchedExclusion?: string;
+};
+
+export type StaffClassificationDecision = {
+  sourceId: string;
+  action: "classify" | "exclude" | "review";
+  subOu?: string;
+  productGroup?: string;
+  tenderId?: string;
+  productName?: string;
+  matchedRules?: string[] | string;
+  rationale?: string;
+  reviewer?: string;
+  confirmedAt?: string;
 };
 
 type ManufacturerMappingEntry = {
@@ -47,6 +63,17 @@ export const manufacturerMappingRows = (manufacturerMappingJson.entries as Manuf
 export const manufacturerMappedRows = (manufacturerMappingJson.entries as ManufacturerMappingEntry[])
   .filter((entry) => entry.source.trim() && entry.target.trim()).length;
 export const manufacturerUnmappedRows = manufacturerMappingRows - manufacturerMappedRows;
+export const staffClassificationSource = staffClassificationOverridesJson.source;
+
+const staffClassificationDecisions = new Map(
+  (staffClassificationOverridesJson.decisions as StaffClassificationDecision[])
+    .filter((decision) => decision.sourceId)
+    .map((decision) => [decision.sourceId, decision]),
+);
+
+export function staffReviewDecisionFor(sourceId: string | undefined) {
+  return sourceId ? staffClassificationDecisions.get(sourceId) : undefined;
+}
 
 export function normalizeRuleText(value: string | undefined) {
   return String(value || "")
@@ -143,12 +170,31 @@ export function classifyProductRecord(
   const uniqueRules = [...new Map(rules.map((rule) => [rule.id, rule])).values()]
     .sort((left, right) => left.priority - right.priority);
 
-  for (const rule of uniqueRules) {
-    const evaluation = evaluateProductRule(record, rule);
-    if (evaluation.matched) return { rule, evaluation };
+  const staffDecision = staffReviewDecisionFor(record.sourceId);
+  if (staffDecision) {
+    if (staffDecision.action !== "classify") return undefined;
+    const rule = uniqueRules.find((candidate) =>
+      candidate.subOu === staffDecision.subOu &&
+      candidate.productGroup === staffDecision.productGroup
+    );
+    if (!rule) return undefined;
+    return {
+      rule,
+      evaluation: {
+        matched: true,
+        reason: "staff-review" as const,
+        matchedKeyword: "Staff review 23.9",
+      },
+    };
   }
 
-  return undefined;
+  const matches = uniqueRules
+    .map((rule) => ({ rule, evaluation: evaluateProductRule(record, rule) }))
+    .filter(({ evaluation }) => evaluation.matched);
+
+  // A first-rule-wins result can silently assign the wrong Sub-OU. Only a
+  // unique rule match is safe unless staff supplied an exact override above.
+  return matches.length === 1 ? matches[0] : undefined;
 }
 
 export function ruleForSearchTerm(value: string) {

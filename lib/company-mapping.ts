@@ -11,6 +11,31 @@ export function normalizeCompanyText(value: string) {
     .trim();
 }
 
+export function collapseRepeatedCompanyName(value: string) {
+  const cleaned = String(value || "").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+  const tokens = cleaned.split(" ").filter(Boolean);
+  if (tokens.length < 2) return cleaned;
+
+  const tokenKey = (token: string) => normalizeCompanyText(token);
+  const maxPhraseLength = Math.min(16, Math.floor(tokens.length / 2));
+  for (let phraseLength = 1; phraseLength <= maxPhraseLength; phraseLength += 1) {
+    const phrase = tokens.slice(0, phraseLength).map(tokenKey);
+    let offset = phraseLength;
+    let repetitions = 1;
+    while (offset + phraseLength <= tokens.length) {
+      const candidate = tokens.slice(offset, offset + phraseLength).map(tokenKey);
+      if (!candidate.every((token, index) => token === phrase[index])) break;
+      repetitions += 1;
+      offset += phraseLength;
+    }
+    if (repetitions >= 2 && offset >= tokens.length - 1) {
+      return tokens.slice(0, phraseLength).join(" ").replace(/[;,|]+$/, "").trim();
+    }
+  }
+
+  return cleaned;
+}
+
 export function mappedCompanyName(searchableText: string, fallback = "") {
   const workbookMappedManufacturer = mappedManufacturerFromMaster(fallback);
   if (workbookMappedManufacturer) return workbookMappedManufacturer;
@@ -29,7 +54,7 @@ export function mappedCompanyName(searchableText: string, fallback = "") {
   if (/miconvey/.test(compact)) return "Miconvey";
   if (/innolcon/.test(compact)) return "Innolcon";
 
-  return normalizedManufacturerName(fallback);
+  return collapseRepeatedCompanyName(normalizedManufacturerName(fallback));
 }
 
 export function companyGroupingKey(value: string) {

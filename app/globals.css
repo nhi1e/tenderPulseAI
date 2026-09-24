@@ -536,17 +536,20 @@ button:disabled { cursor: wait; opacity: .66; }
 .section-title p { margin: 4px 0 0; color: #8a94a4; font-size: 12px; }
 .loading-label { color: #1c64c8; font-size: 11px; font-weight: 750; }
 .subou-table-wrap { overflow-x: auto; }
-.subou-table { width: 100%; min-width: 1050px; border-collapse: collapse; }
+.subou-table { width: 100%; min-width: 1120px; border-collapse: collapse; table-layout: fixed; }
 .subou-table th { padding: 11px 13px; border-bottom: 1px solid #e4e9f0; background: #f8fafc; color: #69758a; font-size: 10px; font-weight: 850; letter-spacing: .035em; text-align: left; text-transform: uppercase; }
 .subou-table th:nth-child(1) { width: 18%; }
-.subou-table th:nth-child(2) { width: 15%; }
-.subou-table th:nth-child(3) { width: 16%; }
-.subou-table th:nth-child(4) { width: 32%; }
-.subou-table th:nth-child(5) { width: 8%; }
-.subou-table th:nth-child(6) { width: 11%; }
+.subou-table th:nth-child(2) { width: 11%; }
+.subou-table th:nth-child(3) { width: 13%; }
+.subou-table th:nth-child(4) { width: 36%; }
+.subou-table th:nth-child(5) { width: 6%; }
+.subou-table th:nth-child(6) { width: 16%; }
 .subou-table > tbody > tr:not(.hospital-detail-row) > td { padding: 13px; border-bottom: 1px solid #edf0f4; color: #203455; font-size: 12px; vertical-align: middle; }
 .subou-table > tbody > tr.is-open > td { background: #f6f9ff; }
-.subou-table > tbody > tr:not(.hospital-detail-row) > td:first-child { display: flex; align-items: center; gap: 10px; }
+.subou-name-cell { display: flex; min-width: 0; align-items: center; gap: 10px; }
+.subou-name-cell > div { display: grid; min-width: 0; gap: 3px; }
+.subou-name-cell > div > strong { display: block; color: #173a70; font-size: 14px; line-height: 1.2; }
+.subou-name-cell > div > small { display: block; margin: 0; color: #8a95a7; font-size: 11px; line-height: 1.2; }
 .subou-table td > div > strong, .subou-table td > strong { display: block; color: #173a70; font-size: 14px; }
 .subou-table td > div > small, .subou-table td > small, .subou-table td > strong + small { display: block; margin-top: 3px; color: #8a95a7; font-size: 11px; }
 .subou-table td em { margin-left: 3px; color: #7c899d; font-size: 10px; font-style: normal; font-weight: 500; }
@@ -557,7 +560,7 @@ button:disabled { cursor: wait; opacity: .66; }
 .competitor-entry-main { display: flex; min-width: 0; align-items: stretch; gap: 4px; }
 .competitor-toggle { display: grid; min-width: 0; flex: 1; grid-template-columns: minmax(115px, 1fr) minmax(88px, auto) minmax(78px, auto); align-items: center; gap: 7px; padding: 5px 6px; border: 0; border-radius: 6px; background: transparent; text-align: left; }
 .competitor-toggle:hover { background: #f1f6fd; }
-.competitor-toggle span { overflow: hidden; color: #394963; font-size: 10px; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.competitor-toggle span { color: #394963; font-size: 10px; font-weight: 750; line-height: 1.25; overflow-wrap: anywhere; white-space: normal; }
 .competitor-toggle b { color: #173a70; font-size: 10px; white-space: nowrap; }
 .competitor-toggle small { color: #8a95a7; font-size: 10px; white-space: nowrap; }
 .competitor-export-button { display: grid; width: 28px; min-width: 28px; margin: 2px; place-items: center; border: 1px solid #d1ddeb; border-radius: 6px; background: #fff; color: #1b5cad; }
@@ -572,12 +575,12 @@ button:disabled { cursor: wait; opacity: .66; }
 .competitor-top-hospitals > span { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 8px; }
 .competitor-top-hospitals b { overflow: hidden; color: #40516b; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
 .competitor-top-hospitals em { flex: 0 0 auto; color: #173a70; font-size: 9px; font-style: normal; font-weight: 750; }
-.hospital-expand { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 9px; border: 1px solid #d8e1ef; border-radius: 8px; background: #fff; color: #173a70; text-align: left; }
+.hospital-expand { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 5px; padding: 7px 8px; border: 1px solid #d8e1ef; border-radius: 8px; background: #fff; color: #173a70; text-align: left; }
 .hospital-expand:hover { border-color: #9eb9e4; background: #f5f9ff; }
 .hospital-expand span { display: grid; gap: 1px; }
 .hospital-expand strong { font-size: 13px; }
 .hospital-expand small { color: #8994a5; font-size: 10px; }
-.hospital-expand > b { color: #2863bb; font-size: 11px; }
+.hospital-expand > b { flex: 0 0 auto; color: #2863bb; font-size: 10px; white-space: nowrap; }
 .subou-hospital-actions { display: flex; min-width: 0; align-items: stretch; gap: 6px; }
 .subou-hospital-actions .hospital-expand { min-width: 0; flex: 1; }
 .subou-export-button { display: grid; width: 34px; min-width: 34px; place-items: center; border: 1px solid #cbd8ea; border-radius: 8px; background: #fff; color: #1b5cad; }

@@ -1,4 +1,5 @@
 import { companyGroupingKey } from "@/lib/company-mapping";
+import { hospitalKey } from "@/lib/hospital-identity";
 
 export type OverviewNamedValue = {
   name: string;
@@ -14,6 +15,7 @@ export type OverviewCompetitor = OverviewNamedValue & {
 };
 
 export type OverviewHospital = OverviewNamedValue & {
+  id: string;
   products: number;
   tenders: number;
   competitors: OverviewCompetitor[];
@@ -58,6 +60,7 @@ export type OverviewFact = {
   supplier: string;
   supplierCode: string;
   hospital: string;
+  sourceHospital: string;
   buyerId: string;
   tender: string;
   product: string;
@@ -132,6 +135,7 @@ export function aggregateOverviewFacts(
   let medtronicUnits = 0;
 
   facts.forEach((fact) => {
+    const buyerKey = hospitalKey(fact.buyerId, fact.hospital);
     marketSize += fact.value;
     totalUnits += fact.units;
     allProducts.add(fact.product);
@@ -149,10 +153,13 @@ export function aggregateOverviewFacts(
     };
     companyDetail.value += fact.value;
     companyDetail.units += fact.units;
-    companyDetail.hospitalKeys.add(fact.hospital);
+    companyDetail.hospitalKeys.add(buyerKey);
     companyDetail.productKeys.add(fact.product);
     companyDetail.tenderKeys.add(fact.tender);
-    addNamedValue(companyDetail.hospitalTotals, fact.hospital, fact.value, fact.units);
+    const competitorHospital = companyDetail.hospitalTotals.get(buyerKey) || { name: fact.hospital, value: 0, units: 0 };
+    competitorHospital.value += fact.value;
+    competitorHospital.units += fact.units;
+    companyDetail.hospitalTotals.set(buyerKey, competitorHospital);
     companyDetails.set(companyKey, companyDetail);
     addNamedValue(supplierTotals, fact.supplier, fact.value, fact.units);
 
@@ -161,8 +168,9 @@ export function aggregateOverviewFacts(
       medtronicUnits += fact.units;
     }
 
-    const hospitalEntry = hospitalTotals.get(fact.hospital) || {
+    const hospitalEntry = hospitalTotals.get(buyerKey) || {
       name: fact.hospital,
+      id: fact.buyerId,
       value: 0,
       units: 0,
       products: 0,
@@ -177,7 +185,7 @@ export function aggregateOverviewFacts(
     hospitalEntry.productKeys.add(fact.product);
     hospitalEntry.tenderKeys.add(fact.tender);
     addNamedValue(hospitalEntry.companyTotals, fact.company, fact.value, fact.units, true);
-    hospitalTotals.set(fact.hospital, hospitalEntry);
+    hospitalTotals.set(buyerKey, hospitalEntry);
 
     const tenderEntry = tenderTotals.get(fact.tender) || {
       id: fact.tender,

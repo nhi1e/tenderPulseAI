@@ -1,0 +1,4922 @@
+{
+  "vn0039302005": {
+    "name": "Trung tâm y tế huyện Trực Ninh",
+    "aliases": [
+      "Bệnh viện đa khoa Trực Ninh",
+      "Trung tâm y tế huyện Trực Ninh"
+    ]
+  },
+  "vn0101411983": {
+    "name": "Bệnh viện E",
+    "aliases": [
+      "BỆNH VIỆN E",
+      "Bệnh viện E"
+    ]
+  },
+  "vn0101530370": {
+    "name": "Cục Quân y - Tổng cục Hậu cần - Bộ Quốc Phòng",
+    "aliases": [
+      "Cục Quân y - Tổng cục Hậu cần - Bộ Quốc Phòng",
+      "Cục Quân y/Tổng cục Hậu cần - Kỹ thuật/Bộ Quốc phòng"
+    ]
+  },
+  "vn0101949588": {
+    "name": "Bệnh viên Lão khoa Trung ương",
+    "aliases": [
+      "Bệnh viên Lão khoa Trung ương",
+      "Bệnh viện Lão khoa Trung ương"
+    ]
+  },
+  "vn0102307015": {
+    "name": "Trung tâm Y tế Ba Đình",
+    "aliases": [
+      "Trung tâm Y tế Ba Đình",
+      "Trung tâm Y tế quận Ba Đình"
+    ]
+  },
+  "vn0102329107": {
+    "name": "Bệnh viện Đại học Y Dược",
+    "aliases": [
+      "Bệnh Viện Xây Dựng",
+      "Bệnh viện Đại học Y Dược"
+    ]
+  },
+  "vn0103205337": {
+    "name": "Bệnh Viện đa khoa Huyện Thường Tín",
+    "aliases": [
+      "Bệnh Viện đa khoa Huyện Thường Tín",
+      "Bệnh viện đa khoa Thường Tín"
+    ]
+  },
+  "vn0103263057": {
+    "name": "Bệnh viện đa khoa huyện Thạch Thất",
+    "aliases": [
+      "Bệnh viện đa khoa Thạch Thất",
+      "Bệnh viện đa khoa huyện Thạch Thất"
+    ]
+  },
+  "vn0103403378": {
+    "name": "Bệnh viện Đa khoa huyện Đan Phượng",
+    "aliases": [
+      "Bệnh viện Đa khoa huyện Đan Phượng",
+      "Bệnh viện Đa khoa Đan Phượng"
+    ]
+  },
+  "vn0103572640": {
+    "name": "Bệnh viện Đa khoa huyện Quốc Oai",
+    "aliases": [
+      "Bệnh viện Đa khoa Quốc Oai",
+      "Bệnh viện Đa khoa huyện Quốc Oai"
+    ]
+  },
+  "vn0103684168": {
+    "name": "Cơ quan Bộ Tư lệnh Cảnh sát biển",
+    "aliases": [
+      "Cơ quan Bộ Tư lệnh Cảnh sát biển",
+      "Cảnh sát biển Việt Nam"
+    ]
+  },
+  "vn0103718152": {
+    "name": "Bệnh viện đa khoa huyện Phúc Thọ",
+    "aliases": [
+      "Bệnh viện đa khoa Phúc Thọ",
+      "Bệnh viện đa khoa huyện Phúc Thọ"
+    ]
+  },
+  "vn0103992878": {
+    "name": "Bệnh viện đa khoa huyện Phú Xuyên",
+    "aliases": [
+      "Bệnh viện đa khoa Phú Xuyên",
+      "Bệnh viện đa khoa huyện Phú Xuyên"
+    ]
+  },
+  "vn0104000942": {
+    "name": "Bệnh viện đa khoa Chương Mỹ",
+    "aliases": [
+      "Bệnh viện đa khoa Chương Mỹ",
+      "Bệnh viện đa khoa huyện Chương Mỹ"
+    ]
+  },
+  "vn0104902588": {
+    "name": "Trung tâm y tế huyện sóc Sơn",
+    "aliases": [
+      "Trung tâm Y tế huyện Sóc Sơn",
+      "Trung tâm y tế huyện sóc Sơn"
+    ]
+  },
+  "vn0106153711": {
+    "name": "Bệnh viện Hữu Nghị Việt Nam Cu Ba Hà Nội",
+    "aliases": [
+      "Bệnh viện Hữu Nghị Việt Nam - Cu Ba",
+      "Bệnh viện Hữu Nghị Việt Nam Cu Ba Hà Nội"
+    ]
+  },
+  "vn0107783219": {
+    "name": "Viện Y học phòng không không quân",
+    "aliases": [
+      "Viện Y học Phòng không - Không quân",
+      "Viện Y học phòng không không quân"
+    ]
+  },
+  "vn0200140413": {
+    "name": "Sở Y tế thành phố Hải Phòng",
+    "aliases": [
+      "Sở Y tế Hải Phòng",
+      "Sở Y tế thành phố Hải Phòng"
+    ]
+  },
+  "vn0200630312": {
+    "name": "BỆNH VIỆN TRẺ EM",
+    "aliases": [
+      "BỆNH VIỆN NHI HẢI PHÒNG",
+      "BỆNH VIỆN TRẺ EM",
+      "Bệnh viện Trẻ em Hải Phòng"
+    ]
+  },
+  "vn0200902439": {
+    "name": "Bệnh viện Y học cổ truyền",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền",
+      "Bệnh viện Y học cổ truyền Hải Phòng"
+    ]
+  },
+  "vn0200950915": {
+    "name": "Bệnh viện đa khoa huyện An Lão",
+    "aliases": [
+      "Bệnh viện đa khoa An Lão",
+      "Bệnh viện đa khoa huyện An Lão"
+    ]
+  },
+  "vn0200971792": {
+    "name": "BỆNH VIỆN SỨC KHỎE TÂM THẦN HẢI PHÒNG",
+    "aliases": [
+      "BỆNH VIỆN SỨC KHỎE TÂM THẦN HẢI PHÒNG",
+      "BỆNH VIỆN TÂM THẦN",
+      "BỆNH VIỆN TÂM THẦN HẢI PHÒNG"
+    ]
+  },
+  "vn0200972411": {
+    "name": "TRUNG TÂM Y TẾ AN DƯƠNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ AN DƯƠNG",
+      "TRUNG TÂM Y TẾ HUYỆN AN DƯƠNG"
+    ]
+  },
+  "vn0200974553": {
+    "name": "Bệnh viện đa khoa huyện Vĩnh Bảo",
+    "aliases": [
+      "Bệnh viện đa khoa Vĩnh Bảo",
+      "Bệnh viện đa khoa huyện Vĩnh Bảo"
+    ]
+  },
+  "vn0200983910": {
+    "name": "Trung tâm Y tế quận Dương Kinh",
+    "aliases": [
+      "Trung tâm Y tế Dương Kinh",
+      "Trung tâm Y tế quận Dương Kinh"
+    ]
+  },
+  "vn0200989824": {
+    "name": "Bệnh viện đa khoa quận Ngô Quyền",
+    "aliases": [
+      "Bệnh viện đa khoa Ngô Quyền",
+      "Bệnh viện đa khoa quận Ngô Quyền",
+      "Trung tâm y tế Ngô Quyền"
+    ]
+  },
+  "vn0201060520": {
+    "name": "Bệnh viện đa khoa huyện Thủy Nguyên",
+    "aliases": [
+      "Bệnh viện đa khoa Thủy Nguyên",
+      "Bệnh viện đa khoa huyện Thủy Nguyên",
+      "Bệnh viện đa khoa thành phố Thủy Nguyên",
+      "Trung tâm Y tế Thủy Nguyên"
+    ]
+  },
+  "vn0201063680": {
+    "name": "Trung tâm y tế Kiến Thụy",
+    "aliases": [
+      "Trung tâm y tế Kiến Thụy",
+      "Trung tâm y tế huyện Kiến Thụy"
+    ]
+  },
+  "vn0301269050": {
+    "name": "BỆNH VIỆN TAI MŨI HỌNG",
+    "aliases": [
+      "BỆNH VIỆN TAI MŨI HỌNG",
+      "BỆNH VIỆN TAI MŨI HỌNG THÀNH PHỐ HỒ CHÍ MINH"
+    ]
+  },
+  "vn0301394608": {
+    "name": "Bệnh viện Da Liễu",
+    "aliases": [
+      "Bệnh viện Da Liễu",
+      "Bệnh viện Da Liễu Thành phố Hồ Chí Minh"
+    ]
+  },
+  "vn0301465224": {
+    "name": "Bệnh viện Nhân Dân Gia Định",
+    "aliases": [
+      "Bệnh viện Nhân Dân Gia Định",
+      "Bệnh viện Nhân dân Gia Định"
+    ]
+  },
+  "vn0301494183": {
+    "name": "BỆNH VIỆN 30/4",
+    "aliases": [
+      "BỆNH VIỆN 30-4",
+      "BỆNH VIỆN 30/4"
+    ]
+  },
+  "vn0301638935": {
+    "name": "Bệnh viện Quận 4",
+    "aliases": [
+      "Bệnh viện Quận 4",
+      "Bệnh viện Đa khoa Khánh Hội"
+    ]
+  },
+  "vn0301657127": {
+    "name": "Bệnh viện Quận 12",
+    "aliases": [
+      "Bệnh viện Quận 12",
+      "Bệnh viện Quận 12",
+      "Bệnh viện Đa khoa Trung Mỹ Tây"
+    ]
+  },
+  "vn0301693245": {
+    "name": "Cơ sở xã hội Nhị Xuân",
+    "aliases": [
+      "Cơ sở cai nghiện ma túy Nhị Xuân",
+      "Cơ sở xã hội Nhị Xuân"
+    ]
+  },
+  "vn0301725426": {
+    "name": "Bệnh viện quận Tân Bình",
+    "aliases": [
+      "Bệnh viện quận Tân Bình",
+      "Bệnh viện Đa khoa Tân Bình"
+    ]
+  },
+  "vn0301824642": {
+    "name": "Bệnh viện Quận 11",
+    "aliases": [
+      "Bệnh viện Quận 11",
+      "Bệnh viện Đa khoa Lãnh Binh Thăng"
+    ]
+  },
+  "vn0302159861": {
+    "name": "BỆNH VIỆN QUẬN 1",
+    "aliases": [
+      "BỆNH VIỆN QUẬN 1",
+      "BỆNH VIỆN ĐA KHOA TÂN ĐỊNH"
+    ]
+  },
+  "vn0302673548": {
+    "name": "Bệnh viện Quận Bình Thạnh",
+    "aliases": [
+      "Bệnh viện Quận Bình Thạnh",
+      "Bệnh viện Đa khoa Bình Thạnh"
+    ]
+  },
+  "vn0303008135": {
+    "name": "BỆNH VIỆN ĐA KHOA BÌNH PHÚ",
+    "aliases": [
+      "BỆNH VIỆN QUẬN 6",
+      "BỆNH VIỆN ĐA KHOA BÌNH PHÚ"
+    ]
+  },
+  "vn0303389515": {
+    "name": "BỆNH VIỆN HUYỆN CỦ CHI",
+    "aliases": [
+      "BỆNH VIỆN HUYỆN CỦ CHI",
+      "Bệnh viện Đa khoa Củ Chi"
+    ]
+  },
+  "vn0303797786": {
+    "name": "Bệnh viện Quận 8",
+    "aliases": [
+      "Bệnh viện Quận 8",
+      "Bệnh viện Đa khoa Chánh Hưng"
+    ]
+  },
+  "vn0304602775": {
+    "name": "Bệnh Viện Quận Bình Tân",
+    "aliases": [
+      "Bệnh Viện Quận Bình Tân",
+      "Bệnh viện Đa khoa Bình Tân"
+    ]
+  },
+  "vn0304722303": {
+    "name": "BỆNH VIỆN QUẬN PHÚ NHUẬN",
+    "aliases": [
+      "BỆNH VIỆN QUẬN PHÚ NHUẬN",
+      "BỆNH VIỆN ĐA KHOA PHÚ NHUẬN"
+    ]
+  },
+  "vn0304907490": {
+    "name": "Trung Tâm Y tế Quận Bình Thạnh",
+    "aliases": [
+      "Trung Tâm Y tế Quận Bình Thạnh",
+      "Trung Tâm Y tế khu vực Bình Thạnh"
+    ]
+  },
+  "vn0305066421": {
+    "name": "Bệnh viện Quận Tân Phú",
+    "aliases": [
+      "Bệnh viện Quận Tân Phú",
+      "Bệnh viện đa khoa Tân Phú"
+    ]
+  },
+  "vn0305289315": {
+    "name": "BỆNH VIỆN HUYỆN BÌNH CHÁNH",
+    "aliases": [
+      "BỆNH VIỆN HUYỆN BÌNH CHÁNH",
+      "Bệnh viện Đa khoa Bình Chánh"
+    ]
+  },
+  "vn0305306948": {
+    "name": "BỆNH VIỆN QUẬN 7",
+    "aliases": [
+      "BỆNH VIỆN QUẬN 7",
+      "BỆNH VIỆN ĐA KHOA NGUYỄN THỊ THẬP"
+    ]
+  },
+  "vn0305307035": {
+    "name": "Trung tâm y tế quận 7",
+    "aliases": [
+      "Trung tâm Y tế khu vực Tân Hưng",
+      "Trung tâm y tế quận 7"
+    ]
+  },
+  "vn0305359883": {
+    "name": "TRUNG TÂM PHÁP Y TP.HỒ CHÍ MINH",
+    "aliases": [
+      "TRUNG TÂM PHÁP Y THÀNH PHỐ HỒ CHÍ MINH",
+      "TRUNG TÂM PHÁP Y TP.HỒ CHÍ MINH"
+    ]
+  },
+  "vn0305471998": {
+    "name": "BỆNH VIỆN QUẬN GÒ VẤP",
+    "aliases": [
+      "BỆNH VIỆN QUẬN GÒ VẤP",
+      "BỆNH VIỆN ĐA KHOA GÒ VẤP"
+    ]
+  },
+  "vn0305564723": {
+    "name": "BỆNH VIỆN HUYỆN NHÀ BÈ",
+    "aliases": [
+      "BỆNH VIỆN HUYỆN NHÀ BÈ",
+      "BỆNH VIỆN ĐA KHOA NHÀ BÈ"
+    ]
+  },
+  "vn0306213284": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CẦN GIỜ",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CẦN GIỜ",
+      "TRUNG TÂM Y TẾ KHU VỰC CẦN GIỜ"
+    ]
+  },
+  "vn0309747559": {
+    "name": "Bệnh viện Quân y 175/BQP",
+    "aliases": [
+      "Bệnh viện Quân y 175",
+      "Bệnh viện Quân y 175/BQP"
+    ]
+  },
+  "vn0312655795": {
+    "name": "Trung tâm Cấp cứu 115 Tp.HCM",
+    "aliases": [
+      "Trung tâm Cấp cứu 115 Thành phố Hồ Chí Minh",
+      "Trung tâm Cấp cứu 115 Tp.HCM"
+    ]
+  },
+  "vn0315826008": {
+    "name": "TRUNG TÂM KIỂM SOÁT BỆNH TẬT THÀNH PHỐ",
+    "aliases": [
+      "TRUNG TÂM KIỂM SOÁT BỆNH TẬT THÀNH PHỐ",
+      "Trung tâm Kiểm soát bệnh tật Thành phố Hồ Chí Minh"
+    ]
+  },
+  "vn0400442789": {
+    "name": "Bệnh viện Phục hồi chức năng thành phố Đà Nẵng",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng",
+      "Bệnh viện Phục hồi chức năng thành phố Đà Nẵng"
+    ]
+  },
+  "vn0400476499": {
+    "name": "TRUNG TẤM CẤP CỨU THÀNH PHỐ ĐÀ NẴNG",
+    "aliases": [
+      "TRUNG TÂM CẤP CỨU THÀNH PHỐ ĐÀ NẴNG",
+      "TRUNG TẤM CẤP CỨU THÀNH PHỐ ĐÀ NẴNG"
+    ]
+  },
+  "vn0400483707": {
+    "name": "Trung tâm Y tế quận Liên Chiểu",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC LIÊN CHIỂU",
+      "Trung tâm Y tế quận Liên Chiểu"
+    ]
+  },
+  "vn0400495244": {
+    "name": "TRUNG TÂM Y TẾ QUẬN NGŨ HÀNH SƠN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC NGŨ HÀNH SƠN",
+      "TRUNG TÂM Y TẾ QUẬN NGŨ HÀNH SƠN"
+    ]
+  },
+  "vn0400495558": {
+    "name": "Trung tâm Y tế quận Hải Châu",
+    "aliases": [
+      "Trung tâm Y tế khu vực Hải Châu",
+      "Trung tâm Y tế quận Hải Châu"
+    ]
+  },
+  "vn0400815624": {
+    "name": "Trung tâm Y tế quận Thanh Khê",
+    "aliases": [
+      "Trung tâm Y tế Khu Vực Thanh Khê",
+      "Trung tâm Y tế quận Thanh Khê"
+    ]
+  },
+  "vn0401242687": {
+    "name": "Trung tâm y tế huyện Hòa Vang",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Hoà Vang",
+      "Trung tâm y tế huyện Hòa Vang"
+    ]
+  },
+  "vn0401281728": {
+    "name": "Trung tâm y tế quận Cẩm Lệ",
+    "aliases": [
+      "Trung tâm Y tế khu vực Cẩm Lệ",
+      "Trung tâm y tế quận Cẩm Lệ"
+    ]
+  },
+  "vn0401295590": {
+    "name": "Bệnh Viện Răng Hàm Mặt thành phố Đà Nẵng",
+    "aliases": [
+      "Bệnh Viện Răng - Hàm - Mặt thành phố Đà Nẵng",
+      "Bệnh Viện Răng Hàm Mặt thành phố Đà Nẵng"
+    ]
+  },
+  "vn0500474463": {
+    "name": "Bệnh viện đa khoa Huyện Hoài Đức",
+    "aliases": [
+      "Bệnh viện đa khoa Hoài Đức",
+      "Bệnh viện đa khoa Huyện Hoài Đức"
+    ]
+  },
+  "vn0500474625": {
+    "name": "BỆNH VIỆN ĐA KHOA HUYỆN THANH OAI",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HUYỆN THANH OAI",
+      "BỆNH VIỆN ĐA KHOA THANH OAI"
+    ]
+  },
+  "vn0500475033": {
+    "name": "Bệnh viện đa khoa huyện Ba Vì",
+    "aliases": [
+      "Bệnh viện đa khoa Ba Vì",
+      "Bệnh viện đa khoa huyện Ba Vì"
+    ]
+  },
+  "vn0500588816": {
+    "name": "Bệnh viện đa khoa huyện Mỹ Đức",
+    "aliases": [
+      "Bệnh viện đa khoa Mỹ Đức",
+      "Bệnh viện đa khoa huyện Mỹ Đức"
+    ]
+  },
+  "vn0600142711": {
+    "name": "Trung tâm y tế thành phố Nam Định",
+    "aliases": [
+      "Bệnh viện đa khoa Thành Nam",
+      "Trung tâm y tế thành phố Nam Định"
+    ]
+  },
+  "vn0600142743": {
+    "name": "Bệnh viện Phụ sản tỉnh Nam Định",
+    "aliases": [
+      "Bệnh viện Phụ sản Nam Định",
+      "Bệnh viện Phụ sản tỉnh Nam Định"
+    ]
+  },
+  "vn0600142775": {
+    "name": "Bệnh viện đa khoa tỉnh Nam Định",
+    "aliases": [
+      "Bệnh viện Đa khoa Nam Định",
+      "Bệnh viện đa khoa tỉnh Nam Định"
+    ]
+  },
+  "vn0600142944": {
+    "name": "BỆNH VIỆN MẮT NAM ĐỊNH",
+    "aliases": [
+      "BỆNH VIỆN MẮT NAM ĐỊNH",
+      "BỆNH VIỆN MẮT TỈNH NAM ĐỊNH"
+    ]
+  },
+  "vn0600143401": {
+    "name": "Bệnh viện đa khoa huyện Hải Hậu",
+    "aliases": [
+      "Bệnh viện đa khoa Hải Hậu",
+      "Bệnh viện đa khoa huyện Hải Hậu"
+    ]
+  },
+  "vn0600335417": {
+    "name": "bệnh viện nội tiết tỉnh nam định",
+    "aliases": [
+      "Bệnh viện Nội tiết Nam Định",
+      "Bệnh viện Nội tiết tỉnh Nam Định",
+      "bệnh viện nội tiết tỉnh nam định"
+    ]
+  },
+  "vn0600337742": {
+    "name": "Bệnh viện phổi tỉnh Nam Định",
+    "aliases": [
+      "Bệnh viện phổi Nam Định",
+      "Bệnh viện phổi tỉnh Nam Định"
+    ]
+  },
+  "vn0600340865": {
+    "name": "Bệnh viện Da liễu Nam Định",
+    "aliases": [
+      "Bệnh viện Da liễu Nam Định",
+      "Bệnh viện Da liễu tỉnh Nam Định"
+    ]
+  },
+  "vn0600381766": {
+    "name": "Trung tâm y tế huyện Xuân Trường",
+    "aliases": [
+      "Bệnh viện đa khoa Xuân Trường",
+      "Trung tâm y tế huyện Xuân Trường"
+    ]
+  },
+  "vn0600387479": {
+    "name": "Trung tâm y tế huyện Nam Trực",
+    "aliases": [
+      "Bệnh viện đa khoa Nam Trực",
+      "Trung tâm y tế huyện Nam Trực"
+    ]
+  },
+  "vn0600635499": {
+    "name": "Bệnh viện Nhi tỉnh Nam Định",
+    "aliases": [
+      "Bệnh viện Nhi Nam Định",
+      "Bệnh viện Nhi tỉnh Nam Định"
+    ]
+  },
+  "vn0600936104": {
+    "name": "Trung tâm y tế huyện Vụ Bản",
+    "aliases": [
+      "Bệnh viện Đa khoa Vụ Bản",
+      "Trung tâm y tế Vụ Bản",
+      "Trung tâm y tế huyện Vụ Bản"
+    ]
+  },
+  "vn0700224615": {
+    "name": "Bệnh viện Y học cổ truyền tỉnh Hà Nam",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền Hà Nam",
+      "Bệnh viện Y học cổ truyền tỉnh Hà Nam"
+    ]
+  },
+  "vn0700254151": {
+    "name": "BỆNH VIỆN ĐA KHOA TỈNH HÀ NAM",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HÀ NAM",
+      "BỆNH VIỆN ĐA KHOA TỈNH HÀ NAM"
+    ]
+  },
+  "vn0700254169": {
+    "name": "Bệnh viện Mắt Hà Nam",
+    "aliases": [
+      "Bệnh viện Mắt Hà Nam",
+      "Bệnh viện mắt tỉnh Hà Nam"
+    ]
+  },
+  "vn0700254218": {
+    "name": "Bệnh viện Đa khoa Lý Nhân",
+    "aliases": [
+      "Bệnh viện Đa khoa Lý Nhân",
+      "Trung tâm y tế huyện Lý Nhân"
+    ]
+  },
+  "vn0700258910": {
+    "name": "Bệnh viện Phổi Hà Nam",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh phổi tỉnh Hà Nam",
+      "Bệnh viện Phổi Hà Nam"
+    ]
+  },
+  "vn0800001404": {
+    "name": "Trung tâm Y tế huyện Cẩm Giàng",
+    "aliases": [
+      "Trung tâm Y tế Cẩm Giàng",
+      "Trung tâm Y tế huyện Cẩm Giàng"
+    ]
+  },
+  "vn0800012999": {
+    "name": "Bệnh viện Y học cổ truyền tỉnh Hải Dương",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền Hải Dương",
+      "Bệnh viện Y học cổ truyền tỉnh Hải Dương",
+      "Bệnh viện y học cổ truyền Hải Dương"
+    ]
+  },
+  "vn0800013079": {
+    "name": "Bệnh viện đa khoa tỉnh Hải Dương",
+    "aliases": [
+      "Bệnh viện Đa khoa Hải Dương",
+      "Bệnh viện đa khoa tỉnh Hải Dương"
+    ]
+  },
+  "vn0800019810": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ HẢI DƯƠNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HẢI DƯƠNG",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ HẢI DƯƠNG"
+    ]
+  },
+  "vn0800376555": {
+    "name": "Bệnh viện quân y 7 Cục Hậu Cần Quân khu 3",
+    "aliases": [
+      "Bệnh viện Quân y 7",
+      "Bệnh viện quân y 7 Cục Hậu Cần Quân khu 3"
+    ]
+  },
+  "vn0800402981": {
+    "name": "BỆNH VIỆN BỆNH NHIỆT ĐỚI TỈNH HẢI DƯƠNG",
+    "aliases": [
+      "BỆNH VIỆN BỆNH NHIỆT ĐỚI HẢI DƯƠNG",
+      "BỆNH VIỆN BỆNH NHIỆT ĐỚI TỈNH HẢI DƯƠNG"
+    ]
+  },
+  "vn0800510810": {
+    "name": "Trung tâm y tế huyện Thanh Miện",
+    "aliases": [
+      "Trung tâm y tế Thanh Miện",
+      "Trung tâm y tế huyện Thanh Miện"
+    ]
+  },
+  "vn0800590541": {
+    "name": "Trung tâm y tế huyện Gia Lộc",
+    "aliases": [
+      "Trung tâm y tế Gia Lộc",
+      "Trung tâm y tế huyện Gia Lộc"
+    ]
+  },
+  "vn0800590559": {
+    "name": "Bệnh viện Sức khỏe Tâm Thần tỉnh Hải Dương",
+    "aliases": [
+      "Bệnh viện Sức khỏe Tâm Thần tỉnh Hải Dương",
+      "Bệnh viện Tâm Thần Hải Dương"
+    ]
+  },
+  "vn0800632833": {
+    "name": "Trung tâm Y tế huyện Bình Giang",
+    "aliases": [
+      "Trung tâm Y tế Bình Giang",
+      "Trung tâm Y tế huyện Bình Giang"
+    ]
+  },
+  "vn0800663221": {
+    "name": "Trung tâm Y tế huyện Nam Sách",
+    "aliases": [
+      "Trung tâm Y tế Nam Sách",
+      "Trung tâm Y tế huyện Nam Sách"
+    ]
+  },
+  "vn0800726418": {
+    "name": "Trung tâm y tế thị xã Kinh Môn",
+    "aliases": [
+      "Trung tâm Y tế Kinh Môn",
+      "Trung tâm y tế thị xã Kinh Môn"
+    ]
+  },
+  "vn0800726760": {
+    "name": "Trung Tâm Y Tế Thành Phố Chí Linh",
+    "aliases": [
+      "Trung Tâm Y Tế Chí Linh",
+      "Trung Tâm Y Tế Thành Phố Chí Linh"
+    ]
+  },
+  "vn0800731457": {
+    "name": "Trung tâm y tế huyện Tứ Kỳ",
+    "aliases": [
+      "Trung tâm y tế Tứ Kỳ",
+      "Trung tâm y tế huyện Tứ Kỳ"
+    ]
+  },
+  "vn0800737378": {
+    "name": "Trung tâm y tế huyện Kim Thành",
+    "aliases": [
+      "Trung tâm y tế Kim Thành",
+      "Trung tâm y tế huyện Kim Thành"
+    ]
+  },
+  "vn0801258988": {
+    "name": "Trung tâm Y tế huyện Ninh Giang",
+    "aliases": [
+      "Trung tâm Y tế Ninh Giang",
+      "Trung tâm Y tế huyện Ninh Giang"
+    ]
+  },
+  "vn0900166495": {
+    "name": "Trung tâm Y tế huyện Phù Cừ",
+    "aliases": [
+      "Trung tâm Y tế Phù Cừ",
+      "Trung tâm Y tế huyện Phù Cừ"
+    ]
+  },
+  "vn0900241262": {
+    "name": "Bệnh viện y dược cổ truyền tỉnh Hưng Yên",
+    "aliases": [
+      "Bệnh viện y dược cổ truyền Hưng Yên",
+      "Bệnh viện y dược cổ truyền tỉnh Hưng Yên"
+    ]
+  },
+  "vn0900294793": {
+    "name": "Trung tâm y tế huyện Tiên Lữ",
+    "aliases": [
+      "Bệnh viện đa khoa Tiên Lữ",
+      "Trung tâm y tế Tiên Lữ",
+      "Trung tâm y tế huyện Tiên Lữ"
+    ]
+  },
+  "vn0900304681": {
+    "name": "Trung tâm y tế huyện Văn Giang",
+    "aliases": [
+      "Trung tâm Y tế Văn Giang",
+      "Trung tâm y tế huyện Văn Giang"
+    ]
+  },
+  "vn0900304836": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ÂN THI",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA ÂN THI",
+      "TRUNG TÂM Y TẾ HUYỆN ÂN THI"
+    ]
+  },
+  "vn0900524937": {
+    "name": "Trung tâm Bảo vệ, chăm sóc sức khỏe cán bộ tỉnh Hưng Yên",
+    "aliases": [
+      "Trung tâm Bảo vệ, chăm sóc sức khỏe cán bộ",
+      "Trung tâm Bảo vệ, chăm sóc sức khỏe cán bộ tỉnh Hưng Yên"
+    ]
+  },
+  "vn1000218079": {
+    "name": "Bệnh viện Y học cổ truyền Thái Bình",
+    "aliases": [
+      "Bệnh viện Lão khoa - Y học cổ truyền tỉnh Hưng Yên",
+      "Bệnh viện Y học cổ truyền Thái Bình"
+    ]
+  },
+  "vn1000255521": {
+    "name": "Trung tâm Kiểm soát bệnh tật tỉnh Thái Bình",
+    "aliases": [
+      "TRUNG TÂM KIỂM SOÁT BỆNH TẬT HƯNG YÊN",
+      "Trung tâm Kiểm soát bệnh tật tỉnh Thái Bình"
+    ]
+  },
+  "vn1000331677": {
+    "name": "BỆNH VIỆN ĐA KHOA TỈNH THÁI BÌNH",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA THÁI BÌNH",
+      "BỆNH VIỆN ĐA KHOA TỈNH THÁI BÌNH"
+    ]
+  },
+  "vn1000495675": {
+    "name": "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG THÁI BÌNH",
+    "aliases": [
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG",
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG THÁI BÌNH"
+    ]
+  },
+  "vn1000586121": {
+    "name": "Bệnh viện đa khoa Hưng Hà",
+    "aliases": [
+      "Bệnh viện đa khoa Hưng Hà",
+      "Bệnh viện đa khoa Hưng Hà Thái Bình"
+    ]
+  },
+  "vn1000586636": {
+    "name": "BỆNH VIỆN ĐA KHOA HUYỆN VŨ THƯ",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HUYỆN VŨ THƯ",
+      "BỆNH VIỆN ĐA KHOA VŨ THƯ"
+    ]
+  },
+  "vn1000586717": {
+    "name": "Bệnh viện Đa khoa Kiến Xương",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HUYỆN KIẾN XƯƠNG",
+      "Bệnh viện Đa khoa Kiến Xương",
+      "Bệnh viện Đa khoa huyện Kiến Xương"
+    ]
+  },
+  "vn1000751008": {
+    "name": "Bệnh viện Đa khoa Tiền Hải",
+    "aliases": [
+      "Bệnh viện Đa khoa Tiền Hải",
+      "Bệnh viện Đa khoa huyện Tiền Hải"
+    ]
+  },
+  "vn1000854815": {
+    "name": "Bệnh viện đa khoa huyện Quỳnh Phụ",
+    "aliases": [
+      "Bệnh viện đa khoa Quỳnh Phụ",
+      "Bệnh viện đa khoa huyện Quỳnh Phụ"
+    ]
+  },
+  "vn1100152833": {
+    "name": "BỆNH VIỆN ĐA KHOA TỈNH LONG AN",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA LONG AN",
+      "BỆNH VIỆN ĐA KHOA TỈNH LONG AN"
+    ]
+  },
+  "vn1100165920": {
+    "name": "Trung Tâm Y Tế Huyện Tân Thạnh",
+    "aliases": [
+      "Trung Tâm Y Tế Huyện Tân Thạnh",
+      "Trung Tâm Y Tế Khu Vực Tân Thạnh"
+    ]
+  },
+  "vn1100179232": {
+    "name": "Trung tâm Y tế huyện Thủ Thừa",
+    "aliases": [
+      "Trung tâm Y tế huyện Thủ Thừa",
+      "Trung tâm Y tế khu vực Thủ Thừa"
+    ]
+  },
+  "vn1100186208": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN TÂN HƯNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TÂN HƯNG",
+      "TRUNG TÂM Y TẾ KHU VỰC TÂN HƯNG"
+    ]
+  },
+  "vn1100210122": {
+    "name": "Trung tâm Y tế huyện Cần Đước",
+    "aliases": [
+      "Trung tâm Y tế huyện Cần Đước",
+      "Trung tâm Y tế khu vực Cần Đước"
+    ]
+  },
+  "vn1100629467": {
+    "name": "Bệnh viện đa khoa khu vực Kiến Tường",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Kiến Tường",
+      "Bệnh viện đa khoa khu vực Đồng Tháp Mười"
+    ]
+  },
+  "vn1100772675": {
+    "name": "Trung Tâm Y Tế Huyện Tân Trụ",
+    "aliases": [
+      "Trung Tâm Y Tế Huyện Tân Trụ",
+      "Trung Tâm Y Tế Khu Vực Tân Trụ"
+    ]
+  },
+  "vn1100791082": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC BẾN LỨC",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BẾN LỨC",
+      "TRUNG TÂM Y TẾ KHU VỰC BẾN LỨC"
+    ]
+  },
+  "vn1101054250": {
+    "name": "Trung tâm Y tế huyện Thạnh Hóa",
+    "aliases": [
+      "Trung tâm Y tế huyện Thạnh Hóa",
+      "Trung tâm Y tế khu vực Thạnh Hóa"
+    ]
+  },
+  "vn1101083815": {
+    "name": "Trung tâm Y tế huyện Đức Hòa",
+    "aliases": [
+      "Trung tâm Y tế huyện Đức Hòa",
+      "Trung tâm Y tế khu vực Đức Hòa"
+    ]
+  },
+  "vn1101216769": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ TÂN AN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC TÂN AN",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ TÂN AN"
+    ]
+  },
+  "vn1101283057": {
+    "name": "Trung tâm Kiểm soát bệnh tật tỉnh Tây Ninh",
+    "aliases": [
+      "Trung tâm Kiểm soát bệnh tật tỉnh Long An",
+      "Trung tâm Kiểm soát bệnh tật tỉnh Tây Ninh"
+    ]
+  },
+  "vn1101834645": {
+    "name": "Ban Quản lý dự án Đầu tư xây dựng Long An",
+    "aliases": [
+      "Ban Quản lý dự án Đầu tư xây dựng Long An",
+      "Ban Quản lý dự án đầu tư xây dựng các công trình dân dụng và công nghiệp tỉnh Long An"
+    ]
+  },
+  "vn1200336150": {
+    "name": "Trung tâm Y tế huyện Châu Thành",
+    "aliases": [
+      "Trung tâm Y tế huyện Châu Thành",
+      "Trung tâm Y tế khu vực Châu Thành"
+    ]
+  },
+  "vn1200337757": {
+    "name": "Bệnh viện Lao và Bệnh phổi Tiền Giang",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh phổi Tiền Giang",
+      "Bệnh viện Lao và bệnh Phổi Tiền Giang"
+    ]
+  },
+  "vn1200337771": {
+    "name": "Bệnh viện Mắt tỉnh Tiền Giang",
+    "aliases": [
+      "Bệnh viện Mắt",
+      "Bệnh viện Mắt tỉnh Tiền Giang"
+    ]
+  },
+  "vn1200337813": {
+    "name": "BỆNH VIỆN ĐA KHOA TỈNH TIỀN GIANG",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA TIỀN GIANG",
+      "BỆNH VIỆN ĐA KHOA TỈNH TIỀN GIANG"
+    ]
+  },
+  "vn1200338775": {
+    "name": "Trung tâm Y tế huyện Gò Công Tây",
+    "aliases": [
+      "Trung tâm Y tế huyện Gò Công Tây",
+      "Trung tâm Y tế Khu vực Gò Công Tây"
+    ]
+  },
+  "vn1200338895": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ GÒ CÔNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC GÒ CÔNG",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ GÒ CÔNG",
+      "TRUNG TÂM Y TẾ THỊ XÃ GÒ CÔNG"
+    ]
+  },
+  "vn1200656993": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CHỢ GẠO",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CHỢ GẠO",
+      "TRUNG TÂM Y TẾ KHU VỰC CHỢ GẠO"
+    ]
+  },
+  "vn1200660615": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CAI LẬY",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CAI LẬY",
+      "TRUNG TÂM Y TẾ KHU VỰC BÌNH PHÚ"
+    ]
+  },
+  "vn1200660679": {
+    "name": "Trung tâm Y tế thành phố Mỹ Tho",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Mỹ Tho",
+      "Trung tâm Y tế thành phố Mỹ Tho"
+    ]
+  },
+  "vn1200742071": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN TÂN PHÚ ĐÔNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TÂN PHÚ ĐÔNG",
+      "TRUNG TÂM Y TẾ KHU VỰC TÂN PHÚ ĐÔNG"
+    ]
+  },
+  "vn1201275937": {
+    "name": "TTYT HUYỆN CÁI BÈ",
+    "aliases": [
+      "TTYT HUYỆN CÁI BÈ",
+      "Trung tâm Y tế khu vực Cái Bè"
+    ]
+  },
+  "vn1201472491": {
+    "name": "Trung tâm Y tế thị xã Cai Lậy",
+    "aliases": [
+      "Trung tâm Y tế khu vực Cai Lậy",
+      "Trung tâm Y tế thị xã Cai Lậy"
+    ]
+  },
+  "vn1300243615": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CHỢ LÁCH",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC CHỢ LÁCH",
+      "TRUNG TÂM Y TẾ HUYỆN CHỢ LÁCH"
+    ]
+  },
+  "vn1300245108": {
+    "name": "Trung tâm Y tế khu vực Châu Thành",
+    "aliases": [
+      "Trung tâm Y tế huyện Châu Thành, tỉnh Bến Tre",
+      "Trung tâm Y tế khu vực Châu Thành"
+    ]
+  },
+  "vn1300247585": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN BÌNH ĐẠI",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BÌNH ĐẠI",
+      "TRUNG TÂM Y TẾ KHU VỰC BÌNH ĐẠI"
+    ]
+  },
+  "vn1300254663": {
+    "name": "Bệnh viện Y học cổ truyền Trần Văn An",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền Trần Văn An",
+      "Bệnh viện y học Cổ truyền tỉnh Bến Tre"
+    ]
+  },
+  "vn1300524630": {
+    "name": "Bệnh viện Tâm thần Bến Tre",
+    "aliases": [
+      "Bệnh viện Tâm thần Bến Tre",
+      "Bệnh viện Tâm thần tỉnh Bến Tre"
+    ]
+  },
+  "vn1301026476": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC GIỒNG TRÔM",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN GIỒNG TRÔM",
+      "TRUNG TÂM Y TẾ KHU VỰC GIỒNG TRÔM"
+    ]
+  },
+  "vn1301027310": {
+    "name": "Trung tâm Y tế Khu vực Thạnh Phú",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Thạnh Phú",
+      "Trung tâm Y tế huyện Thạnh Phú"
+    ]
+  },
+  "vn1400291066": {
+    "name": "Trung tâm Y tế Khu vực Sa Đéc 2",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Sa Đéc 2",
+      "Trung tâm Y tế huyện Châu Thành"
+    ]
+  },
+  "vn1400291323": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC LAI VUNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN LAI VUNG",
+      "TRUNG TÂM Y TẾ KHU VỰC LAI VUNG"
+    ]
+  },
+  "vn1400291362": {
+    "name": "Bệnh viện đa khoa Đồng Tháp",
+    "aliases": [
+      "Bệnh viện Đa khoa Đồng Tháp",
+      "Bệnh viện đa khoa Đồng Tháp"
+    ]
+  },
+  "vn1400291651": {
+    "name": "Trung tâm Kiểm soát Bệnh Tật",
+    "aliases": [
+      "Trung tâm Kiểm soát Bệnh Tật",
+      "Trung tâm Kiểm soát Bệnh Tật tỉnh Đồng Tháp"
+    ]
+  },
+  "vn1400524306": {
+    "name": "Bệnh viện Phục hồi chức năng tỉnh Đồng Tháp",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng",
+      "Bệnh viện Phục hồi chức năng tỉnh Đồng Tháp"
+    ]
+  },
+  "vn1400526198": {
+    "name": "Trung tâm Y tế huyện Thanh Bình",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC THANH BÌNH",
+      "Trung tâm Y tế huyện Thanh Bình"
+    ]
+  },
+  "vn1400526744": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN LẤP VÒ",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN LẤP VÒ",
+      "TRUNG TÂM Y TẾ KHU VỰC LẤP VÒ"
+    ]
+  },
+  "vn1400559940": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC TAM NÔNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TAM NÔNG",
+      "TRUNG TÂM Y TẾ KHU VỰC TAM NÔNG"
+    ]
+  },
+  "vn1400562157": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC TÂN HỒNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TÂN HỒNG",
+      "TRUNG TÂM Y TẾ KHU VỰC TÂN HỒNG"
+    ]
+  },
+  "vn1401381386": {
+    "name": "Bệnh viện Phổi tỉnh Đồng Tháp",
+    "aliases": [
+      "Bệnh viện Phổi tỉnh Đồng Tháp",
+      "Bệnh viện Phổi Đồng Tháp"
+    ]
+  },
+  "vn1500453835": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ BÌNH MINH",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC BÌNH MINH",
+      "TRUNG TÂM Y TẾ KHU VỰC BÌNH MINH",
+      "TRUNG TÂM Y TẾ THỊ XÃ BÌNH MINH"
+    ]
+  },
+  "vn1500456579": {
+    "name": "BỆNH VIỆN ĐA KHOA KHU VỰC LONG HỒ",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC LONG HỒ",
+      "TRUNG TÂM Y TẾ HUYỆN LONG HỒ"
+    ]
+  },
+  "vn1500461635": {
+    "name": "Trung tâm Y tế huyện Trà Ôn",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Trà Ôn",
+      "Trung tâm Y tế huyện Trà Ôn"
+    ]
+  },
+  "vn1500473479": {
+    "name": "Trung tâm Y tế huyện Tam Bình",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Tam Bình",
+      "Trung tâm Y tế huyện Tam Bình",
+      "Trung tâm Y tế khu vực Tam Bình"
+    ]
+  },
+  "vn1600258203": {
+    "name": "Trung tâm Kiểm nghiệm Thưốc, Mỹ phẩm, Thực phẩm tỉnh An Giang",
+    "aliases": [
+      "Trung tâm Kiểm nghiệm Dược phẩm, Mỹ phẩm tỉnh An Giang",
+      "Trung tâm Kiểm nghiệm Thưốc, Mỹ phẩm, Thực phẩm tỉnh An Giang"
+    ]
+  },
+  "vn1600258404": {
+    "name": "Bệnh viện Đa khoa An Giang",
+    "aliases": [
+      "Bệnh viện Đa khoa An Giang",
+      "Bệnh viện Đa khoa Trung tâm An Giang"
+    ]
+  },
+  "vn1600360817": {
+    "name": "Bệnh viện Đa khoa khu vực tỉnh An Giang",
+    "aliases": [
+      "Bệnh viện Đa khoa Châu Đốc",
+      "Bệnh viện Đa khoa khu vực tỉnh An Giang"
+    ]
+  },
+  "vn1600631979": {
+    "name": "BỆNH VIỆN MẮT - TAI MŨI HỌNG - RĂNG HÀM MẶT AN GIANG",
+    "aliases": [
+      "BỆNH VIỆN MẮT - TAI MŨI HỌNG - RĂNG HÀM MẶT AN GIANG",
+      "BỆNH VIỆN MẮT - TAI MŨI HỌNG - RĂNG HÀM MẶT TỈNH AN GIANG",
+      "Bệnh viện MẮT TAI MŨI HỌNG RĂNG HÀM MẶT AN GIANG"
+    ]
+  },
+  "vn1600826294": {
+    "name": "TRUNG TÂM Y TẾ THOẠI SƠN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN THOẠI SƠN",
+      "TRUNG TÂM Y TẾ THOẠI SƠN"
+    ]
+  },
+  "vn1601986540": {
+    "name": "BỆNH VIỆN SẢN - NHI AN GIANG",
+    "aliases": [
+      "BỆNH VIỆN SẢN - NHI AN GIANG",
+      "BỆNH VIỆN SẢN NHI AN GIANG"
+    ]
+  },
+  "vn1602059404": {
+    "name": "Trung tâm y tế huyện Châu Phú",
+    "aliases": [
+      "Trung tâm y tế Châu Phú",
+      "Trung tâm y tế huyện Châu Phú"
+    ]
+  },
+  "vn1700284905": {
+    "name": "BỆNH VIỆN Y DƯỢC CỔ TRUYỀN TỈNH KIÊN GIANG",
+    "aliases": [
+      "BỆNH VIỆN Y DƯỢC CỔ TRUYỀN KIÊN GIANG",
+      "BỆNH VIỆN Y DƯỢC CỔ TRUYỀN TỈNH KIÊN GIANG"
+    ]
+  },
+  "vn1700285659": {
+    "name": "Bệnh viện đa khoa tỉnh Kiên Giang",
+    "aliases": [
+      "Bệnh viện Đa khoa Kiên Giang",
+      "Bệnh viện đa khoa tỉnh Kiên Giang"
+    ]
+  },
+  "vn1700534545": {
+    "name": "Trung tâm y tế huyện Hòn Đất",
+    "aliases": [
+      "Trung tâm Y tế Hòn Đất",
+      "Trung tâm y tế huyện Hòn Đất"
+    ]
+  },
+  "vn1700661800": {
+    "name": "Trung tâm Y tế Thành phố Hà Tiên",
+    "aliases": [
+      "Trung tâm Y tế Hà Tiên",
+      "Trung tâm Y tế Thành phố Hà Tiên"
+    ]
+  },
+  "vn1702139572": {
+    "name": "Bệnh viện Lao và Bệnh phổi tỉnh Kiên Giang",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh phổi tỉnh Kiên Giang",
+      "Bệnh viện Phổi Kiên Giang"
+    ]
+  },
+  "vn1702143508": {
+    "name": "Trung tâm Y tế huyện An Minh",
+    "aliases": [
+      "Trung tâm Y tế An Minh",
+      "Trung tâm Y tế huyện An Minh"
+    ]
+  },
+  "vn1702143850": {
+    "name": "TRUNG TÂM Y TẾ GÒ QUAO",
+    "aliases": [
+      "TRUNG TÂM Y TẾ GÒ QUAO",
+      "TRUNG TÂM Y TẾ HUYỆN GÒ QUAO"
+    ]
+  },
+  "vn1702144780": {
+    "name": "TRUNG TÂM Y TẾ GIỒNG RIỀNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ GIỒNG RIỀNG",
+      "TRUNG TÂM Y TẾ HUYỆN GIỒNG RIỀNG"
+    ]
+  },
+  "vn1702146072": {
+    "name": "Trung tâm Y tế huyện Tân Hiệp",
+    "aliases": [
+      "Trung tâm Y tế Tân Hiệp",
+      "Trung tâm Y tế huyện Tân Hiệp"
+    ]
+  },
+  "vn1702151280": {
+    "name": "Trung tâm Y tế huyện Vĩnh Thuận",
+    "aliases": [
+      "Trung tâm Y tế Vĩnh Thuận",
+      "Trung tâm Y tế huyện Vĩnh Thuận"
+    ]
+  },
+  "vn1702152005": {
+    "name": "Trung tâm Y tế Phú Quốc",
+    "aliases": [
+      "Trung tâm Y tế Phú Quốc",
+      "Trung tâm Y tế thành phố Phú Quốc"
+    ]
+  },
+  "vn1702217372": {
+    "name": "BỆNH VIỆN SẢN NHI TỈNH KIÊN GIANG",
+    "aliases": [
+      "BỆNH VIỆN SẢN NHI KIÊN GIANG",
+      "BỆNH VIỆN SẢN NHI TỈNH KIÊN GIANG"
+    ]
+  },
+  "vn1702218753": {
+    "name": "BỆNH VIỆN UNG BƯỚU TỈNH KIÊN GIANG",
+    "aliases": [
+      "BỆNH VIỆN UNG BƯỚU KIÊN GIANG",
+      "BỆNH VIỆN UNG BƯỚU TỈNH KIÊN GIANG"
+    ]
+  },
+  "vn1800271755": {
+    "name": "Bệnh viện Mắt và Răng Hàm Mặt thành phố Cần Thơ",
+    "aliases": [
+      "Bệnh viện Mắt - Răng Hàm Mặt thành phố Cần Thơ",
+      "Bệnh viện Mắt và Răng Hàm Mặt thành phố Cần Thơ"
+    ]
+  },
+  "vn1800271762": {
+    "name": "Bệnh viện Nhi đồng Cần Thơ",
+    "aliases": [
+      "Bệnh viện Nhi đồng Cần Thơ",
+      "Bệnh viện Nhi đồng thành phố Cần Thơ"
+    ]
+  },
+  "vn1800271931": {
+    "name": "BỆNH VIỆN ĐA KHOA QUẬN Ô MÔN",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA QUẬN Ô MÔN",
+      "Trung tâm Y tế khu vực Ô Môn"
+    ]
+  },
+  "vn1800273858": {
+    "name": "Bệnh viện Đa khoa quận Thốt Nốt",
+    "aliases": [
+      "Bệnh viện Đa khoa quận Thốt Nốt",
+      "Trung tâm Y Tế khu vực Thốt Nốt"
+    ]
+  },
+  "vn1800553238": {
+    "name": "Bệnh Viện Đa Khoa Huyện Vĩnh Thạnh",
+    "aliases": [
+      "Bệnh Viện Đa Khoa Huyện Vĩnh Thạnh",
+      "Trung Tâm Y Tế Khu Vực Vĩnh Thạnh"
+    ]
+  },
+  "vn1801031019": {
+    "name": "Trung tâm Y tế huyện Thới Lai",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Thới Lai",
+      "Trung tâm Y tế huyện Thới Lai"
+    ]
+  },
+  "vn1801323396": {
+    "name": "BỆNH VIỆN QUÂN Y 121 CỤC HẬU CẦN QUÂN KHU 9",
+    "aliases": [
+      "BỆNH VIỆN QUÂN Y 121 CỤC HẬU CẦN QUÂN KHU 9",
+      "BỆNH VIỆN QUÂN Y 121 CỤC HẬU CẦN-KỸ THUẬT QK9"
+    ]
+  },
+  "vn1900175212": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN HÒA BÌNH",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HÒA BÌNH",
+      "TRUNG TÂM Y TẾ HUYỆN HÒA BÌNH"
+    ]
+  },
+  "vn1900327874": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC GIÁ RAI",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC GIÁ RAI",
+      "TRUNG TÂM Y TẾ THỊ XÃ GIÁ RAI"
+    ]
+  },
+  "vn1900345506": {
+    "name": "Trung tâm Y tế huyện Phước Long",
+    "aliases": [
+      "Bệnh viện đa khoa Phước Long",
+      "Trung tâm Y tế huyện Phước Long",
+      "Trung tâm Y tế khu vực Phước Long"
+    ]
+  },
+  "vn1900386573": {
+    "name": "Trung tâm Y tế khu vực Đông Hải",
+    "aliases": [
+      "Trung tâm Y tế khu vực Đông Hải",
+      "Trung tâm y tế huyện Đông Hải"
+    ]
+  },
+  "vn1900413266": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN VĨNH LỢI",
+    "aliases": [
+      "Bệnh Viện Đa khoa Vĩnh Lợi",
+      "TRUNG TÂM Y TẾ HUYỆN VĨNH LỢI",
+      "TRUNG TÂM Y TẾ KHU VỰC VĨNH LỢI"
+    ]
+  },
+  "vn1900414414": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN HỒNG DÂN",
+    "aliases": [
+      "Bệnh viện Đa khoa Hồng Dân",
+      "TRUNG TÂM Y TẾ HUYỆN HỒNG DÂN",
+      "Trung tâm Y tế khu vực Hồng Dân"
+    ]
+  },
+  "vn1900608586": {
+    "name": "Bệnh viện Quân Dân y tỉnh Bạc Liêu",
+    "aliases": [
+      "Bệnh viện Quân Dân Y Tỉnh Bạc Liêu",
+      "Bệnh viện Quân Dân y Bạc Liêu",
+      "Bệnh viện Quân Dân y tỉnh Bạc Liêu"
+    ]
+  },
+  "vn1900652507": {
+    "name": "Bệnh viện Lao và Bệnh Phổi tỉnh Bạc Liêu",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh Phổi Bạc Liêu",
+      "Bệnh viện Lao và Bệnh Phổi tỉnh Bạc Liêu"
+    ]
+  },
+  "vn1900655113": {
+    "name": "Bệnh viện chuyên khoa Tâm thần Bạc Liêu",
+    "aliases": [
+      "Bệnh viện chuyên khoa Tâm thần",
+      "Bệnh viện chuyên khoa Tâm thần Bạc Liêu"
+    ]
+  },
+  "vn2000434593": {
+    "name": "BỆNH VIỆN SẢN NHI CÀ MAU",
+    "aliases": [
+      "BỆNH VIỆN SẢN - NHI CÀ MAU",
+      "BỆNH VIỆN SẢN NHI CÀ MAU"
+    ]
+  },
+  "vn2100190887": {
+    "name": "Bệnh viện đa khoa Tỉnh Trà Vinh",
+    "aliases": [
+      "Bệnh viện Đa khoa Trà Vinh",
+      "Bệnh viện đa khoa Tỉnh Trà Vinh"
+    ]
+  },
+  "vn2100618273": {
+    "name": "Ban Quản lý dự án đầu tư xây dựng các công trình Dân dụng và Công nghiệp tỉnh Trà Vinh",
+    "aliases": [
+      "Ban Quản lý dự án dân dụng và công nghiệp tỉnh Vĩnh Long",
+      "Ban Quản lý dự án đầu tư xây dựng các công trình Dân dụng và Công nghiệp tỉnh Trà Vinh"
+    ]
+  },
+  "vn2200175730": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC VĨNH CHÂU",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC VĨNH CHÂU",
+      "TRUNG TÂM Y TẾ THỊ XÃ VĨNH CHÂU"
+    ]
+  },
+  "vn2200175787": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN KẾ SÁCH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN KẾ SÁCH",
+      "TRUNG TÂM Y TẾ KHU VỰC KẾ SÁCH"
+    ]
+  },
+  "vn2200175995": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC SÓC TRĂNG",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC SÓC TRĂNG",
+      "TRUNG TÂM Y TẾ KHU VỰC SÓC TRĂNG",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ SÓC TRĂNG"
+    ]
+  },
+  "vn2200176283": {
+    "name": "Bệnh viện 30 Tháng 4 tỉnh Sóc Trăng",
+    "aliases": [
+      "Bệnh viện 30 Tháng 4 tỉnh Sóc Trăng",
+      "Bệnh viện Phổi Sóc Trăng"
+    ]
+  },
+  "vn2200176300": {
+    "name": "Bệnh viện đa khoa tỉnh Sóc Trăng",
+    "aliases": [
+      "Bệnh viện đa khoa Sóc Trăng",
+      "Bệnh viện đa khoa tỉnh Sóc Trăng"
+    ]
+  },
+  "vn2200209588": {
+    "name": "Bệnh viện chuyên khoa 27 tháng 2 tỉnh Sóc Trăng",
+    "aliases": [
+      "Bệnh viện Tâm thần – Da liễu – Mắt Sóc Trăng",
+      "Bệnh viện chuyên khoa 27 tháng 2 tỉnh Sóc Trăng"
+    ]
+  },
+  "vn2200321477": {
+    "name": "Trung Tâm Y tế huyện Cù Lao Dung",
+    "aliases": [
+      "Trung Tâm Y tế huyện Cù Lao Dung",
+      "Trung Tâm Y tế khu vực Cù Lao Dung"
+    ]
+  },
+  "vn2200374856": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ NGÃ NĂM",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC NGÃ NĂM",
+      "TRUNG TÂM Y TẾ THỊ XÃ NGÃ NĂM"
+    ]
+  },
+  "vn2200385287": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN MỸ XUYÊN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN MỸ XUYÊN",
+      "TRUNG TÂM Y TẾ KHU VỰC MỸ XUYÊN"
+    ]
+  },
+  "vn2200567985": {
+    "name": "Bệnh viện quân dân y tỉnh Sóc Trăng",
+    "aliases": [
+      "Bệnh viện Quân Dân y Sóc Trăng",
+      "Bệnh viện quân dân y tỉnh Sóc Trăng"
+    ]
+  },
+  "vn2200726113": {
+    "name": "BỆNH VIỆN CHUYÊN KHOA SẢN - NHI TỈNH SÓC TRĂNG",
+    "aliases": [
+      "BỆNH VIỆN CHUYÊN KHOA SẢN - NHI TỈNH SÓC TRĂNG",
+      "BỆNH VIỆN SẢN - NHI SÓC TRĂNG"
+    ]
+  },
+  "vn2300157943": {
+    "name": "Trung tâm Y tế thị xã Quế Võ",
+    "aliases": [
+      "Bệnh viện Đa khoa Quế Võ",
+      "Trung tâm Y tế Quế Võ",
+      "Trung tâm Y tế thị xã Quế Võ"
+    ]
+  },
+  "vn2300199982": {
+    "name": "Bệnh viện đa khoa tỉnh Bắc Ninh",
+    "aliases": [
+      "Bệnh viện Đa khoa Bắc Ninh số 2",
+      "Bệnh viện đa khoa tỉnh Bắc Ninh"
+    ]
+  },
+  "vn2300302911": {
+    "name": "Trung tâm Y tế huyện Gia Bình",
+    "aliases": [
+      "Trung tâm Y tế Gia Bình",
+      "Trung tâm Y tế huyện Gia Bình"
+    ]
+  },
+  "vn2300303270": {
+    "name": "Trung tâm y tế huyện Tiên Du",
+    "aliases": [
+      "Bệnh viện Đa khoa Tiên Du",
+      "Trung tâm y tế huyện Tiên Du"
+    ]
+  },
+  "vn2300303506": {
+    "name": "Trung tâm Y tế huyện Lương Tài",
+    "aliases": [
+      "Bệnh viện Đa khoa Lương Tài",
+      "Trung tâm Y tế Lương Tài",
+      "Trung tâm Y tế huyện Lương Tài"
+    ]
+  },
+  "vn2300303753": {
+    "name": "Trung tâm Y tế thành phố Từ Sơn",
+    "aliases": [
+      "Bệnh viện Đa khoa Từ Sơn",
+      "Trung tâm Y tế Từ Sơn",
+      "Trung tâm Y tế thành phố Từ Sơn"
+    ]
+  },
+  "vn2300305743": {
+    "name": "Trung tâm Y tế huyện Yên Phong",
+    "aliases": [
+      "Bệnh viện đa khoa Yên Phong",
+      "Trung tâm Y tế Yên Phong",
+      "Trung tâm Y tế huyện Yên Phong"
+    ]
+  },
+  "vn2300305983": {
+    "name": "Trung tâm y tế Huyện Thuận Thành",
+    "aliases": [
+      "Bệnh viện đa khoa Thuận Thành",
+      "Trung tâm y tế Huyện Thuận Thành",
+      "Trung tâm y tế thị xã Thuận Thành"
+    ]
+  },
+  "vn2300999717": {
+    "name": "Trung tâm kiểm soát bệnh tật tỉnh Bắc Ninh",
+    "aliases": [
+      "Trung tâm Kiểm soát bệnh tật Bắc Ninh",
+      "Trung tâm Kiểm soát bệnh tật Bắc Ninh số 2",
+      "Trung tâm kiểm soát bệnh tật tỉnh Bắc Ninh"
+    ]
+  },
+  "vn2400210904": {
+    "name": "SỞ Y TẾ TỈNH BẮC NINH",
+    "aliases": [
+      "SỞ Y TẾ TỈNH BẮC NINH",
+      "Sở Y tế tỉnh Bắc Giang"
+    ]
+  },
+  "vn2400229574": {
+    "name": "Bệnh viện Đa khoa tỉnh Bắc Giang",
+    "aliases": [
+      "Bệnh viện Đa khoa Bắc Ninh số 1",
+      "Bệnh viện Đa khoa tỉnh Bắc Giang"
+    ]
+  },
+  "vn2400282458": {
+    "name": "Bệnh viện Sản - Nhi Bắc Giang",
+    "aliases": [
+      "Bệnh viện Sản - Nhi Bắc Giang",
+      "Bệnh viện Sản - Nhi Bắc Ninh số 1"
+    ]
+  },
+  "vn2400290836": {
+    "name": "Trung tâm Y tế huyện Tân Yên",
+    "aliases": [
+      "Bệnh viện Đa khoa Tân Yên",
+      "Trung tâm Y tế huyện Tân Yên"
+    ]
+  },
+  "vn2400333430": {
+    "name": "Bệnh viện Phục hồi chức năng Bắc Ninh",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng Bắc Ninh",
+      "Bệnh viện Phục hồi chức năng tỉnh Bắc Giang"
+    ]
+  },
+  "vn2400333670": {
+    "name": "Bệnh viện Tâm thần tỉnh Bắc Giang",
+    "aliases": [
+      "Bệnh viện Sức khoẻ Tâm thần Bắc Ninh số 1",
+      "Bệnh viện Tâm thần tỉnh Bắc Giang"
+    ]
+  },
+  "vn2400334699": {
+    "name": "Bệnh viện Y học Cổ truyền tỉnh Bắc Giang",
+    "aliases": [
+      "Bệnh viện Y học Cổ truyền Bắc Ninh",
+      "Bệnh viện Y học Cổ truyền tỉnh Bắc Giang"
+    ]
+  },
+  "vn2400351711": {
+    "name": "Trung tâm Y tế Bắc Ninh số 1",
+    "aliases": [
+      "Bệnh viện Đa khoa Yên Dũng",
+      "Trung tâm Y tế Bắc Ninh số 1",
+      "Trung tâm Y tế thành phố Bắc Giang"
+    ]
+  },
+  "vn2400365993": {
+    "name": "Bệnh viện Phổi Bắc Giang",
+    "aliases": [
+      "Bệnh viện Phổi Bắc Giang",
+      "Bệnh viện Phổi Bắc Ninh số 1"
+    ]
+  },
+  "vn2400406819": {
+    "name": "Phòng khám đa khoa Giao thông vận tải Bắc Giang",
+    "aliases": [
+      "Phòng khám Đa khoa Giao thông vận tải Bắc Ninh",
+      "Phòng khám đa khoa Giao thông vận tải Bắc Giang"
+    ]
+  },
+  "vn2400470814": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN LẠNG GIANG",
+    "aliases": [
+      "Bệnh viện Đa khoa Lạng Giang",
+      "TRUNG TÂM Y TẾ HUYỆN LẠNG GIANG",
+      "TRUNG TÂM Y TẾ LẠNG GIANG"
+    ]
+  },
+  "vn2400477376": {
+    "name": "Trung tâm Y tế huyện Lục Ngạn",
+    "aliases": [
+      "Trung tâm Y tế Lục Ngạn",
+      "Trung tâm Y tế huyện Lục Ngạn"
+    ]
+  },
+  "vn2400479454": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ VIỆT YÊN",
+    "aliases": [
+      "Bệnh viện Đa khoa Việt Yên",
+      "TRUNG TÂM Y TẾ HUYỆN VIỆT YÊN",
+      "TRUNG TÂM Y TẾ THỊ XÃ VIỆT YÊN",
+      "TRUNG TÂM Y TẾ VIỆT YÊN"
+    ]
+  },
+  "vn2400480650": {
+    "name": "Trung tâm Y tế huyện Yên Thế",
+    "aliases": [
+      "Bệnh viện Đa khoa Yên Thế",
+      "Trung tâm Y tế Yên Thế",
+      "Trung tâm Y tế huyện Yên Thế"
+    ]
+  },
+  "vn2400482947": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN SƠN ĐỘNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN SƠN ĐỘNG",
+      "TRUNG TÂM Y TẾ SƠN ĐỘNG"
+    ]
+  },
+  "vn2400856409": {
+    "name": "Trung tâm Y tế huyện Hiệp Hòa",
+    "aliases": [
+      "Bệnh viện Đa khoa Hiệp Hòa",
+      "Trung tâm Y tế Hiệp Hòa",
+      "Trung tâm Y tế huyện Hiệp Hòa"
+    ]
+  },
+  "vn2400857032": {
+    "name": "Trung tâm y tế huyện Lục Nam",
+    "aliases": [
+      "Bệnh viện Đa khoa Lục Nam",
+      "Trung tâm Y tế Lục Nam",
+      "Trung tâm y tế huyện Lục Nam"
+    ]
+  },
+  "vn2400932593": {
+    "name": "TRUNG TÂM Y TẾ CÁC KHU CÔNG NGHIỆP TỈNH BẮC GIANG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ CÁC KHU CÔNG NGHIỆP BẮC NINH",
+      "TRUNG TÂM Y TẾ CÁC KHU CÔNG NGHIỆP TỈNH BẮC GIANG"
+    ]
+  },
+  "vn2500224964": {
+    "name": "Bệnh viện phục hồi chức năng tỉnh Vĩnh Phúc",
+    "aliases": [
+      "Bệnh viện phục hồi chức năng Vĩnh Phúc",
+      "Bệnh viện phục hồi chức năng tỉnh Vĩnh Phúc"
+    ]
+  },
+  "vn2500225132": {
+    "name": "BỆNH VIỆN GIAO THÔNG VẬN TẢI VĨNH PHÚC",
+    "aliases": [
+      "BỆNH VIỆN GIAO THÔNG VĨNH PHÚC",
+      "BỆNH VIỆN GIAO THÔNG VẬN TẢI VĨNH PHÚC"
+    ]
+  },
+  "vn2500225196": {
+    "name": "Bệnh viện Đa khoa tỉnh Vĩnh Phúc",
+    "aliases": [
+      "Bệnh viện Đa khoa Vĩnh Phúc",
+      "Bệnh viện Đa khoa tỉnh Vĩnh Phúc"
+    ]
+  },
+  "vn2500225781": {
+    "name": "Bệnh viện Đa khoa khu vực Phúc Yên",
+    "aliases": [
+      "Bệnh viện Đa khoa Phúc Yên",
+      "Bệnh viện Đa khoa khu vực Phúc Yên"
+    ]
+  },
+  "vn2500228045": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN VĨNH TƯỜNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN VĨNH TƯỜNG",
+      "TRUNG TÂM Y TẾ KHU VỰC VĨNH TƯỜNG"
+    ]
+  },
+  "vn2500228782": {
+    "name": "Bệnh viện đa khoa huyện Mê Linh",
+    "aliases": [
+      "Bệnh viện đa khoa Mê Linh",
+      "Bệnh viện đa khoa huyện Mê Linh"
+    ]
+  },
+  "vn2500230012": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC BÌNH XUYÊN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BÌNH XUYÊN",
+      "TRUNG TÂM Y TẾ KHU VỰC BÌNH XUYÊN"
+    ]
+  },
+  "vn2500251647": {
+    "name": "Trung tâm Y tế Huyện Tam Dương",
+    "aliases": [
+      "Trung tâm Y tế Huyện Tam Dương",
+      "Trung tâm Y tế Khu vực Tam Dương"
+    ]
+  },
+  "vn2500294658": {
+    "name": "Trung tâm y tế huyện Yên Lạc",
+    "aliases": [
+      "Trung tâm y tế huyện Yên Lạc",
+      "Trung tâm y tế khu vực Yên Lạc"
+    ]
+  },
+  "vn2500368839": {
+    "name": "Trung tâm Y tế huyện Sông Lô",
+    "aliases": [
+      "Trung tâm Y tế huyện Sông Lô",
+      "Trung tâm Y tế khu vực Sông Lô"
+    ]
+  },
+  "vn2500399516": {
+    "name": "Trung tâm y tế huyện Lập Thạch",
+    "aliases": [
+      "Trung tâm y tế huyện Lập Thạch",
+      "Trung tâm y tế khu vực Lập Thạch"
+    ]
+  },
+  "vn2500418455": {
+    "name": "Trung tâm Y tế huyện Tam Đảo",
+    "aliases": [
+      "Trung tâm Y tế huyện Tam Đảo",
+      "Trung tâm Y tế khu vực Tam Đảo"
+    ]
+  },
+  "vn2500449157": {
+    "name": "Bệnh viện Sản Nhi tỉnh Vĩnh Phúc",
+    "aliases": [
+      "Bệnh viện Sản Nhi Vĩnh Phúc",
+      "Bệnh viện Sản Nhi tỉnh Vĩnh Phúc"
+    ]
+  },
+  "vn2500500981": {
+    "name": "Bệnh viện tâm thần tỉnh Vĩnh Phúc",
+    "aliases": [
+      "Bệnh viện tâm thần Vĩnh Phúc",
+      "Bệnh viện tâm thần tỉnh Vĩnh Phúc"
+    ]
+  },
+  "vn2500520850": {
+    "name": "Trung tâm y tế thành phố Phúc Yên",
+    "aliases": [
+      "Trung tâm y tế Khu vực Phúc Yên",
+      "Trung tâm y tế thành phố Phúc Yên"
+    ]
+  },
+  "vn2600203157": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN THANH BA",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN THANH BA",
+      "TRUNG TÂM Y TẾ KHU VỰC THANH BA"
+    ]
+  },
+  "vn2600406661": {
+    "name": "Trung tâm Y tế huyện Yên Lập",
+    "aliases": [
+      "Trung tâm Y tế huyện Yên Lập",
+      "Trung tâm Y tế khu vực Yên Lập"
+    ]
+  },
+  "vn2600460651": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC TÂN SƠN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TÂN SƠN",
+      "TRUNG TÂM Y TẾ KHU VỰC TÂN SƠN"
+    ]
+  },
+  "vn2600493375": {
+    "name": "Trung tâm Y tế khu vực Hạ Hòa",
+    "aliases": [
+      "Trung tâm Y tế khu vực Hạ Hòa",
+      "Trung tâm y tế Hạ Hòa"
+    ]
+  },
+  "vn2600495894": {
+    "name": "Trung tâm y tế Huyện Đoan Hùng",
+    "aliases": [
+      "Trung tâm y tế Huyện Đoan Hùng",
+      "Trung tâm y tế khu vực Đoan Hùng"
+    ]
+  },
+  "vn2600527112": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN LÂM THAO",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN LÂM THAO",
+      "TRUNG TÂM Y TẾ KHU VỰC LÂM THAO"
+    ]
+  },
+  "vn2600561339": {
+    "name": "Trung tâm y tế huyện Tam Nông",
+    "aliases": [
+      "Trung tâm y tế Khu vực Tam Nông",
+      "Trung tâm y tế huyện Tam Nông"
+    ]
+  },
+  "vn2600576247": {
+    "name": "Trung tâm Y tế huyện Phù Ninh",
+    "aliases": [
+      "Trung tâm Y tế huyện Phù Ninh",
+      "Trung tâm Y tế khu vực Phù Ninh"
+    ]
+  },
+  "vn2600626762": {
+    "name": "Trung tâm y tế Huyện Thanh Sơn",
+    "aliases": [
+      "Trung tâm y tế Huyện Thanh Sơn",
+      "Trung tâm y tế khu vực Thanh Sơn"
+    ]
+  },
+  "vn2600634717": {
+    "name": "Bệnh viện Tâm thần Phú Thọ",
+    "aliases": [
+      "Bệnh viện Tâm thần Phú Thọ",
+      "Bệnh viện Tâm thần tỉnh Phú Thọ"
+    ]
+  },
+  "vn2600677407": {
+    "name": "Trung tâm y tế huyện Thanh Thủy",
+    "aliases": [
+      "Trung tâm y tế huyện Thanh Thủy",
+      "Trung tâm y tế khu vực Thanh Thủy"
+    ]
+  },
+  "vn2600694515": {
+    "name": "BỆNH VIỆN ĐA KHOA THỊ XÃ PHÚ THỌ",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC PHÚ THỌ",
+      "BỆNH VIỆN ĐA KHOA THỊ XÃ PHÚ THỌ"
+    ]
+  },
+  "vn2700268542": {
+    "name": "Bệnh Viện Y Học Cổ Truyền Ninh Bình",
+    "aliases": [
+      "Bệnh Viện Y HỌC CỔ TRUYỀN TỈNH NINH BÌNH",
+      "Bệnh Viện Y Học Cổ Truyền Ninh Bình"
+    ]
+  },
+  "vn2700396576": {
+    "name": "Trung tâm y tế huyện Yên Mô",
+    "aliases": [
+      "Bệnh viện đa khoa Yên Mô",
+      "Trung tâm y tế Yên Mô",
+      "Trung tâm y tế huyện Yên Mô"
+    ]
+  },
+  "vn2700526948": {
+    "name": "Bệnh viện đa khoa huyện Nho Quan",
+    "aliases": [
+      "Bệnh viện đa khoa Nho Quan",
+      "Bệnh viện đa khoa huyện Nho Quan"
+    ]
+  },
+  "vn2700594916": {
+    "name": "Bệnh viện phổi Ninh Bình",
+    "aliases": [
+      "Bệnh viện Phổi tỉnh Ninh Bình",
+      "Bệnh viện phổi Ninh Bình"
+    ]
+  },
+  "vn2700611216": {
+    "name": "Bệnh viện Sản Nhi Ninh Bình",
+    "aliases": [
+      "Bệnh viện Sản - Nhi tỉnh Ninh Bình",
+      "Bệnh viện Sản Nhi Ninh Bình"
+    ]
+  },
+  "vn2700612107": {
+    "name": "Bệnh viện Phục hồi chức năng Ninh Bình",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng Ninh Bình",
+      "Bệnh viện Phục hồi chức năng tỉnh Ninh Bình"
+    ]
+  },
+  "vn2700780380": {
+    "name": "Trung tâm y tế huyện Gia Viễn",
+    "aliases": [
+      "Trung tâm y tế Gia Viễn",
+      "Trung tâm y tế huyện Gia Viễn"
+    ]
+  },
+  "vn2700788887": {
+    "name": "Trung tâm Y tế huyện Yên Khánh",
+    "aliases": [
+      "Trung tâm Y tế Yên Khánh",
+      "Trung tâm Y tế huyện Yên Khánh"
+    ]
+  },
+  "vn2700892038": {
+    "name": "Trung tâm Y tế thành phố Tam Điệp",
+    "aliases": [
+      "Trung tâm Y tế Tam Điệp",
+      "Trung tâm Y tế thành phố Tam Điệp"
+    ]
+  },
+  "vn2800713892": {
+    "name": "Bệnh viện Y dược cổ truyền Thanh Hoá",
+    "aliases": [
+      "Bệnh viện Y dược cổ truyền Thanh Hoá",
+      "Bệnh viện Y dược cổ truyền tỉnh Thanh Hoá"
+    ]
+  },
+  "vn2800750453": {
+    "name": "Bệnh viện đa khoa huyện Hà Trung",
+    "aliases": [
+      "Bệnh viện Đa khoa Hà Trung",
+      "Bệnh viện đa khoa huyện Hà Trung"
+    ]
+  },
+  "vn2800756416": {
+    "name": "Bệnh viện Đa khoa huyện Triệu Sơn",
+    "aliases": [
+      "Bệnh viện Đa khoa Triệu Sơn",
+      "Bệnh viện Đa khoa huyện Triệu Sơn"
+    ]
+  },
+  "vn2800763188": {
+    "name": "Bệnh viện đa khoa Lang Chánh",
+    "aliases": [
+      "Bệnh viện đa khoa Lang Chánh",
+      "Bệnh viện đa khoa huyện Lang Chánh"
+    ]
+  },
+  "vn2800769165": {
+    "name": "Bệnh viện Đa khoa huyện Thọ Xuân",
+    "aliases": [
+      "Bệnh viện Đa khoa Thọ Xuân",
+      "Bệnh viện Đa khoa huyện Thọ Xuân"
+    ]
+  },
+  "vn2800792830": {
+    "name": "Bệnh viện đa khoa Cẩm Thủy",
+    "aliases": [
+      "Bệnh viện đa khoa Cẩm Thủy",
+      "Bệnh viện đa khoa huyện Cẩm Thủy"
+    ]
+  },
+  "vn2800794154": {
+    "name": "Bệnh viện Đa khoa Hạc Thành",
+    "aliases": [
+      "Bệnh viện Đa khoa Hạc Thành",
+      "Bệnh viện Đa khoa Thành phố Thanh Hoá"
+    ]
+  },
+  "vn2800795944": {
+    "name": "Bệnh viện đa khoa huyện Hậu Lộc",
+    "aliases": [
+      "Bệnh viện đa khoa Hậu Lộc",
+      "Bệnh viện đa khoa huyện Hậu Lộc"
+    ]
+  },
+  "vn2800822235": {
+    "name": "Bệnh viện đa khoa huyện Nông Cống",
+    "aliases": [
+      "Bệnh viện Đa khoa Nông Cống",
+      "Bệnh viện đa khoa huyện Nông Cống"
+    ]
+  },
+  "vn2801045863": {
+    "name": "Bệnh viện đa khoa huyện Yên Định",
+    "aliases": [
+      "Bệnh viện đa khoa Yên Định",
+      "Bệnh viện đa khoa huyện Yên Định"
+    ]
+  },
+  "vn2801069198": {
+    "name": "Bệnh viện đa khoa Nghi Sơn",
+    "aliases": [
+      "Bệnh viện đa khoa Nghi Sơn",
+      "Bệnh viện đa khoa khu vực Nghi Sơn"
+    ]
+  },
+  "vn2801070073": {
+    "name": "Bệnh viện đa khoa thị xã Bỉm Sơn",
+    "aliases": [
+      "Bệnh viện đa khoa Bỉm Sơn",
+      "Bệnh viện đa khoa thị xã Bỉm Sơn"
+    ]
+  },
+  "vn2801210806": {
+    "name": "Bệnh viện Đa khoa Mường Lát",
+    "aliases": [
+      "Bệnh viện Đa khoa Mường Lát",
+      "Bệnh viện Đa khoa huyện Mường Lát"
+    ]
+  },
+  "vn2801245277": {
+    "name": "Bệnh viện Đa khoa Quảng Xương",
+    "aliases": [
+      "Bệnh viện Đa khoa Quảng Xương",
+      "Bệnh viện Đa khoa huyện Quảng Xương"
+    ]
+  },
+  "vn2801281148": {
+    "name": "Bệnh viện đa khoa Huyện Vĩnh Lộc",
+    "aliases": [
+      "Bệnh viện đa khoa Huyện Vĩnh Lộc",
+      "Bệnh viện đa khoa Vĩnh Lộc"
+    ]
+  },
+  "vn2801338891": {
+    "name": "Bệnh viện đa khoa huyện Thường Xuân",
+    "aliases": [
+      "Bệnh viện đa khoa Thường Xuân",
+      "Bệnh viện đa khoa huyện Thường Xuân"
+    ]
+  },
+  "vn2801401695": {
+    "name": "Bệnh viện đa khoa huyện Như thanh",
+    "aliases": [
+      "Bệnh viện Đa khoa Như Thanh",
+      "Bệnh viện đa khoa huyện Như thanh"
+    ]
+  },
+  "vn2801404664": {
+    "name": "Bệnh viện Đa khoa Khu vực Ngọc Lặc",
+    "aliases": [
+      "Bệnh viện Đa khoa Khu vực Ngọc Lặc",
+      "Bệnh viện Đa khoa Ngọc Lặc"
+    ]
+  },
+  "vn2801404826": {
+    "name": "Bệnh viện Đa khoa huyện Bá Thước",
+    "aliases": [
+      "Bệnh viện Đa khoa Bá Thước",
+      "Bệnh viện Đa khoa huyện Bá Thước"
+    ]
+  },
+  "vn2801416349": {
+    "name": "Bệnh viện Đa khoa huyện Hoằng Hóa",
+    "aliases": [
+      "Bệnh viện Đa khoa Hoằng Hóa",
+      "Bệnh viện Đa khoa huyện Hoằng Hóa"
+    ]
+  },
+  "vn2900569000": {
+    "name": "Bệnh viện đa khoa huyện Đô Lương",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Đô Lương",
+      "Bệnh viện đa khoa Đô Lương"
+    ]
+  },
+  "vn2900696418": {
+    "name": "Bệnh viện Đa khoa huyện Yên Thành",
+    "aliases": [
+      "Bệnh viện Đa khoa Yên Thành",
+      "Bệnh viện Đa khoa huyện Yên Thành"
+    ]
+  },
+  "vn2900927457": {
+    "name": "Bênh viện Phổi Nghệ An",
+    "aliases": [
+      "Bênh viện Phổi Nghệ An",
+      "Bệnh viện Phổi Nghệ An"
+    ]
+  },
+  "vn2900927496": {
+    "name": "BỆNH VIỆN ĐA KHOA HUYỆN NGHI LỘC",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HUYỆN NGHI LỘC",
+      "Bệnh viện đa khoa Nghi Lộc"
+    ]
+  },
+  "vn2900995859": {
+    "name": "Trung tâm Y tế huyện Tân Kỳ",
+    "aliases": [
+      "Trung tâm Y tế Tân Kỳ",
+      "Trung tâm Y tế huyện Tân Kỳ"
+    ]
+  },
+  "vn2901018119": {
+    "name": "Trung tâm Y tế huyện Nghĩa Đàn",
+    "aliases": [
+      "Trung tâm Y tế Nghĩa Đàn",
+      "Trung tâm Y tế huyện Nghĩa Đàn"
+    ]
+  },
+  "vn2901021295": {
+    "name": "Bệnh viện Đa khoa Thanh Chương",
+    "aliases": [
+      "Bệnh viện Đa khoa Thanh Chương",
+      "Bệnh viện Đa khoa huyện Thanh Chương"
+    ]
+  },
+  "vn2901116814": {
+    "name": "Trung tâm Y tế huyện Quỳ Châu",
+    "aliases": [
+      "Trung tâm Y tế Quỳ Châu",
+      "Trung tâm Y tế huyện Quỳ Châu"
+    ]
+  },
+  "vn2901133619": {
+    "name": "Trung tâm Y tế huyện Tương Dương",
+    "aliases": [
+      "Trung tâm Y tế Tương Dương",
+      "Trung tâm Y tế huyện Tương Dương"
+    ]
+  },
+  "vn2901731626": {
+    "name": "Bệnh viện Quân y 4, Cục Hậu cần - Kỹ thuật Quân khu 4",
+    "aliases": [
+      "Bệnh viện Quân y 4, Cục Hậu cần - Kỹ thuật Quân khu 4",
+      "Bệnh viện Quân y 4, Cục Hậu cần Quân khu 4"
+    ]
+  },
+  "vn2901734183": {
+    "name": "Bệnh viện Đa khoa huyện Quỳnh Lưu, tỉnh Nghệ An",
+    "aliases": [
+      "Bệnh viện Đa khoa Quỳnh Lưu",
+      "Bệnh viện Đa khoa huyện Quỳnh Lưu, tỉnh Nghệ An"
+    ]
+  },
+  "vn3000496866": {
+    "name": "Bệnh viện Tâm thần Hà Tĩnh",
+    "aliases": [
+      "Bệnh viện Sức khỏe tâm thần Hà Tĩnh",
+      "Bệnh viện Tâm thần Hà Tĩnh"
+    ]
+  },
+  "vn3000499786": {
+    "name": "Trung tâm y tế Cẩm Xuyên",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Cẩm Xuyên",
+      "Trung tâm y tế Cẩm Xuyên",
+      "Trung tâm y tế huyện Cẩm Xuyên"
+    ]
+  },
+  "vn3000560991": {
+    "name": "Trung tâm Y tế huyện Hương Sơn",
+    "aliases": [
+      "Trung tâm Y tế Hương Sơn",
+      "Trung tâm Y tế huyện Hương Sơn"
+    ]
+  },
+  "vn3000562501": {
+    "name": "Trung tâm Y tế huyện Nghi Xuân",
+    "aliases": [
+      "Trung tâm Y tế Tiên Điền",
+      "Trung tâm Y tế huyện Nghi Xuân"
+    ]
+  },
+  "vn3000640679": {
+    "name": "Trung tâm Y tế thị xã Hồng Lĩnh",
+    "aliases": [
+      "Trung tâm Y tế Hồng Lĩnh",
+      "Trung tâm Y tế thị xã Hồng Lĩnh"
+    ]
+  },
+  "vn3000658669": {
+    "name": "Trung tâm Y tế huyện Thạch Hà",
+    "aliases": [
+      "Trung tâm Y tế Thạch Hà",
+      "Trung tâm Y tế huyện Thạch Hà"
+    ]
+  },
+  "vn3000672889": {
+    "name": "Bệnh viện đa khoa Lộc Hà",
+    "aliases": [
+      "Bệnh viện đa khoa Lộc Hà",
+      "Bệnh viện đa khoa huyện Lộc Hà",
+      "Trung tâm Y tế huyện Lộc Hà"
+    ]
+  },
+  "vn3000679098": {
+    "name": "Trung tâm y tế Kỳ Anh",
+    "aliases": [
+      "Trung tâm y tế Kỳ Anh",
+      "Trung tâm y tế huyện Kỳ Anh"
+    ]
+  },
+  "vn3002183114": {
+    "name": "Trung tâm Y tế Vũ Quang",
+    "aliases": [
+      "Trung tâm Y tế Vũ Quang",
+      "Trung tâm Y tế huyện Vũ Quang"
+    ]
+  },
+  "vn3002183675": {
+    "name": "Trung tâm y tế huyện Can Lộc",
+    "aliases": [
+      "Trung tâm y tế Can Lộc",
+      "Trung tâm y tế huyện Can Lộc"
+    ]
+  },
+  "vn3100175760": {
+    "name": "Bệnh viện đa khoa huyện Tuyên Hóa",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Tuyên Hóa",
+      "Bệnh viện đa khoa khu vực Tuyên Hóa"
+    ]
+  },
+  "vn3100194675": {
+    "name": "Sở Y tế tỉnh Quảng Trị (mới)",
+    "aliases": [
+      "Sở Y tế tỉnh Quảng Bình",
+      "Sở Y tế tỉnh Quảng Trị (mới)"
+    ]
+  },
+  "vn3100195502": {
+    "name": "Bệnh viện đa khoa huyện Quảng Ninh, tỉnh Quảng Bình",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Quảng Ninh, tỉnh Quảng Bình",
+      "Bệnh viện đa khoa khu vực Quảng Ninh, tỉnh Quảng Trị"
+    ]
+  },
+  "vn3100279865": {
+    "name": "Bệnh viện Hữu nghị Việt Nam - Cu Ba Đồng Hới",
+    "aliases": [
+      "Bệnh viện Hữu nghị Việt Nam - Cu Ba Đồng Hới",
+      "Bệnh viện hữu nghị Việt Nam Cu Ba Đồng Hới"
+    ]
+  },
+  "vn3100317447": {
+    "name": "Bệnh viện Y Dược cổ truyền Quảng Bình",
+    "aliases": [
+      "Bệnh viện Y Dược cổ truyền Quảng Bình",
+      "Bệnh viện Y dược cổ truyền và Chăm sóc sức khỏe cán bộ tỉnh",
+      "Bệnh viện Y học cổ truyền và Phục hồi chức năng Bắc Quảng Trị"
+    ]
+  },
+  "vn3100420596": {
+    "name": "Bệnh viện đa khoa thành phố Đồng Hới",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Đồng Hới",
+      "Bệnh viện đa khoa thành phố Đồng Hới"
+    ]
+  },
+  "vn3100454154": {
+    "name": "Bệnh viện đa khoa huyện Lệ Thủy",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Lệ Thủy",
+      "Bệnh viện đa khoa huyện Lệ Thủy"
+    ]
+  },
+  "vn3100486269": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN TUYÊN HÓA",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TUYÊN HÓA",
+      "TRUNG TÂM Y TẾ KHU VỰC TUYÊN HÓA"
+    ]
+  },
+  "vn3100488587": {
+    "name": "Bệnh viện đa khoa huyện Minh Hóa",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Minh Hóa",
+      "Bệnh viện đa khoa khu vực Minh Hóa"
+    ]
+  },
+  "vn3100494196": {
+    "name": "Bệnh viện Đa khoa khu vực Bắc Quảng Bình",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Bắc Quảng Bình",
+      "Bệnh viện Đa khoa khu vực Bắc Quảng Trị"
+    ]
+  },
+  "vn3100544672": {
+    "name": "Trung Tâm Y Tế Huyện Quảng Trạch",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Quảng Trạch",
+      "Trung Tâm Y Tế Huyện Quảng Trạch",
+      "Trung Tâm Y Tế khu vực Quảng Trạch"
+    ]
+  },
+  "vn3100628273": {
+    "name": "Bệnh viện đa khoa huyện Bố Trạch",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Bố Trạch",
+      "Bệnh viện đa khoa khu vực Bố Trạch"
+    ]
+  },
+  "vn3101081843": {
+    "name": "Trung tâm Mắt Nội tiết tỉnh Quảng Bình",
+    "aliases": [
+      "Bệnh viện Mắt",
+      "Bệnh viện Mắt Bắc Quảng Trị",
+      "Trung tâm Mắt Nội tiết tỉnh Quảng Bình"
+    ]
+  },
+  "vn3200098453": {
+    "name": "Trung tâm khám bệnh, chữa bệnh và chăm sóc sức khỏe cán bộ tỉnh Quảng Trị",
+    "aliases": [
+      "Phòng quản lý sức khỏe cán bộ tỉnh Quảng Trị",
+      "Trung tâm khám bệnh, chữa bệnh và chăm sóc sức khỏe cán bộ tỉnh Quảng Trị"
+    ]
+  },
+  "vn3200259911": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CAM LỘ",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC CAM LỘ",
+      "TRUNG TÂM Y TẾ HUYỆN CAM LỘ"
+    ]
+  },
+  "vn3200289169": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN HẢI LĂNG",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC HẢI LĂNG",
+      "TRUNG TÂM Y TẾ HUYỆN HẢI LĂNG",
+      "TRUNG TÂM Y TẾ KHU VỰC HẢI LĂNG"
+    ]
+  },
+  "vn3200368780": {
+    "name": "Trung Tâm Y Tế Thị Xã Quảng Trị",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Thạch Hãn",
+      "Trung Tâm Y Tế Thị Xã Quảng Trị"
+    ]
+  },
+  "vn3200387984": {
+    "name": "Trung tâm y tế thành phố Đông Hà",
+    "aliases": [
+      "Trung tâm y tế khu vực Đông Hà",
+      "Trung tâm y tế thành phố Đông Hà"
+    ]
+  },
+  "vn3200420631": {
+    "name": "Bệnh viện Đa khoa Khu Vực Vĩnh Linh",
+    "aliases": [
+      "Bệnh viện Đa khoa Khu Vực Vĩnh Linh",
+      "Trung Tâm Y tế huyện Vĩnh Linh"
+    ]
+  },
+  "vn3200459357": {
+    "name": "BỆNH VIỆN Y HỌC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG TỈNH QUẢNG TRỊ",
+    "aliases": [
+      "BỆNH VIỆN Y HỌC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG NAM QUẢNG TRỊ",
+      "BỆNH VIỆN Y HỌC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG TỈNH QUẢNG TRỊ"
+    ]
+  },
+  "vn3200467478": {
+    "name": "Trung tâm Y tế huyện Đakrông",
+    "aliases": [
+      "Trung tâm Y tế huyện Đakrông",
+      "Trung tâm Y tế khu vực Đakrông"
+    ]
+  },
+  "vn3200603113": {
+    "name": "Bệnh viện Chuyên khoa Lao và Bệnh phổi tỉnh Quảng Trị",
+    "aliases": [
+      "Bệnh viện Chuyên khoa Lao và Bệnh phổi tỉnh Quảng Trị",
+      "Bệnh viện Phổi tỉnh Quảng Trị"
+    ]
+  },
+  "vn3200638500": {
+    "name": "Trung tâm y tế Huyện Triệu Phong",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Triệu Phong",
+      "Trung tâm Y tế Khu vực Triệu Phong",
+      "Trung tâm y tế Huyện Triệu Phong"
+    ]
+  },
+  "vn3300269208": {
+    "name": "Bệnh viện Y Học Cổ Truyền Tỉnh Thừa Thiên Huế",
+    "aliases": [
+      "Bệnh viện Y Học Cổ Truyền Tỉnh Thừa Thiên Huế",
+      "Bệnh viện Y học cổ truyền thành phố Huế"
+    ]
+  },
+  "vn3300269381": {
+    "name": "Phòng Bảo vệ sức khỏe cán bộ Thành phố Huế",
+    "aliases": [
+      "Phòng Bảo vệ sức khỏe cán bộ Thành phố Huế",
+      "Phòng bảo vệ sức khỏe cán bộ tỉnh Thừa Thiên Huế"
+    ]
+  },
+  "vn3300304163": {
+    "name": "Trung tâm Y tế thị xã Phong Điền",
+    "aliases": [
+      "Trung tâm Y tế Phong Điền",
+      "Trung tâm Y tế thị xã Phong Điền"
+    ]
+  },
+  "vn3300309637": {
+    "name": "TRUNG TÂM Y TẾ PHÚ LỘC",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN PHÚ LỘC",
+      "TRUNG TÂM Y TẾ PHÚ LỘC"
+    ]
+  },
+  "vn3300316899": {
+    "name": "Bệnh viện Phong - Da Liễu, tỉnh Thừa Thiên Huế",
+    "aliases": [
+      "Bệnh viện Da liễu thành phố Huế",
+      "Bệnh viện Phong - Da Liễu, tỉnh Thừa Thiên Huế"
+    ]
+  },
+  "vn3300335806": {
+    "name": "Trung tâm Y tế quận Thuận Hoá",
+    "aliases": [
+      "Bệnh viện Giao thông vận tải Huế",
+      "Trung tâm Y tế Thuận Hoá",
+      "Trung tâm Y tế quận Thuận Hoá"
+    ]
+  },
+  "vn3300343469": {
+    "name": "Trung tâm Y tế huyện A Lưới",
+    "aliases": [
+      "Trung tâm Y tế A Lưới",
+      "Trung tâm Y tế huyện A Lưới"
+    ]
+  },
+  "vn3300371177": {
+    "name": "Trung tâm Y tế huyện Phú Vang",
+    "aliases": [
+      "Trung tâm Y tế Phú Vang",
+      "Trung tâm Y tế huyện Phú Vang"
+    ]
+  },
+  "vn3300372420": {
+    "name": "Bệnh viện Phục hồi chức năng Tỉnh Thừa Thiên Huế",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng Tỉnh Thừa Thiên Huế",
+      "Bệnh viện Phục hồi chức năng thành phố Huế"
+    ]
+  },
+  "vn3300543242": {
+    "name": "Trung Tâm y tế Thị xã Hương Thủy",
+    "aliases": [
+      "Trung Tâm y tế Hương Thủy",
+      "Trung Tâm y tế Thị xã Hương Thủy"
+    ]
+  },
+  "vn3300856076": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN QUẢNG ĐIỀN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN QUẢNG ĐIỀN",
+      "TRUNG TÂM Y TẾ QUẢNG ĐIỀN"
+    ]
+  },
+  "vn3301325039": {
+    "name": "BỆNH VIỆN QUÂN Y 268/CỤC HẬU CẦN/ QUÂN KHU 4",
+    "aliases": [
+      "BỆNH VIỆN QUÂN Y 268",
+      "BỆNH VIỆN QUÂN Y 268/CỤC HẬU CẦN/ QUÂN KHU 4"
+    ]
+  },
+  "vn3301538622": {
+    "name": "Bệnh viện Phổi tỉnh Thừa Thiên Huế",
+    "aliases": [
+      "Bệnh viện Phổi Thành Phố Huế",
+      "Bệnh viện Phổi tỉnh Thừa Thiên Huế",
+      "Bệnh viện Phổi tỉnh Thừa Thiên huế"
+    ]
+  },
+  "vn3301612266": {
+    "name": "PHÒNG KHÁM BÁC SĨ GIA ĐÌNH, TRƯỜNG ĐẠI HỌC Y - DƯỢC HUẾ",
+    "aliases": [
+      "PHÒNG KHÁM BÁC SĨ GIA ĐÌNH THUỘC TRUNG TÂM Y HỌC GIA ĐÌNH TRƯỜNG ĐẠI HỌC Y DƯỢC HUẾ",
+      "PHÒNG KHÁM BÁC SĨ GIA ĐÌNH, TRƯỜNG ĐẠI HỌC Y - DƯỢC HUẾ"
+    ]
+  },
+  "vn3301627294": {
+    "name": "Trung tâm kiểm soát bệnh tật tỉnh Thừa Thiên Huế",
+    "aliases": [
+      "Trung tâm kiểm soát bệnh tật thành phố Huế",
+      "Trung tâm kiểm soát bệnh tật tỉnh Thừa Thiên Huế"
+    ]
+  },
+  "vn3400277114": {
+    "name": "Bệnh viện Y học cổ truyền – Phục hồi chức năng Bình Thuận",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền - Phục hồi chức năng Bình Thuận",
+      "Bệnh viện Y học cổ truyền – Phục hồi chức năng Bình Thuận"
+    ]
+  },
+  "vn3400277192": {
+    "name": "Bệnh viện đa khoa tỉnh Bình Thuận",
+    "aliases": [
+      "Bệnh viện Đa khoa Bình Thuận",
+      "Bệnh viện đa khoa tỉnh Bình Thuận"
+    ]
+  },
+  "vn3400456032": {
+    "name": "Ban quản lý dự án đầu tư xây dựng công trình dân dụng và công nghiệp tỉnh Bình Thuận",
+    "aliases": [
+      "Ban Quản lý dự án đầu tư xây dựng số 2",
+      "Ban quản lý dự án đầu tư xây dựng công trình dân dụng và công nghiệp tỉnh Bình Thuận"
+    ]
+  },
+  "vn3400481261": {
+    "name": "Bệnh viện Phổi tỉnh Bình Thuận",
+    "aliases": [
+      "Bệnh viện Phổi Bình Thuận",
+      "Bệnh viện Phổi tỉnh Bình Thuận"
+    ]
+  },
+  "vn3400501782": {
+    "name": "Trung tâm Y tế thị xã La Gi",
+    "aliases": [
+      "Trung tâm Y tế khu vực La Gi",
+      "Trung tâm Y tế thị xã La Gi"
+    ]
+  },
+  "vn3400517197": {
+    "name": "Trung tâm y tế Khu vực Hàm Thuận Bắc",
+    "aliases": [
+      "Trung tâm y tế Khu vực Hàm Thuận Bắc",
+      "Trung tâm y tế huyện Hàm Thuận Bắc"
+    ]
+  },
+  "vn3400599721": {
+    "name": "Trung Tâm Y tế Huyện Đức Linh",
+    "aliases": [
+      "Trung Tâm Y tế Huyện Đức Linh",
+      "Trung tâm Y tế khu vực Đức Linh"
+    ]
+  },
+  "vn3400808943": {
+    "name": "Trung tâm Y tế huyện Hàm Thuận Nam",
+    "aliases": [
+      "Trung tâm Y tế huyện Hàm Thuận Nam",
+      "Trung tâm Y tế khu vực Hàm Thuận Nam"
+    ]
+  },
+  "vn3400813598": {
+    "name": "Trung Tâm Y Tế Thành Phố Phan Thiết",
+    "aliases": [
+      "Trung Tâm Y Tế Thành Phố Phan Thiết",
+      "Trung Tâm Y tế khu vực Phan Thiết"
+    ]
+  },
+  "vn3401086602": {
+    "name": "Trung tâm Y tế Quân dân y Phú Quý",
+    "aliases": [
+      "Trung tâm Y tế Quân dân Y Đặc khu Phú Quý",
+      "Trung tâm Y tế Quân dân y Huyện Phú Quý",
+      "Trung tâm Y tế Quân dân y Phú Quý"
+    ]
+  },
+  "vn3401152012": {
+    "name": "Trung tâm Y tế huyện Tuy Phong",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Tuy Phong",
+      "Trung tâm Y tế huyện Tuy Phong"
+    ]
+  },
+  "vn3500273642": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC CHÂU ĐỨC",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CHÂU ĐỨC",
+      "TRUNG TÂM Y TẾ KHU VỰC CHÂU ĐỨC"
+    ]
+  },
+  "vn3500287412": {
+    "name": "Bệnh viện Vũng Tàu",
+    "aliases": [
+      "Bệnh viện Vũng Tàu",
+      "Bệnh viện Đa khoa Vũng Tàu"
+    ]
+  },
+  "vn3500287437": {
+    "name": "Bệnh Viện Bà Rịa",
+    "aliases": [
+      "Bệnh Viện Bà Rịa",
+      "Bệnh viện Đa khoa Bà Rịa"
+    ]
+  },
+  "vn3500738312": {
+    "name": "Bệnh viện Sức khoẻ Tâm thần Bà Rịa - Vũng Tàu",
+    "aliases": [
+      "Bệnh viên Tâm thần tỉnh Bà Rịa Vũng Tàu",
+      "Bệnh viện Sức khoẻ Tâm thần Bà Rịa - Vũng Tàu"
+    ]
+  },
+  "vn3600375447": {
+    "name": "Bệnh viện đa khoa Thống Nhất Đồng Nai",
+    "aliases": [
+      "Bệnh viện đa khoa Thống Nhất tỉnh Đồng Nai",
+      "Bệnh viện đa khoa Thống Nhất Đồng Nai"
+    ]
+  },
+  "vn3600957653": {
+    "name": "Trung Tâm Y Tế Huyện Cẩm Mỹ",
+    "aliases": [
+      "Trung Tâm Y Tế Huyện Cẩm Mỹ",
+      "Trung Tâm Y Tế khu vực Cẩm Mỹ"
+    ]
+  },
+  "vn3700255922": {
+    "name": "Bệnh viện Đa khoa tỉnh Bình Dương",
+    "aliases": [
+      "Bệnh viện Đa khoa Bình Dương",
+      "Bệnh viện Đa khoa tỉnh Bình Dương"
+    ]
+  },
+  "vn3700255961": {
+    "name": "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG TỈNH BÌNH DƯƠNG",
+    "aliases": [
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG BÌNH DƯƠNG",
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG TỈNH BÌNH DƯƠNG"
+    ]
+  },
+  "vn3700666168": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ DĨ AN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC DĨ AN",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ DĨ AN"
+    ]
+  },
+  "vn3700667348": {
+    "name": "Trung tâm y tế Thành phố Thủ Dầu Một",
+    "aliases": [
+      "Trung tâm y tế Thành phố Thủ Dầu Một",
+      "Trung tâm y tế khu vực Thủ Dầu Một"
+    ]
+  },
+  "vn3700668020": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ THUẬN AN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC THUẬN AN",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ THUẬN AN"
+    ]
+  },
+  "vn3700672644": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN DẦU TIẾNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN DẦU TIẾNG",
+      "TRUNG TÂM Y TẾ KHU VỰC DẦU TIẾNG"
+    ]
+  },
+  "vn3700673831": {
+    "name": "Trung tâm Y tế thành phố Bến Cát",
+    "aliases": [
+      "Trung tâm Y tế khu vực Bến Cát",
+      "Trung tâm Y tế thành phố Bến Cát",
+      "Trung tâm Y tế thị xã Bến Cát"
+    ]
+  },
+  "vn3701512805": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN PHÚ GIÁO",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN PHÚ GIÁO",
+      "TRUNG TÂM Y TẾ KHU VỰC PHÚ GIÁO"
+    ]
+  },
+  "vn3702207360": {
+    "name": "Bệnh viện Quân y 4, Cục Hậu cần - Kỹ thuật, Quân khu 7",
+    "aliases": [
+      "Bệnh viện Quân y 4 - Cục Hậu cần - Quân đoàn 4",
+      "Bệnh viện Quân y 4, Cục Hậu cần - Kỹ thuật, Quân khu 7",
+      "Bệnh viện Quân y 4, Cục Hậu cần - Kỹ thuật, Quân đoàn 34"
+    ]
+  },
+  "vn3800102623": {
+    "name": "Trung tâm y tế thị xã Bình Long",
+    "aliases": [
+      "Trung tâm Y tế khu vực Bình Long",
+      "Trung tâm y tế khu vực Bình Long",
+      "Trung tâm y tế thị xã Bình Long"
+    ]
+  },
+  "vn3800190330": {
+    "name": "Bệnh viện đa khoa tỉnh Bình Phước",
+    "aliases": [
+      "Bệnh viện Đa khoa Bình Phước",
+      "Bệnh viện đa khoa tỉnh Bình Phước"
+    ]
+  },
+  "vn3800332899": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ CHƠN THÀNH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC CHƠN THÀNH",
+      "TRUNG TÂM Y TẾ THỊ XÃ CHƠN THÀNH"
+    ]
+  },
+  "vn3800333490": {
+    "name": "Trung tâm y tế thị xã Phước Long",
+    "aliases": [
+      "Trung tâm y tế khu vực Phước Long",
+      "Trung tâm y tế thị xã Phước Long"
+    ]
+  },
+  "vn3900379347": {
+    "name": "Bệnh viện đa khoa tỉnh Tây Ninh",
+    "aliases": [
+      "Bệnh viện đa khoa Tây Ninh",
+      "Bệnh viện đa khoa tỉnh Tây Ninh"
+    ]
+  },
+  "vn3900446917": {
+    "name": "Bệnh viện Phục hồi chức năng tỉnh Tây Ninh",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng Tây Ninh",
+      "Bệnh viện Phục hồi chức năng tỉnh Tây Ninh"
+    ]
+  },
+  "vn3900449139": {
+    "name": "Bệnh viện Lao và Bệnh phổi tỉnh Tây Ninh",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh phổi tỉnh Tây Ninh",
+      "Bệnh viện Phổi Tây Ninh"
+    ]
+  },
+  "vn3900451184": {
+    "name": "Bệnh viện Y dược cổ truyền Tây Ninh",
+    "aliases": [
+      "Bệnh viện Y dược cổ truyền Tây Ninh",
+      "Bệnh viện Y học cổ truyền Tây Ninh"
+    ]
+  },
+  "vn3900786617": {
+    "name": "Trung Tâm Y Tế Huyện Tân Châu",
+    "aliases": [
+      "Trung Tâm Y Tế Huyện Tân Châu",
+      "Trung tâm Y tế Khu vực Tân Châu"
+    ]
+  },
+  "vn3900799824": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ TRẢNG BÀNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC TRẢNG BÀNG",
+      "TRUNG TÂM Y TẾ THỊ XÃ TRẢNG BÀNG"
+    ]
+  },
+  "vn3900837406": {
+    "name": "Trung tâm Y tế huyện Châu Thành, tỉnh Tây Ninh",
+    "aliases": [
+      "Trung tâm Y tế huyện Châu Thành, tỉnh Tây Ninh",
+      "Trung tâm Y tế khu vực Châu Thành, tỉnh Tây Ninh"
+    ]
+  },
+  "vn4000292198": {
+    "name": "Trung tâm Y tế Phước Sơn",
+    "aliases": [
+      "Trung tâm Y tế Phước Sơn",
+      "Trung tâm Y tế khu vực Phước Sơn"
+    ]
+  },
+  "vn4000299281": {
+    "name": "Trung tâm Y tế Duy Xuyên",
+    "aliases": [
+      "Trung tâm Y tế Duy Xuyên",
+      "Trung tâm Y tế Khu Vực Duy Xuyên"
+    ]
+  },
+  "vn4000362007": {
+    "name": "Trung tâm Y tế khu vực Tam Kỳ",
+    "aliases": [
+      "Trung tâm Y tế khu vực Tam Kỳ",
+      "Trung tâm Y tế thành phố Tam Kỳ"
+    ]
+  },
+  "vn4000373552": {
+    "name": "Bệnh viện đa khoa tỉnh Quảng Nam",
+    "aliases": [
+      "Bệnh viện đa khoa Quảng Nam",
+      "Bệnh viện đa khoa tỉnh Quảng Nam"
+    ]
+  },
+  "vn4000412723": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN PHÚ NINH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN PHÚ NINH",
+      "TRUNG TÂM Y TẾ KHU VỰC PHÚ NINH"
+    ]
+  },
+  "vn4000491838": {
+    "name": "BỆNH VIỆN ĐA KHOA TRUNG ƯƠNG QUẢNG NAM",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA TRUNG ƯƠNG QUẢNG NAM",
+      "Bệnh viện Việt - Hàn Đà Nẵng"
+    ]
+  },
+  "vn4000679212": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC ĐÔNG GIANG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐÔNG GIANG",
+      "TRUNG TÂM Y TẾ KHU VỰC ĐÔNG GIANG"
+    ]
+  },
+  "vn4001296170": {
+    "name": "Ban Quản lý dự án đầu tư xây dựng các công trình dân dụng, công nghiệp và hạ tầng kỹ thuật Đà Nẵng",
+    "aliases": [
+      "Ban Quản lý dự án đầu tư xây dựng Quảng Nam",
+      "Ban Quản lý dự án đầu tư xây dựng các công trình dân dụng, công nghiệp và hạ tầng kỹ thuật Đà Nẵng"
+    ]
+  },
+  "vn4100159827": {
+    "name": "Trung tâm y tế Phù Cát",
+    "aliases": [
+      "Trung tâm Y tế Phù Cát",
+      "Trung tâm y tế Phù Cát"
+    ]
+  },
+  "vn4100289689": {
+    "name": "Trung tâm Y tế huyện Tuy Phước",
+    "aliases": [
+      "Trung tâm Y tế Tuy Phước",
+      "Trung tâm Y tế huyện Tuy Phước"
+    ]
+  },
+  "vn4100384484": {
+    "name": "Trung tâm y tế thành phố Quy Nhơn",
+    "aliases": [
+      "Trung tâm Y tế Quy Nhơn",
+      "Trung tâm y tế thành phố Quy Nhơn"
+    ]
+  },
+  "vn4100463471": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN HOÀI ÂN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HOÀI ÂN",
+      "TRUNG TÂM Y TẾ HUYỆN HOÀI ÂN"
+    ]
+  },
+  "vn4100487546": {
+    "name": "Trung tâm Y tế thị xã Hoài Nhơn",
+    "aliases": [
+      "Trung tâm Y tế Hoài Nhơn",
+      "Trung tâm Y tế thị xã Hoài Nhơn"
+    ]
+  },
+  "vn4100542483": {
+    "name": "Bệnh viện đa khoa tỉnh Bình Định",
+    "aliases": [
+      "Bệnh viện Đa khoa Trung tâm tỉnh Gia Lai",
+      "Bệnh viện đa khoa tỉnh Bình Định"
+    ]
+  },
+  "vn4100546618": {
+    "name": "BỆNH VIỆN MẮT BÌNH ĐỊNH",
+    "aliases": [
+      "BỆNH VIỆN MẮT BÌNH ĐỊNH",
+      "BỆNH VIỆN MẮT TỈNH GIA LAI"
+    ]
+  },
+  "vn4100564430": {
+    "name": "Bệnh Viện Lao và Bệnh Phổi Bình Định",
+    "aliases": [
+      "Bệnh Viện Lao và Bệnh Phổi Bình Định",
+      "Bệnh viện Lao và Bệnh phổi Quy Nhơn"
+    ]
+  },
+  "vn4100732290": {
+    "name": "TRUNG TÂM Y TẾ VĨNH THẠNH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN VĨNH THẠNH",
+      "TRUNG TÂM Y TẾ VĨNH THẠNH"
+    ]
+  },
+  "vn4100869305": {
+    "name": "Trung tâm Y tế huyện Tây Sơn",
+    "aliases": [
+      "Trung tâm Y tế Tây Sơn",
+      "Trung tâm Y tế huyện Tây Sơn"
+    ]
+  },
+  "vn4200281806": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN KHÁNH VĨNH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN KHÁNH VĨNH",
+      "TRUNG TÂM Y TẾ KHU VỰC KHÁNH VĨNH"
+    ]
+  },
+  "vn4200367475": {
+    "name": "Trung Tâm Y tế khu vực Khánh Sơn",
+    "aliases": [
+      "Trung Tâm Y tế Huyện Khánh Sơn",
+      "Trung Tâm Y tế khu vực Khánh Sơn"
+    ]
+  },
+  "vn4200522265": {
+    "name": "Trung tâm Chăm sóc sức khỏe sinh sản Khánh Hòa",
+    "aliases": [
+      "Trung tâm Chăm sóc sức khỏe sinh sản Khánh Hòa",
+      "Trung tâm Chăm sóc sức khỏe sinh sản Tỉnh Khánh Hòa"
+    ]
+  },
+  "vn4200789445": {
+    "name": "Bệnh viện Phổi Khánh Hòa",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh phổi tỉnh Khánh Hòa",
+      "Bệnh viện Phổi Khánh Hòa"
+    ]
+  },
+  "vn4201043360": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CAM LÂM",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CAM LÂM",
+      "TRUNG TÂM Y TẾ KHU VỰC CAM LÂM"
+    ]
+  },
+  "vn4201175656": {
+    "name": "Trung tâm Huyết học Truyền máu tỉnh Khánh Hòa",
+    "aliases": [
+      "TRUNG TÂM HUYẾT HỌC - TRUYỀN MÁU KHÁNH HÒA",
+      "Trung tâm Huyết học Truyền máu tỉnh Khánh Hòa"
+    ]
+  },
+  "vn4201468980": {
+    "name": "Sở Y tế tỉnh Khánh Hòa",
+    "aliases": [
+      "SỞ Y TẾ TỈNH KHÁNH HÒA",
+      "Sở Y tế tỉnh Khánh Hòa"
+    ]
+  },
+  "vn4201830248": {
+    "name": "Trung tâm Kiểm soát bệnh tật tỉnh Khánh Hòa",
+    "aliases": [
+      "Trung tâm Kiểm soát bệnh tật Khánh Hòa",
+      "Trung tâm Kiểm soát bệnh tật tỉnh Khánh Hòa"
+    ]
+  },
+  "vn4201966947": {
+    "name": "Bệnh viện Ung bướu tỉnh Khánh Hòa",
+    "aliases": [
+      "Bệnh viện Ung bướu Khánh Hòa",
+      "Bệnh viện Ung bướu tỉnh Khánh Hòa"
+    ]
+  },
+  "vn4300787635": {
+    "name": "Bệnh viện sản nhi tỉnh Quảng Ngãi",
+    "aliases": [
+      "BỆNH VIỆN SẢN - NHI TỈNH QUẢNG NGÃI",
+      "Bệnh viện sản nhi tỉnh Quảng Ngãi"
+    ]
+  },
+  "vn4300811239": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN BÌNH SƠN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ BÌNH SƠN",
+      "TRUNG TÂM Y TẾ HUYỆN BÌNH SƠN"
+    ]
+  },
+  "vn4400219153": {
+    "name": "Bệnh viện đa khoa tỉnh Phú Yên",
+    "aliases": [
+      "Bệnh viện đa khoa Phú Yên",
+      "Bệnh viện đa khoa tỉnh Phú Yên"
+    ]
+  },
+  "vn4400219160": {
+    "name": "Bệnh viện mắt Phú Yên",
+    "aliases": [
+      "BỆNH VIỆN MẮT PHÚ YÊN",
+      "Bệnh viện mắt Phú Yên"
+    ]
+  },
+  "vn4400370355": {
+    "name": "Bệnh viện Phục hồi chức năng tỉnh Phú Yên",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng tỉnh Phú Yên",
+      "Bệnh viện Phục hồi chức năng tỉnh Đắk Lắk"
+    ]
+  },
+  "vn4400499648": {
+    "name": "Trung tâm Y tế huyện Phú Hòa",
+    "aliases": [
+      "Trung tâm Y tế Phú Hòa",
+      "Trung tâm Y tế huyện Phú Hòa"
+    ]
+  },
+  "vn4400647744": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ TUY HÒA",
+    "aliases": [
+      "TRUNG TÂM Y TẾ THÀNH PHỐ TUY HÒA",
+      "Trung tâm Y tế Tuy Hòa"
+    ]
+  },
+  "vn4400746600": {
+    "name": "Ban quản lý các dự án đầu tư xây dựng khu vực phía Đông tỉnh Đắk Lắk",
+    "aliases": [
+      "Ban quản lý các dự án đầu tư xây dựng khu vực phía Đông tỉnh Đắk Lắk",
+      "Ban quản lý các dự án đầu tư xây dựng tỉnh Phú Yên"
+    ]
+  },
+  "vn4400925448": {
+    "name": "Bệnh viện sản nhi Phú Yên",
+    "aliases": [
+      "Bệnh viện Sản Nhi tỉnh Đắk Lắk",
+      "Bệnh viện sản nhi Phú Yên"
+    ]
+  },
+  "vn4401030753": {
+    "name": "Trung tâm Y tế huyện Tây Hòa",
+    "aliases": [
+      "Trung tâm Y tế Tây Hòa",
+      "Trung tâm Y tế huyện Tây Hòa"
+    ]
+  },
+  "vn4401031161": {
+    "name": "Trung tâm Y tế huyện Tuy An",
+    "aliases": [
+      "Trung tâm Y tế Tuy An",
+      "Trung tâm Y tế huyện Tuy An"
+    ]
+  },
+  "vn4401031210": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN SÔNG HINH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN SÔNG HINH",
+      "TRUNG TÂM Y TẾ SÔNG HINH"
+    ]
+  },
+  "vn4401031330": {
+    "name": "Trung tâm Y tế thị xã Đông hòa",
+    "aliases": [
+      "Trung tâm Y tế thị xã Đông hòa",
+      "Trung tâm Y tế Đông Hòa"
+    ]
+  },
+  "vn4401031450": {
+    "name": "Trung tâm Y tế huyện Đồng Xuân",
+    "aliases": [
+      "Trung tâm Y tế huyện Đồng Xuân",
+      "Trung tâm Y tế Đồng Xuân"
+    ]
+  },
+  "vn4500203171": {
+    "name": "Bệnh viện Mắt tỉnh Ninh Thuận",
+    "aliases": [
+      "Bệnh viện Mắt Ninh Thuận",
+      "Bệnh viện Mắt tỉnh Ninh Thuận"
+    ]
+  },
+  "vn4500270971": {
+    "name": "BỆNH VIỆN CHUYÊN KHOA DA LIỄU TÂM THẦN NINH THUẬN",
+    "aliases": [
+      "BỆNH VIỆN CHUYÊN KHOA DA LIỄU TÂM THẦN NINH THUẬN",
+      "BỆNH VIỆN DA LIỄU - TÂM THẦN NINH THUẬN"
+    ]
+  },
+  "vn4500271407": {
+    "name": "Bệnh viện Lao và Bệnh phổi Ninh Thuận",
+    "aliases": [
+      "Bệnh viện Lao và Bệnh phổi Ninh Thuận",
+      "Bệnh viện Phổi Ninh Thuận"
+    ]
+  },
+  "vn4500558304": {
+    "name": "Bệnh viện Y Dược cổ truyền tỉnh Ninh Thuận",
+    "aliases": [
+      "BỆNH VIỆN Y HỌC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG NINH THUẬN",
+      "Bệnh viện Y Dược cổ truyền tỉnh Ninh Thuận",
+      "Bệnh viện Y học cổ truyền và Phục hồi chức năng Ninh Thuận"
+    ]
+  },
+  "vn4600200985": {
+    "name": "BỆNH VIỆN A THÁI NGUYÊN",
+    "aliases": [
+      "BỆNH VIỆN A",
+      "BỆNH VIỆN A THÁI NGUYÊN"
+    ]
+  },
+  "vn4600203584": {
+    "name": "Trung tâm Y tế huyện Đồng Hỷ tỉnh Thái Nguyên",
+    "aliases": [
+      "Bệnh viện Đồng Hỷ",
+      "Trung tâm Y tế huyện Đồng Hỷ tỉnh Thái Nguyên",
+      "Trung tâm Y tế Đồng Hỷ"
+    ]
+  },
+  "vn4600475813": {
+    "name": "Bệnh viện C Thái Nguyên",
+    "aliases": [
+      "Bệnh viện C",
+      "Bệnh viện C Thái Nguyên"
+    ]
+  },
+  "vn4600482458": {
+    "name": "Bệnh viện đa khoa huyện Phú Bình",
+    "aliases": [
+      "Bệnh viện đa khoa Phú Bình",
+      "Bệnh viện đa khoa huyện Phú Bình"
+    ]
+  },
+  "vn4600537442": {
+    "name": "Trung tâm y tế thành phố Thái Nguyên",
+    "aliases": [
+      "Bệnh viện Phạm Ngọc Thạch",
+      "Trung tâm y tế thành phố Thái Nguyên"
+    ]
+  },
+  "vn4600543421": {
+    "name": "Bệnh viện Gang thép Thái Nguyên",
+    "aliases": [
+      "Bệnh viện Gang Thép Thái Nguyên",
+      "Bệnh viện Gang thép Thái Nguyên"
+    ]
+  },
+  "vn4600591418": {
+    "name": "Trung tâm y tế thành phố Phổ Yên",
+    "aliases": [
+      "Bệnh viện Phổ Yên",
+      "Trung tâm y tế thành phố Phổ Yên"
+    ]
+  },
+  "vn4600599495": {
+    "name": "Trung tâm Y tế thành phố Sông Công",
+    "aliases": [
+      "Bệnh viện Sông Công",
+      "Trung tâm Y tế Sông Công",
+      "Trung tâm Y tế thành phố Sông Công"
+    ]
+  },
+  "vn4600695784": {
+    "name": "Trung tâm Y tế huyện Võ Nhai",
+    "aliases": [
+      "Bệnh viện Võ Nhai",
+      "Trung tâm Y tế huyện Võ Nhai"
+    ]
+  },
+  "vn4600696555": {
+    "name": "Bệnh viện đa khoa huyện Định Hóa",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Định Hóa",
+      "Bệnh viện đa khoa Định Hóa"
+    ]
+  },
+  "vn4600849000": {
+    "name": "Bệnh viện Đa khoa huyện Đại Từ",
+    "aliases": [
+      "Bệnh viện Đa khoa huyện Đại Từ",
+      "Bệnh viện Đa khoa Đại Từ"
+    ]
+  },
+  "vn4600942987": {
+    "name": "Trung tâm Y tế huyện Phú Lương",
+    "aliases": [
+      "Bệnh viện Phú Lương",
+      "Trung tâm Y tế huyện Phú Lương"
+    ]
+  },
+  "vn4700127062": {
+    "name": "Trung tâm Y tế huyện Chợ Đồn",
+    "aliases": [
+      "Bệnh viện Chợ Đồn",
+      "Trung tâm Y tế huyện Chợ Đồn"
+    ]
+  },
+  "vn4700151932": {
+    "name": "Trung tâm Y tế Thành Phố Bắc Kạn",
+    "aliases": [
+      "Bệnh viện Phùng Chí Kiên",
+      "Trung tâm Y tế Bắc Kạn",
+      "Trung tâm Y tế Thành Phố Bắc Kạn"
+    ]
+  },
+  "vn4700169062": {
+    "name": "Trung tâm Y tế huyện Chợ Mới",
+    "aliases": [
+      "Bệnh viện Chợ Mới",
+      "Trung tâm Y tế huyện Chợ Mới"
+    ]
+  },
+  "vn4700169785": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN NGÂN SƠN",
+    "aliases": [
+      "BỆNH VIỆN NGÂN SƠN",
+      "TRUNG TÂM Y TẾ HUYỆN NGÂN SƠN"
+    ]
+  },
+  "vn4700173799": {
+    "name": "Trung tâm Y tế huyện Na Rì, tỉnh Bắc Kạn",
+    "aliases": [
+      "Bệnh viện Na Rì",
+      "Trung tâm Y tế huyện Na Rì, tỉnh Bắc Kạn"
+    ]
+  },
+  "vn4700184871": {
+    "name": "Trung tâm Y tế Ba Bể",
+    "aliases": [
+      "Trung tâm Y tế Ba Bể",
+      "Trung tâm Y tế huyện Ba Bể"
+    ]
+  },
+  "vn4700189598": {
+    "name": "Trung tâm Y tế huyện Bạch Thông",
+    "aliases": [
+      "Bệnh viện Bạch Thông",
+      "Trung tâm Y tế huyện Bạch Thông"
+    ]
+  },
+  "vn4800175327": {
+    "name": "Trung tâm y tế huyện Hà Quảng",
+    "aliases": [
+      "Trung tâm y tế Thông Nông",
+      "Trung tâm y tế huyện Hà Quảng"
+    ]
+  },
+  "vn4800175599": {
+    "name": "Bệnh viện đa khoa huyện Quảng Hòa",
+    "aliases": [
+      "Bệnh viện Quảng Uyên",
+      "Bệnh viện đa khoa huyện Quảng Hòa"
+    ]
+  },
+  "vn4800180528": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN QUẢNG HÒA, TỈNH CAO BẰNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN QUẢNG HÒA, TỈNH CAO BẰNG",
+      "Trung tâm y tế Quảng Hòa",
+      "Trung tâm y tế huyện Quảng Hòa"
+    ]
+  },
+  "vn4800181017": {
+    "name": "BỆNH VIỆN ĐA KHOA Y DƯỢC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG TỈNH CAO BẰNG",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA Y DƯỢC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG TỈNH CAO BẰNG",
+      "BỆNH VỆN ĐA KHOA Y DƯỢC CỔ TRUYỀN - PHỤC HỒI CHỨC NĂNG TỈNH CAO BẰNG"
+    ]
+  },
+  "vn4800605185": {
+    "name": "Trung tâm y tế huyện Bảo Lạc",
+    "aliases": [
+      "Trung tâm y tế Bảo Lạc",
+      "Trung tâm y tế huyện Bảo Lạc"
+    ]
+  },
+  "vn4800911111": {
+    "name": "Trung tâm Y tế huyện Hòa An",
+    "aliases": [
+      "Trung tâm Y tế huyện Hòa An",
+      "Trung tâm y tế Hòa An"
+    ]
+  },
+  "vn4800911270": {
+    "name": "Trung tâm Y tế Thành phố Cao Bằng",
+    "aliases": [
+      "Trung tâm Y tế Cao Bằng",
+      "Trung tâm Y tế Thành phố Cao Bằng"
+    ]
+  },
+  "vn4800911520": {
+    "name": "Bệnh viện đa khoa huyện Hà Quảng",
+    "aliases": [
+      "Bệnh viện Hà Quảng",
+      "Bệnh viện đa khoa huyện Hà Quảng"
+    ]
+  },
+  "vn4800920035": {
+    "name": "Trung tâm y tế huyện Trùng Khánh",
+    "aliases": [
+      "Trung tâm y tế Trùng Khánh",
+      "Trung tâm y tế huyện Trùng Khánh"
+    ]
+  },
+  "vn4900152186": {
+    "name": "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG LẠNG SƠN",
+    "aliases": [
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG LẠNG SƠN",
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG TỈNH LẠNG SƠN"
+    ]
+  },
+  "vn4900227321": {
+    "name": "Trung tâm Y tế khu vực Văn Lãng",
+    "aliases": [
+      "Trung tâm Y tế Huyện Văn Lãng",
+      "Trung tâm Y tế khu vực Văn Lãng"
+    ]
+  },
+  "vn4900234463": {
+    "name": "Trung tâm Y tế Khu vực Chi Lăng",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Chi Lăng",
+      "Trung tâm y tế huyện Chi Lăng"
+    ]
+  },
+  "vn4900264852": {
+    "name": "Trung tâm y tế huyện Cao Lộc",
+    "aliases": [
+      "Trung tâm y tế huyện Cao Lộc",
+      "Trung tâm y tế khu vực Cao Lộc"
+    ]
+  },
+  "vn4900265535": {
+    "name": "Trung Tâm y tế huyện Văn Quan",
+    "aliases": [
+      "Trung Tâm y tế Khu vực Văn Quan",
+      "Trung Tâm y tế huyện Văn Quan"
+    ]
+  },
+  "vn4900265729": {
+    "name": "Trung tâm Y tế huyện Bình Gia",
+    "aliases": [
+      "Trung tâm Y tế huyện Bình Gia",
+      "Trung tâm Y tế khu vực Bình Gia"
+    ]
+  },
+  "vn4900266708": {
+    "name": "Trung tâm y tế khu vực Lộc Bình",
+    "aliases": [
+      "Trung tâm y tế huyện Lộc Bình",
+      "Trung tâm y tế khu vực Lộc Bình"
+    ]
+  },
+  "vn4900269466": {
+    "name": "Trung tâm Y tế huyện Hữu Lũng tỉnh Lạng Sơn",
+    "aliases": [
+      "Trung tâm Y tế huyện Hữu Lũng tỉnh Lạng Sơn",
+      "Trung tâm Y tế khu vực Hữu Lũng tỉnh Lạng Sơn"
+    ]
+  },
+  "vn4900270253": {
+    "name": "Trung tâm Y tế huyện Bắc Sơn",
+    "aliases": [
+      "Trung tâm Y tế huyện Bắc Sơn",
+      "Trung tâm Y tế khu vực Bắc Sơn"
+    ]
+  },
+  "vn5000206264": {
+    "name": "Trung tâm y tế huyện Yên Sơn",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC YÊN SƠN TỈNH TUYÊN QUANG",
+      "Trung tâm y tế huyện Yên Sơn"
+    ]
+  },
+  "vn5000230563": {
+    "name": "Trung tâm y tế huyện Hàm Yên",
+    "aliases": [
+      "Trung tâm y tế huyện Hàm Yên",
+      "Trung tâm y tế khu vực Hàm Yên",
+      "Trung tâm y tế khu vực Hàm Yên tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5000271714": {
+    "name": "Bệnh viện đa khoa khu vực Kim Xuyên tỉnh Tuyên Quang",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Kim Xuyên tỉnh Tuyên Quang",
+      "Bệnh viện đa khoa khu vực Kim Xuyên, Huyện Sơn Dương"
+    ]
+  },
+  "vn5000272059": {
+    "name": "Trung tâm Y tế huyện Chiêm Hóa",
+    "aliases": [
+      "Trung tâm Y tế huyện Chiêm Hóa",
+      "Trung tâm Y tế khu vực Chiêm Hóa tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5000272806": {
+    "name": "Trung tâm Y tế huyện Sơn Dương",
+    "aliases": [
+      "Trung tâm Y tế huyện Sơn Dương",
+      "Trung tâm Y tế khu vực Sơn Dương tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5000273856": {
+    "name": "BỆNH VIỆN ĐA KHOA KHU VỰC ATK HUYỆN YÊN SƠN",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC ATK HUYỆN YÊN SƠN",
+      "BỆNH VIỆN ĐA KHOA KHU VỰC ATK TỈNH TUYÊN QUANG"
+    ]
+  },
+  "vn5000308315": {
+    "name": "Bệnh viện Phục hồi chức năng Hương Sen",
+    "aliases": [
+      "Bệnh viện Phục hồi chức năng Hương Sen",
+      "Bệnh viện Phục hồi chức năng Hương Sen tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5000314894": {
+    "name": "Trung tâm Y tế huyện Na Hang",
+    "aliases": [
+      "Trung tâm Y tế huyện Na Hang",
+      "Trung tâm Y tế khu vực Na Hang tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5000757293": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC LÂM BÌNH TỈNH TUYÊN QUANG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN LÂM BÌNH",
+      "TRUNG TÂM Y TẾ KHU VỰC LÂM BÌNH TỈNH TUYÊN QUANG"
+    ]
+  },
+  "vn5100135641": {
+    "name": "BỆNH VIỆN ĐA KHOA TỈNH HÀ GIANG",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HÀ GIANG TỈNH TUYÊN QUANG",
+      "BỆNH VIỆN ĐA KHOA TỈNH HÀ GIANG"
+    ]
+  },
+  "vn5100262784": {
+    "name": "Bệnh viện đa khoa huyện Xín Mần",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Xín Mần",
+      "Bệnh viện đa khoa khu vực Xín Mần tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5100264460": {
+    "name": "Bệnh viện đa khoa khu vực Bắc Quang tỉnh Tuyên Quang",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Bắc Quang tỉnh Tuyên Quang",
+      "Bệnh viện đa khoa khu vực huyện Bắc Quang"
+    ]
+  },
+  "vn5100265866": {
+    "name": "Bệnh viện đa khoa huyện Mèo Vạc",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Mèo Vạc",
+      "Bệnh viện đa khoa khu vực Mèo Vạc"
+    ]
+  },
+  "vn5100266274": {
+    "name": "Bệnh viện đa khoa huyện Bắc Mê",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Bắc Mê",
+      "Bệnh viện đa khoa khu vực Bắc Mê tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5100275060": {
+    "name": "BỆNH VIỆN ĐA KHOA HUYỆN VỊ XUYÊN",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HUYỆN VỊ XUYÊN",
+      "BỆNH VIỆN ĐA KHOA KHU VỰC VỊ XUYÊN TỈNH TUYÊN QUANG"
+    ]
+  },
+  "vn5100294183": {
+    "name": "BỆNH VIỆN ĐA KHOA KHU VỰC YÊN MINH",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC YÊN MINH",
+      "BỆNH VIỆN ĐA KHOA KHU VỰC YÊN MINH TỈNH TUYÊN QUANG"
+    ]
+  },
+  "vn5100304811": {
+    "name": "Bệnh viện đa khoa huyện Quang Bình tỉnh Hà Giang",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Quang Bình tỉnh Hà Giang",
+      "Bệnh viện đa khoa khu vực Quang Bình tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5100305406": {
+    "name": "BỆNH VIỆN ĐA KHOA HUYỆN ĐỒNG VĂN",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HUYỆN ĐỒNG VĂN",
+      "BỆNH VIỆN ĐA KHOA KHU VỰC ĐỒNG VĂN TỈNH TUYÊN QUANG"
+    ]
+  },
+  "vn5100352325": {
+    "name": "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG TỈNH HÀ GIANG",
+    "aliases": [
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG HÀ GIANG TỈNH TUYÊN QUANG",
+      "BỆNH VIỆN PHỤC HỒI CHỨC NĂNG TỈNH HÀ GIANG"
+    ]
+  },
+  "vn5100353671": {
+    "name": "Bệnh viện đa khoa khu vực Nà Chì",
+    "aliases": [
+      "Bệnh viện đa khoa Nà Chì",
+      "Bệnh viện đa khoa khu vực Nà Chì",
+      "Bệnh viện đa khoa khu vực Nà Chì tỉnh Tuyên Quang"
+    ]
+  },
+  "vn5100419308": {
+    "name": "BỆNH VIỆN MẮT TỈNH HÀ GIANG",
+    "aliases": [
+      "BỆNH VIỆN MẮT HÀ GIANG TỈNH TUYÊN QUANG",
+      "BỆNH VIỆN MẮT TỈNH HÀ GIANG"
+    ]
+  },
+  "vn5200148838": {
+    "name": "Bệnh viện đa khoa tỉnh Yên Bái",
+    "aliases": [
+      "Bệnh viện Đa khoa số 1 tỉnh Lào Cai",
+      "Bệnh viện đa khoa tỉnh Yên Bái"
+    ]
+  },
+  "vn5200149422": {
+    "name": "Trung tâm Y tế thành phố Yên Bái",
+    "aliases": [
+      "Trung tâm Y tế khu vực Yên Bái",
+      "Trung tâm Y tế thành phố Yên Bái"
+    ]
+  },
+  "vn5200149895": {
+    "name": "Trung tâm y tế huyện Văn Yên",
+    "aliases": [
+      "Trung tâm y tế huyện Văn Yên",
+      "Trung tâm y tế khu vực Văn Yên"
+    ]
+  },
+  "vn5200150499": {
+    "name": "Trung tâm Y tế huyện Mù Cang Chải",
+    "aliases": [
+      "Trung tâm Y tế huyện Mù Cang Chải",
+      "Trung tâm Y tế khu vực Mù Cang Chải"
+    ]
+  },
+  "vn5200150643": {
+    "name": "BỆNH VIỆN ĐA KHOA KHU VỰC NGHĨA LỘ",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC NGHĨA LỘ",
+      "BỆNH VIỆN ĐA KHOA SỐ 3 TỈNH LÀO CAI"
+    ]
+  },
+  "vn5200159942": {
+    "name": "Trung Tâm Y tế Huyện Yên Bình Tỉnh Yên Bái",
+    "aliases": [
+      "Trung Tâm Y tế Huyện Yên Bình Tỉnh Yên Bái",
+      "Trung Tâm Y tế khu vực Yên Bình"
+    ]
+  },
+  "vn5200264859": {
+    "name": "Trung tâm Y tế huyện Lục Yên",
+    "aliases": [
+      "Trung tâm Y tế huyện Lục Yên",
+      "Trung tâm Y tế khu vực Lục Yên"
+    ]
+  },
+  "vn5200384183": {
+    "name": "Trung tâm Y tế huyện Trạm Tấu",
+    "aliases": [
+      "Trung tâm Y tế huyện Trạm Tấu",
+      "Trung tâm Y tế khu vực Trạm Tấu"
+    ]
+  },
+  "vn5200902068": {
+    "name": "Trung tâm Y tế huyện Văn Chấn",
+    "aliases": [
+      "Trung tâm Y tế Khu vực Văn Chấn",
+      "Trung tâm Y tế huyện Văn Chấn"
+    ]
+  },
+  "vn5300133200": {
+    "name": "Bệnh viện Đa khoa huyện Văn Bàn",
+    "aliases": [
+      "Bệnh viện Đa khoa huyện Văn Bàn",
+      "Bệnh viện Đa khoa khu vực Văn Bàn"
+    ]
+  },
+  "vn5300138216": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC BÁT XÁT",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BÁT XÁT",
+      "TRUNG TÂM Y TẾ KHU VỰC BÁT XÁT"
+    ]
+  },
+  "vn5300139097": {
+    "name": "Bệnh viện Đa khoa tỉnh Lào Cai",
+    "aliases": [
+      "Bệnh viện Đa khoa số 2 tỉnh Lào Cai",
+      "Bệnh viện Đa khoa tỉnh Lào Cai"
+    ]
+  },
+  "vn5300140134": {
+    "name": "Bệnh viện đa khoa khu vực Bắc Hà",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Bắc Hà",
+      "Bệnh viện đa khoa khu vực Bắc Hà"
+    ]
+  },
+  "vn5300140254": {
+    "name": "Bệnh Viện Đa Khoa Huyện Bảo Thắng",
+    "aliases": [
+      "Bệnh Viện Đa Khoa Huyện Bảo Thắng",
+      "Bệnh Viện Đa Khoa Khu Vực Bảo Thắng"
+    ]
+  },
+  "vn5300225388": {
+    "name": "Bệnh viện Phục hồi chức năng tỉnh Lào Cai",
+    "aliases": [
+      "Bệnh viện Lão khoa - Phục hồi chức năng tỉnh Lào Cai",
+      "Bệnh viện Phục hồi chức năng tỉnh Lào Cai"
+    ]
+  },
+  "vn5300234600": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC BẢO THẮNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BẢO THẮNG",
+      "TRUNG TÂM Y TẾ KHU VỰC BẢO THẮNG"
+    ]
+  },
+  "vn5300235749": {
+    "name": "Bệnh Viện Đa Khoa Huyện Bát Xát",
+    "aliases": [
+      "Bệnh Viện Đa Khoa Huyện Bát Xát",
+      "Bệnh viện Đa khoa khu vực Bát Xát",
+      "TRUNG TÂM Y TẾ KHU VỰC BÁT XÁT"
+    ]
+  },
+  "vn5300245602": {
+    "name": "Trung tâm Y tế khu vực Bảo Yên",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BẢO YÊN",
+      "Trung tâm Y tế khu vực Bảo Yên"
+    ]
+  },
+  "vn5300316268": {
+    "name": "Bệnh viện Đa khoa Thị xã Sa Pa",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA SỐ 4 TỈNH LÀO CAI",
+      "Bệnh viện Đa khoa Thị xã Sa Pa"
+    ]
+  },
+  "vn5300316846": {
+    "name": "Bệnh viện Đa khoa huyện Bảo Yên",
+    "aliases": [
+      "Bệnh viện Đa khoa huyện Bảo Yên",
+      "Bệnh viện Đa khoa khu vực Bảo Yên"
+    ]
+  },
+  "vn5300376806": {
+    "name": "Bệnh viện Đa khoa huyện Mường Khương",
+    "aliases": [
+      "Bệnh viện Đa khoa Khu Vực Mường Khương",
+      "Bệnh viện Đa khoa huyện Mường Khương"
+    ]
+  },
+  "vn5300729667": {
+    "name": "BỆNH VIỆN ĐA KHOA THÀNH PHỐ LÀO CAI",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC LÀO CAI - CAM ĐƯỜNG",
+      "BỆNH VIỆN ĐA KHOA THÀNH PHỐ LÀO CAI",
+      "TRUNG TÂM Y TẾ KHU VỰC LÀO CAI - CAM ĐƯỜNG"
+    ]
+  },
+  "vn5300824945": {
+    "name": "Bệnh viện Đa khoa huyện Si Ma Cai",
+    "aliases": [
+      "Bệnh viện Đa khoa huyện Si Ma Cai",
+      "Bệnh viện Đa khoa khu vực Si Ma Cai"
+    ]
+  },
+  "vn5400164107": {
+    "name": "Bệnh viện Đa khoa Hòa Bình",
+    "aliases": [
+      "Bệnh viện Đa khoa Hòa Bình",
+      "Bệnh viện Đa khoa tỉnh Hòa Bình"
+    ]
+  },
+  "vn5400190555": {
+    "name": "Trung tâm Y tế khu vực Tân Lạc",
+    "aliases": [
+      "Trung tâm Y tế huyện Tân Lạc",
+      "Trung tâm Y tế khu vực Tân Lạc"
+    ]
+  },
+  "vn5400191069": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC KIM BÔI",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC KIM BÔI",
+      "Trung tâm Y tế huyện Kim Bôi"
+    ]
+  },
+  "vn5400207488": {
+    "name": "Bệnh viện Y học Cổ truyền tỉnh Hòa Bình",
+    "aliases": [
+      "Bệnh viện Y học Cổ truyền Hòa Bình",
+      "Bệnh viện Y học Cổ truyền tỉnh Hòa Bình"
+    ]
+  },
+  "vn5400307059": {
+    "name": "Trung tâm Y tế khu vực Hòa Bình",
+    "aliases": [
+      "Trung tâm Y tê thành phố Hòa Bình",
+      "Trung tâm Y tế khu vực Hòa Bình",
+      "Trung tâm Y tế thành phố Hòa Bình"
+    ]
+  },
+  "vn5400317970": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN MAI CHÂU",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN MAI CHÂU",
+      "TRUNG TÂM Y TẾ KHU VỰC MAI CHÂU"
+    ]
+  },
+  "vn5400320412": {
+    "name": "Trung tâm Y tế huyện Lạc Sơn",
+    "aliases": [
+      "Trung tâm Y tế huyện Lạc Sơn",
+      "Trung tâm Y tế khu vực Lạc Sơn"
+    ]
+  },
+  "vn5400321039": {
+    "name": "Trung tâm y tế khu vực Lạc Thủy",
+    "aliases": [
+      "Trung tâm y tế huyện Lạc Thủy, tỉnh Hòa Bình",
+      "Trung tâm y tế khu vực Lạc Thủy"
+    ]
+  },
+  "vn5400479040": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ĐÀ BẮC",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐÀ BẮC",
+      "TRUNG TÂM Y TẾ KHU VỰC ĐÀ BẮC"
+    ]
+  },
+  "vn5500165496": {
+    "name": "Bệnh viện Y Dược cổ truyền Sơn La",
+    "aliases": [
+      "Bệnh viện Y Dược cổ truyền Sơn La",
+      "Bệnh viện Y Dược cổ truyền tỉnh Sơn La"
+    ]
+  },
+  "vn5500167461": {
+    "name": "Bệnh viện đa khoa huyện Sông Mã",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Sông Mã",
+      "Bệnh viện đa khoa khu vực Sông Mã"
+    ]
+  },
+  "vn5500168835": {
+    "name": "Bệnh viện đa khoa khu vực Phù Yên",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Phù Yên, tỉnh Sơn La",
+      "Bệnh viện đa khoa khu vực Phù Yên"
+    ]
+  },
+  "vn5500169187": {
+    "name": "Bệnh viện Đa khoa khu vực Quỳnh Nhai",
+    "aliases": [
+      "Bệnh viện Đa khoa Quỳnh Nhai",
+      "Bệnh viện Đa khoa huyện Quỳnh Nhai",
+      "Bệnh viện Đa khoa khu vực Quỳnh Nhai"
+    ]
+  },
+  "vn5500210050": {
+    "name": "Bệnh viện đa khoa huyện Mai Sơn, tỉnh Sơn La",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Mai Sơn, tỉnh Sơn La",
+      "Bệnh viện đa khoa khu vực Mai Sơn"
+    ]
+  },
+  "vn5500340317": {
+    "name": "Bệnh viện đa khoa huyện Mộc Châu, tỉnh Sơn La",
+    "aliases": [
+      "Bệnh viện đa khoa Mộc Châu",
+      "Bệnh viện đa khoa huyện Mộc Châu, tỉnh Sơn La",
+      "Bệnh viện đa khoa khu vực Mộc Châu"
+    ]
+  },
+  "vn5500342071": {
+    "name": "Bệnh viện đa khoa Thảo Nguyên huyện Mộc Châu",
+    "aliases": [
+      "Bệnh viện đa khoa Thảo Nguyên huyện Mộc Châu",
+      "Bệnh viện đa khoa khu vực Vân Hồ"
+    ]
+  },
+  "vn5500364614": {
+    "name": "Bệnh viện đa khoa huyện Thuận Châu",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Thuận Châu",
+      "Bệnh viện đa khoa khu vực Thuận Châu"
+    ]
+  },
+  "vn5500372580": {
+    "name": "Bệnh viện đa khoa huyện Bắc Yên",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Bắc Yên",
+      "Bệnh viện đa khoa khu vực Bắc Yên"
+    ]
+  },
+  "vn5500372904": {
+    "name": "Bệnh Viện Đa Khoa Mường La",
+    "aliases": [
+      "Bệnh Viện Đa Khoa Mường La",
+      "Bệnh viện Đa khoa khu vực Mường La"
+    ]
+  },
+  "vn5500374267": {
+    "name": "Bệnh viện đa khoa Huyện Yên Châu",
+    "aliases": [
+      "Bệnh viện đa khoa Huyện Yên Châu",
+      "Bệnh viện đa khoa khu vực Yên Châu"
+    ]
+  },
+  "vn5500377204": {
+    "name": "Bệnh viện đa khoa huyện Sốp Cộp",
+    "aliases": [
+      "Bệnh viện đa khoa huyện Sốp Cộp",
+      "Bệnh viện đa khoa khu vực Sốp Cộp"
+    ]
+  },
+  "vn5600189035": {
+    "name": "Trung tâm Y tế Điện Biên Phủ",
+    "aliases": [
+      "Trung tâm Y tế thành phố Điện Biên Phủ",
+      "Trung tâm Y tế Điện Biên Phủ"
+    ]
+  },
+  "vn5600189518": {
+    "name": "Trung tâm Y tế Tuần Giáo",
+    "aliases": [
+      "Trung tâm Y tế Tuần Giáo",
+      "Trung tâm Y tế huyện Tuần Giáo, tỉnh Điện Biên"
+    ]
+  },
+  "vn5600190016": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN TỦA CHÙA",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TỦA CHÙA",
+      "TRUNG TÂM Y TẾ TỦA CHÙA"
+    ]
+  },
+  "vn5600191041": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ĐIỆN BIÊN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐIỆN BIÊN",
+      "TRUNG TÂM Y TẾ THANH AN"
+    ]
+  },
+  "vn5600191281": {
+    "name": "Trung Tâm Y tế Huyện Điện Biên Đông",
+    "aliases": [
+      "Trung Tâm Y tế Huyện Điện Biên Đông",
+      "Trung tâm Y tế Điện Biên Đông"
+    ]
+  },
+  "vn5600201099": {
+    "name": "Trung tâm Y tế Mường Ảng",
+    "aliases": [
+      "Trung tâm Y tế Mường Ảng",
+      "Trung tâm Y tế huyện Mường Ảng"
+    ]
+  },
+  "vn5600205174": {
+    "name": "Trung tâm y tế huyện Mường Chà",
+    "aliases": [
+      "Trung tâm y tế Na Sang",
+      "Trung tâm y tế huyện Mường Chà"
+    ]
+  },
+  "vn5600205382": {
+    "name": "Trung tâm y tế huyện Mường Nhé",
+    "aliases": [
+      "Trung tâm Y tế Mường Nhé",
+      "Trung tâm y tế huyện Mường Nhé"
+    ]
+  },
+  "vn5600269964": {
+    "name": "Trung tâm Y tế huyện Nậm Pồ",
+    "aliases": [
+      "Trung tâm Y tế Nậm Pồ",
+      "Trung tâm Y tế huyện Nậm Pồ"
+    ]
+  },
+  "vn5700391559": {
+    "name": "Bệnh viện Bảo vệ sức khỏe tâm thần Quảng Ninh",
+    "aliases": [
+      "Bệnh viện Bảo vệ sức khỏe tâm thần Quảng Ninh",
+      "Bệnh viện sức khỏe tâm thần"
+    ]
+  },
+  "vn5700401912": {
+    "name": "Bệnh viện đa khoa Cẩm Phả",
+    "aliases": [
+      "Bệnh viện Đa khoa Cẩm Phả",
+      "Bệnh viện đa khoa Cẩm Phả"
+    ]
+  },
+  "vn5700928547": {
+    "name": "Trung tâm Y tế huyện Tiên Yên",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Tiên Yên",
+      "Trung tâm Y tế huyện Tiên Yên"
+    ]
+  },
+  "vn5700950133": {
+    "name": "Trung tâm y tế huyện Đầm Hà",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Móng Cái",
+      "Trung tâm y tế huyện Đầm Hà"
+    ]
+  },
+  "vn5700972962": {
+    "name": "Trung tâm Y tế huyện Cô Tô",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Vân Đồn",
+      "Trung tâm Y tế huyện Cô Tô"
+    ]
+  },
+  "vn5701416936": {
+    "name": "Ban Quản lý dự án đầu tư xây dựng các công trình dân dụng và công nghiệp tỉnh Quảng Ninh",
+    "aliases": [
+      "Ban Quản lý dự án đầu tư xây dựng các công trình dân dụng và công nghiệp tỉnh Quảng Ninh",
+      "Ban Quản lý dự án đầu tư xây dựng khu vực I tỉnh Quảng Ninh"
+    ]
+  },
+  "vn5701815232": {
+    "name": "Bệnh viện Đa khoa khu vực Đông Triều",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Đông Triều",
+      "Trung tâm Y tế thành phố Đông Triều",
+      "Trung tâm Y tế thị xã Đông Triều"
+    ]
+  },
+  "vn5701815602": {
+    "name": "Trung tâm Y tế thị xã Quảng Yên",
+    "aliases": [
+      "Trung tâm Y tế thị xã Quảng Yên",
+      "Trung tâm y tế thị xã Quảng Yên"
+    ]
+  },
+  "vn5800069507": {
+    "name": "Trung tâm y tế huyện Đức Trọng",
+    "aliases": [
+      "Trung tâm y tế huyện Đức Trọng",
+      "Trung tâm y tế khu vực Đức Trọng"
+    ]
+  },
+  "vn5800076007": {
+    "name": "Bệnh viện Y học cổ truyền Phạm Ngọc Thạch Lâm Đồng",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền Phạm Ngọc Thạch",
+      "Bệnh viện Y học cổ truyền Phạm Ngọc Thạch Lâm Đồng"
+    ]
+  },
+  "vn5800179309": {
+    "name": "Trung tâm Y tế Huyện Lâm Hà",
+    "aliases": [
+      "Trung tâm Y tế Huyện Lâm Hà",
+      "Trung tâm Y tế Khu vực Lâm Hà"
+    ]
+  },
+  "vn5800179820": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ĐẠ HUOAI",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐẠ HUOAI",
+      "TRUNG TÂM Y TẾ KHU VỰC ĐẠ HUOAI"
+    ]
+  },
+  "vn5800179852": {
+    "name": "Trung tâm Y tế Đà Lạt",
+    "aliases": [
+      "Trung tâm Y tế khu vực Đà Lạt",
+      "Trung tâm Y tế Đà Lạt"
+    ]
+  },
+  "vn5800180174": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ BẢO LỘC",
+    "aliases": [
+      "TRUNG TÂM Y TẾ KHU VỰC BẢO LỘC",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ BẢO LỘC"
+    ]
+  },
+  "vn5800187324": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ĐƠN DƯƠNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐƠN DƯƠNG",
+      "TRUNG TÂM Y TẾ KHU VỰC ĐƠN DƯƠNG"
+    ]
+  },
+  "vn5800188159": {
+    "name": "Trung tâm Y tế huyện Di Linh",
+    "aliases": [
+      "Trung tâm Y tế huyện Di Linh",
+      "Trung tâm Y tế khu vực Di Linh"
+    ]
+  },
+  "vn5800250110": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN LẠC DƯƠNG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN LẠC DƯƠNG",
+      "TRUNG TÂM Y TẾ KHU VỰC LẠC DƯƠNG",
+      "TRUNG TÂM Y TẾ LẠC DƯƠNG"
+    ]
+  },
+  "vn5800361075": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN BẢO LÂM",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN BẢO LÂM",
+      "TRUNG TÂM Y TẾ KHU VỰC BẢO LÂM",
+      "Trung tâm y tế khu vực Bảo Lâm"
+    ]
+  },
+  "vn5800445906": {
+    "name": "Bệnh viện Đa khoa Lâm Đồng",
+    "aliases": [
+      "Bệnh viện Đa khoa Lâm Đồng",
+      "Bệnh viện Đa khoa tỉnh Lâm Đồng"
+    ]
+  },
+  "vn5800832983": {
+    "name": "Bệnh viện Nhi tỉnh Lâm Đồng",
+    "aliases": [
+      "Bệnh viện Nhi tỉnh Lâm Đồng",
+      "Bệnh viện Sản - Nhi tỉnh Lâm Đồng"
+    ]
+  },
+  "vn5801418711": {
+    "name": "Trung tâm Kiểm soát bệnh tật Lâm Đồng",
+    "aliases": [
+      "Trung tâm Kiểm soát bệnh tật Lâm Đồng",
+      "Trung tâm Kiểm soát bệnh tật tỉnh Lâm Đồng"
+    ]
+  },
+  "vn5900197365": {
+    "name": "Bệnh viện đa khoa tỉnh Gia Lai",
+    "aliases": [
+      "Bệnh viện Đa khoa Gia Lai",
+      "Bệnh viện đa khoa tỉnh Gia Lai"
+    ]
+  },
+  "vn5900253073": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ PLEIKU",
+    "aliases": [
+      "TRUNG TÂM Y TẾ PLEIKU",
+      "TRUNG TÂM Y TẾ THÀNH PHỐ PLEIKU"
+    ]
+  },
+  "vn5900274443": {
+    "name": "BỆNH VIỆN Y DƯỢC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG PLEIKU",
+    "aliases": [
+      "BỆNH VIỆN Y DƯỢC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG PLEIKU",
+      "BỆNH VIỆN Y DƯỢC CỔ TRUYỀN VÀ PHỤC HỒI CHỨC NĂNG TỈNH GIA LAI"
+    ]
+  },
+  "vn5900275750": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ AN KHÊ",
+    "aliases": [
+      "TRUNG TÂM Y TẾ AN KHÊ",
+      "TRUNG TÂM Y TẾ THỊ XÃ AN KHÊ"
+    ]
+  },
+  "vn5900280662": {
+    "name": "Trung tâm Y tế huyện KBANG",
+    "aliases": [
+      "Trung tâm Y tế Kbang",
+      "Trung tâm Y tế huyện KBANG"
+    ]
+  },
+  "vn5900313389": {
+    "name": "Trung tâm Y tế Đak Pơ",
+    "aliases": [
+      "Trung tâm Y tế huyện Đak Pơ",
+      "Trung tâm Y tế Đak Pơ"
+    ]
+  },
+  "vn5900336442": {
+    "name": "TRUNG TÂM Y TẾ MANG YANG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ MANG YANG",
+      "Trung Tâm Y Tế Huyện Mang Yang"
+    ]
+  },
+  "vn5900380628": {
+    "name": "Trung tâm Y tế huyện Chư Sê",
+    "aliases": [
+      "Trung tâm Y tế Chư Sê",
+      "Trung tâm Y tế huyện Chư Sê"
+    ]
+  },
+  "vn5900519407": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN PHÚ THIỆN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN PHÚ THIỆN",
+      "TRUNG TÂM Y TẾ PHÚ THIỆN"
+    ]
+  },
+  "vn5900547073": {
+    "name": "Trung Tâm Y Tế Thị Xã AyunPa",
+    "aliases": [
+      "Trung Tâm Y Tế Ayun Pa",
+      "Trung Tâm Y Tế Thị Xã AyunPa"
+    ]
+  },
+  "vn5900617806": {
+    "name": "Trung tâm y tế huyện IaGrai tỉnh Gia Lai",
+    "aliases": [
+      "Trung tâm y tế Ia Grai",
+      "Trung tâm y tế huyện IaGrai tỉnh Gia Lai"
+    ]
+  },
+  "vn5900618239": {
+    "name": "Trung tâm Y tế huyện Krông Pa",
+    "aliases": [
+      "Trung tâm Y tế huyện Krông Pa",
+      "Trung tâm Y tế Krông Pa"
+    ]
+  },
+  "vn5900699622": {
+    "name": "Trung tâm Y tế huyện Chư Pưh",
+    "aliases": [
+      "Trung tâm Y tế Chư Pưh",
+      "Trung tâm Y tế huyện Chư Pưh"
+    ]
+  },
+  "vn6000457414": {
+    "name": "Bệnh viện Y học cổ truyền Đăk Lăk",
+    "aliases": [
+      "Bệnh viện Y học cổ truyền tỉnh Đắk Lắk",
+      "Bệnh viện Y học cổ truyền Đăk Lăk"
+    ]
+  },
+  "vn6000485919": {
+    "name": "Trung tâm y tế huyện Krông Pắc",
+    "aliases": [
+      "Trung tâm y tế Krông Pắc",
+      "Trung tâm y tế huyện Krông Pắc"
+    ]
+  },
+  "vn6000491694": {
+    "name": "Trung tâm Y tế huyện M'Drắk",
+    "aliases": [
+      "Trung tâm Y tế huyện M'Drắk",
+      "Trung tâm Y tế M'Drắk"
+    ]
+  },
+  "vn6000496131": {
+    "name": "Trung tâm y tế huyện Krông Bông",
+    "aliases": [
+      "Trung tâm y tế Krông Bông",
+      "Trung tâm y tế huyện Krông Bông"
+    ]
+  },
+  "vn6000497336": {
+    "name": "Trung tâm y tế huyện Buôn Đôn",
+    "aliases": [
+      "Trung tâm y tế Buôn Đôn",
+      "Trung tâm y tế huyện Buôn Đôn"
+    ]
+  },
+  "vn6000510594": {
+    "name": "Bệnh viện Đa khoa Thành phố Buôn Ma Thuột",
+    "aliases": [
+      "Bệnh viện Đa khoa Buôn Ma Thuột",
+      "Bệnh viện Đa khoa Thành phố Buôn Ma Thuột"
+    ]
+  },
+  "vn6000515426": {
+    "name": "Trung tâm Y tế Krông năng",
+    "aliases": [
+      "Trung tâm Y tế Krông năng",
+      "Trung tâm Y tế huyện Krông năng"
+    ]
+  },
+  "vn6000585543": {
+    "name": "Trung tâm y tế huyện Ea Súp",
+    "aliases": [
+      "Trung tâm Y tế Ea Súp",
+      "Trung tâm y tế huyện Ea Súp"
+    ]
+  },
+  "vn6000612035": {
+    "name": "Trung tâm y tế Huyện Cư kuin",
+    "aliases": [
+      "TRUNG TÂM Y TẾ CƯ KUIN",
+      "Trung tâm y tế Huyện Cư kuin"
+    ]
+  },
+  "vn6000666023": {
+    "name": "Bệnh viện Phổi Đắk Lắk",
+    "aliases": [
+      "Bệnh viện Phổi tỉnh Đắk Lắk",
+      "Bệnh viện Phổi Đắk Lắk"
+    ]
+  },
+  "vn6000703476": {
+    "name": "Bệnh viện Mắt tỉnh Đắk Lắk",
+    "aliases": [
+      "Bệnh viện Mắt tỉnh Đắk Lắk",
+      "Bệnh viện Mắt Đắk Lắk"
+    ]
+  },
+  "vn6000793582": {
+    "name": "BỆNH VIỆN ĐA KHOA THỊ XÃ BUÔN HỒ",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA BUÔN HỒ",
+      "BỆNH VIỆN ĐA KHOA THỊ XÃ BUÔN HỒ"
+    ]
+  },
+  "vn6000919330": {
+    "name": "Trung tâm y tế huyện Cư M'gar",
+    "aliases": [
+      "Trung tâm Y tế Cư M'gar",
+      "Trung tâm y tế huyện Cư M'gar"
+    ]
+  },
+  "vn6000932645": {
+    "name": "Trung tâm y tế huyện Ea H'Leo",
+    "aliases": [
+      "Trung tâm y tế Ea H'Leo",
+      "Trung tâm y tế huyện Ea H'Leo"
+    ]
+  },
+  "vn6000945563": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN KRÔNG BÚK",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN KRÔNG BÚK",
+      "TRUNG TÂM Y TẾ KRÔNG BÚK"
+    ]
+  },
+  "vn6001671065": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN EA KAR",
+    "aliases": [
+      "TRUNG TÂM Y TẾ EA KAR",
+      "TRUNG TÂM Y TẾ HUYỆN EA KAR"
+    ]
+  },
+  "vn6100109361": {
+    "name": "Bệnh viện đa khoa tỉnh Kon Tum",
+    "aliases": [
+      "Bệnh viện đa khoa tỉnh Kon Tum",
+      "Bệnh viện đa khoa tỉnh Quảng Ngãi 2"
+    ]
+  },
+  "vn6100282140": {
+    "name": "Trung tâm Y tế huyện Đăk Tô",
+    "aliases": [
+      "Trung tâm Y tế huyện Đăk Tô",
+      "Trung tâm Y tế Đăk Tô"
+    ]
+  },
+  "vn6100405152": {
+    "name": "Trung tâm Y tế huyện Đăk Glei",
+    "aliases": [
+      "Trung tâm Y tế huyện Đăk Glei",
+      "Trung tâm Y tế Đăk Glei"
+    ]
+  },
+  "vn6100467744": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ĐĂK HÀ",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐĂK HÀ",
+      "TRUNG TÂM Y TẾ ĐĂK HÀ"
+    ]
+  },
+  "vn6200022989": {
+    "name": "Trung tâm Y tế huyện Tân Uyên",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA TÂN UYÊN",
+      "Trung tâm Y tế Tân Uyên",
+      "Trung tâm Y tế huyện Tân Uyên"
+    ]
+  },
+  "vn6200070277": {
+    "name": "Bệnh viện đa khoa Nậm Nhùn",
+    "aliases": [
+      "Bệnh viện đa khoa Nậm Nhùn",
+      "Trung tâm Y tế Nậm Nhùn",
+      "Trung tâm Y tế huyện Nậm Nhùn"
+    ]
+  },
+  "vn6300020696": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN CHÂU THÀNH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CHÂU THÀNH",
+      "TRUNG TÂM Y TẾ KHU VỰC CHÂU THÀNH"
+    ]
+  },
+  "vn6300022090": {
+    "name": "Trung tâm y tế huyện Phụng Hiệp",
+    "aliases": [
+      "Trung tâm y tế huyện Phụng Hiệp",
+      "Trung tâm y tế khu vực Phụng Hiệp"
+    ]
+  },
+  "vn6300033631": {
+    "name": "Trung tâm Y tế thị xã Long Mỹ",
+    "aliases": [
+      "Trung tâm Y tế khu vực Long Mỹ",
+      "Trung tâm Y tế thị xã Long Mỹ"
+    ]
+  },
+  "vn6300147050": {
+    "name": "Bệnh viện Phổi tỉnh Hậu Giang",
+    "aliases": [
+      "Bệnh viện Phổi Hậu Giang",
+      "Bệnh viện Phổi tỉnh Hậu Giang"
+    ]
+  },
+  "vn6300256444": {
+    "name": "Trung tâm Y tế huyện Châu Thành A",
+    "aliases": [
+      "Trung tâm Y tế huyện Châu Thành A",
+      "Trung tâm Y tế khu vực Châu Thành A"
+    ]
+  },
+  "vn6300268908": {
+    "name": "Ban Quản lý dự án đầu tư xây dựng công trình dân dụng và công nghiệp tỉnh Hậu Giang",
+    "aliases": [
+      "BAN QUẢN LÝ DỰ ÁN ĐẦU TƯ XÂY DỰNG CÔNG TRÌNH DÂN DỤNG VÀ CÔNG NGHIỆP THÀNH PHỐ CẦN THƠ",
+      "Ban Quản lý dự án đầu tư xây dựng công trình dân dụng và công nghiệp tỉnh Hậu Giang"
+    ]
+  },
+  "vn6300277638": {
+    "name": "Trung tâm Y tế huyện Vị Thủy",
+    "aliases": [
+      "Trung tâm Y tế huyện Vị Thủy",
+      "Trung tâm Y tế khu vực Vị Thủy"
+    ]
+  },
+  "vn6300330899": {
+    "name": "Bệnh viện Đa khoa thành phố Ngã Bảy",
+    "aliases": [
+      "Bệnh viện Đa khoa khu vực Ngã Bảy",
+      "Bệnh viện Đa khoa thành phố Ngã Bảy"
+    ]
+  },
+  "vn6400031532": {
+    "name": "Bệnh viện Đa khoa tỉnh Đăk Nông",
+    "aliases": [
+      "Bệnh viện Đa khoa tỉnh Đăk Nông",
+      "Bệnh viện Đa khoa Đăk Nông"
+    ]
+  },
+  "vn6400053399": {
+    "name": "Trung tâm Y tế huyện Đắk R' Lấp",
+    "aliases": [
+      "Trung tâm Y tế huyện Đắk R' Lấp",
+      "Trung tâm Y tế khu vực Đắk R' Lấp"
+    ]
+  },
+  "vn6400057347": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN ĐẮK SONG",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN ĐẮK SONG",
+      "TRUNG TÂM Y TẾ KHU VỰC ĐẮK SONG"
+    ]
+  },
+  "vn6400072602": {
+    "name": "Trung tâm Y tế huyện Đăk Mil",
+    "aliases": [
+      "Trung tâm Y tế huyện Đăk Mil",
+      "Trung tâm Y tế khu vực Đắk Mil"
+    ]
+  },
+  "vn6400120870": {
+    "name": "Trung tâm y tế huyện Tuy Đức",
+    "aliases": [
+      "Trung tâm y tế huyện Tuy Đức",
+      "Trung tâm y tế khu vực Tuy Đức"
+    ]
+  },
+  "vn6400140771": {
+    "name": "Trung tâm Y tế huyện Cư Jút",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN CƯ JÚT",
+      "Trung tâm Y tế huyện Cư Jút"
+    ]
+  },
+  "vn6400396389": {
+    "name": "Trung tâm Y tế khu vực Đắk Glong",
+    "aliases": [
+      "Trung tâm Y tế huyện Đắk Glong",
+      "Trung tâm Y tế khu vực Đắk Glong"
+    ]
+  },
+  "vnz000004226": {
+    "name": "BỆNH VIỆN MẮT - DA LIỄU",
+    "aliases": [
+      "BỆNH VIỆN MẮT - DA LIỄU",
+      "BỆNH VIỆN MẮT - DA LIỄU TỈNH CÀ MAU"
+    ]
+  },
+  "vnz000004249": {
+    "name": "Bệnh viện Quân y 87/Tổng cục Hậu cần-Kỹ Thuật",
+    "aliases": [
+      "Bệnh viện Quân y 87/Tổng cục Hậu cần",
+      "Bệnh viện Quân y 87/Tổng cục Hậu cần-Kỹ Thuật"
+    ]
+  },
+  "vnz000004319": {
+    "name": "Bệnh viện Bệnh nhiết đới tỉnh Hưng Yên",
+    "aliases": [
+      "Bệnh viện Bệnh nhiết đới tỉnh Hưng Yên",
+      "Bệnh viện Bệnh nhiệt đới tỉnh Hưng Yên"
+    ]
+  },
+  "vnz000004557": {
+    "name": "Bệnh viện 19-8, Bộ Công an",
+    "aliases": [
+      "Bệnh viện 19-8, Bộ Công an",
+      "Bệnh viện 198, Bộ Công an"
+    ]
+  },
+  "vnz000004982": {
+    "name": "Trung tâm Y tế huyện Trà Cú",
+    "aliases": [
+      "Trung tâm Y tế huyện Trà Cú",
+      "Trung tâm Y tế khu vực Trà Cú"
+    ]
+  },
+  "vnz000004989": {
+    "name": "Trung tâm Y tế huyện Anh Sơn",
+    "aliases": [
+      "Trung tâm Y tế Anh Sơn",
+      "Trung tâm Y tế huyện Anh Sơn"
+    ]
+  },
+  "vnz000005117": {
+    "name": "Bệnh Viện Mắt Nam Quảng Trị",
+    "aliases": [
+      "Bệnh Viện Mắt Nam Quảng Trị",
+      "Bệnh Viện Mắt Quảng Trị"
+    ]
+  },
+  "vnz000005358": {
+    "name": "BỆNH VIỆN SẢN NHI TỈNH HẬU GIANG",
+    "aliases": [
+      "BỆNH VIỆN SẢN - NHI HẬU GIANG",
+      "BỆNH VIỆN SẢN NHI TỈNH HẬU GIANG"
+    ]
+  },
+  "vnz000005676": {
+    "name": "Bệnh viện Phụ sản Thái Bình",
+    "aliases": [
+      "Bệnh viện Phụ sản Thái Bình",
+      "Bệnh viện Phụ sản tỉnh Thái Bình"
+    ]
+  },
+  "vnz000005929": {
+    "name": "Viện Sốt rét Ký sinh trùng Côn trùng Quy Nhơn",
+    "aliases": [
+      "Viện Sốt rét - Ký sinh trùng - Côn trùng Quy Nhơn",
+      "Viện Sốt rét Ký sinh trùng Côn trùng Quy Nhơn"
+    ]
+  },
+  "vnz000005953": {
+    "name": "Trung tâm Y tế huyện Phong Thổ",
+    "aliases": [
+      "Bệnh viện Đa khoa Phong Thổ",
+      "Trung tâm Y tế huyện Phong Thổ"
+    ]
+  },
+  "vnz000006446": {
+    "name": "Bệnh viện Ung bướu tỉnh Bắc Giang",
+    "aliases": [
+      "Bệnh viện Ung bướu Bắc Ninh",
+      "Bệnh viện Ung bướu tỉnh Bắc Giang"
+    ]
+  },
+  "vnz000006524": {
+    "name": "Trung tâm y tế thành phố Vĩnh Yên",
+    "aliases": [
+      "Trung tâm y tế khu vực Vĩnh Yên",
+      "Trung tâm y tế thành phố Vĩnh Yên"
+    ]
+  },
+  "vnz000006866": {
+    "name": "Trung tâm Y tế huyện Than Uyên",
+    "aliases": [
+      "Bệnh viện Đa khoa Than Uyên",
+      "Trung tâm Y tế Than Uyên",
+      "Trung tâm Y tế huyện Than Uyên"
+    ]
+  },
+  "vnz000007043": {
+    "name": "Trung tâm Y tế Hoàng Mai",
+    "aliases": [
+      "Trung tâm Y tế Hoàng Mai",
+      "Trung tâm Y tế Hoàng Mai, Nghệ An"
+    ]
+  },
+  "vnz000007486": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN DIÊN KHÁNH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN DIÊN KHÁNH",
+      "TRUNG TÂM Y TẾ KHU VỰC DIÊN KHÁNH"
+    ]
+  },
+  "vnz000007588": {
+    "name": "TRUNG TÂM Y TẾ THỊ XÃ DUYÊN HẢI",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Duyên Hải",
+      "TRUNG TÂM Y TẾ THỊ XÃ DUYÊN HẢI"
+    ]
+  },
+  "vnz000007757": {
+    "name": "Bệnh viện đa khoa tỉnh Ninh Thuận",
+    "aliases": [
+      "Bệnh viện đa khoa Ninh Thuận",
+      "Bệnh viện đa khoa tỉnh Ninh Thuận"
+    ]
+  },
+  "vnz000007950": {
+    "name": "Trung tâm y tế huyện Tiên Lãng",
+    "aliases": [
+      "Trung tâm Y tế Tiên Lãng",
+      "Trung tâm y tế huyện Tiên Lãng"
+    ]
+  },
+  "vnz000008099": {
+    "name": "Viện Y học phóng xạ và U bướu Quân đội",
+    "aliases": [
+      "Viện Y học phóng xạ và U bướu Quân đội",
+      "Viện Y học phóng xạ và Ung bướu Quân đội"
+    ]
+  },
+  "vnz000008120": {
+    "name": "chi cục Dân số kế hoạch hóa gia đình Hậu Giang",
+    "aliases": [
+      "Chi cục Dân số - Kế hoạch hóa gia đình tỉnh Hậu Giang",
+      "chi cục Dân số kế hoạch hóa gia đình Hậu Giang"
+    ]
+  },
+  "vnz000008274": {
+    "name": "Bệnh viện đa khoa Đông Sơn",
+    "aliases": [
+      "Bệnh viện đa khoa Huyện Đông Sơn",
+      "Bệnh viện đa khoa Đông Sơn"
+    ]
+  },
+  "vnz000008875": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN DUYÊN HẢI",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA KHU VỰC LONG THÀNH",
+      "TRUNG TÂM Y TẾ HUYỆN DUYÊN HẢI"
+    ]
+  },
+  "vnz000009752": {
+    "name": "Bệnh viện Quân y 211",
+    "aliases": [
+      "Bệnh viện Quân y 211",
+      "Bệnh viện Quân y 211/ Cục Hậu cần/ Quân đoàn 3"
+    ]
+  },
+  "vnz000009968": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC U MINH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN U MINH",
+      "TRUNG TÂM Y TẾ KHU VỰC U MINH"
+    ]
+  },
+  "vnz000010422": {
+    "name": "Trung tâm Y tế Huyện Nam Đàn",
+    "aliases": [
+      "Trung tâm Y tế Huyện Nam Đàn",
+      "Trung tâm Y tế Nam Đàn"
+    ]
+  },
+  "vnz000010579": {
+    "name": "Bệnh viện đa khoa thành phố Cà Mau",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Cà Mau",
+      "Bệnh viện đa khoa thành phố Cà Mau"
+    ]
+  },
+  "vnz000010856": {
+    "name": "Bệnh viện thành phố Thủ Đức",
+    "aliases": [
+      "Bệnh viện thành phố Thủ Đức",
+      "Bệnh viện Đa khoa Thủ Đức"
+    ]
+  },
+  "vnz000011103": {
+    "name": "BỆNH VIỆN NHI TỈNH GIA lAI",
+    "aliases": [
+      "BỆNH VIỆN NHI TỈNH GIA LAI",
+      "BỆNH VIỆN NHI TỈNH GIA lAI",
+      "BỆNH VIỆN SẢN - NHI TỈNH GIA LAI"
+    ]
+  },
+  "vnz000011377": {
+    "name": "Cục Hậu cần-Kỹ thuật Quân khu 1",
+    "aliases": [
+      "Cục Hậu cần Quân khu 1",
+      "Cục Hậu cần-Kỹ thuật Quân khu 1"
+    ]
+  },
+  "vnz000011687": {
+    "name": "BỆNH VIỆN Y HỌC CỔ TRUYỀN TỈNH LÀO CAI",
+    "aliases": [
+      "BỆNH VIỆN Y HỌC CỔ TRUYỀN TỈNH LÀO CAI",
+      "Bệnh viện Y học cổ truyền tỉnh Lào Cai"
+    ]
+  },
+  "vnz000011893": {
+    "name": "Bệnh viện Chuyên khoa Mắt Vĩnh Long",
+    "aliases": [
+      "Bệnh viện Chuyên khoa Mắt Vĩnh Long",
+      "Bệnh viện chuyên khoa Mắt tỉnh Vĩnh Long"
+    ]
+  },
+  "vnz000012886": {
+    "name": "Trung tâm y tế Nguyên Bình",
+    "aliases": [
+      "Trung tâm y tế Nguyên Bình",
+      "Trung tâm y tế huyện Nguyên Bình"
+    ]
+  },
+  "vnz000012919": {
+    "name": "Bệnh viện Y dược cổ truyền tỉnh Trà Vinh",
+    "aliases": [
+      "Bệnh viện Y dược cổ truyền Trà Vinh",
+      "Bệnh viện Y dược cổ truyền tỉnh Trà Vinh"
+    ]
+  },
+  "vnz000013015": {
+    "name": "Trung tâm Y tế Đức Thọ",
+    "aliases": [
+      "Bệnh viện đa khoa Huyện Đức Thọ",
+      "Trung tâm Y tế huyện Đức Thọ",
+      "Trung tâm Y tế Đức Thọ"
+    ]
+  },
+  "vnz000013556": {
+    "name": "Bệnh viện C Đà Nẵng",
+    "aliases": [
+      "BỆNH VIỆN C ĐÀ NẴNG",
+      "Bệnh viện C Đà Nẵng"
+    ]
+  },
+  "vnz000013702": {
+    "name": "Bệnh viện Sản Nhi tỉnh Bắc Ninh",
+    "aliases": [
+      "Bệnh viện Sản - Nhi Bắc Ninh số 2",
+      "Bệnh viện Sản Nhi tỉnh Bắc Ninh"
+    ]
+  },
+  "vnz000014769": {
+    "name": "Bệnh viện Phong Da liễu Trung ương Quỳnh Lập",
+    "aliases": [
+      "Bệnh viện Phong - Da liễu TW Quỳnh Lập",
+      "Bệnh viện Phong Da liễu Trung ương Quỳnh Lập"
+    ]
+  },
+  "vnz000015866": {
+    "name": "TRUNG TÂM Y TẾ THÀNH PHỐ BẮC NINH",
+    "aliases": [
+      "TRUNG TÂM Y TẾ THÀNH PHỐ BẮC NINH",
+      "TRẠM Y TẾ KINH BẮC"
+    ]
+  },
+  "vnz000015889": {
+    "name": "TRUNG TÂM Y TẾ KHU VỰC TÂN BIÊN",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN TÂN BIÊN",
+      "TRUNG TÂM Y TẾ KHU VỰC TÂN BIÊN"
+    ]
+  },
+  "vnz000015907": {
+    "name": "Bệnh viện Nội tiết tỉnh Bắc Giang",
+    "aliases": [
+      "Bệnh viện Nội tiết Bắc Ninh",
+      "Bệnh viện Nội tiết tỉnh Bắc Giang"
+    ]
+  },
+  "vnz000015990": {
+    "name": "Bệnh viện đa khoa huyện Gia Lâm",
+    "aliases": [
+      "Bệnh viện đa khoa Gia Lâm",
+      "Bệnh viện đa khoa huyện Gia Lâm"
+    ]
+  },
+  "vnz000016079": {
+    "name": "Sở Y tế tỉnh Long An",
+    "aliases": [
+      "Sở Y tế Tây Ninh",
+      "Sở Y tế tỉnh Long An",
+      "Sở Y tế tỉnh Tây Ninh"
+    ]
+  },
+  "vnz000016114": {
+    "name": "Trung tâm Y tế huyện Hoa Lư, tỉnh Ninh Bình",
+    "aliases": [
+      "Bệnh viện Đa khoa Hoa Lư",
+      "Trung tâm Y tế Hoa Lư",
+      "Trung tâm Y tế huyện Hoa Lư, tỉnh Ninh Bình"
+    ]
+  },
+  "vnz000016795": {
+    "name": "BỆNH VIỆN ĐA KHOA THÀNH PHỐ THÁI BÌNH",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA THÀNH PHỐ THÁI BÌNH",
+      "BỆNH VIỆN ĐA KHOA TRẦN LÃM"
+    ]
+  },
+  "vnz000016969": {
+    "name": "Bệnh viện đa khoa Ngọc Hiển",
+    "aliases": [
+      "Bệnh viện đa khoa Ngọc Hiển",
+      "Trung tâm Y tế huyện Ngọc Hiển"
+    ]
+  },
+  "vnz000017341": {
+    "name": "Bệnh viện Sản Nhi Trà Vinh",
+    "aliases": [
+      "Bệnh viện Sản - Nhi Trà Vinh",
+      "Bệnh viện Sản Nhi Trà Vinh"
+    ]
+  },
+  "vnz000017754": {
+    "name": "VIỆN KIỂM ĐỊNH QUỐC GIA VẮC XIN VÀ SINH PHẨM Y TẾ",
+    "aliases": [
+      "VIỆN KIỂM ĐỊNH QUỐC GIA VẮC XIN VÀ SINH PHẨM Y TẾ",
+      "Viện kiểm định quốc gia vắc xin và sinh phẩm y tế"
+    ]
+  },
+  "vnz000017816": {
+    "name": "Bệnh viện đa khoa Tỉnh Khánh Hòa",
+    "aliases": [
+      "Bệnh viện đa khoa Khánh Hòa",
+      "Bệnh viện đa khoa Tỉnh Khánh Hòa"
+    ]
+  },
+  "vnz000018630": {
+    "name": "Bệnh viện Quân y 91, Cục Hậu cần, Quân khu1",
+    "aliases": [
+      "Bệnh viện Quân y 91",
+      "Bệnh viện Quân y 91, Cục Hậu cần, Quân khu1"
+    ]
+  },
+  "vnz000019917": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN THANH HÀ",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN THANH HÀ",
+      "TRUNG TÂM Y TẾ THANH HÀ"
+    ]
+  },
+  "vnz000020200": {
+    "name": "Bệnh viện Phổi tỉnh Bắc Ninh",
+    "aliases": [
+      "Bệnh viện Phổi Bắc Ninh số 2",
+      "Bệnh viện Phổi tỉnh Bắc Ninh"
+    ]
+  },
+  "vnz000020228": {
+    "name": "Trung tâm Kiểm soát bệnh tật tỉnh Lạng Sơn",
+    "aliases": [
+      "Trung tâm Kiểm soát bệnh tật tỉnh Lạng Sơn",
+      "Trung tâm kiểm soát bệnh tật tỉnh Lạng Sơn"
+    ]
+  },
+  "vnz000021398": {
+    "name": "Bệnh Viện Lao Và Bệnh Phổi Tỉnh Cà Mau",
+    "aliases": [
+      "Bệnh Viện Lao Và Bệnh Phổi Cà Mau",
+      "Bệnh Viện Lao Và Bệnh Phổi Tỉnh Cà Mau"
+    ]
+  },
+  "vnz000022481": {
+    "name": "Trung tâm Y tế huyện Tam Đường tỉnh Lai Châu",
+    "aliases": [
+      "Bệnh viện Đa khoa Tam Đường",
+      "Trung tâm Y tế huyện Tam Đường tỉnh Lai Châu"
+    ]
+  },
+  "vnz000023107": {
+    "name": "Trung tâm Y tế thành phố Móng Cái",
+    "aliases": [
+      "Bệnh viện đa khoa khu vực Móng Cái",
+      "Trung tâm Y tế thành phố Móng Cái"
+    ]
+  },
+  "vnz000023606": {
+    "name": "Bệnh viện Nam Thăng Long",
+    "aliases": [
+      "Bệnh viện Lão khoa Hà Nội",
+      "Bệnh viện Nam Thăng Long"
+    ]
+  },
+  "vnz000023650": {
+    "name": "Bệnh viện đa khoa tỉnh Bắc Kạn",
+    "aliases": [
+      "Bệnh viện đa khoa Bắc Kạn",
+      "Bệnh viện đa khoa tỉnh Bắc Kạn"
+    ]
+  },
+  "vnz000023712": {
+    "name": "Bệnh viện Than Khoáng sản",
+    "aliases": [
+      "Bệnh viện Than - Khoáng sản",
+      "Bệnh viện Than Khoáng sản"
+    ]
+  },
+  "vnz000023725": {
+    "name": "Trung tâm Kiểm soát bệnh tật tỉnh Bắc Giang",
+    "aliases": [
+      "Trung tâm Kiểm soát bệnh tật Bắc Ninh số 1",
+      "Trung tâm Kiểm soát bệnh tật tỉnh Bắc Giang"
+    ]
+  },
+  "vnz000024357": {
+    "name": "Bệnh xá 24 f316/Quân khu 2",
+    "aliases": [
+      "Bệnh xá 24 f316/Quân khu 2",
+      "Sư đoàn 316,Quân khu 2"
+    ]
+  },
+  "vnz000024658": {
+    "name": "Trung tâm y tế huyện Tràng Định",
+    "aliases": [
+      "Trung tâm y tế huyện Tràng Định",
+      "Trung tâm y tế khu vực Tràng Định"
+    ]
+  },
+  "vnz000024942": {
+    "name": "Trung tâm Y tế huyện Sìn Hồ",
+    "aliases": [
+      "Bệnh Viện Đa Khoa Sìn Hồ",
+      "Trung tâm Y tế huyện Sìn Hồ"
+    ]
+  },
+  "vnz000025178": {
+    "name": "BỆNH VIỆN ĐA KHOA HUYỆN TRÙNG KHÁNH",
+    "aliases": [
+      "BỆNH VIỆN TRÙNG KHÁNH",
+      "BỆNH VIỆN ĐA KHOA HUYỆN TRÙNG KHÁNH"
+    ]
+  },
+  "vnz000025249": {
+    "name": "Trung tâm Y tế huyện Bàu Bàng",
+    "aliases": [
+      "Trung tâm Y tế huyện Bàu Bàng",
+      "Trung tâm Y tế khu vực Bàu Bàng"
+    ]
+  },
+  "vnz000025659": {
+    "name": "Trung Tâm Y Tế Huyện Lăk",
+    "aliases": [
+      "Trung Tâm Y Tế Huyện Lăk",
+      "Trung Tâm Y Tế Lắk"
+    ]
+  },
+  "vnz000025827": {
+    "name": "Trung Tâm Y Tế Quận Đồ Sơn",
+    "aliases": [
+      "Trung Tâm Y Tế Quận Đồ Sơn",
+      "Trung Tâm Y Tế Đồ Sơn"
+    ]
+  },
+  "vnz000027624": {
+    "name": "BỆNH VIỆN ĐA KHOA HÀ NỘI ĐỒNG VĂN – CHI NHÁNH CÔNG TY CỔ PHẦN Y TẾ HƯNG HÙNG",
+    "aliases": [
+      "BỆNH VIỆN ĐA KHOA HÀ NỘI ĐỒNG VĂN – CHI NHÁNH CÔNG TY CỔ PHẦN Y TẾ HƯNG HÙNG",
+      "BỆNH VIỆN ĐA KHOA HÀ NỘI ĐỒNG VĂN – CHI NHÁNH CÔNG TY TNHH Y TẾ HƯNG HÙNG"
+    ]
+  },
+  "vnz000028910": {
+    "name": "Ủy ban nhân dân huyện Trường Sa",
+    "aliases": [
+      "UBND Đặc Khu Trường Sa",
+      "Ủy ban nhân dân huyện Trường Sa"
+    ]
+  },
+  "vnz000029231": {
+    "name": "Trung tâm Y tế huyện Cát Hải",
+    "aliases": [
+      "Trung tâm Y tế Cát Hải",
+      "Trung tâm Y tế huyện Cát Hải"
+    ]
+  },
+  "vnz000029426": {
+    "name": "Trung tâm bảo vệ, chăm sóc sức khỏe cán bộ tỉnh",
+    "aliases": [
+      "Ban bảo vệ chăm sóc sức khỏe cán bộ tỉnh Hà Tĩnh",
+      "Trung tâm bảo vệ, chăm sóc sức khỏe cán bộ tỉnh"
+    ]
+  },
+  "vnz000030538": {
+    "name": "Trung tâm y tế thị xã Phú Mỹ",
+    "aliases": [
+      "Trung tâm y tế khu vực Phú Mỹ",
+      "Trung tâm y tế thị xã Phú Mỹ"
+    ]
+  },
+  "vnz000032016": {
+    "name": "TRUNG TÂM Y TẾ HUYỆN HƯƠNG KHÊ",
+    "aliases": [
+      "TRUNG TÂM Y TẾ HUYỆN HƯƠNG KHÊ",
+      "TRUNG TÂM Y TẾ HƯƠNG KHÊ"
+    ]
+  },
+  "vnz000033866": {
+    "name": "Trung tâm Y tế Thành phố Hà Tĩnh",
+    "aliases": [
+      "Trung tâm Y tế Thành Sen",
+      "Trung tâm Y tế Thành phố Hà Tĩnh"
+    ]
+  }
+}

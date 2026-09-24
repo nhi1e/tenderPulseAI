@@ -40,7 +40,9 @@ function portalFilters(filters: PortalFilters) {
   const result: Array<Record<string, unknown>> = [];
   if (filters.dateFrom || filters.dateTo) {
     result.push({
-      fieldName: "ngay_dang_tai_kqlcnt",
+      // Staff confirmed that dashboard periods follow the decision date, not
+      // the publication date. Both dates are still retained in Excel exports.
+      fieldName: "ngay_ban_hanh_quyet_dinh",
       searchType: "range",
       from: filters.dateFrom ? `${filters.dateFrom}T00:00:00.000Z` : null,
       to: filters.dateTo ? `${filters.dateTo}T23:59:59.999Z` : null,

@@ -19,9 +19,11 @@ import {
   manufacturerMappedRows,
   manufacturerUnmappedRows,
   ruleForSearchTerm,
+  staffReviewDecisionFor,
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
+import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
   aggregateOverviewFacts,
   type OverviewCompetitor,
@@ -50,6 +52,7 @@ type WinningBidRecord = {
   soLuuHanh?: string; namSanXuat?: string; winningCode?: string[] | string;
   maCdt?: string; bidForm?: string; soQuyetDinh?: string;
   ngayBanHanhQuyetDinh?: string; soNhaThauThamDu?: number;
+  maKqlcnt?: string; kqlcntId?: string; idKqlcnt?: string; resultId?: string;
   diaDiem?: Array<{ wardName?: string; districtName?: string; provName?: string }>;
 };
 type PortalPage = { content: WinningBidRecord[]; totalElements?: number; totalPages?: number };
@@ -57,6 +60,9 @@ type ClassificationAudit = {
   missingProductKeyword: number;
   missingConfirmation: number;
   matchedExclusion: number;
+  staffExcluded: number;
+  staffReclassified: number;
+  unresolvedAmbiguity: number;
 };
 type LiveCollectionProgress = {
   completedPages: number;
@@ -108,12 +114,13 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v6";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v8";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
 const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v1";
 const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
 const initialHospitals: HospitalDirectoryEntry[] = [
+  ...hospitalDirectoryEntries(),
   { name: "Bệnh viện Bạch Mai" },
   { name: "Bệnh viện Chợ Rẫy" },
   { name: "Bệnh viện Đại học Y Hà Nội" },
@@ -176,20 +183,34 @@ function usefulDirectoryValue(value: string | undefined, maxLength: number) {
   if (["không xác định", "chưa xác định", "n/a", "na"].includes(normalize(cleaned))) return "";
   return cleaned;
 }
+function hospitalDirectoryKey(entry: HospitalDirectoryEntry) {
+  return hospitalKey(entry.id || "", entry.name);
+}
+function uniqueHospitals(entries: HospitalDirectoryEntry[]) {
+  const merged = new Map<string, HospitalDirectoryEntry>();
+  entries.forEach((entry) => {
+    const name = usefulDirectoryValue(entry.name, 180);
+    const id = usefulDirectoryValue(entry.id, 80);
+    if (!name) return;
+    const key = hospitalDirectoryKey({ name, id });
+    merged.set(key, { name: hospitalName(id, name), id: id || undefined });
+  });
+  // Hide placeholder names when a verified buyer ID has the same label.
+  const namesWithId = new Set([...merged.values()].filter((entry) => entry.id).map((entry) => normalize(entry.name)));
+  return [...merged.values()].filter((entry) => entry.id || !namesWithId.has(normalize(entry.name)));
+}
 function rememberAutocompleteValues(records: WinningBidRecord[]) {
   if (typeof window === "undefined" || !records.length) return;
   try {
     const hospitals = new Map<string, HospitalDirectoryEntry>();
-    [...initialHospitals, ...readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY)].forEach((entry) => {
-      const name = usefulDirectoryValue(entry.name, 180);
-      if (name) hospitals.set(normalize(name), { name, id: usefulDirectoryValue(entry.id, 80) || undefined });
-    });
+    uniqueHospitals([...initialHospitals, ...readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY)]).forEach((entry) => hospitals.set(hospitalDirectoryKey(entry), entry));
     records.forEach((record) => {
       const name = usefulDirectoryValue(record.tenCdtBmt, 180);
       if (!name) return;
-      const key = normalize(name);
+      const id = usefulDirectoryValue(record.maCdt, 80);
+      const key = hospitalKey(id, name);
       const existing = hospitals.get(key);
-      hospitals.set(key, { name, id: usefulDirectoryValue(record.maCdt, 80) || existing?.id });
+      hospitals.set(key, { name: hospitalName(id, existing?.name || name), id: id || undefined });
     });
 
     const products = new Map<string, LearnedProductEntry>();
@@ -220,7 +241,7 @@ function rememberAutocompleteValues(records: WinningBidRecord[]) {
       }
     });
 
-    window.localStorage.setItem(HOSPITAL_DIRECTORY_KEY, JSON.stringify([...hospitals.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")).slice(0, 2000)));
+    window.localStorage.setItem(HOSPITAL_DIRECTORY_KEY, JSON.stringify(uniqueHospitals([...hospitals.values()]).sort((a, b) => a.name.localeCompare(b.name, "vi")).slice(0, 2000)));
     window.localStorage.setItem(PRODUCT_DIRECTORY_KEY, JSON.stringify([...products.values()].sort((a, b) => a.value.localeCompare(b.value, "vi")).slice(0, 3000)));
     window.localStorage.setItem(COMPANY_DIRECTORY_KEY, JSON.stringify([...companies.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")).slice(0, 2000)));
     window.dispatchEvent(new Event(DIRECTORY_UPDATE_EVENT));
@@ -235,11 +256,7 @@ function useAutocompleteDirectories() {
   useEffect(() => {
     const load = () => {
       const storedHospitals = readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY);
-      const hospitalMap = new Map<string, HospitalDirectoryEntry>();
-      [...initialHospitals, ...storedHospitals].forEach((entry) => {
-        if (entry?.name) hospitalMap.set(normalize(entry.name), entry);
-      });
-      setHospitals([...hospitalMap.values()]);
+      setHospitals(uniqueHospitals([...initialHospitals, ...storedHospitals]));
       setLearnedProducts(readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY));
       const companyMap = new Map<string, CompanyDirectoryEntry>();
       [...initialCompanies, ...readStoredDirectory<CompanyDirectoryEntry>(COMPANY_DIRECTORY_KEY)].forEach((entry) => {
@@ -300,6 +317,7 @@ function keywordRuleFor(keyword: string) {
 }
 function classificationRecord(record: WinningBidRecord) {
   return {
+    sourceId: record.id,
     productName: record.tenThietBi,
     brand: record.nhanHieu,
     configuration: record.cauHinh,
@@ -310,11 +328,30 @@ function applyKeywordRule(records: WinningBidRecord[], rule: KeywordMasterRule |
     missingProductKeyword: 0,
     missingConfirmation: 0,
     matchedExclusion: 0,
+    staffExcluded: 0,
+    staffReclassified: 0,
+    unresolvedAmbiguity: 0,
   };
   if (!rule) return { records: [...records], audit };
   const matched = records.filter((record) => {
+    const staffDecision = staffReviewDecisionFor(record.id);
+    if (staffDecision) {
+      if (staffDecision.action === "exclude") audit.staffExcluded += 1;
+      if (staffDecision.action === "review") audit.unresolvedAmbiguity += 1;
+      const belongsToRule = staffDecision.action === "classify" &&
+        staffDecision.subOu === rule.subOu &&
+        staffDecision.productGroup === rule.productGroup;
+      if (staffDecision.action === "classify" && !belongsToRule) audit.staffReclassified += 1;
+      return belongsToRule;
+    }
+
     const evaluation = evaluateProductRule(classificationRecord(record), rule);
-    if (evaluation.matched) return true;
+    const classification = classifyProductRecord(classificationRecord(record));
+    if (evaluation.matched && classification?.rule.id === rule.id) return true;
+    if (evaluation.matched) {
+      audit.unresolvedAmbiguity += 1;
+      return false;
+    }
     if (evaluation.reason === "product-keyword") audit.missingProductKeyword += 1;
     if (evaluation.reason === "confirmation") audit.missingConfirmation += 1;
     if (evaluation.reason === "exclusion") audit.matchedExclusion += 1;
@@ -326,7 +363,7 @@ function portalPageUrl(keyword: string, page: number, filters: SearchFilters, fo
   const params = new URLSearchParams({ keyword, page: String(page), pageSize: "1000" });
   if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
   if (filters.dateTo) params.set("dateTo", filters.dateTo);
-  if (filters.hospital) params.set("hospital", filters.hospital);
+  if (filters.hospital) params.set("hospital", hospitalPortalQuery(filters.hospital));
   if (filters.brand) params.set("brand", filters.brand);
   if (filters.supplier) params.set("supplier", filters.supplier);
   if (filters.company && filters.company !== "all") params.set("company", filters.company);
@@ -582,11 +619,21 @@ function recordKey(record: WinningBidRecord) {
 function productKey(record: WinningBidRecord) {
   return normalize(record.kyMaHieu || record.chungLoai || record.nhanHieu || record.tenThietBi || recordKey(record));
 }
+function tenderResultKey(record: WinningBidRecord) {
+  const explicitResultId = record.maKqlcnt || record.kqlcntId || record.idKqlcnt || record.resultId;
+  if (explicitResultId?.trim()) return explicitResultId.trim();
+  const fallback = [record.maTbmt, record.soQuyetDinh, record.ngayBanHanhQuyetDinh]
+    .map((value) => String(value || "").trim())
+    .filter(Boolean)
+    .join("::");
+  return fallback || record.maTbmt?.trim() || "Không có mã KQLCNT";
+}
 function overviewFactFor(record: WinningBidRecord, rules: KeywordMasterRule[]): OverviewFact | undefined {
-  const classification = classifyProductRecord(classificationRecord(record), rules);
-  if (!classification) return undefined;
+  const classification = classifyProductRecord(classificationRecord(record));
+  if (!classification || !rules.some((rule) => rule.id === classification.rule.id)) return undefined;
   const { rule, evaluation } = classification;
-  const hospital = record.tenCdtBmt?.trim() || "Chưa xác định";
+  const sourceHospital = record.tenCdtBmt?.trim() || "Chưa xác định";
+  const hospital = hospitalName(record.maCdt || "", sourceHospital);
   return {
     key: recordKey(record),
     subOu: rule.subOu,
@@ -596,8 +643,9 @@ function overviewFactFor(record: WinningBidRecord, rules: KeywordMasterRule[]): 
     supplier: formatList(record.winningName),
     supplierCode: formatList(record.winningCode),
     hospital,
+    sourceHospital,
     buyerId: record.maCdt?.trim() || "",
-    tender: record.maTbmt?.trim() || `Không có mã · ${hospital}`,
+    tender: tenderResultKey(record),
     product: productKey(record),
     productName: record.tenThietBi?.trim() || "",
     productCode: record.kyMaHieu?.trim() || "",
@@ -628,7 +676,8 @@ function overviewDetailExcelRow(row: OverviewFact) {
     "Nhóm sản phẩm": safeExcelText(row.productGroup),
     "Mã TBMT": safeExcelText(row.tender),
     "Mã định danh CĐT": safeExcelText(row.buyerId),
-    "Tên CĐT": safeExcelText(row.hospital),
+    "Tên CĐT": safeExcelText(row.sourceHospital),
+    "Tên bệnh viện gộp theo mã CĐT": safeExcelText(row.hospital),
     "Từ khóa phân loại": safeExcelText(row.classificationKeyword),
     "Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
     "Đơn vị tính": safeExcelText(row.unitOfMeasure),
@@ -657,7 +706,7 @@ function overviewDetailExcelRow(row: OverviewFact) {
 }
 
 const overviewDetailColumnWidths = [
-  18, 28, 20, 22, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24,
+  18, 28, 20, 22, 42, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24,
   30, 16, 60, 20, 22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
 ];
 function groupFor(keyword: string, language: Language = "en") {
@@ -699,7 +748,7 @@ function summarize(
   const medtronicRecords = records.filter((record) => companyOf(record) === "Medtronic");
   const medtronicValue = medtronicRecords.reduce((sum, record) => sum + valueOf(record), 0);
   const medtronicQuantity = medtronicRecords.reduce((sum, record) => sum + toNumber(record.khoiLuongDouble ?? record.khoiLuong), 0);
-  const dated = records.map((record) => ({ record, date: parseDate(record.ngayDangTaiKqlcnt) }))
+  const dated = records.map((record) => ({ record, date: parseDate(record.ngayBanHanhQuyetDinh || record.ngayDangTaiKqlcnt) }))
     .filter((item): item is { record: WinningBidRecord; date: Date } => item.date !== null)
     .sort((a, b) => a.date.getTime() - b.date.getTime());
   const months = new Map<string, { month: string; value: number }>();
@@ -723,8 +772,8 @@ function summarize(
   const exclusionNote = source.keywordRule && source.excludedRecords
     ? copy(
       language,
-      ` The approved classification rule removed ${source.excludedRecords.toLocaleString(locale)} portal rows (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} without a product-name keyword, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} without confirmation, and ${(audit?.matchedExclusion || 0).toLocaleString(locale)} matching an exclusion).`,
-      ` Rule phân loại đã duyệt loại ${source.excludedRecords.toLocaleString(locale)} dòng trên cổng (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} dòng không có keyword trong Tên thiết bị, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} dòng thiếu Confirmation và ${(audit?.matchedExclusion || 0).toLocaleString(locale)} dòng trúng điều kiện exclude).`,
+      ` The approved classification rule removed ${source.excludedRecords.toLocaleString(locale)} portal rows (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} without a product-name keyword, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} without confirmation, ${(audit?.matchedExclusion || 0).toLocaleString(locale)} matching an exclusion, ${(audit?.staffExcluded || 0).toLocaleString(locale)} excluded by staff, ${(audit?.staffReclassified || 0).toLocaleString(locale)} assigned by staff to another group, and ${(audit?.unresolvedAmbiguity || 0).toLocaleString(locale)} unresolved multi-rule matches).`,
+      ` Rule phân loại đã duyệt loại ${source.excludedRecords.toLocaleString(locale)} dòng trên cổng (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} dòng không có keyword trong Tên thiết bị, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} dòng thiếu Confirmation, ${(audit?.matchedExclusion || 0).toLocaleString(locale)} dòng trúng điều kiện exclude, ${(audit?.staffExcluded || 0).toLocaleString(locale)} dòng được staff xác nhận loại, ${(audit?.staffReclassified || 0).toLocaleString(locale)} dòng được staff chuyển sang nhóm khác và ${(audit?.unresolvedAmbiguity || 0).toLocaleString(locale)} dòng còn trùng nhiều rule).`,
     )
     : "";
   return {
@@ -741,12 +790,23 @@ function summarize(
     lineItems: records.length,
     totalElements,
     totalValue, totalQuantity,
-    tenders: new Set(records.map((record) => record.maTbmt).filter(Boolean)).size,
-    hospitals: new Set(records.map((record) => record.tenCdtBmt).filter(Boolean)).size,
+    tenders: new Set(records.map(tenderResultKey).filter(Boolean)).size,
+    hospitals: new Set(records.filter((record) => record.maCdt || record.tenCdtBmt).map((record) => hospitalKey(record.maCdt || "", record.tenCdtBmt || ""))).size,
     medtronicValue, medtronicShare, medtronicQuantity, medtronicQuantityShare, dateRange,
-    trend: trend.length ? trend : [{ month: copy(language, "No publication date", "Chưa có ngày đăng tải"), value: 0 }],
+    trend: trend.length ? trend : [{ month: copy(language, "No decision date", "Chưa có ngày ban hành quyết định"), value: 0 }],
     manufacturers: topBy(records, (record) => companyOf(record, language), valueOf, language, true),
-    topHospitals: topBy(records, (record) => record.tenCdtBmt || "", valueOf, language),
+    topHospitals: (() => {
+      const totals = new Map<string, NamedValue>();
+      records.forEach((record) => {
+        const id = record.maCdt || "";
+        const name = hospitalName(id, record.tenCdtBmt || "");
+        const key = hospitalKey(id, name);
+        const current = totals.get(key) || { name, value: 0 };
+        current.value += valueOf(record);
+        totals.set(key, current);
+      });
+      return [...totals.values()].sort((a, b) => b.value - a.value).slice(0, 5);
+    })(),
     topProducts: topBy(records, (record) => record.kyMaHieu || record.chungLoai || record.nhanHieu || record.tenThietBi || "", (record) => toNumber(record.khoiLuongDouble ?? record.khoiLuong), language),
     topSuppliers: topBy(records, (record) => formatList(record.winningName), valueOf, language),
     insight: medtronicValue
@@ -780,8 +840,8 @@ function HospitalAutocomplete({ value, onChange, language, compact = false }: {
 }) {
   const { hospitals } = useAutocompleteDirectories();
   const suggestions = useMemo(() => hospitalSuggestionsFor(hospitals, value), [hospitals, value]);
-  const suggestionValues = useMemo(() => suggestions.map((entry) => entry.name), [suggestions]);
-  const selected = hospitals.find((entry) => normalize(entry.name) === normalize(value))?.name || null;
+  const suggestionValues = useMemo(() => suggestions.map((entry) => hospitalSelectionLabel(entry.name, entry.id)), [suggestions]);
+  const selected = hospitals.find((entry) => hospitalSelectionLabel(entry.name, entry.id) === value) ? value : null;
   return <Combobox<string>
     items={suggestionValues}
     filteredItems={suggestionValues}
@@ -803,7 +863,7 @@ function HospitalAutocomplete({ value, onChange, language, compact = false }: {
       <ComboboxList>
         <ComboboxGroup>
           <ComboboxLabel>{copy(language, "Hospital names found in portal data", "Tên bệnh viện đã tìm thấy trên cổng")}</ComboboxLabel>
-          {suggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.name} key={`${entry.name}-${entry.id || ""}`}>
+          {suggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={hospitalSelectionLabel(entry.name, entry.id)} key={`${entry.name}-${entry.id || ""}`}>
             <div><strong>{entry.name}</strong>{entry.id && <span>{copy(language, "Organization ID", "Mã đơn vị")}: {entry.id}</span>}</div>
           </ComboboxItem>)}
         </ComboboxGroup>
@@ -928,8 +988,8 @@ function FilterBar({ initial, loading, onApply }: { initial: SearchFilters; load
 
   return <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); onApply(filters); }}>
     <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Applied to live results", "Áp dụng trên dữ liệu trực tiếp")}</small></span></div>
-    <label className="filter-field"><small>{copy(language, "FROM DATE", "TỪ NGÀY")}</small><input type="date" value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
-    <label className="filter-field"><small>{copy(language, "TO DATE", "ĐẾN NGÀY")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
+    <label className="filter-field"><small>{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}</small><input type="date" value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
+    <label className="filter-field"><small>{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
     <div className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><HospitalAutocomplete value={filters.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label className="filter-field"><small>{copy(language, "BRAND / MANUFACTURER", "BRAND / HÃNG SẢN XUẤT")}</small><input type="text" value={filters.brand} onChange={(event) => update("brand", event.target.value)} placeholder={copy(language, "Example: LigaSure", "Ví dụ: LigaSure")} /></label>
     <label className="filter-field"><small>{copy(language, "WINNING SUPPLIER", "NHÀ THẦU TRÚNG")}</small><input type="text" value={filters.supplier} onChange={(event) => update("supplier", event.target.value)} placeholder={copy(language, "Enter name or ID", "Nhập tên hoặc mã")} /></label>
@@ -990,12 +1050,16 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
           ["Không có keyword trong Tên thiết bị", product.classificationAudit?.missingProductKeyword || 0],
           ["Không có Confirmation bắt buộc", product.classificationAudit?.missingConfirmation || 0],
           ["Trúng điều kiện exclude", product.classificationAudit?.matchedExclusion || 0],
+          ["Staff xác nhận loại", product.classificationAudit?.staffExcluded || 0],
+          ["Staff xác nhận chuyển sang nhóm khác", product.classificationAudit?.staffReclassified || 0],
+          ["Trùng nhiều rule chưa được xác nhận", product.classificationAudit?.unresolvedAmbiguity || 0],
         ] : []),
         ["Quy đổi hãng sản xuất", `${manufacturerMappedRows} dòng có hãng đích; ${manufacturerUnmappedRows} dòng chưa có hãng đích được giữ nguyên`],
         ["Thời gian xuất", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
         ["Số dòng kết quả", product.records.length],
         ["Từ ngày", product.filters.dateFrom || "Tất cả"],
         ["Đến ngày", product.filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
         ["Bệnh viện / chủ đầu tư", safeExcelText(product.filters.hospital || "Tất cả")],
         ["Brand / hãng sản xuất", safeExcelText(product.filters.brand || "Tất cả")],
         ["Nhà thầu trúng", safeExcelText(product.filters.supplier || "Tất cả")],
@@ -1022,7 +1086,7 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
       <article className="metric-card"><div className="metric-icon blue"><Trophy /></div><span>{copy(language, "Total awarded value", "Tổng giá trị trúng thầu")}</span><strong>{formatVnd(product.totalValue, language)}</strong><small>{copy(language, "Calculated from the current search results", "Tính trực tiếp từ kết quả tìm kiếm")}</small></article>
       <article className="metric-card company-metric"><div className="metric-icon company"><CheckCircle2 /></div><span>{copy(language, "Medtronic awarded value", "Giá trị Medtronic trúng")}</span><strong>{formatVnd(product.medtronicValue, language)}</strong><small>{copy(language, "Represents", "Chiếm")} {product.medtronicShare.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}% {copy(language, "of market value", "giá trị thị trường")}</small></article>
       <article className="metric-card"><div className="metric-icon violet"><Database /></div><span>{copy(language, "Medtronic unit share", "Thị phần Medtronic theo số lượng")}</span><strong>{product.medtronicQuantityShare.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}%</strong><small>{Math.round(product.medtronicQuantity).toLocaleString(localeFor(language))} / {Math.round(product.totalQuantity).toLocaleString(localeFor(language))} {copy(language, "recorded units", "sản phẩm ghi nhận")}</small></article>
-      <article className="metric-card"><div className="metric-icon green"><Database /></div><span>{copy(language, "Tender notices with results", "Số TBMT có kết quả")}</span><strong>{product.tenders.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Distinct tender notice IDs", "Tính theo Mã TBMT riêng biệt")}</small></article>
+      <article className="metric-card"><div className="metric-icon green"><Database /></div><span>{copy(language, "Award results", "Số KQLCNT")}</span><strong>{product.tenders.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Distinct KQLCNT result IDs", "Tính theo Mã KQLCNT riêng biệt")}</small></article>
       <article className="metric-card"><div className="metric-icon blue"><Building2 /></div><span>{copy(language, "Hospitals / buyers", "Số bệnh viện / chủ đầu tư")}</span><strong>{product.hospitals.toLocaleString(localeFor(language))}</strong><small>{product.totalElements.toLocaleString(localeFor(language))} {copy(language, "filtered portal results", "kết quả trên cổng")}</small></article>
     </div>
     <div className="dashboard-grid">
@@ -1054,12 +1118,13 @@ function mergeNamedValues(slices: OverviewSubOu[], select: (slice: OverviewSubOu
 function mergeHospitals(slices: OverviewSubOu[]) {
   const totals = new Map<string, OverviewHospital>();
   slices.flatMap((slice) => slice.hospitals).forEach((entry) => {
-    const current = totals.get(entry.name) || { name: entry.name, value: 0, units: 0, products: 0, tenders: 0, competitors: [] };
+    const key = hospitalKey(entry.id, entry.name);
+    const current = totals.get(key) || { name: entry.name, id: entry.id, value: 0, units: 0, products: 0, tenders: 0, competitors: [] };
     current.value += entry.value;
     current.units += entry.units;
     current.products += entry.products;
     current.tenders += entry.tenders;
-    totals.set(entry.name, current);
+    totals.set(key, current);
   });
   return [...totals.values()].sort((left, right) => right.value - left.value);
 }
@@ -1159,8 +1224,8 @@ function OverviewFilterBar({ filters, catalog, loading, onApply, onDirtyChange }
   useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
   return <form className="overview-filter" onSubmit={(event) => { event.preventDefault(); onDirtyChange?.(false); onApply(draft); }}>
-    <label><span>{copy(language, "From", "Từ ngày")}</span><input type="date" value={draft.dateFrom} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
-    <label><span>{copy(language, "To", "Đến ngày")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
+    <label><span>{copy(language, "Decision date from", "Ngày quyết định từ")}</span><input type="date" value={draft.dateFrom} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
+    <label><span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
     <div className="overview-filter-field"><span>{copy(language, "Hospital", "Bệnh viện")}</span><HospitalAutocomplete value={draft.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label><span>Sub-OU</span><select value={draft.subOu} onChange={(event) => update("subOu", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{subOuOrder.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
     <label><span>{copy(language, "Product group", "Nhóm sản phẩm")}</span><select value={draft.productGroup} onChange={(event) => update("productGroup", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{groups.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
@@ -1383,7 +1448,7 @@ function MarketOverview() {
         "Top 3 đối thủ": safeExcelText(slice.competitors[2]?.name), "Top 3 Value": slice.competitors[2]?.value || 0, "Top 3 Unit": slice.competitors[2]?.units || 0,
       }));
       const hospitalRows = slices.flatMap((slice) => slice.hospitals.map((hospital) => ({
-        "Sub-OU": safeExcelText(slice.name), "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
+        "Sub-OU": safeExcelText(slice.name), "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name), "Mã định danh CĐT": safeExcelText(hospital.id),
         "Số sản phẩm": hospital.products, "Số KQLCNT": hospital.tenders, "Số lượng": hospital.units, "Market Size (VND)": hospital.value,
       })));
       const supplierRows = slices.flatMap((slice) => slice.suppliers.map((supplier) => ({
@@ -1392,6 +1457,7 @@ function MarketOverview() {
       const infoRows = [
         ["Thông tin xuất dữ liệu", ""], ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
         ["Từ ngày", filters.dateFrom || "Tất cả"], ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
         ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
         ["Sub-OU", safeExcelText(filters.subOu !== "all" ? filters.subOu : "Tất cả")],
         ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
@@ -1400,7 +1466,7 @@ function MarketOverview() {
       await downloadWorkbook([
         { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
         { name: "Tổng quan Sub-OU", rows: subOuRows, columns: [22, ...Array(15).fill(22)] },
-        { name: "Bệnh viện", rows: hospitalRows, columns: [22, 48, 16, 16, 16, 22] },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [22, 48, 24, 16, 16, 16, 22] },
         { name: "Nhà phân phối", rows: supplierRows, columns: [22, 48, 16, 22] },
         { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
       ], `${formatDownloadDate(new Date())}-tong-quan-thi-truong.xlsx`);
@@ -1428,6 +1494,7 @@ function MarketOverview() {
       const hospitalRows = exportSlice.hospitals.map((hospital) => ({
         "Sub-OU": safeExcelText(exportSlice.name),
         "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
+        "Mã định danh CĐT": safeExcelText(hospital.id),
         "Số sản phẩm": hospital.products,
         "Số KQLCNT": hospital.tenders,
         "Số lượng": hospital.units,
@@ -1448,6 +1515,7 @@ function MarketOverview() {
         ["Sub-OU", safeExcelText(exportSlice.name)],
         ["Từ ngày", filters.dateFrom || "Tất cả"],
         ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
         ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
         ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
         ["Công ty", safeExcelText(filters.company !== "all" ? filters.company : "Tất cả")],
@@ -1457,7 +1525,7 @@ function MarketOverview() {
       ];
       await downloadWorkbook([
         { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
-        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 46, 16, 16, 16, 22, 34, 18, 18, 34, 18, 18, 34, 18, 18] },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 46, 24, 16, 16, 16, 22, 34, 18, 18, 34, 18, 18, 34, 18, 18] },
         { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
       ], `${formatDownloadDate(new Date())}-${filenameSlug(exportSlice.name)}.xlsx`);
     } catch (caught) {
@@ -1491,6 +1559,7 @@ function MarketOverview() {
         "Sub-OU": safeExcelText(sourceSlice.name),
         "Đối thủ": safeExcelText(competitor.name),
         "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
+        "Mã định danh CĐT": safeExcelText(hospital.id),
         "Số sản phẩm": hospital.products,
         "Số KQLCNT": hospital.tenders,
         "Số lượng": hospital.units,
@@ -1503,6 +1572,7 @@ function MarketOverview() {
         ["Đối thủ", safeExcelText(competitor.name)],
         ["Từ ngày", filters.dateFrom || "Tất cả"],
         ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
         ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
         ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
         ["Số bệnh viện", competitorSlice.hospitalCount],
@@ -1513,7 +1583,7 @@ function MarketOverview() {
       ];
       await downloadWorkbook([
         { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
-        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 38, 46, 16, 16, 16, 24] },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 38, 46, 24, 16, 16, 16, 24] },
         { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
       ], `${formatDownloadDate(new Date())}-${filenameSlug(sourceSlice.name)}-${filenameSlug(competitor.name)}.xlsx`);
     } catch (caught) {
@@ -1523,26 +1593,28 @@ function MarketOverview() {
     }
   }
 
-  async function exportHospital(subOu: string, hospital: string) {
-    const exportKey = `${subOu}::${hospital}`;
+  async function exportHospital(subOu: string, hospital: OverviewHospital) {
+    const buyerKey = hospitalKey(hospital.id, hospital.name);
+    const exportKey = `${subOu}::${buyerKey}`;
     setExportingHospital(exportKey);
     setError(undefined);
     try {
       let facts = slices.find((item) => item.name === subOu)?.facts;
       if (!facts?.length) {
-        const result = await fetchSubOuSlice(subOu, { ...filters, hospital }, 0, 1);
+        const result = await fetchSubOuSlice(subOu, { ...filters, hospital: hospital.id || hospital.name }, 0, 1);
         facts = result.slice.facts;
       }
       const rows = (facts || [])
-        .filter((fact) => fact.hospital === hospital)
+        .filter((fact) => hospitalKey(fact.buyerId, fact.hospital) === buyerKey)
         .map((fact) => ({ ...fact, subOu }));
       if (!rows.length) {
         throw new Error(copy(language, "No detailed rows are available for this hospital under the active filters.", "Không có dữ liệu chi tiết của bệnh viện này theo bộ lọc hiện tại."));
       }
       const detailRows = rows.map(overviewDetailExcelRow);
       const infoRows = [
-        ["Bệnh viện / chủ đầu tư", safeExcelText(hospital)], ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(hospital.name)], ["Mã định danh CĐT", safeExcelText(hospital.id)], ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
         ["Từ ngày", filters.dateFrom || "Tất cả"], ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
         ["Sub-OU", filters.subOu !== "all" ? safeExcelText(filters.subOu) : "Tất cả"],
         ["Nhóm sản phẩm", filters.productGroup !== "all" ? safeExcelText(filters.productGroup) : "Tất cả"],
         ["Công ty", filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả"], ["Nguồn", "Cổng Mua Sắm Công"],
@@ -1550,7 +1622,7 @@ function MarketOverview() {
       await downloadWorkbook([
         { name: "Chi tiết bệnh viện", rows: detailRows, columns: overviewDetailColumnWidths },
         { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
-      ], `${formatDownloadDate(new Date())}-${filenameSlug(hospital)}.xlsx`);
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(hospital.name)}.xlsx`);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : copy(language, "Could not create the hospital Excel file.", "Không thể tạo file Excel cho bệnh viện."));
     } finally {
@@ -1597,7 +1669,7 @@ function MarketOverview() {
       <article><span>Market size</span><strong>{formatVnd(totals.marketSize, language)}</strong><small>{copy(language, "Awarded value within the selected scope", "Giá trị trúng thầu trong phạm vi lọc")}</small></article>
       <article><span>{copy(language, "Medtronic share · value", "Thị phần Medtronic · giá trị")}</span><strong>{percent(totals.medtronicValueShare, language)}</strong><small>{copy(language, "Covidien and LigaSure are mapped to Medtronic", "Covidien và LigaSure được quy đổi vào Medtronic")}</small></article>
       <article><span>{copy(language, "Medtronic share · units", "Thị phần Medtronic · số lượng")}</span><strong>{percent(totals.medtronicUnitShare, language)}</strong><small>{copy(language, "Calculated from recorded product quantities", "Tính theo số lượng sản phẩm ghi nhận")}</small></article>
-      <article><span>{copy(language, "Award results", "Số KQLCNT")}</span><strong>{totals.tenders.length.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Distinct tender notice IDs", "Mã TBMT riêng biệt")}</small></article>
+      <article><span>{copy(language, "Award results", "Số KQLCNT")}</span><strong>{totals.tenders.length.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Distinct KQLCNT result IDs", "Mã KQLCNT riêng biệt")}</small></article>
       <article><span>{copy(language, "Winning hospitals", "Bệnh viện trúng thầu")}</span><strong>{totals.hospitals.filter((item) => item.name !== "Chưa xác định").length.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Expandable by Sub-OU", "Có thể mở theo từng Sub-OU")}</small></article>
     </div>
 
@@ -1605,14 +1677,14 @@ function MarketOverview() {
       <div className="subou-table-wrap"><table className="subou-table"><thead><tr><th>Sub-OU</th><th>Market size</th><th>Medtronic share</th><th>{copy(language, "Top 3 competitors", "Top 3 đối thủ")}</th><th>{copy(language, "Results", "KQLCNT")}</th><th>{copy(language, "Hospitals", "Bệnh viện")}</th></tr></thead><tbody>
         {slices.map((slice, index) => <Fragment key={slice.name}>
           <tr className={openRows.has(slice.name) ? "is-open" : ""}>
-            <td><span className="subou-index">{String(index + 1).padStart(2, "0")}</span><div><strong>{slice.name}</strong><small>{slice.productCount.toLocaleString(localeFor(language))} {copy(language, "products", "sản phẩm")}</small></div></td>
+            <td><div className="subou-name-cell"><span className="subou-index">{String(index + 1).padStart(2, "0")}</span><div><strong>{slice.name}</strong><small>{slice.productCount.toLocaleString(localeFor(language))} {copy(language, "products", "sản phẩm")}</small></div></div></td>
             <td><strong>{formatVnd(slice.marketSize, language)}</strong><small>{Math.round(slice.totalUnits).toLocaleString(localeFor(language))} {copy(language, "units", "đơn vị")}</small></td>
             <td><strong>{percent(slice.medtronicValueShare, language)} <em>{copy(language, "value", "giá trị")}</em></strong><small>{percent(slice.medtronicUnitShare, language)} {copy(language, "units", "số lượng")}</small></td>
             <td><SubOuCompetitorStack slice={slice} language={language} openCompetitors={openCompetitors} exportingKey={exportingCompetitor} disabled={loading || filtersDirty || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || Boolean(exportingHospital)} onToggle={toggleCompetitor} onExport={(competitor) => void exportCompetitor(slice, competitor)} /></td>
             <td><strong>{slice.tenderCount.toLocaleString(localeFor(language))}</strong></td>
             <td><div className="subou-hospital-actions"><button className="hospital-expand" type="button" onClick={() => toggleRow(slice.name)} aria-expanded={openRows.has(slice.name)}><span><strong>{slice.hospitalCount.toLocaleString(localeFor(language))}</strong><small>{copy(language, "hospitals", "bệnh viện")}</small></span><b>{openRows.has(slice.name) ? copy(language, "Collapse", "Thu gọn") : copy(language, "View", "Xem")}</b></button><button className="subou-export-button" type="button" title={copy(language, `Export all ${slice.name} data`, `Xuất toàn bộ dữ liệu ${slice.name}`)} aria-label={copy(language, `Export all ${slice.name} data to Excel`, `Xuất toàn bộ dữ liệu ${slice.name} ra Excel`)} disabled={loading || filtersDirty || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || Boolean(exportingHospital)} onClick={() => void exportSubOu(slice)}>{exportingSubOu === slice.name ? <LoaderCircle className="spin" /> : <Download />}</button></div></td>
           </tr>
-          {openRows.has(slice.name) && <tr className="hospital-detail-row"><td colSpan={6}><div className="hospital-detail"><div className="hospital-detail-head"><div><strong>{copy(language, "Hospitals in", "Bệnh viện thuộc")} {slice.name}</strong><span>{copy(language, "Product count reflects distinct models/codes after classification. Competitor shares are calculated within each hospital. Export uses this hospital and every active dashboard filter.", "Số sản phẩm là số model/mã hiệu riêng biệt sau phân loại. Thị phần đối thủ được tính riêng trong từng bệnh viện. File xuất áp dụng bệnh viện này và toàn bộ bộ lọc hiện tại.")}</span></div><button type="button" onClick={() => toggleRow(slice.name)}>{copy(language, "Close", "Đóng")}</button></div><div className="hospital-mini-table"><div className="hospital-mini-head"><span>{copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")}</span><span>{copy(language, "Products", "Sản phẩm")}</span><span>{copy(language, "Results", "KQLCNT")}</span><span>{copy(language, "Top competitors", "Đối thủ hàng đầu")}</span><span>{copy(language, "Units", "Số lượng")}</span><span>{copy(language, "Value", "Giá trị")}</span></div>{slice.hospitals.slice(0, showAllHospitals.has(slice.name) ? undefined : 8).map((hospital) => { const exportKey = `${slice.name}::${hospital.name}`; return <div className="hospital-mini-row" key={hospital.name}><div className="hospital-name-cell"><strong>{hospital.name}</strong><button className="hospital-export-button" type="button" title={filtersDirty ? copy(language, "Apply the changed filters before exporting", "Áp dụng bộ lọc mới trước khi xuất") : copy(language, "Export this hospital", "Xuất Excel bệnh viện này")} aria-label={copy(language, `Export ${hospital.name} to Excel`, `Xuất Excel cho ${hospital.name}`)} disabled={loading || filtersDirty || Boolean(exportingHospital) || Boolean(exportingSubOu) || Boolean(exportingCompetitor)} onClick={() => void exportHospital(slice.name, hospital.name)}>{exportingHospital === exportKey ? <LoaderCircle className="spin" /> : <Download />}</button></div><span>{hospital.products.toLocaleString(localeFor(language))}</span><span>{hospital.tenders.toLocaleString(localeFor(language))}</span><HospitalCompetitorSummary hospital={hospital} language={language} /><span>{Math.round(hospital.units).toLocaleString(localeFor(language))}</span><span>{formatVnd(hospital.value, language)}</span></div>; })}</div>{slice.hospitals.length > 8 && <button className="show-more-hospitals" type="button" onClick={() => toggleAllHospitals(slice.name)}>{showAllHospitals.has(slice.name) ? copy(language, "Show first 8 hospitals", "Hiện 8 bệnh viện đầu") : copy(language, `View all ${slice.hospitals.length} hospitals`, `Xem toàn bộ ${slice.hospitals.length} bệnh viện`)}</button>}</div></td></tr>}
+          {openRows.has(slice.name) && <tr className="hospital-detail-row"><td colSpan={6}><div className="hospital-detail"><div className="hospital-detail-head"><div><strong>{copy(language, "Hospitals in", "Bệnh viện thuộc")} {slice.name}</strong><span>{copy(language, "Product count reflects distinct models/codes after classification. Competitor shares are calculated within each hospital. Export uses this hospital and every active dashboard filter.", "Số sản phẩm là số model/mã hiệu riêng biệt sau phân loại. Thị phần đối thủ được tính riêng trong từng bệnh viện. File xuất áp dụng bệnh viện này và toàn bộ bộ lọc hiện tại.")}</span></div><button type="button" onClick={() => toggleRow(slice.name)}>{copy(language, "Close", "Đóng")}</button></div><div className="hospital-mini-table"><div className="hospital-mini-head"><span>{copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")}</span><span>{copy(language, "Products", "Sản phẩm")}</span><span>{copy(language, "Results", "KQLCNT")}</span><span>{copy(language, "Top competitors", "Đối thủ hàng đầu")}</span><span>{copy(language, "Units", "Số lượng")}</span><span>{copy(language, "Value", "Giá trị")}</span></div>{slice.hospitals.slice(0, showAllHospitals.has(slice.name) ? undefined : 8).map((hospital) => { const exportKey = `${slice.name}::${hospitalKey(hospital.id, hospital.name)}`; return <div className="hospital-mini-row" key={hospitalKey(hospital.id, hospital.name)}><div className="hospital-name-cell"><strong title={hospital.id || undefined}>{hospital.name}</strong><button className="hospital-export-button" type="button" title={filtersDirty ? copy(language, "Apply the changed filters before exporting", "Áp dụng bộ lọc mới trước khi xuất") : copy(language, "Export this hospital", "Xuất Excel bệnh viện này")} aria-label={copy(language, `Export ${hospital.name} to Excel`, `Xuất Excel cho ${hospital.name}`)} disabled={loading || filtersDirty || Boolean(exportingHospital) || Boolean(exportingSubOu) || Boolean(exportingCompetitor)} onClick={() => void exportHospital(slice.name, hospital)}>{exportingHospital === exportKey ? <LoaderCircle className="spin" /> : <Download />}</button></div><span>{hospital.products.toLocaleString(localeFor(language))}</span><span>{hospital.tenders.toLocaleString(localeFor(language))}</span><HospitalCompetitorSummary hospital={hospital} language={language} /><span>{Math.round(hospital.units).toLocaleString(localeFor(language))}</span><span>{formatVnd(hospital.value, language)}</span></div>; })}</div>{slice.hospitals.length > 8 && <button className="show-more-hospitals" type="button" onClick={() => toggleAllHospitals(slice.name)}>{showAllHospitals.has(slice.name) ? copy(language, "Show first 8 hospitals", "Hiện 8 bệnh viện đầu") : copy(language, `View all ${slice.hospitals.length} hospitals`, `Xem toàn bộ ${slice.hospitals.length} bệnh viện`)}</button>}</div></td></tr>}
         </Fragment>)}
         {loading && !slices.length && Array.from({ length: 3 }, (_, index) => <tr className="subou-skeleton-row" key={`skeleton-${index}`} aria-hidden="true">
           <td><span className="skeleton-block skeleton-name" /></td><td><span className="skeleton-block skeleton-value" /></td><td><span className="skeleton-block skeleton-value" /></td><td><span className="skeleton-block skeleton-wide" /></td><td><span className="skeleton-block skeleton-short" /></td><td><span className="skeleton-block skeleton-short" /></td>

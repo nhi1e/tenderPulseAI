@@ -8,7 +8,8 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - Accent-insensitive product autocomplete from the approved keyword master plus brands and models learned from live results
 - Hospital autocomplete using exact portal names and organization IDs learned from live results and saved on the current device
 - Market overview organized across 7 Sub-OUs
-- 196 Vietnamese keyword-master rules with automatic exclusions
+- 16 Vietnamese product-classification rules with keyword, confirmation, and exclusion baskets
+- Staff-reviewed conflict decisions from 23.9: 137 confirmed classifications, 26 exclusions, and 4 unresolved rows held outside KPIs
 - Date, hospital, brand, supplier, company, Sub-OU, and product-group filters
 - Excel export for search and overview results, including one-click hospital exports
 - Expandable hospital details with per-hospital product, result, unit, and value totals
@@ -17,6 +18,8 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - One completed overview load per filter scope is cached for the current browser session
 - Force-refresh control to bypass and replace the session cache
 - English interface by default with a persistent English/Vietnamese switch
+
+The date range filters by `Ngày ban hành quyết định` (award-decision date), as confirmed by staff. Detailed exports retain both the decision date and the KQLCNT publication date for traceability. Product rows that match more than one rule are no longer assigned using a first-rule-wins shortcut: an exact reviewed decision is applied when available, otherwise the row remains outside KPI calculations until confirmed.
 
 Autocomplete remains optional: users can still submit a custom product, brand, model, hospital name, or organization ID. The local suggestion directories update after each completed portal query and do not create additional Worker requests.
 

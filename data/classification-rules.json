@@ -2,7 +2,8 @@
   "source": {
     "workbook": "rule_phan_nhom_san_pham_10_9.xlsx",
     "sheet": "Danh mục rule keyword",
-    "version": "2026-09-10",
+    "version": "2026-09-23",
+    "staffReview": "TenderPulseAI_staff_rule_review_23.9.xlsx / 01_Trùng rule",
     "normalization": "Unicode NFC, lowercase, replace line breaks with spaces, collapse whitespace, trim, preserve Vietnamese diacritics"
   },
   "rules": [
@@ -40,10 +41,10 @@
       "keywords": ["Băng ghim", "Băng đạn", "Băng ( đạn)", "Ghim khâu", "Ghim"],
       "confirmations": ["Nội soi"],
       "exclusions": [
-        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "circular", "longo"] },
-        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler"] }
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "nối vòng", "circular", "longo", "cố định", "tử cung"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler", "bộ máy"] }
       ],
-      "method": "Nhận băng/ghim có xác nhận nội soi; loại dụng cụ, máy, mổ mở, nối tròn và Longo."
+      "method": "Nhận băng/ghim có xác nhận nội soi; loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn, Longo, cố định hoặc tử cung theo xác nhận staff 23.9."
     },
     {
       "id": 4,
@@ -51,12 +52,12 @@
       "subOu": "Endo Stapling",
       "productGroup": "Dụng cụ khâu cắt nối nội soi",
       "keywords": ["Dụng cụ", "Máy cắt nối", "Stapler nội soi"],
-      "confirmations": ["nội soi"],
+      "confirmations": ["nội soi", "cắt nối", "khâu nối"],
       "exclusions": [
-        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "circular", "longo"] },
-        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu"] }
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "nối vòng", "circular", "longo", "cố định lưới", "trĩ", "tử cung", "đơn cực", "lưỡng cực", "tròn", "tay dao", "định vị", "thoát vị", "trocar", "điện cực"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim"] }
       ],
-      "method": "Nhận dụng cụ có xác nhận nội soi; loại băng ghim, mổ mở, nối tròn và Longo."
+      "method": "Nhận dụng cụ với confirmation nội soi/cắt nối/khâu nối; loại các nhóm mổ mở, nối tròn, cố định lưới/thoát vị, trocar và điện cực theo xác nhận staff 23.9."
     },
     {
       "id": 5,
@@ -79,10 +80,10 @@
       "keywords": ["dụng cụ", "máy cắt nối", "stapler mổ mở"],
       "confirmations": ["mổ mở", "mổ hở"],
       "exclusions": [
-        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "circular", "longo"] },
-        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim cho máy"] }
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "nối vòng", "circular", "longo", "thắt", "chỉ"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim cho máy", "tay dao", "ghim"] }
       ],
-      "method": "Nhận dụng cụ có xác nhận mổ mở hoặc mổ hở; loại băng ghim, nội soi, nối tròn và Longo. Không dùng riêng từ Endo để loại."
+      "method": "Nhận dụng cụ có xác nhận mổ mở hoặc mổ hở; loại băng ghim, nội soi, nối tròn/nối vòng/circular, Longo, thắt và chỉ."
     },
     {
       "id": 7,
@@ -92,9 +93,9 @@
       "keywords": ["dụng cụ khâu nối tròn", "dụng cụ cắt nối tròn", "máy khâu nối tròn", "máy cắt nối tròn", "stapler nối tròn", "dụng cụ", "máy cắt nối", "ghim cắt khâu nối tròn", "băng đạn", "ghim khâu"],
       "confirmations": ["nối tròn", "nối vòng", "nối ống tiêu hóa tròn"],
       "exclusions": [
-        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["longo"] }
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["longo", "nội soi", "trĩ"] }
       ],
-      "method": "Confirmation nối tròn/nối vòng/nối ống tiêu hóa tròn tách nhóm khỏi dụng cụ khâu cắt nối thẳng; loại Longo."
+      "method": "Confirmation nối tròn/nối vòng/nối ống tiêu hóa tròn tách nhóm khỏi dụng cụ khâu cắt nối thẳng; loại Longo, nội soi và trĩ theo xác nhận staff 23.9."
     },
     {
       "id": 8,
@@ -104,9 +105,9 @@
       "keywords": ["chỉ khâu", "chỉ phẫu thuật", "chỉ thép khâu", "chỉ tan", "chỉ tự tiêu", "chỉ không tiêu", "chỉ catgut", "chỉ silk", "chỉ nylon", "chỉ nilon", "chỉ prolene", "chỉ vicryl", "chỉ kháng khuẩn", "chỉ polyester"],
       "confirmations": ["khâu", "phẫu thuật"],
       "exclusions": [
-        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "bộ dụng cụ", "máy"] }
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "bộ dụng cụ", "máy", "bộ máy", "bộ combo"] }
       ],
-      "method": "Nhận chỉ có confirmation khâu hoặc phẫu thuật; loại dụng cụ, bộ dụng cụ và máy."
+      "method": "Nhận chỉ có confirmation khâu hoặc phẫu thuật; loại dụng cụ, bộ dụng cụ, bộ máy, bộ combo và máy."
     },
     {
       "id": 9,
@@ -141,9 +142,10 @@
       "keywords": ["trocar"],
       "confirmations": [],
       "exclusions": [
-        { "fields": ["productName"], "match": "startsWith", "terms": ["nắp", "nắp đậy", "van", "nút", "vỏ", "nòng", "ống ngoài", "kim chọc dò", "ống dẫn lưu", "bình dẫn lưu", "dụng cụ đưa", "bộ mở", "bộ dẫn", "gioăng", "hộp", "đinh", "val"] }
+        { "fields": ["productName"], "match": "startsWith", "terms": ["nắp", "nắp đậy", "van", "nút", "vỏ", "nòng", "ống ngoài", "kim chọc dò", "ống dẫn lưu", "bình dẫn lưu", "dụng cụ đưa", "bộ mở", "bộ dẫn", "gioăng", "hộp", "đinh", "val", "ron"] },
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["đóng lỗ"] }
       ],
-      "method": "Trocar là keyword đặc hiệu nên không cần confirmation; loại linh kiện và sản phẩm khác có trocar đi kèm theo đầu Tên thiết bị."
+      "method": "Trocar là keyword đặc hiệu nên không cần confirmation; loại linh kiện/sản phẩm khác có trocar đi kèm và loại mô tả đóng lỗ."
     },
     {
       "id": 12,
