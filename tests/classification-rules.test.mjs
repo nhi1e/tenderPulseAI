@@ -12,6 +12,10 @@ const source = (await readFile(path.join(root, "lib", "classification-rules.ts")
     'from "../data/classification-rules.json" with { type: "json" };',
   )
   .replace(
+    'from "@/data/manufacturer-aliases.json";',
+    'from "../data/manufacturer-aliases.json" with { type: "json" };',
+  )
+  .replace(
     'from "@/data/manufacturer-mapping.json";',
     'from "../data/manufacturer-mapping.json" with { type: "json" };',
   )

@@ -38,9 +38,9 @@ export function collapseRepeatedCompanyName(value: string) {
 
 export function mappedCompanyName(searchableText: string, fallback = "") {
   const workbookMappedManufacturer = mappedManufacturerFromMaster(fallback);
-  if (workbookMappedManufacturer) return workbookMappedManufacturer;
-
-  const normalized = normalizeCompanyText(searchableText);
+  const normalized = normalizeCompanyText(
+    [searchableText, workbookMappedManufacturer].filter(Boolean).join(" | "),
+  );
   const compact = normalized.replace(/\s/g, "");
 
   if (/medtronic|covidien|coviden|covididen|ligasure/.test(compact)) return "Medtronic";
@@ -54,7 +54,7 @@ export function mappedCompanyName(searchableText: string, fallback = "") {
   if (/miconvey/.test(compact)) return "Miconvey";
   if (/innolcon/.test(compact)) return "Innolcon";
 
-  return collapseRepeatedCompanyName(normalizedManufacturerName(fallback));
+  return collapseRepeatedCompanyName(workbookMappedManufacturer || normalizedManufacturerName(fallback));
 }
 
 export function companyGroupingKey(value: string) {

@@ -10,6 +10,7 @@ const mappingRuntime = path.join(root, "lib", `.company-mapping-test-${process.p
 
 const rulesSource = (await readFile(path.join(root, "lib", "classification-rules.ts"), "utf8"))
   .replace('from "@/data/classification-rules.json";', 'from "../data/classification-rules.json" with { type: "json" };')
+  .replace('from "@/data/manufacturer-aliases.json";', 'from "../data/manufacturer-aliases.json" with { type: "json" };')
   .replace('from "@/data/manufacturer-mapping.json";', 'from "../data/manufacturer-mapping.json" with { type: "json" };')
   .replace('from "@/data/staff-classification-overrides.json";', 'from "../data/staff-classification-overrides.json" with { type: "json" };');
 await writeFile(rulesRuntime, rulesSource);
@@ -34,5 +35,19 @@ test("does not shorten a legitimate unrepeated manufacturer name", () => {
   assert.equal(
     mapping.collapseRepeatedCompanyName("FEG Textiltechnik Forschungs- und Entwicklungsgesellschaft mbH"),
     "FEG Textiltechnik Forschungs- und Entwicklungsgesellschaft mbH",
+  );
+});
+
+test("groups Sheet 05 punctuation variants under one canonical manufacturer", () => {
+  assert.equal(
+    mapping.mappedCompanyName("B.Braun Surgical S.A/ Tây Ban Nha", "B.Braun Surgical S.A/ Tây Ban Nha"),
+    "B. Braun",
+  );
+});
+
+test("uses the reviewed canonical name for an otherwise unmapped manufacturer", () => {
+  assert.equal(
+    mapping.mappedCompanyName("Changzhou Haiers Medical Devices", '"Changzhou Haiers Medical Devices"'),
+    "Changzhou Haiers Medical Devices",
   );
 });

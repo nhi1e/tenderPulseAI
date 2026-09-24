@@ -31,3 +31,15 @@ KQLCNT is counted from an explicit result identifier when the portal provides on
 `hospital-names-by-buyer-id.json` contains 693 buyer IDs from the 2026-09-11 hospital-review sheet where one buyer ID had multiple portal names. The display names are provisional proposals from that sheet, **not staff-approved names**. Award rows sharing a populated `Mã định danh CĐT` are grouped under that ID; without an ID, only names matching after basic case/spacing/diacritic normalization are grouped. Different IDs are never joined merely because the names resemble each other. The 72 cases with similar names and different IDs remain separate until reviewed.
 
 Hospital search suggestions display their buyer ID and a selected suggestion searches by ID, so the portal can return all naming variants. Detailed Excel files retain `Tên CĐT` exactly as reported by the portal and add a separate grouped display-name column. Update the proposed names in this JSON file when the team confirms corrections; the buyer ID remains the stable identity.
+# Manufacturer alias normalization
+
+`manufacturer-aliases.json` contains the 749 spelling clusters from sheet
+`05_Hãng chưa mapping` of the staff review workbook dated 23 September 2026.
+Punctuation, spacing, capitalization and occurrence-count variants share one
+canonical manufacturer name. The original manufacturer master still takes
+precedence for confirmed parent-company mappings such as Covidien → Medtronic
+and Ethicon → Johnson & Johnson.
+
+Rows containing several independent manufacturers remain a composite canonical
+label until item-level source data can separate them. They are not assigned to
+one constituent company merely because that company appears first.

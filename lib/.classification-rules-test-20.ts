@@ -1,7 +1,7 @@
-import classificationRulesJson from "@/data/classification-rules.json";
+import classificationRulesJson from "../data/classification-rules.json" with { type: "json" };
 import manufacturerAliasesJson from "@/data/manufacturer-aliases.json";
-import manufacturerMappingJson from "@/data/manufacturer-mapping.json";
-import staffClassificationOverridesJson from "@/data/staff-classification-overrides.json";
+import manufacturerMappingJson from "../data/manufacturer-mapping.json" with { type: "json" };
+import staffClassificationOverridesJson from "../data/staff-classification-overrides.json" with { type: "json" };
 
 export type ClassificationField = "productName" | "brand" | "configuration";
 export type ClassificationRecord = Partial<Record<ClassificationField, string | undefined>> & {
