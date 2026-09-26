@@ -39,12 +39,12 @@
       "subOu": "Endo Stapling",
       "productGroup": "Băng ghim nội soi",
       "keywords": ["Băng ghim", "Băng đạn", "Băng ( đạn)", "Ghim khâu", "Ghim"],
-      "confirmations": ["Nội soi"],
+      "confirmations": ["Nội soi", "cắt nối", "khâu nối"],
       "exclusions": [
         { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "nối vòng", "circular", "longo", "cố định", "tử cung"] },
         { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler", "bộ máy"] }
       ],
-      "method": "Nhận băng/ghim có xác nhận nội soi; loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn, Longo, cố định hoặc tử cung theo xác nhận staff 23.9."
+      "method": "Nhận băng/ghim có xác nhận nội soi, cắt nối hoặc khâu nối; loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn, Longo, cố định hoặc tử cung theo xác nhận staff 23.9."
     },
     {
       "id": 4,
