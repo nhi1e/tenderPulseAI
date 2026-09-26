@@ -997,6 +997,7 @@ function overviewFactFor(
 		sourceHospital,
 		buyerId: record.maCdt?.trim() || "",
 		tender: tenderResultKey(record),
+		tenderNotice: record.maTbmt?.trim() || "",
 		product: productKey(record),
 		productName: record.tenThietBi?.trim() || "",
 		productCode: record.kyMaHieu?.trim() || "",
@@ -1025,7 +1026,7 @@ function overviewDetailExcelRow(row: OverviewFact) {
 	return {
 		"Sub-OU": safeExcelText(row.subOu),
 		"Nhóm sản phẩm": safeExcelText(row.productGroup),
-		"Mã TBMT": safeExcelText(row.tender),
+		"Mã TBMT": safeExcelText(row.tenderNotice),
 		"Mã định danh CĐT": safeExcelText(row.buyerId),
 		"Tên CĐT": safeExcelText(row.hospital),
 		"Từ khóa phân loại": safeExcelText(row.classificationKeyword),
@@ -1058,6 +1059,43 @@ function overviewDetailExcelRow(row: OverviewFact) {
 const overviewDetailColumnWidths = [
 	18, 28, 20, 22, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60, 20,
 	22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
+];
+
+function hospitalAllSubOuExcelRow(row: OverviewFact, index: number) {
+	return {
+		STT: index + 1,
+		"Sub-OU": safeExcelText(row.subOu),
+		"Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
+		"Đơn vị tính": safeExcelText(row.unitOfMeasure),
+		"Khối lượng": row.units,
+		"Xuất xứ": safeExcelText(row.origin),
+		"Mã HS": safeExcelText(row.hsCode),
+		"Ký mã hiệu": safeExcelText(row.productCode),
+		"Nhãn hiệu": safeExcelText(row.brand),
+		"Hãng sản xuất": safeExcelText(row.manufacturer),
+		"Chủng loại (model)": safeExcelText(row.model),
+		"Số lưu hành / giấy phép nhập khẩu": safeExcelText(row.circulationNumber),
+		"Năm sản xuất": safeExcelText(row.productionYear),
+		"Cấu hình, tính năng kỹ thuật": safeExcelText(row.configuration),
+		"Đơn giá trúng thầu": row.unitPrice,
+		"Thành tiền ước tính": row.value,
+		"Mã định danh NT trúng thầu": safeExcelText(row.supplierCode),
+		"Tên NT trúng thầu": safeExcelText(row.supplier),
+		"Mã TBMT": safeExcelText(row.tenderNotice),
+		"Mã định danh CĐT": safeExcelText(row.buyerId),
+		"Tên CĐT": safeExcelText(row.hospital),
+		"Hình thức LCNT": safeExcelText(bidFormNames[row.bidForm] || row.bidForm),
+		"Ngày đăng tải KQLCNT": safeExcelText(row.publishedAt),
+		"Số quyết định": safeExcelText(row.decisionNumber),
+		"Ngày ban hành quyết định": safeExcelText(row.decisionDate),
+		"Số nhà thầu tham dự": row.participantCount || "",
+		"Địa điểm": safeExcelText(row.location),
+	};
+}
+
+const hospitalAllSubOuColumnWidths = [
+	8, 18, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60, 20, 22, 26, 42, 20, 22,
+	42, 34, 20, 22, 22, 18, 42,
 ];
 function groupFor(keyword: string, language: Language = "en") {
 	const value = normalize(keyword);
@@ -2916,6 +2954,8 @@ function MarketOverview() {
 	const [exportingSubOu, setExportingSubOu] = useState<string>();
 	const [exportingCompetitor, setExportingCompetitor] = useState<string>();
 	const [exportingHospital, setExportingHospital] = useState<string>();
+	const [exportingHospitalPortfolio, setExportingHospitalPortfolio] =
+		useState(false);
 	const [error, setError] = useState<string>();
 	const [updatedAt, setUpdatedAt] = useState<string>();
 	const [loadedFromCache, setLoadedFromCache] = useState(false);
@@ -3305,6 +3345,134 @@ function MarketOverview() {
 		}
 	}
 
+	async function exportFilteredHospitalAllSubOus() {
+		setExportingHospitalPortfolio(true);
+		setError(undefined);
+		try {
+			if (!filters.hospital.trim()) {
+				throw new Error(
+					copy(
+						language,
+						"Select and apply a hospital before exporting.",
+						"Chọn và áp dụng một bệnh viện trước khi xuất Excel.",
+					),
+				);
+			}
+
+			const selectedPortalValue = hospitalPortalQuery(filters.hospital);
+			const selectedBuyerId = /^vn[a-z0-9]+$/i.test(selectedPortalValue)
+				? selectedPortalValue.toLowerCase()
+				: "";
+			const selectedName = filters.hospital
+				.replace(/\s*\[[^\]]+\]\s*$/, "")
+				.trim();
+			const exportFilters: OverviewFilterState = { ...filters, subOu: "all" };
+			const allFacts: OverviewFact[] = [];
+
+			for (let index = 0; index < subOuOrder.length; index += 1) {
+				const subOu = subOuOrder[index];
+				const existingSlice =
+					filters.subOu === "all"
+						? slices.find((item) => item.name === subOu)
+						: undefined;
+				let facts = existingSlice?.facts;
+				if (!facts) {
+					const result = await fetchSubOuSlice(
+						subOu,
+						exportFilters,
+						index,
+						subOuOrder.length,
+					);
+					facts = result.slice.facts;
+				}
+				allFacts.push(...(facts || []));
+			}
+
+			const hospitalFacts = allFacts.filter((fact) => {
+				if (selectedBuyerId)
+					return fact.buyerId.trim().toLowerCase() === selectedBuyerId;
+				const target = normalize(selectedName);
+				return (
+					normalize(fact.hospital) === target ||
+					normalize(fact.sourceHospital) === target
+				);
+			});
+			if (!hospitalFacts.length) {
+				throw new Error(
+					copy(
+						language,
+						"No classified rows are available for this hospital under the active filters.",
+						"Không có dòng đã phân loại của bệnh viện này theo bộ lọc hiện tại.",
+					),
+				);
+			}
+
+			hospitalFacts.sort((left, right) => {
+				const subOuDifference =
+					subOuOrder.indexOf(left.subOu) - subOuOrder.indexOf(right.subOu);
+				if (subOuDifference) return subOuDifference;
+				return String(right.decisionDate).localeCompare(
+					String(left.decisionDate),
+				);
+			});
+			const canonicalHospital = hospitalFacts[0].hospital;
+			const buyerId = hospitalFacts[0].buyerId;
+			const detailRows = hospitalFacts.map(hospitalAllSubOuExcelRow);
+			const includedSubOus = [
+				...new Set(hospitalFacts.map((fact) => fact.subOu)),
+			];
+			const infoRows = [
+				["Thông tin xuất dữ liệu", ""],
+				["Bệnh viện / chủ đầu tư", safeExcelText(canonicalHospital)],
+				["Mã định danh CĐT", safeExcelText(buyerId)],
+				[
+					"Ngày tải",
+					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
+				],
+				["Từ ngày", filters.dateFrom || "Tất cả"],
+				["Đến ngày", filters.dateTo || "Tất cả"],
+				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+				["Sub-OU", `Tất cả (${includedSubOus.join(", ")})`],
+				[
+					"Nhóm sản phẩm",
+					filters.productGroup !== "all"
+						? safeExcelText(filters.productGroup)
+						: "Tất cả",
+				],
+				[
+					"Công ty",
+					filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả",
+				],
+				["Số dòng chi tiết", hospitalFacts.length],
+				["Nguồn", "Cổng Mua Sắm Công"],
+			];
+
+			await downloadWorkbook(
+				[
+					{
+						name: "Chi tiết tất cả Sub-OU",
+						rows: detailRows,
+						columns: hospitalAllSubOuColumnWidths,
+					},
+					{ name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+				],
+				`${formatDownloadDate(new Date())}-${filenameSlug(canonicalHospital)}-tat-ca-sub-ou.xlsx`,
+			);
+		} catch (caught) {
+			setError(
+				caught instanceof Error
+					? caught.message
+					: copy(
+							language,
+							"Could not create the hospital Excel file.",
+							"Không thể tạo file Excel cho bệnh viện.",
+						),
+			);
+		} finally {
+			setExportingHospitalPortfolio(false);
+		}
+	}
+
 	async function exportSubOu(sourceSlice: OverviewSubOu) {
 		setExportingSubOu(sourceSlice.name);
 		setError(undefined);
@@ -3680,7 +3848,8 @@ function MarketOverview() {
 								loading ||
 								filtersDirty ||
 								Boolean(exportingSubOu) ||
-								Boolean(exportingCompetitor)
+								Boolean(exportingCompetitor) ||
+								exportingHospitalPortfolio
 							}
 						>
 							<RefreshCw />
@@ -3694,6 +3863,7 @@ function MarketOverview() {
 								exporting ||
 								Boolean(exportingSubOu) ||
 								Boolean(exportingCompetitor) ||
+								exportingHospitalPortfolio ||
 								filtersDirty ||
 								!slices.length
 							}
@@ -3833,7 +4003,47 @@ function MarketOverview() {
 							)}
 						</small>
 					</article>
-					<article>
+					<article className="hospital-portfolio-metric">
+						<button
+							className="hospital-portfolio-export"
+							type="button"
+							title={
+								filters.hospital
+									? copy(
+											language,
+											"Export this hospital across all Sub-OUs",
+											"Xuất toàn bộ Sub-OU của bệnh viện đang chọn",
+										)
+									: copy(
+											language,
+											"Select and apply a hospital filter first",
+											"Chọn và áp dụng bộ lọc bệnh viện trước",
+										)
+							}
+							aria-label={copy(
+								language,
+								"Export selected hospital across all Sub-OUs",
+								"Xuất toàn bộ Sub-OU của bệnh viện đang chọn",
+							)}
+							disabled={
+								!filters.hospital ||
+								loading ||
+								filtersDirty ||
+								exporting ||
+								Boolean(exportingSubOu) ||
+								Boolean(exportingCompetitor) ||
+								Boolean(exportingHospital) ||
+								exportingHospitalPortfolio ||
+								!slices.length
+							}
+							onClick={() => void exportFilteredHospitalAllSubOus()}
+						>
+							{exportingHospitalPortfolio ? (
+								<LoaderCircle className="spin" />
+							) : (
+								<Download />
+							)}
+						</button>
 						<span>
 							{copy(language, "Winning hospitals", "Bệnh viện trúng thầu")}
 						</span>
@@ -3843,11 +4053,17 @@ function MarketOverview() {
 								.length.toLocaleString(localeFor(language))}
 						</strong>
 						<small>
-							{copy(
-								language,
-								"Expandable by Sub-OU",
-								"Có thể mở theo từng Sub-OU",
-							)}
+							{filters.hospital
+								? copy(
+										language,
+										"Export all Sub-OUs for the selected hospital",
+										"Xuất tất cả Sub-OU của bệnh viện đã chọn",
+									)
+								: copy(
+										language,
+										"Select a hospital to enable export",
+										"Chọn bệnh viện để bật chức năng xuất",
+									)}
 						</small>
 					</article>
 				</div>
@@ -3939,7 +4155,8 @@ function MarketOverview() {
 														exporting ||
 														Boolean(exportingSubOu) ||
 														Boolean(exportingCompetitor) ||
-														Boolean(exportingHospital)
+														Boolean(exportingHospital) ||
+														exportingHospitalPortfolio
 													}
 													onToggle={toggleCompetitor}
 													onExport={(competitor) =>
@@ -3997,7 +4214,8 @@ function MarketOverview() {
 															exporting ||
 															Boolean(exportingSubOu) ||
 															Boolean(exportingCompetitor) ||
-															Boolean(exportingHospital)
+															Boolean(exportingHospital) ||
+															exportingHospitalPortfolio
 														}
 														onClick={() => void exportSubOu(slice)}
 													>
@@ -4117,7 +4335,8 @@ function MarketOverview() {
 																						filtersDirty ||
 																						Boolean(exportingHospital) ||
 																						Boolean(exportingSubOu) ||
-																						Boolean(exportingCompetitor)
+																						Boolean(exportingCompetitor) ||
+																						exportingHospitalPortfolio
 																					}
 																					onClick={() =>
 																						void exportHospital(
