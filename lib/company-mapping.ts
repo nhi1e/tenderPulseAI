@@ -1,70 +1,117 @@
-import { mappedManufacturerFromMaster, normalizedManufacturerName } from "@/lib/classification-rules";
+import assert from "node:assert/strict";
+import { readFile, rm, writeFile } from "node:fs/promises";
+import path from "node:path";
+import test, { after } from "node:test";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-export function normalizeCompanyText(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[đĐ]/g, "d")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+const root = fileURLToPath(new URL("..", import.meta.url));
+const rulesRuntime = path.join(
+	root,
+	"lib",
+	`.classification-company-test-${process.pid}.ts`,
+);
+const mappingRuntime = path.join(
+	root,
+	"lib",
+	`.company-mapping-test-${process.pid}.ts`,
+);
 
-export function collapseRepeatedCompanyName(value: string) {
-  const cleaned = String(value || "").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
-  const tokens = cleaned.split(" ").filter(Boolean);
-  if (tokens.length < 2) return cleaned;
+const rulesSource = (
+	await readFile(path.join(root, "lib", "classification-rules.ts"), "utf8")
+)
+	.replace(
+		'from "@/data/classification-rules.json";',
+		'from "../data/classification-rules.json" with { type: "json" };',
+	)
+	.replace(
+		'from "@/data/manufacturer-aliases.json";',
+		'from "../data/manufacturer-aliases.json" with { type: "json" };',
+	)
+	.replace(
+		'from "@/data/manufacturer-mapping.json";',
+		'from "../data/manufacturer-mapping.json" with { type: "json" };',
+	)
+	.replace(
+		'from "@/data/staff-classification-overrides.json";',
+		'from "../data/staff-classification-overrides.json" with { type: "json" };',
+	);
+await writeFile(rulesRuntime, rulesSource);
 
-  const tokenKey = (token: string) => normalizeCompanyText(token);
-  const maxPhraseLength = Math.min(16, Math.floor(tokens.length / 2));
-  for (let phraseLength = 1; phraseLength <= maxPhraseLength; phraseLength += 1) {
-    const phrase = tokens.slice(0, phraseLength).map(tokenKey);
-    let offset = phraseLength;
-    let repetitions = 1;
-    while (offset + phraseLength <= tokens.length) {
-      const candidate = tokens.slice(offset, offset + phraseLength).map(tokenKey);
-      if (!candidate.every((token, index) => token === phrase[index])) break;
-      repetitions += 1;
-      offset += phraseLength;
-    }
-    if (repetitions >= 2 && offset >= tokens.length - 1) {
-      return tokens.slice(0, phraseLength).join(" ").replace(/[;,|]+$/, "").trim();
-    }
-  }
+const mappingSource = (
+	await readFile(path.join(root, "lib", "company-mapping.ts"), "utf8")
+).replace(
+	'from "@/lib/classification-rules";',
+	`from "./${path.basename(rulesRuntime)}";`,
+);
+await writeFile(mappingRuntime, mappingSource);
 
-  return cleaned;
-}
+const mapping = await import(
+	`${pathToFileURL(mappingRuntime).href}?test=${Date.now()}`
+);
 
-export function mappedCompanyName(searchableText: string, fallback = "") {
-  const workbookMappedManufacturer = mappedManufacturerFromMaster(fallback);
-  const normalized = normalizeCompanyText(
-    [searchableText, workbookMappedManufacturer].filter(Boolean).join(" | "),
-  );
-  const compact = normalized.replace(/\s/g, "");
+after(async () => {
+	await Promise.all([
+		rm(rulesRuntime, { force: true }),
+		rm(mappingRuntime, { force: true }),
+	]);
+});
 
-  if (/medtronic|covidien|coviden|covididen|ligasure/.test(compact)) return "Medtronic";
-  if (/johnsonjohnson|ethicon|harmonic/.test(compact) || /(^|\s)j\s*j(\s|$)/.test(normalized)) {
-    return "Johnson & Johnson";
-  }
-  if (/bbraun|aesculap/.test(compact)) return "B. Braun";
-  if (/bostonscientific/.test(compact)) return "Boston Scientific";
-  if (/appliedmedical/.test(compact)) return "Applied Medical";
-  if (/olympus/.test(compact)) return "Olympus";
-  if (/miconvey/.test(compact)) return "Miconvey";
-  if (/innolcon/.test(compact)) return "Innolcon";
+test("collapses a manufacturer phrase repeated by dirty portal data", () => {
+	const repeated = Array(12)
+		.fill("AMNOTEC International Medical GmbH")
+		.join(" ");
+	assert.equal(
+		mapping.collapseRepeatedCompanyName(repeated),
+		"AMNOTEC International Medical GmbH",
+	);
+	assert.equal(
+		mapping.mappedCompanyName(repeated, repeated),
+		"AMNOTEC International Medical GmbH",
+	);
+});
 
-  return collapseRepeatedCompanyName(workbookMappedManufacturer || normalizedManufacturerName(fallback));
-}
+test("does not shorten a legitimate unrepeated manufacturer name", () => {
+	assert.equal(
+		mapping.collapseRepeatedCompanyName(
+			"FEG Textiltechnik Forschungs- und Entwicklungsgesellschaft mbH",
+		),
+		"FEG Textiltechnik Forschungs- und Entwicklungsgesellschaft mbH",
+	);
+});
 
-export function companyGroupingKey(value: string) {
-  const mapped = mappedCompanyName(value, value);
-  return normalizeCompanyText(mapped)
-    .replace(/\bjoint stock company\b/g, "jsc")
-    .replace(/\bcompany\b/g, "co")
-    .replace(/\bcorporation\b/g, "corp")
-    .replace(/\blimited\b/g, "ltd")
-    .replace(/\bincorporated\b/g, "inc")
-    .replace(/\bcong ty( co phan| trach nhiem huu han| tnhh)?\b/g, "")
-    .replace(/\s/g, "") || "unknown";
-}
+test("groups Sheet 05 punctuation variants under one canonical manufacturer", () => {
+	assert.equal(
+		mapping.mappedCompanyName(
+			"B.Braun Surgical S.A/ Tây Ban Nha",
+			"B.Braun Surgical S.A/ Tây Ban Nha",
+		),
+		"B. Braun",
+	);
+});
+
+test("uses the reviewed canonical name for an otherwise unmapped manufacturer", () => {
+	assert.equal(
+		mapping.mappedCompanyName(
+			"Changzhou Haiers Medical Devices",
+			'"Changzhou Haiers Medical Devices"',
+		),
+		"Changzhou Haiers Medical Devices",
+	);
+});
+
+test("maps NPA de México manufacturer variants to Medtronic", () => {
+	assert.equal(
+		mapping.mappedCompanyName(
+			"NPA de México S. de R.L. de C.V.",
+			"NPA de México S. de R.L. de C.V.",
+		),
+		"Medtronic",
+	);
+	assert.equal(
+		mapping.mappedCompanyName(
+			"NPA de Mexico S.de R.L. de C.V",
+			"NPA de Mexico S.de R.L. de C.V",
+		),
+		"Medtronic",
+	);
+});
