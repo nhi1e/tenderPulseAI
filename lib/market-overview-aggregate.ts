@@ -1,4 +1,4 @@
-import { companyGroupingKey } from "@/lib/company-mapping";
+import { companyGroupingKey, mappedCompanyName } from "@/lib/company-mapping";
 import { hospitalKey } from "@/lib/hospital-identity";
 
 export type OverviewNamedValue = {
@@ -94,7 +94,9 @@ function addNamedValue(
 	units: number,
 	groupSimilarNames = false,
 ) {
-	const displayName = name.trim() || "Chưa xác định";
+	const displayName = groupSimilarNames
+		? mappedCompanyName(name, name).trim() || "Chưa xác định"
+		: name.trim() || "Chưa xác định";
 	const key = groupSimilarNames ? companyGroupingKey(displayName) : displayName;
 	const current = map.get(key) || { name: displayName, value: 0, units: 0 };
 	current.value += value;
@@ -146,14 +148,16 @@ export function aggregateOverviewFacts(
 
 	facts.forEach((fact) => {
 		const buyerKey = hospitalKey(fact.buyerId, fact.hospital);
+		const companyName =
+			mappedCompanyName(fact.company, fact.company).trim() || "Chưa xác định";
 		marketSize += fact.value;
 		totalUnits += fact.units;
 		allProducts.add(fact.product);
 		allTenders.add(fact.tender);
-		addNamedValue(companyTotals, fact.company, fact.value, fact.units, true);
-		const companyKey = companyGroupingKey(fact.company);
+		addNamedValue(companyTotals, companyName, fact.value, fact.units, true);
+		const companyKey = companyGroupingKey(companyName);
 		const companyDetail = companyDetails.get(companyKey) || {
-			name: fact.company,
+			name: companyName,
 			value: 0,
 			units: 0,
 			hospitalKeys: new Set<string>(),
@@ -177,7 +181,7 @@ export function aggregateOverviewFacts(
 		companyDetails.set(companyKey, companyDetail);
 		addNamedValue(supplierTotals, fact.supplier, fact.value, fact.units);
 
-		if (fact.company === "Medtronic") {
+		if (companyName === "Medtronic") {
 			medtronicValue += fact.value;
 			medtronicUnits += fact.units;
 		}
@@ -200,7 +204,7 @@ export function aggregateOverviewFacts(
 		hospitalEntry.tenderKeys.add(fact.tender);
 		addNamedValue(
 			hospitalEntry.companyTotals,
-			fact.company,
+			companyName,
 			fact.value,
 			fact.units,
 			true,
