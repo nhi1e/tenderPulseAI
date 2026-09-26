@@ -33,12 +33,22 @@ KQLCNT is counted from an explicit result identifier when the portal provides on
 Hospital search suggestions display their buyer ID and a selected suggestion searches by ID, so the portal can return all naming variants. Detailed Excel files retain `Tên CĐT` exactly as reported by the portal and add a separate grouped display-name column. Update the proposed names in this JSON file when the team confirms corrections; the buyer ID remains the stable identity.
 # Manufacturer alias normalization
 
-`manufacturer-aliases.json` contains the 749 spelling clusters from sheet
+`manufacturer-aliases.json` contains all 749 clusters from sheet
 `05_Hãng chưa mapping` of the staff review workbook dated 23 September 2026.
-Punctuation, spacing, capitalization and occurrence-count variants share one
-canonical manufacturer name. The original manufacturer master still takes
-precedence for confirmed parent-company mappings such as Covidien → Medtronic
-and Ethicon → Johnson & Johnson.
+Every listed source variant is indexed. Occurrence suffixes such as `(1)` and
+`(12)`, punctuation/capitalization differences, field labels and trailing
+country labels are ignored during lookup. Rows sharing the same reviewed
+parent/brand-owner identity are aggregated together; for example, the Sutter
+variants become `Sutter Medizintechnik`, KARL STORZ legal-name variants become
+`KARL STORZ`, and the reviewed Systagenix variants become `Solventum
+Corporation`. The original manufacturer master still takes precedence for
+confirmed conversions such as Covidien → Medtronic and Ethicon → Johnson &
+Johnson.
+
+The company autocomplete is seeded from these consolidated reporting names,
+not only from companies encountered during the current browser session. Changes
+to this mapping also invalidate the overview session cache so stale source names
+cannot remain visible after a mapping update.
 
 Rows containing several independent manufacturers remain a composite canonical
 label until item-level source data can separate them. They are not assigned to

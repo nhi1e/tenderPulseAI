@@ -1,4875 +1,1944 @@
 "use client";
 
+import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
-	createContext,
-	Fragment,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
-import {
-	ArrowLeft,
-	Building2,
-	CheckCircle2,
-	CircleAlert,
-	Database,
-	Download,
-	Filter,
-	LoaderCircle,
-	RefreshCw,
-	Search,
-	Sparkles,
-	Trophy,
+  ArrowLeft, Building2, CheckCircle2, CircleAlert,
+  Database, Download, Filter, LoaderCircle, RefreshCw, Search, Sparkles, Trophy,
 } from "lucide-react";
 import {
-	Combobox,
-	ComboboxContent,
-	ComboboxEmpty,
-	ComboboxGroup,
-	ComboboxInput,
-	ComboboxItem,
-	ComboboxLabel,
-	ComboboxList,
+  Combobox, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput,
+  ComboboxItem, ComboboxLabel, ComboboxList,
 } from "@/components/ui/combobox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { companyGroupingKey, mappedCompanyName } from "@/lib/company-mapping";
+import { companyDirectoryName, companyGroupingKey, mappedCompanyName } from "@/lib/company-mapping";
 import {
-	classificationRules,
-	classifyProductRecord,
-	evaluateProductRule,
-	flattenedExclusionTerms,
-	manufacturerMappedRows,
-	manufacturerUnmappedRows,
-	ruleForSearchTerm,
-	staffReviewDecisionFor,
-	type ProductClassificationRule,
+  classificationRules,
+  classifyProductRecord,
+  evaluateProductRule,
+  flattenedExclusionTerms,
+  manufacturerDirectoryNames,
+  manufacturerMappedRows,
+  manufacturerUnmappedRows,
+  ruleForSearchTerm,
+  staffReviewDecisionFor,
+  type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
+import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
-	hospitalDirectoryEntries,
-	hospitalKey,
-	hospitalName,
-	hospitalPortalQuery,
-	hospitalSelectionLabel,
-} from "@/lib/hospital-identity";
-import {
-	aggregateOverviewFacts,
-	type OverviewCompetitor,
-	type OverviewFact,
-	type OverviewHospital,
-	type OverviewNamedValue,
-	type OverviewSubOu,
-	type OverviewTender,
+  aggregateOverviewFacts,
+  type OverviewCompetitor,
+  type OverviewFact,
+  type OverviewHospital,
+  type OverviewNamedValue,
+  type OverviewSubOu,
+  type OverviewTender,
 } from "@/lib/market-overview-aggregate";
 
 type NamedValue = { name: string; value: number };
 type SearchFilters = {
-	dateFrom: string;
-	dateTo: string;
-	hospital: string;
-	brand: string;
-	supplier: string;
-	company: string;
+  dateFrom: string;
+  dateTo: string;
+  hospital: string;
+  brand: string;
+  supplier: string;
+  company: string;
 };
 type WinningBidRecord = {
-	id?: string;
-	tenThietBi?: string;
-	donViTinh?: string;
-	khoiLuongDouble?: number;
-	khoiLuong?: number | string;
-	kyMaHieu?: string;
-	nhanHieu?: string;
-	hangSanXuat?: string;
-	chungLoai?: string;
-	cauHinh?: string;
-	donGia?: number;
-	donGiaDuThau?: number;
-	winningName?: string[] | string;
-	maTbmt?: string;
-	tenCdtBmt?: string;
-	ngayDangTaiKqlcnt?: string;
-	xuatXu?: string;
-	maHs?: string;
-	soLuuHanh?: string;
-	namSanXuat?: string;
-	winningCode?: string[] | string;
-	maCdt?: string;
-	bidForm?: string;
-	soQuyetDinh?: string;
-	ngayBanHanhQuyetDinh?: string;
-	soNhaThauThamDu?: number;
-	maKqlcnt?: string;
-	kqlcntId?: string;
-	idKqlcnt?: string;
-	resultId?: string;
-	diaDiem?: Array<{
-		wardName?: string;
-		districtName?: string;
-		provName?: string;
-	}>;
+  id?: string; tenThietBi?: string; donViTinh?: string; khoiLuongDouble?: number;
+  khoiLuong?: number | string; kyMaHieu?: string; nhanHieu?: string;
+  hangSanXuat?: string; chungLoai?: string; cauHinh?: string; donGia?: number;
+  donGiaDuThau?: number; winningName?: string[] | string; maTbmt?: string;
+  tenCdtBmt?: string; ngayDangTaiKqlcnt?: string; xuatXu?: string; maHs?: string;
+  soLuuHanh?: string; namSanXuat?: string; winningCode?: string[] | string;
+  maCdt?: string; bidForm?: string; soQuyetDinh?: string;
+  ngayBanHanhQuyetDinh?: string; soNhaThauThamDu?: number;
+  maKqlcnt?: string; kqlcntId?: string; idKqlcnt?: string; resultId?: string;
+  diaDiem?: Array<{ wardName?: string; districtName?: string; provName?: string }>;
 };
-type PortalPage = {
-	content: WinningBidRecord[];
-	totalElements?: number;
-	totalPages?: number;
-};
+type PortalPage = { content: WinningBidRecord[]; totalElements?: number; totalPages?: number };
 type ClassificationAudit = {
-	missingProductKeyword: number;
-	missingConfirmation: number;
-	matchedExclusion: number;
-	staffExcluded: number;
-	staffReclassified: number;
-	unresolvedAmbiguity: number;
+  missingProductKeyword: number;
+  missingConfirmation: number;
+  matchedExclusion: number;
+  staffExcluded: number;
+  staffReclassified: number;
+  unresolvedAmbiguity: number;
 };
 type LiveCollectionProgress = {
-	completedPages: number;
-	totalPages: number;
-	records: WinningBidRecord[];
-	portalTotalElements: number;
-	excludedRecords: number;
-	classificationAudit?: ClassificationAudit;
-	keywordRule?: KeywordMasterRule;
-	truncated: boolean;
+  completedPages: number;
+  totalPages: number;
+  records: WinningBidRecord[];
+  portalTotalElements: number;
+  excludedRecords: number;
+  classificationAudit?: ClassificationAudit;
+  keywordRule?: KeywordMasterRule;
+  truncated: boolean;
 };
 type ProductData = {
-	keyword: string;
-	group: string;
-	fetchedAt: string;
-	truncated: boolean;
-	records: WinningBidRecord[];
-	keywordRule?: KeywordMasterRule;
-	excludedRecords: number;
-	portalTotalElements: number;
-	classificationAudit?: ClassificationAudit;
-	filters: SearchFilters;
-	lineItems: number;
-	totalElements: number;
-	totalValue: number;
-	totalQuantity: number;
-	tenders: number;
-	hospitals: number;
-	medtronicValue: number;
-	medtronicShare: number;
-	medtronicQuantity: number;
-	medtronicQuantityShare: number;
-	dateRange: string;
-	trend: { month: string; value: number }[];
-	manufacturers: NamedValue[];
-	topHospitals: NamedValue[];
-	topProducts: NamedValue[];
-	topSuppliers: NamedValue[];
-	insight: string;
-	qualityNote: string;
+  keyword: string; group: string; fetchedAt: string; truncated: boolean;
+  records: WinningBidRecord[];
+  keywordRule?: KeywordMasterRule; excludedRecords: number; portalTotalElements: number;
+  classificationAudit?: ClassificationAudit;
+  filters: SearchFilters;
+  lineItems: number; totalElements: number; totalValue: number; totalQuantity: number;
+  tenders: number; hospitals: number; medtronicValue: number; medtronicShare: number;
+  medtronicQuantity: number; medtronicQuantityShare: number; dateRange: string;
+  trend: { month: string; value: number }[]; manufacturers: NamedValue[];
+  topHospitals: NamedValue[]; topProducts: NamedValue[]; topSuppliers: NamedValue[];
+  insight: string; qualityNote: string;
 };
 
 type OverviewFilterState = {
-	dateFrom: string;
-	dateTo: string;
-	hospital: string;
-	subOu: string;
-	productGroup: string;
-	company: string;
+  dateFrom: string;
+  dateTo: string;
+  hospital: string;
+  subOu: string;
+  productGroup: string;
+  company: string;
 };
-type KeywordCatalogItem = {
-	subOu: string;
-	productGroups: string[];
-	keywords: string[];
-};
+type KeywordCatalogItem = { subOu: string; productGroups: string[]; keywords: string[] };
 type KeywordMasterRule = ProductClassificationRule;
-type ActivityItem = {
-	id: string;
-	keyword: string;
-	searchedAt: string;
-	filters: SearchFilters;
-};
-type OverviewLoadProgress = {
-	completed: number;
-	total: number;
-	current: string[];
-};
+type ActivityItem = { id: string; keyword: string; searchedAt: string; filters: SearchFilters };
+type OverviewLoadProgress = { completed: number; total: number; current: string[] };
 type HospitalDirectoryEntry = { name: string; id?: string };
 type CompanyDirectoryEntry = { name: string };
 type LearnedProductEntry = { value: string; kind: "brand" | "model" };
-type ProductSuggestion = {
-	value: string;
-	kind: "keyword" | "brand" | "model";
-	subOu?: string;
-	productGroup?: string;
-};
+type ProductSuggestion = { value: string; kind: "keyword" | "brand" | "model"; subOu?: string; productGroup?: string };
 type Language = "en" | "vi";
 
-const subOuOrder = [
-	"VS&D",
-	"Endo Stapling",
-	"Open Stapling",
-	"Hernia",
-	"Suture",
-	"A&I",
-	"ES",
-];
+const subOuOrder = ["VS&D", "Endo Stapling", "Open Stapling", "Hernia", "Suture", "A&I", "ES"];
 const keywordMaster = classificationRules;
-const approvedKeywordCount = keywordMaster.reduce(
-	(total, rule) => total + rule.keywords.length,
-	0,
-);
-const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map(
-	(subOu) => ({
-		subOu,
-		productGroups: [
-			...new Set(
-				keywordMaster
-					.filter((rule) => rule.subOu === subOu)
-					.map((rule) => rule.productGroup),
-			),
-		],
-		keywords: keywordMaster
-			.filter((rule) => rule.subOu === subOu)
-			.flatMap((rule) => rule.keywords),
-	}),
-);
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v8";
+const approvedKeywordCount = keywordMaster.reduce((total, rule) => total + rule.keywords.length, 0);
+const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => ({
+  subOu,
+  productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
+  keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
+}));
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v9";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
-const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v1";
+const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v4";
 const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
 const initialHospitals: HospitalDirectoryEntry[] = [
-	...hospitalDirectoryEntries(),
-	{ name: "Bệnh viện Bạch Mai" },
-	{ name: "Bệnh viện Chợ Rẫy" },
-	{ name: "Bệnh viện Đại học Y Hà Nội" },
-	{ name: "Bệnh viện Hữu nghị Việt Đức" },
-	{ name: "Bệnh viện Nhân dân 115" },
-	{ name: "Bệnh viện Trung ương Huế" },
-	{ name: "Bệnh viện Trung ương Quân đội 108" },
-	{ name: "Bệnh viện 30-4" },
+  ...hospitalDirectoryEntries(),
+  { name: "Bệnh viện Bạch Mai" },
+  { name: "Bệnh viện Chợ Rẫy" },
+  { name: "Bệnh viện Đại học Y Hà Nội" },
+  { name: "Bệnh viện Hữu nghị Việt Đức" },
+  { name: "Bệnh viện Nhân dân 115" },
+  { name: "Bệnh viện Trung ương Huế" },
+  { name: "Bệnh viện Trung ương Quân đội 108" },
+  { name: "Bệnh viện 30-4" },
 ];
-const initialCompanies: CompanyDirectoryEntry[] = [
-	{ name: "Medtronic" },
-	{ name: "Johnson & Johnson" },
-	{ name: "B. Braun" },
-	{ name: "Boston Scientific" },
-	{ name: "Applied Medical" },
-	{ name: "Olympus" },
-	{ name: "Miconvey" },
-	{ name: "Innolcon" },
-];
+const initialCompanies: CompanyDirectoryEntry[] = [...new Map([
+  "Medtronic",
+  "Johnson & Johnson",
+  "B. Braun",
+  "Boston Scientific",
+  "Applied Medical",
+  "Olympus",
+  "Miconvey",
+  "Innolcon",
+  ...manufacturerDirectoryNames(),
+].map((name) => [companyGroupingKey(name), { name }])).values()]
+  .sort((left, right) => left.name.localeCompare(right.name, "vi"));
 const LanguageContext = createContext<Language>("en");
 
 type OverviewCacheEntry = {
-	slices: OverviewSubOu[];
-	updatedAt?: string;
-	succeeded: number;
-	total: number;
+  slices: OverviewSubOu[];
+  updatedAt?: string;
+  succeeded: number;
+  total: number;
 };
 
 function useLanguage() {
-	return useContext(LanguageContext);
+  return useContext(LanguageContext);
 }
 function copy(language: Language, english: string, vietnamese: string) {
-	return language === "en" ? english : vietnamese;
+  return language === "en" ? english : vietnamese;
 }
 function localeFor(language: Language) {
-	return language === "en" ? "en-US" : "vi-VN";
+  return language === "en" ? "en-US" : "vi-VN";
 }
 
 function emptyFilters(): SearchFilters {
-	return {
-		dateFrom: "",
-		dateTo: "",
-		hospital: "",
-		brand: "",
-		supplier: "",
-		company: "all",
-	};
+  return { dateFrom: "", dateTo: "", hospital: "", brand: "", supplier: "", company: "all" };
 }
 
 function normalize(value: string) {
-	return value
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "")
-		.replace(/[đĐ]/g, "d")
-		.trim()
-		.toLowerCase();
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[đĐ]/g, "d").trim().toLowerCase();
 }
 function searchableText(value: string) {
-	return normalize(value)
-		.replace(/[^a-z0-9]+/g, " ")
-		.replace(/\s+/g, " ")
-		.trim();
+  return normalize(value).replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
 }
 function readStoredDirectory<T>(key: string): T[] {
-	try {
-		const value = JSON.parse(window.localStorage.getItem(key) || "[]");
-		return Array.isArray(value) ? (value as T[]) : [];
-	} catch {
-		return [];
-	}
+  try {
+    const value = JSON.parse(window.localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value as T[] : [];
+  } catch {
+    return [];
+  }
 }
 function usefulDirectoryValue(value: string | undefined, maxLength: number) {
-	const cleaned = String(value || "")
-		.replace(/\s+/g, " ")
-		.trim();
-	if (cleaned.length < 2 || cleaned.length > maxLength) return "";
-	if (
-		["không xác định", "chưa xác định", "n/a", "na"].includes(
-			normalize(cleaned),
-		)
-	)
-		return "";
-	return cleaned;
+  const cleaned = String(value || "").replace(/\s+/g, " ").trim();
+  if (cleaned.length < 2 || cleaned.length > maxLength) return "";
+  if (["không xác định", "chưa xác định", "n/a", "na"].includes(normalize(cleaned))) return "";
+  return cleaned;
 }
 function hospitalDirectoryKey(entry: HospitalDirectoryEntry) {
-	return hospitalKey(entry.id || "", entry.name);
+  return hospitalKey(entry.id || "", entry.name);
 }
 function uniqueHospitals(entries: HospitalDirectoryEntry[]) {
-	const merged = new Map<string, HospitalDirectoryEntry>();
-	entries.forEach((entry) => {
-		const name = usefulDirectoryValue(entry.name, 180);
-		const id = usefulDirectoryValue(entry.id, 80);
-		if (!name) return;
-		const key = hospitalDirectoryKey({ name, id });
-		merged.set(key, { name: hospitalName(id, name), id: id || undefined });
-	});
-	// Hide placeholder names when a verified buyer ID has the same label.
-	const namesWithId = new Set(
-		[...merged.values()]
-			.filter((entry) => entry.id)
-			.map((entry) => normalize(entry.name)),
-	);
-	return [...merged.values()].filter(
-		(entry) => entry.id || !namesWithId.has(normalize(entry.name)),
-	);
+  const merged = new Map<string, HospitalDirectoryEntry>();
+  entries.forEach((entry) => {
+    const name = usefulDirectoryValue(entry.name, 180);
+    const id = usefulDirectoryValue(entry.id, 80);
+    if (!name) return;
+    const key = hospitalDirectoryKey({ name, id });
+    merged.set(key, { name: hospitalName(id, name), id: id || undefined });
+  });
+  // Hide placeholder names when a verified buyer ID has the same label.
+  const namesWithId = new Set([...merged.values()].filter((entry) => entry.id).map((entry) => normalize(entry.name)));
+  return [...merged.values()].filter((entry) => entry.id || !namesWithId.has(normalize(entry.name)));
 }
 function rememberAutocompleteValues(records: WinningBidRecord[]) {
-	if (typeof window === "undefined" || !records.length) return;
-	try {
-		const hospitals = new Map<string, HospitalDirectoryEntry>();
-		uniqueHospitals([
-			...initialHospitals,
-			...readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY),
-		]).forEach((entry) => hospitals.set(hospitalDirectoryKey(entry), entry));
-		records.forEach((record) => {
-			const name = usefulDirectoryValue(record.tenCdtBmt, 180);
-			if (!name) return;
-			const id = usefulDirectoryValue(record.maCdt, 80);
-			const key = hospitalKey(id, name);
-			const existing = hospitals.get(key);
-			hospitals.set(key, {
-				name: hospitalName(id, existing?.name || name),
-				id: id || undefined,
-			});
-		});
+  if (typeof window === "undefined" || !records.length) return;
+  try {
+    const hospitals = new Map<string, HospitalDirectoryEntry>();
+    uniqueHospitals([...initialHospitals, ...readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY)]).forEach((entry) => hospitals.set(hospitalDirectoryKey(entry), entry));
+    records.forEach((record) => {
+      const name = usefulDirectoryValue(record.tenCdtBmt, 180);
+      if (!name) return;
+      const id = usefulDirectoryValue(record.maCdt, 80);
+      const key = hospitalKey(id, name);
+      const existing = hospitals.get(key);
+      hospitals.set(key, { name: hospitalName(id, existing?.name || name), id: id || undefined });
+    });
 
-		const products = new Map<string, LearnedProductEntry>();
-		readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY).forEach(
-			(entry) => {
-				const value = usefulDirectoryValue(entry.value, 100);
-				if (value && (entry.kind === "brand" || entry.kind === "model"))
-					products.set(normalize(value), { value, kind: entry.kind });
-			},
-		);
-		records.forEach((record) => {
-			const values: LearnedProductEntry[] = [
-				{ value: usefulDirectoryValue(record.nhanHieu, 100), kind: "brand" },
-				{ value: usefulDirectoryValue(record.kyMaHieu, 100), kind: "model" },
-				{ value: usefulDirectoryValue(record.chungLoai, 100), kind: "model" },
-			];
-			values.forEach((entry) => {
-				if (entry.value) products.set(normalize(entry.value), entry);
-			});
-		});
+    const products = new Map<string, LearnedProductEntry>();
+    readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY).forEach((entry) => {
+      const value = usefulDirectoryValue(entry.value, 100);
+      if (value && (entry.kind === "brand" || entry.kind === "model")) products.set(normalize(value), { value, kind: entry.kind });
+    });
+    records.forEach((record) => {
+      const values: LearnedProductEntry[] = [
+        { value: usefulDirectoryValue(record.nhanHieu, 100), kind: "brand" },
+        { value: usefulDirectoryValue(record.kyMaHieu, 100), kind: "model" },
+        { value: usefulDirectoryValue(record.chungLoai, 100), kind: "model" },
+      ];
+      values.forEach((entry) => {
+        if (entry.value) products.set(normalize(entry.value), entry);
+      });
+    });
 
-		const companies = new Map<string, CompanyDirectoryEntry>();
-		[
-			...initialCompanies,
-			...readStoredDirectory<CompanyDirectoryEntry>(COMPANY_DIRECTORY_KEY),
-		].forEach((entry) => {
-			const name = usefulDirectoryValue(entry.name, 180);
-			if (name) companies.set(companyGroupingKey(name), { name });
-		});
-		records.forEach((record) => {
-			const name = usefulDirectoryValue(companyOf(record), 180);
-			if (
-				name &&
-				name !== "Unknown / review needed" &&
-				name !== "Chưa xác định / cần kiểm tra"
-			) {
-				companies.set(companyGroupingKey(name), { name });
-			}
-		});
+    const companies = new Map<string, CompanyDirectoryEntry>();
+    [...initialCompanies, ...readStoredDirectory<CompanyDirectoryEntry>(COMPANY_DIRECTORY_KEY)].forEach((entry) => {
+      const name = usefulDirectoryValue(companyDirectoryName(entry.name), 180);
+      if (name) companies.set(companyGroupingKey(name), { name });
+    });
+    records.forEach((record) => {
+      const name = usefulDirectoryValue(companyDirectoryName(record.hangSanXuat || companyOf(record)), 180);
+      if (name && name !== "Unknown / review needed" && name !== "Chưa xác định / cần kiểm tra") {
+        companies.set(companyGroupingKey(name), { name });
+      }
+    });
 
-		window.localStorage.setItem(
-			HOSPITAL_DIRECTORY_KEY,
-			JSON.stringify(
-				uniqueHospitals([...hospitals.values()])
-					.sort((a, b) => a.name.localeCompare(b.name, "vi"))
-					.slice(0, 2000),
-			),
-		);
-		window.localStorage.setItem(
-			PRODUCT_DIRECTORY_KEY,
-			JSON.stringify(
-				[...products.values()]
-					.sort((a, b) => a.value.localeCompare(b.value, "vi"))
-					.slice(0, 3000),
-			),
-		);
-		window.localStorage.setItem(
-			COMPANY_DIRECTORY_KEY,
-			JSON.stringify(
-				[...companies.values()]
-					.sort((a, b) => a.name.localeCompare(b.name, "vi"))
-					.slice(0, 2000),
-			),
-		);
-		window.dispatchEvent(new Event(DIRECTORY_UPDATE_EVENT));
-	} catch {
-		// Autocomplete is optional; live search still works if storage is unavailable.
-	}
+    window.localStorage.setItem(HOSPITAL_DIRECTORY_KEY, JSON.stringify(uniqueHospitals([...hospitals.values()]).sort((a, b) => a.name.localeCompare(b.name, "vi")).slice(0, 2000)));
+    window.localStorage.setItem(PRODUCT_DIRECTORY_KEY, JSON.stringify([...products.values()].sort((a, b) => a.value.localeCompare(b.value, "vi")).slice(0, 3000)));
+    window.localStorage.setItem(COMPANY_DIRECTORY_KEY, JSON.stringify([...companies.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")).slice(0, 2000)));
+    window.dispatchEvent(new Event(DIRECTORY_UPDATE_EVENT));
+  } catch {
+    // Autocomplete is optional; live search still works if storage is unavailable.
+  }
 }
 function useAutocompleteDirectories() {
-	const [hospitals, setHospitals] =
-		useState<HospitalDirectoryEntry[]>(initialHospitals);
-	const [learnedProducts, setLearnedProducts] = useState<LearnedProductEntry[]>(
-		[],
-	);
-	const [companies, setCompanies] =
-		useState<CompanyDirectoryEntry[]>(initialCompanies);
-	useEffect(() => {
-		const load = () => {
-			const storedHospitals = readStoredDirectory<HospitalDirectoryEntry>(
-				HOSPITAL_DIRECTORY_KEY,
-			);
-			setHospitals(uniqueHospitals([...initialHospitals, ...storedHospitals]));
-			setLearnedProducts(
-				readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY),
-			);
-			const companyMap = new Map<string, CompanyDirectoryEntry>();
-			[
-				...initialCompanies,
-				...readStoredDirectory<CompanyDirectoryEntry>(COMPANY_DIRECTORY_KEY),
-			].forEach((entry) => {
-				if (entry?.name) companyMap.set(companyGroupingKey(entry.name), entry);
-			});
-			setCompanies(
-				[...companyMap.values()].sort((a, b) =>
-					a.name.localeCompare(b.name, "vi"),
-				),
-			);
-		};
-		load();
-		window.addEventListener(DIRECTORY_UPDATE_EVENT, load);
-		return () => window.removeEventListener(DIRECTORY_UPDATE_EVENT, load);
-	}, []);
-	return { hospitals, learnedProducts, companies };
+  const [hospitals, setHospitals] = useState<HospitalDirectoryEntry[]>(initialHospitals);
+  const [learnedProducts, setLearnedProducts] = useState<LearnedProductEntry[]>([]);
+  const [companies, setCompanies] = useState<CompanyDirectoryEntry[]>(initialCompanies);
+  useEffect(() => {
+    const load = () => {
+      const storedHospitals = readStoredDirectory<HospitalDirectoryEntry>(HOSPITAL_DIRECTORY_KEY);
+      setHospitals(uniqueHospitals([...initialHospitals, ...storedHospitals]));
+      setLearnedProducts(readStoredDirectory<LearnedProductEntry>(PRODUCT_DIRECTORY_KEY));
+      const companyMap = new Map<string, CompanyDirectoryEntry>();
+      [...initialCompanies, ...readStoredDirectory<CompanyDirectoryEntry>(COMPANY_DIRECTORY_KEY)].forEach((entry) => {
+        if (!entry?.name) return;
+        const name = companyDirectoryName(entry.name);
+        if (name) companyMap.set(companyGroupingKey(name), { name });
+      });
+      setCompanies([...companyMap.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")));
+    };
+    load();
+    window.addEventListener(DIRECTORY_UPDATE_EVENT, load);
+    return () => window.removeEventListener(DIRECTORY_UPDATE_EVENT, load);
+  }, []);
+  return { hospitals, learnedProducts, companies };
 }
 function rankedMatch(value: string, query: string) {
-	const candidate = searchableText(value);
-	const target = searchableText(query);
-	if (!target) return 3;
-	if (candidate === target) return 0;
-	if (candidate.startsWith(target)) return 1;
+  const candidate = searchableText(value);
+  const target = searchableText(query);
+  if (!target) return 3;
+  if (candidate === target) return 0;
+  if (candidate.startsWith(target)) return 1;
 
-	const candidateTokens = candidate.split(" ").filter(Boolean);
-	const queryTokens = target.split(" ").filter(Boolean);
-	if (queryTokens.every((token) => candidateTokens.includes(token))) return 2;
-	if (
-		queryTokens.every((token) =>
-			candidateTokens.some((candidateToken) =>
-				candidateToken.startsWith(token),
-			),
-		)
-	)
-		return 3;
-	return 4;
+  const candidateTokens = candidate.split(" ").filter(Boolean);
+  const queryTokens = target.split(" ").filter(Boolean);
+  if (queryTokens.every((token) => candidateTokens.includes(token))) return 2;
+  if (queryTokens.every((token) => candidateTokens.some((candidateToken) => candidateToken.startsWith(token)))) return 3;
+  return 4;
 }
-function hospitalSuggestionsFor(
-	hospitals: HospitalDirectoryEntry[],
-	query: string,
-) {
-	return hospitals
-		.filter(
-			(entry) =>
-				!query.trim() ||
-				rankedMatch(`${entry.name} ${entry.id || ""}`, query) < 4,
-		)
-		.sort(
-			(left, right) =>
-				rankedMatch(left.name, query) - rankedMatch(right.name, query) ||
-				left.name.localeCompare(right.name, "vi"),
-		)
-		.slice(0, 10);
+function hospitalSuggestionsFor(hospitals: HospitalDirectoryEntry[], query: string) {
+  return hospitals
+    .filter((entry) => !query.trim() || rankedMatch(`${entry.name} ${entry.id || ""}`, query) < 4)
+    .sort((left, right) => rankedMatch(left.name, query) - rankedMatch(right.name, query) || left.name.localeCompare(right.name, "vi"))
+    .slice(0, 10);
 }
-function companySuggestionsFor(
-	companies: CompanyDirectoryEntry[],
-	query: string,
-) {
-	return companies
-		.filter((entry) => !query.trim() || rankedMatch(entry.name, query) < 4)
-		.sort(
-			(left, right) =>
-				rankedMatch(left.name, query) - rankedMatch(right.name, query) ||
-				left.name.localeCompare(right.name, "vi"),
-		)
-		.slice(0, 20);
+function companySuggestionsFor(companies: CompanyDirectoryEntry[], query: string) {
+  return companies
+    .filter((entry) => !query.trim() || rankedMatch(entry.name, query) < 4)
+    .sort((left, right) => rankedMatch(left.name, query) - rankedMatch(right.name, query) || left.name.localeCompare(right.name, "vi"))
+    .slice(0, 20);
 }
-function productSuggestionsFor(
-	learnedProducts: LearnedProductEntry[],
-	query: string,
-) {
-	const suggestions = new Map<string, ProductSuggestion>();
-	keywordMaster.forEach((rule) => {
-		rule.keywords.forEach((keyword) => {
-			const key = normalize(keyword);
-			if (!suggestions.has(key))
-				suggestions.set(key, {
-					value: keyword,
-					kind: "keyword",
-					subOu: rule.subOu,
-					productGroup: rule.productGroup,
-				});
-		});
-	});
-	learnedProducts.forEach((entry) => {
-		const key = normalize(entry.value);
-		if (!suggestions.has(key)) suggestions.set(key, entry);
-	});
-	return [...suggestions.values()]
-		.filter((entry) => !query.trim() || rankedMatch(entry.value, query) < 4)
-		.sort(
-			(left, right) =>
-				rankedMatch(left.value, query) - rankedMatch(right.value, query) ||
-				Number(Boolean(right.subOu)) - Number(Boolean(left.subOu)) ||
-				left.value.localeCompare(right.value, "vi"),
-		)
-		.slice(0, 14);
+function productSuggestionsFor(learnedProducts: LearnedProductEntry[], query: string) {
+  const suggestions = new Map<string, ProductSuggestion>();
+  keywordMaster.forEach((rule) => {
+    rule.keywords.forEach((keyword) => {
+      const key = normalize(keyword);
+      if (!suggestions.has(key)) suggestions.set(key, { value: keyword, kind: "keyword", subOu: rule.subOu, productGroup: rule.productGroup });
+    });
+  });
+  learnedProducts.forEach((entry) => {
+    const key = normalize(entry.value);
+    if (!suggestions.has(key)) suggestions.set(key, entry);
+  });
+  return [...suggestions.values()]
+    .filter((entry) => !query.trim() || rankedMatch(entry.value, query) < 4)
+    .sort((left, right) => rankedMatch(left.value, query) - rankedMatch(right.value, query) || Number(Boolean(right.subOu)) - Number(Boolean(left.subOu)) || left.value.localeCompare(right.value, "vi"))
+    .slice(0, 14);
 }
 function keywordRuleFor(keyword: string) {
-	return ruleForSearchTerm(keyword);
+  return ruleForSearchTerm(keyword);
 }
 function classificationRecord(record: WinningBidRecord) {
-	return {
-		sourceId: record.id,
-		productName: record.tenThietBi,
-		brand: record.nhanHieu,
-		configuration: record.cauHinh,
-	};
+  return {
+    sourceId: record.id,
+    productName: record.tenThietBi,
+    brand: record.nhanHieu,
+    configuration: record.cauHinh,
+  };
 }
-function applyKeywordRule(
-	records: WinningBidRecord[],
-	rule: KeywordMasterRule | undefined,
-) {
-	const audit: ClassificationAudit = {
-		missingProductKeyword: 0,
-		missingConfirmation: 0,
-		matchedExclusion: 0,
-		staffExcluded: 0,
-		staffReclassified: 0,
-		unresolvedAmbiguity: 0,
-	};
-	if (!rule) return { records: [...records], audit };
-	const matched = records.filter((record) => {
-		const staffDecision = staffReviewDecisionFor(record.id);
-		if (staffDecision) {
-			if (staffDecision.action === "exclude") audit.staffExcluded += 1;
-			if (staffDecision.action === "review") audit.unresolvedAmbiguity += 1;
-			const belongsToRule =
-				staffDecision.action === "classify" &&
-				staffDecision.subOu === rule.subOu &&
-				staffDecision.productGroup === rule.productGroup;
-			if (staffDecision.action === "classify" && !belongsToRule)
-				audit.staffReclassified += 1;
-			return belongsToRule;
-		}
+function applyKeywordRule(records: WinningBidRecord[], rule: KeywordMasterRule | undefined) {
+  const audit: ClassificationAudit = {
+    missingProductKeyword: 0,
+    missingConfirmation: 0,
+    matchedExclusion: 0,
+    staffExcluded: 0,
+    staffReclassified: 0,
+    unresolvedAmbiguity: 0,
+  };
+  if (!rule) return { records: [...records], audit };
+  const matched = records.filter((record) => {
+    const staffDecision = staffReviewDecisionFor(record.id);
+    if (staffDecision) {
+      if (staffDecision.action === "exclude") audit.staffExcluded += 1;
+      if (staffDecision.action === "review") audit.unresolvedAmbiguity += 1;
+      const belongsToRule = staffDecision.action === "classify" &&
+        staffDecision.subOu === rule.subOu &&
+        staffDecision.productGroup === rule.productGroup;
+      if (staffDecision.action === "classify" && !belongsToRule) audit.staffReclassified += 1;
+      return belongsToRule;
+    }
 
-		const evaluation = evaluateProductRule(classificationRecord(record), rule);
-		const classification = classifyProductRecord(classificationRecord(record));
-		if (evaluation.matched && classification?.rule.id === rule.id) return true;
-		if (evaluation.matched) {
-			audit.unresolvedAmbiguity += 1;
-			return false;
-		}
-		if (evaluation.reason === "product-keyword")
-			audit.missingProductKeyword += 1;
-		if (evaluation.reason === "confirmation") audit.missingConfirmation += 1;
-		if (evaluation.reason === "exclusion") audit.matchedExclusion += 1;
-		return false;
-	});
-	return { records: matched, audit };
+    const evaluation = evaluateProductRule(classificationRecord(record), rule);
+    const classification = classifyProductRecord(classificationRecord(record));
+    if (evaluation.matched && classification?.rule.id === rule.id) return true;
+    if (evaluation.matched) {
+      audit.unresolvedAmbiguity += 1;
+      return false;
+    }
+    if (evaluation.reason === "product-keyword") audit.missingProductKeyword += 1;
+    if (evaluation.reason === "confirmation") audit.missingConfirmation += 1;
+    if (evaluation.reason === "exclusion") audit.matchedExclusion += 1;
+    return false;
+  });
+  return { records: matched, audit };
 }
-function portalPageUrl(
-	keyword: string,
-	page: number,
-	filters: SearchFilters,
-	forceRefresh = false,
-) {
-	const params = new URLSearchParams({
-		keyword,
-		page: String(page),
-		pageSize: "1000",
-	});
-	if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
-	if (filters.dateTo) params.set("dateTo", filters.dateTo);
-	if (filters.hospital)
-		params.set("hospital", hospitalPortalQuery(filters.hospital));
-	if (filters.brand) params.set("brand", filters.brand);
-	if (filters.supplier) params.set("supplier", filters.supplier);
-	if (filters.company && filters.company !== "all")
-		params.set("company", filters.company);
-	if (forceRefresh) params.set("refresh", "1");
-	return `/api/portal-search-page?${params.toString()}`;
+function portalPageUrl(keyword: string, page: number, filters: SearchFilters, forceRefresh = false) {
+  const params = new URLSearchParams({ keyword, page: String(page), pageSize: "1000" });
+  if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
+  if (filters.dateTo) params.set("dateTo", filters.dateTo);
+  if (filters.hospital) params.set("hospital", hospitalPortalQuery(filters.hospital));
+  if (filters.brand) params.set("brand", filters.brand);
+  if (filters.supplier) params.set("supplier", filters.supplier);
+  if (filters.company && filters.company !== "all") params.set("company", filters.company);
+  if (forceRefresh) params.set("refresh", "1");
+  return `/api/portal-search-page?${params.toString()}`;
 }
-async function fetchPortalPage(
-	keyword: string,
-	page: number,
-	filters: SearchFilters,
-	forceRefresh = false,
-) {
-	const response = await fetch(
-		portalPageUrl(keyword, page, filters, forceRefresh),
-	);
-	const body = await response.text();
-	let data: { page?: PortalPage; error?: string } | undefined;
-	try {
-		data = body
-			? (JSON.parse(body) as { page?: PortalPage; error?: string })
-			: undefined;
-	} catch {
-		throw new Error("The data service returned an invalid response.");
-	}
-	if (!response.ok || !data?.page || !Array.isArray(data.page.content)) {
-		throw new Error(data?.error || "Could not retrieve this portal page.");
-	}
-	return data.page;
+async function fetchPortalPage(keyword: string, page: number, filters: SearchFilters, forceRefresh = false) {
+  const response = await fetch(portalPageUrl(keyword, page, filters, forceRefresh));
+  const body = await response.text();
+  let data: { page?: PortalPage; error?: string } | undefined;
+  try {
+    data = body ? JSON.parse(body) as { page?: PortalPage; error?: string } : undefined;
+  } catch {
+    throw new Error("The data service returned an invalid response.");
+  }
+  if (!response.ok || !data?.page || !Array.isArray(data.page.content)) {
+    throw new Error(data?.error || "Could not retrieve this portal page.");
+  }
+  return data.page;
 }
 async function collectLiveWinningBids(
-	keyword: string,
-	filters: SearchFilters,
-	options: {
-		maxPages?: number;
-		forceRefresh?: boolean;
-		applyKeywordRule?: boolean;
-		onProgress?: (progress: LiveCollectionProgress) => void;
-	} = {},
+  keyword: string,
+  filters: SearchFilters,
+  options: {
+    maxPages?: number;
+    forceRefresh?: boolean;
+    applyKeywordRule?: boolean;
+    onProgress?: (progress: LiveCollectionProgress) => void;
+  } = {},
 ) {
-	const maxPages = Math.max(1, Math.min(options.maxPages ?? 25, 25));
-	const firstPage = await fetchPortalPage(
-		keyword,
-		0,
-		filters,
-		options.forceRefresh,
-	);
-	const portalTotalPages = Math.max(1, firstPage.totalPages ?? 1);
-	const totalPages = Math.min(portalTotalPages, maxPages);
-	const portalTotalElements =
-		firstPage.totalElements ?? firstPage.content.length;
-	const rawRecords = [...firstPage.content];
-	const rule =
-		options.applyKeywordRule === false ? undefined : keywordRuleFor(keyword);
-	const publish = (completedPages: number) => {
-		const classified = applyKeywordRule(rawRecords, rule);
-		const ruleRecords = classified.records;
-		const records =
-			filters.company && filters.company !== "all"
-				? ruleRecords.filter(
-						(record) =>
-							companyGroupingKey(companyOf(record)) ===
-							companyGroupingKey(filters.company),
-					)
-				: ruleRecords;
-		options.onProgress?.({
-			completedPages,
-			totalPages,
-			records,
-			portalTotalElements,
-			excludedRecords: rawRecords.length - ruleRecords.length,
-			classificationAudit: classified.audit,
-			keywordRule: rule,
-			truncated: portalTotalPages > maxPages,
-		});
-		return records;
-	};
-	let records = publish(1);
+  const maxPages = Math.max(1, Math.min(options.maxPages ?? 25, 25));
+  const firstPage = await fetchPortalPage(keyword, 0, filters, options.forceRefresh);
+  const portalTotalPages = Math.max(1, firstPage.totalPages ?? 1);
+  const totalPages = Math.min(portalTotalPages, maxPages);
+  const portalTotalElements = firstPage.totalElements ?? firstPage.content.length;
+  const rawRecords = [...firstPage.content];
+  const rule = options.applyKeywordRule === false ? undefined : keywordRuleFor(keyword);
+  const publish = (completedPages: number) => {
+    const classified = applyKeywordRule(rawRecords, rule);
+    const ruleRecords = classified.records;
+    const records = filters.company && filters.company !== "all"
+      ? ruleRecords.filter((record) => companyGroupingKey(companyOf(record)) === companyGroupingKey(filters.company))
+      : ruleRecords;
+    options.onProgress?.({
+      completedPages,
+      totalPages,
+      records,
+      portalTotalElements,
+      excludedRecords: rawRecords.length - ruleRecords.length,
+      classificationAudit: classified.audit,
+      keywordRule: rule,
+      truncated: portalTotalPages > maxPages,
+    });
+    return records;
+  };
+  let records = publish(1);
 
-	// Two independent page requests at a time keep the interface responsive
-	// without creating a burst of traffic against the public portal.
-	for (let start = 1; start < totalPages; start += 2) {
-		const pageNumbers = Array.from(
-			{ length: Math.min(2, totalPages - start) },
-			(_, index) => start + index,
-		);
-		const pages = await Promise.all(
-			pageNumbers.map((page) =>
-				fetchPortalPage(keyword, page, filters, options.forceRefresh),
-			),
-		);
-		pages.forEach((page) => rawRecords.push(...page.content));
-		records = publish(start + pages.length);
-	}
+  // Two independent page requests at a time keep the interface responsive
+  // without creating a burst of traffic against the public portal.
+  for (let start = 1; start < totalPages; start += 2) {
+    const pageNumbers = Array.from({ length: Math.min(2, totalPages - start) }, (_, index) => start + index);
+    const pages = await Promise.all(pageNumbers.map((page) => fetchPortalPage(keyword, page, filters, options.forceRefresh)));
+    pages.forEach((page) => rawRecords.push(...page.content));
+    records = publish(start + pages.length);
+  }
 
-	rememberAutocompleteValues(rawRecords);
+  rememberAutocompleteValues(rawRecords);
 
-	const finalClassification = applyKeywordRule(rawRecords, rule);
-	return {
-		records,
-		totalElements:
-			rule || (filters.company && filters.company !== "all")
-				? records.length
-				: portalTotalElements,
-		portalTotalElements,
-		excludedRecords: rule
-			? rawRecords.length - finalClassification.records.length
-			: 0,
-		classificationAudit: rule ? finalClassification.audit : undefined,
-		keywordRule: rule,
-		totalPages: portalTotalPages,
-		truncated: portalTotalPages > maxPages,
-	};
+  const finalClassification = applyKeywordRule(rawRecords, rule);
+  return {
+    records,
+    totalElements: rule || (filters.company && filters.company !== "all") ? records.length : portalTotalElements,
+    portalTotalElements,
+    excludedRecords: rule ? rawRecords.length - finalClassification.records.length : 0,
+    classificationAudit: rule ? finalClassification.audit : undefined,
+    keywordRule: rule,
+    totalPages: portalTotalPages,
+    truncated: portalTotalPages > maxPages,
+  };
 }
 function toNumber(value: unknown) {
-	if (typeof value === "number" && Number.isFinite(value)) return value;
-	const source = String(value ?? "")
-		.trim()
-		.replace(/\s/g, "");
-	if (!source) return 0;
-	if (/^-?\d{1,3}([.,]\d{3})+$/.test(source))
-		return Number(source.replace(/[.,]/g, "")) || 0;
-	return Number(source.replace(",", ".")) || 0;
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  const source = String(value ?? "").trim().replace(/\s/g, "");
+  if (!source) return 0;
+  if (/^-?\d{1,3}([.,]\d{3})+$/.test(source)) return Number(source.replace(/[.,]/g, "")) || 0;
+  return Number(source.replace(",", ".")) || 0;
 }
 function formatVnd(value: number, language: Language = "en") {
-	const locale = localeFor(language);
-	if (value >= 1_000_000_000)
-		return `${(value / 1_000_000_000).toLocaleString(locale, { maximumFractionDigits: 1 })} ${copy(language, "bn VND", "tỷ VND")}`;
-	if (value >= 1_000_000)
-		return `${(value / 1_000_000).toLocaleString(locale, { maximumFractionDigits: 1 })} ${copy(language, "mn VND", "triệu VND")}`;
-	return `${Math.round(value).toLocaleString(locale)} VND`;
+  const locale = localeFor(language);
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toLocaleString(locale, { maximumFractionDigits: 1 })} ${copy(language, "bn VND", "tỷ VND")}`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toLocaleString(locale, { maximumFractionDigits: 1 })} ${copy(language, "mn VND", "triệu VND")}`;
+  return `${Math.round(value).toLocaleString(locale)} VND`;
 }
 function formatList(value: string[] | string | undefined) {
-	return Array.isArray(value) ? value.filter(Boolean).join("; ") : value || "";
+  return Array.isArray(value) ? value.filter(Boolean).join("; ") : value || "";
 }
 function formatDownloadDate(date: Date) {
-	const day = String(date.getDate()).padStart(2, "0");
-	const month = String(date.getMonth() + 1).padStart(2, "0");
-	const year = date.getFullYear();
-	return `${day}-${month}-${year}`;
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
 }
 function filenameSlug(value: string) {
-	return (
-		normalize(value)
-			.replace(/[^a-z0-9]+/g, "-")
-			.replace(/^-+|-+$/g, "") || "ket-qua"
-	);
+  return normalize(value)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "ket-qua";
 }
 function safeExcelText(value: unknown) {
-	const text = String(value ?? "");
-	return /^[=+\-@]/.test(text) ? `'${text}` : text;
+  const text = String(value ?? "");
+  return /^[=+\-@]/.test(text) ? `'${text}` : text;
 }
 function formatLocation(locations: WinningBidRecord["diaDiem"]) {
-	if (!Array.isArray(locations)) return "";
-	return locations
-		.map((location) =>
-			[location.wardName, location.districtName, location.provName]
-				.filter(Boolean)
-				.join(", "),
-		)
-		.filter(Boolean)
-		.join("; ");
+  if (!Array.isArray(locations)) return "";
+  return locations
+    .map((location) => [location.wardName, location.districtName, location.provName].filter(Boolean).join(", "))
+    .filter(Boolean)
+    .join("; ");
 }
 const bidFormNames: Record<string, string> = {
-	DTRR: "Đấu thầu rộng rãi",
-	CGTTRG: "Chào giá trực tuyến theo quy trình rút gọn",
-	MSTT: "Mua sắm trực tiếp",
-	CDTRG: "Chỉ định thầu rút gọn",
+  DTRR: "Đấu thầu rộng rãi",
+  CGTTRG: "Chào giá trực tuyến theo quy trình rút gọn",
+  MSTT: "Mua sắm trực tiếp",
+  CDTRG: "Chỉ định thầu rút gọn",
 };
 const companyDisplayNames: Record<string, string> = {
-	medtronic: "Medtronic",
-	ethicon: "Johnson & Johnson",
-	applied: "Applied Medical",
-	bbraun: "B. Braun",
-	olympus: "Olympus",
-	miconvey: "Miconvey",
-	innolcon: "Innolcon",
+  medtronic: "Medtronic",
+  ethicon: "Johnson & Johnson",
+  applied: "Applied Medical",
+  bbraun: "B. Braun",
+  olympus: "Olympus",
+  miconvey: "Miconvey",
+  innolcon: "Innolcon",
 };
 type ExcelSheet = {
-	name: string;
-	rows: Record<string, unknown>[] | unknown[][];
-	columns: number[];
-	matrix?: boolean;
+  name: string;
+  rows: Record<string, unknown>[] | unknown[][];
+  columns: number[];
+  matrix?: boolean;
 };
 async function downloadWorkbook(sheets: ExcelSheet[], filename: string) {
-	const XLSX = await import("xlsx");
-	const workbook = XLSX.utils.book_new();
-	sheets.forEach((sheet) => {
-		const worksheet = sheet.matrix
-			? XLSX.utils.aoa_to_sheet(sheet.rows as unknown[][])
-			: XLSX.utils.json_to_sheet(sheet.rows as Record<string, unknown>[]);
-		worksheet["!cols"] = sheet.columns.map((wch) => ({ wch }));
-		if (!sheet.matrix && sheet.rows.length) {
-			const width = Object.keys(
-				sheet.rows[0] as Record<string, unknown>,
-			).length;
-			worksheet["!autofilter"] = {
-				ref: XLSX.utils.encode_range(
-					{ r: 0, c: 0 },
-					{ r: sheet.rows.length, c: Math.max(0, width - 1) },
-				),
-			};
-		}
-		XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name.slice(0, 31));
-	});
-	workbook.Workbook = {
-		...(workbook.Workbook || {}),
-		Views: [{ activeTab: 0 }],
-	};
-	const bytes = XLSX.write(workbook, {
-		type: "array",
-		bookType: "xlsx",
-		compression: true,
-	}) as ArrayBuffer;
-	const url = URL.createObjectURL(
-		new Blob([bytes], {
-			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-		}),
-	);
-	const link = document.createElement("a");
-	link.href = url;
-	link.download = filename;
-	document.body.appendChild(link);
-	link.click();
-	link.remove();
-	URL.revokeObjectURL(url);
+  const XLSX = await import("xlsx");
+  const workbook = XLSX.utils.book_new();
+  sheets.forEach((sheet) => {
+    const worksheet = sheet.matrix
+      ? XLSX.utils.aoa_to_sheet(sheet.rows as unknown[][])
+      : XLSX.utils.json_to_sheet(sheet.rows as Record<string, unknown>[]);
+    worksheet["!cols"] = sheet.columns.map((wch) => ({ wch }));
+    if (!sheet.matrix && sheet.rows.length) {
+      const width = Object.keys(sheet.rows[0] as Record<string, unknown>).length;
+      worksheet["!autofilter"] = { ref: XLSX.utils.encode_range({ r: 0, c: 0 }, { r: sheet.rows.length, c: Math.max(0, width - 1) }) };
+    }
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheet.name.slice(0, 31));
+  });
+  workbook.Workbook = { ...(workbook.Workbook || {}), Views: [{ activeTab: 0 }] };
+  const bytes = XLSX.write(workbook, { type: "array", bookType: "xlsx", compression: true }) as ArrayBuffer;
+  const url = URL.createObjectURL(new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 function dateInputValue(date: Date) {
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, "0");
-	const day = String(date.getDate()).padStart(2, "0");
-	return `${year}-${month}-${day}`;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 function defaultOverviewFilters(): OverviewFilterState {
-	const today = new Date();
-	return {
-		dateFrom: `${today.getFullYear()}-01-01`,
-		dateTo: dateInputValue(today),
-		hospital: "",
-		subOu: "all",
-		productGroup: "all",
-		company: "all",
-	};
+  const today = new Date();
+  return {
+    dateFrom: `${today.getFullYear()}-01-01`,
+    dateTo: dateInputValue(today),
+    hospital: "",
+    subOu: "all",
+    productGroup: "all",
+    company: "all",
+  };
 }
 function overviewCacheId(filters: OverviewFilterState) {
-	return JSON.stringify([
-		filters.dateFrom,
-		filters.dateTo,
-		filters.hospital,
-		filters.subOu,
-		filters.productGroup,
-		filters.company,
-	]);
+  return JSON.stringify([
+    filters.dateFrom,
+    filters.dateTo,
+    filters.hospital,
+    filters.subOu,
+    filters.productGroup,
+    filters.company,
+  ]);
 }
 function readOverviewCache(filters: OverviewFilterState) {
-	try {
-		const cache = JSON.parse(
-			window.sessionStorage.getItem(OVERVIEW_CACHE_KEY) || "{}",
-		) as Record<string, OverviewCacheEntry>;
-		const entry = cache[overviewCacheId(filters)];
-		return entry && Array.isArray(entry.slices) ? entry : undefined;
-	} catch {
-		return undefined;
-	}
+  try {
+    const cache = JSON.parse(window.sessionStorage.getItem(OVERVIEW_CACHE_KEY) || "{}") as Record<string, OverviewCacheEntry>;
+    const entry = cache[overviewCacheId(filters)];
+    return entry && Array.isArray(entry.slices) ? entry : undefined;
+  } catch {
+    return undefined;
+  }
 }
-function writeOverviewCache(
-	filters: OverviewFilterState,
-	entry: OverviewCacheEntry,
-) {
-	try {
-		const cache = JSON.parse(
-			window.sessionStorage.getItem(OVERVIEW_CACHE_KEY) || "{}",
-		) as Record<string, OverviewCacheEntry>;
-		cache[overviewCacheId(filters)] = entry;
-		window.sessionStorage.setItem(OVERVIEW_CACHE_KEY, JSON.stringify(cache));
-	} catch {
-		// The dashboard still works when browser storage is unavailable.
-	}
+function writeOverviewCache(filters: OverviewFilterState, entry: OverviewCacheEntry) {
+  try {
+    const cache = JSON.parse(window.sessionStorage.getItem(OVERVIEW_CACHE_KEY) || "{}") as Record<string, OverviewCacheEntry>;
+    cache[overviewCacheId(filters)] = entry;
+    window.sessionStorage.setItem(OVERVIEW_CACHE_KEY, JSON.stringify(cache));
+  } catch {
+    // The dashboard still works when browser storage is unavailable.
+  }
 }
 function parseDate(value: string | undefined) {
-	if (!value) return null;
-	const iso = new Date(value);
-	if (!Number.isNaN(iso.getTime())) return iso;
-	const [day, month, year] = value.slice(0, 10).split("/").map(Number);
-	return day && month && year ? new Date(year, month - 1, day) : null;
+  if (!value) return null;
+  const iso = new Date(value);
+  if (!Number.isNaN(iso.getTime())) return iso;
+  const [day, month, year] = value.slice(0, 10).split("/").map(Number);
+  return day && month && year ? new Date(year, month - 1, day) : null;
 }
 function valueOf(record: WinningBidRecord) {
-	return (
-		toNumber(record.khoiLuongDouble ?? record.khoiLuong) *
-		toNumber(record.donGia ?? record.donGiaDuThau)
-	);
+  return toNumber(record.khoiLuongDouble ?? record.khoiLuong) * toNumber(record.donGia ?? record.donGiaDuThau);
 }
 function companyOf(record: WinningBidRecord, language: Language = "en") {
-	const searchable = [
-		record.tenThietBi,
-		record.nhanHieu,
-		record.hangSanXuat,
-		record.chungLoai,
-		record.kyMaHieu,
-		record.cauHinh,
-		formatList(record.winningName),
-	]
-		.filter(Boolean)
-		.join(" | ");
-	return (
-		mappedCompanyName(searchable, record.hangSanXuat || "") ||
-		copy(language, "Unknown / review needed", "Chưa xác định / cần kiểm tra")
-	);
+  const searchable = [
+    record.tenThietBi,
+    record.nhanHieu,
+    record.hangSanXuat,
+    record.chungLoai,
+    record.kyMaHieu,
+    record.cauHinh,
+    formatList(record.winningName),
+  ].filter(Boolean).join(" | ");
+  return mappedCompanyName(searchable, record.hangSanXuat || "") || copy(language, "Unknown / review needed", "Chưa xác định / cần kiểm tra");
 }
 function overviewSearchFilters(filters: OverviewFilterState): SearchFilters {
-	return {
-		dateFrom: filters.dateFrom,
-		dateTo: filters.dateTo,
-		hospital: filters.hospital,
-		brand: "",
-		supplier: "",
-		company: filters.company,
-	};
+  return {
+    dateFrom: filters.dateFrom,
+    dateTo: filters.dateTo,
+    hospital: filters.hospital,
+    brand: "",
+    supplier: "",
+    company: filters.company,
+  };
 }
 function recordKey(record: WinningBidRecord) {
-	return (
-		record.id ||
-		[
-			record.maTbmt,
-			record.tenThietBi,
-			record.kyMaHieu,
-			record.chungLoai,
-			record.donGia ?? record.donGiaDuThau,
-			formatList(record.winningName),
-			record.tenCdtBmt,
-		]
-			.map((value) => normalize(String(value ?? "")))
-			.join("::")
-	);
+  return record.id || [
+    record.maTbmt,
+    record.tenThietBi,
+    record.kyMaHieu,
+    record.chungLoai,
+    record.donGia ?? record.donGiaDuThau,
+    formatList(record.winningName),
+    record.tenCdtBmt,
+  ].map((value) => normalize(String(value ?? ""))).join("::");
 }
 function productKey(record: WinningBidRecord) {
-	return normalize(
-		record.kyMaHieu ||
-			record.chungLoai ||
-			record.nhanHieu ||
-			record.tenThietBi ||
-			recordKey(record),
-	);
+  return normalize(record.kyMaHieu || record.chungLoai || record.nhanHieu || record.tenThietBi || recordKey(record));
 }
 function tenderResultKey(record: WinningBidRecord) {
-	const explicitResultId =
-		record.maKqlcnt || record.kqlcntId || record.idKqlcnt || record.resultId;
-	if (explicitResultId?.trim()) return explicitResultId.trim();
-	const fallback = [
-		record.maTbmt,
-		record.soQuyetDinh,
-		record.ngayBanHanhQuyetDinh,
-	]
-		.map((value) => String(value || "").trim())
-		.filter(Boolean)
-		.join("::");
-	return fallback || record.maTbmt?.trim() || "Không có mã KQLCNT";
+  const explicitResultId = record.maKqlcnt || record.kqlcntId || record.idKqlcnt || record.resultId;
+  if (explicitResultId?.trim()) return explicitResultId.trim();
+  const fallback = [record.maTbmt, record.soQuyetDinh, record.ngayBanHanhQuyetDinh]
+    .map((value) => String(value || "").trim())
+    .filter(Boolean)
+    .join("::");
+  return fallback || record.maTbmt?.trim() || "Không có mã KQLCNT";
 }
-function overviewFactFor(
-	record: WinningBidRecord,
-	rules: KeywordMasterRule[],
-): OverviewFact | undefined {
-	const classification = classifyProductRecord(classificationRecord(record));
-	if (
-		!classification ||
-		!rules.some((rule) => rule.id === classification.rule.id)
-	)
-		return undefined;
-	const { rule, evaluation } = classification;
-	const sourceHospital = record.tenCdtBmt?.trim() || "Chưa xác định";
-	const hospital = hospitalName(record.maCdt || "", sourceHospital);
-	return {
-		key: recordKey(record),
-		subOu: rule.subOu,
-		productGroup: rule.productGroup,
-		classificationKeyword: evaluation.matchedKeyword || "",
-		company: companyOf(record),
-		supplier: formatList(record.winningName),
-		supplierCode: formatList(record.winningCode),
-		hospital,
-		sourceHospital,
-		buyerId: record.maCdt?.trim() || "",
-		tender: tenderResultKey(record),
-		tenderNotice: record.maTbmt?.trim() || "",
-		product: productKey(record),
-		productName: record.tenThietBi?.trim() || "",
-		productCode: record.kyMaHieu?.trim() || "",
-		model: record.chungLoai?.trim() || "",
-		brand: record.nhanHieu?.trim() || "",
-		manufacturer: record.hangSanXuat?.trim() || "",
-		origin: record.xuatXu?.trim() || "",
-		hsCode: record.maHs?.trim() || "",
-		circulationNumber: record.soLuuHanh?.trim() || "",
-		productionYear: String(record.namSanXuat || "").trim(),
-		configuration: record.cauHinh?.trim() || "",
-		unitOfMeasure: record.donViTinh?.trim() || "",
-		unitPrice: toNumber(record.donGia ?? record.donGiaDuThau),
-		bidForm: record.bidForm?.trim() || "",
-		publishedAt: record.ngayDangTaiKqlcnt || "",
-		decisionNumber: record.soQuyetDinh?.trim() || "",
-		decisionDate: record.ngayBanHanhQuyetDinh || "",
-		participantCount: toNumber(record.soNhaThauThamDu),
-		location: formatLocation(record.diaDiem),
-		value: valueOf(record),
-		units: toNumber(record.khoiLuongDouble ?? record.khoiLuong),
-	};
+function overviewFactFor(record: WinningBidRecord, rules: KeywordMasterRule[]): OverviewFact | undefined {
+  const classification = classifyProductRecord(classificationRecord(record));
+  if (!classification || !rules.some((rule) => rule.id === classification.rule.id)) return undefined;
+  const { rule, evaluation } = classification;
+  const sourceHospital = record.tenCdtBmt?.trim() || "Chưa xác định";
+  const hospital = hospitalName(record.maCdt || "", sourceHospital);
+  return {
+    key: recordKey(record),
+    subOu: rule.subOu,
+    productGroup: rule.productGroup,
+    classificationKeyword: evaluation.matchedKeyword || "",
+    company: companyOf(record),
+    supplier: formatList(record.winningName),
+    supplierCode: formatList(record.winningCode),
+    hospital,
+    sourceHospital,
+    buyerId: record.maCdt?.trim() || "",
+    tender: tenderResultKey(record),
+    tenderNotice: record.maTbmt?.trim() || "",
+    product: productKey(record),
+    productName: record.tenThietBi?.trim() || "",
+    productCode: record.kyMaHieu?.trim() || "",
+    model: record.chungLoai?.trim() || "",
+    brand: record.nhanHieu?.trim() || "",
+    manufacturer: record.hangSanXuat?.trim() || "",
+    origin: record.xuatXu?.trim() || "",
+    hsCode: record.maHs?.trim() || "",
+    circulationNumber: record.soLuuHanh?.trim() || "",
+    productionYear: String(record.namSanXuat || "").trim(),
+    configuration: record.cauHinh?.trim() || "",
+    unitOfMeasure: record.donViTinh?.trim() || "",
+    unitPrice: toNumber(record.donGia ?? record.donGiaDuThau),
+    bidForm: record.bidForm?.trim() || "",
+    publishedAt: record.ngayDangTaiKqlcnt || "",
+    decisionNumber: record.soQuyetDinh?.trim() || "",
+    decisionDate: record.ngayBanHanhQuyetDinh || "",
+    participantCount: toNumber(record.soNhaThauThamDu),
+    location: formatLocation(record.diaDiem),
+    value: valueOf(record),
+    units: toNumber(record.khoiLuongDouble ?? record.khoiLuong),
+  };
 }
 
 function overviewDetailExcelRow(row: OverviewFact) {
-	return {
-		"Sub-OU": safeExcelText(row.subOu),
-		"Nhóm sản phẩm": safeExcelText(row.productGroup),
-		"Mã TBMT": safeExcelText(row.tenderNotice),
-		"Mã định danh CĐT": safeExcelText(row.buyerId),
-		"Tên CĐT": safeExcelText(row.hospital),
-		"Từ khóa phân loại": safeExcelText(row.classificationKeyword),
-		"Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
-		"Đơn vị tính": safeExcelText(row.unitOfMeasure),
-		"Khối lượng": row.units,
-		"Xuất xứ": safeExcelText(row.origin),
-		"Mã HS": safeExcelText(row.hsCode),
-		"Ký mã hiệu": safeExcelText(row.productCode),
-		"Nhãn hiệu": safeExcelText(row.brand),
-		"Hãng sản xuất": safeExcelText(row.manufacturer),
-		"Chủng loại (model)": safeExcelText(row.model),
-		"Số lưu hành / giấy phép nhập khẩu": safeExcelText(row.circulationNumber),
-		"Năm sản xuất": safeExcelText(row.productionYear),
-		"Cấu hình, tính năng kỹ thuật": safeExcelText(row.configuration),
-		"Đơn giá trúng thầu": row.unitPrice,
-		"Thành tiền ước tính": row.value,
-		"Công ty quy đổi": safeExcelText(row.company),
-		"Mã định danh NT trúng thầu": safeExcelText(row.supplierCode),
-		"Tên NT trúng thầu": safeExcelText(row.supplier),
-		"Hình thức LCNT": safeExcelText(bidFormNames[row.bidForm] || row.bidForm),
-		"Ngày đăng tải KQLCNT": safeExcelText(row.publishedAt),
-		"Số quyết định": safeExcelText(row.decisionNumber),
-		"Ngày ban hành quyết định": safeExcelText(row.decisionDate),
-		"Số nhà thầu tham dự": row.participantCount || "",
-		"Địa điểm": safeExcelText(row.location),
-	};
+  return {
+    "Sub-OU": safeExcelText(row.subOu),
+    "Nhóm sản phẩm": safeExcelText(row.productGroup),
+    "Mã TBMT": safeExcelText(row.tenderNotice),
+    "Mã định danh CĐT": safeExcelText(row.buyerId),
+    "Tên CĐT": safeExcelText(row.hospital),
+    "Từ khóa phân loại": safeExcelText(row.classificationKeyword),
+    "Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
+    "Đơn vị tính": safeExcelText(row.unitOfMeasure),
+    "Khối lượng": row.units,
+    "Xuất xứ": safeExcelText(row.origin),
+    "Mã HS": safeExcelText(row.hsCode),
+    "Ký mã hiệu": safeExcelText(row.productCode),
+    "Nhãn hiệu": safeExcelText(row.brand),
+    "Hãng sản xuất": safeExcelText(row.manufacturer),
+    "Chủng loại (model)": safeExcelText(row.model),
+    "Số lưu hành / giấy phép nhập khẩu": safeExcelText(row.circulationNumber),
+    "Năm sản xuất": safeExcelText(row.productionYear),
+    "Cấu hình, tính năng kỹ thuật": safeExcelText(row.configuration),
+    "Đơn giá trúng thầu": row.unitPrice,
+    "Thành tiền ước tính": row.value,
+    "Công ty quy đổi": safeExcelText(row.company),
+    "Mã định danh NT trúng thầu": safeExcelText(row.supplierCode),
+    "Tên NT trúng thầu": safeExcelText(row.supplier),
+    "Hình thức LCNT": safeExcelText(bidFormNames[row.bidForm] || row.bidForm),
+    "Ngày đăng tải KQLCNT": safeExcelText(row.publishedAt),
+    "Số quyết định": safeExcelText(row.decisionNumber),
+    "Ngày ban hành quyết định": safeExcelText(row.decisionDate),
+    "Số nhà thầu tham dự": row.participantCount || "",
+    "Địa điểm": safeExcelText(row.location),
+  };
 }
 
 const overviewDetailColumnWidths = [
-	18, 28, 20, 22, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60, 20,
-	22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
+  18, 28, 20, 22, 42, 28, 54, 14, 14, 24, 13, 24, 22, 34, 24,
+  30, 16, 60, 20, 22, 28, 26, 42, 34, 20, 22, 22, 18, 42,
 ];
 
 function hospitalAllSubOuExcelRow(row: OverviewFact, index: number) {
-	return {
-		STT: index + 1,
-		"Sub-OU": safeExcelText(row.subOu),
-		"Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
-		"Đơn vị tính": safeExcelText(row.unitOfMeasure),
-		"Khối lượng": row.units,
-		"Xuất xứ": safeExcelText(row.origin),
-		"Mã HS": safeExcelText(row.hsCode),
-		"Ký mã hiệu": safeExcelText(row.productCode),
-		"Nhãn hiệu": safeExcelText(row.brand),
-		"Hãng sản xuất": safeExcelText(row.manufacturer),
-		"Chủng loại (model)": safeExcelText(row.model),
-		"Số lưu hành / giấy phép nhập khẩu": safeExcelText(row.circulationNumber),
-		"Năm sản xuất": safeExcelText(row.productionYear),
-		"Cấu hình, tính năng kỹ thuật": safeExcelText(row.configuration),
-		"Đơn giá trúng thầu": row.unitPrice,
-		"Thành tiền ước tính": row.value,
-		"Mã định danh NT trúng thầu": safeExcelText(row.supplierCode),
-		"Tên NT trúng thầu": safeExcelText(row.supplier),
-		"Mã TBMT": safeExcelText(row.tenderNotice),
-		"Mã định danh CĐT": safeExcelText(row.buyerId),
-		"Tên CĐT": safeExcelText(row.hospital),
-		"Hình thức LCNT": safeExcelText(bidFormNames[row.bidForm] || row.bidForm),
-		"Ngày đăng tải KQLCNT": safeExcelText(row.publishedAt),
-		"Số quyết định": safeExcelText(row.decisionNumber),
-		"Ngày ban hành quyết định": safeExcelText(row.decisionDate),
-		"Số nhà thầu tham dự": row.participantCount || "",
-		"Địa điểm": safeExcelText(row.location),
-	};
+  return {
+    "STT": index + 1,
+    "Sub-OU": safeExcelText(row.subOu),
+    "Tên thiết bị, vật tư y tế": safeExcelText(row.productName),
+    "Đơn vị tính": safeExcelText(row.unitOfMeasure),
+    "Khối lượng": row.units,
+    "Xuất xứ": safeExcelText(row.origin),
+    "Mã HS": safeExcelText(row.hsCode),
+    "Ký mã hiệu": safeExcelText(row.productCode),
+    "Nhãn hiệu": safeExcelText(row.brand),
+    "Hãng sản xuất": safeExcelText(row.manufacturer),
+    "Chủng loại (model)": safeExcelText(row.model),
+    "Số lưu hành / giấy phép nhập khẩu": safeExcelText(row.circulationNumber),
+    "Năm sản xuất": safeExcelText(row.productionYear),
+    "Cấu hình, tính năng kỹ thuật": safeExcelText(row.configuration),
+    "Đơn giá trúng thầu": row.unitPrice,
+    "Thành tiền ước tính": row.value,
+    "Mã định danh NT trúng thầu": safeExcelText(row.supplierCode),
+    "Tên NT trúng thầu": safeExcelText(row.supplier),
+    "Mã TBMT": safeExcelText(row.tenderNotice),
+    "Mã định danh CĐT": safeExcelText(row.buyerId),
+    "Tên CĐT": safeExcelText(row.hospital),
+    "Hình thức LCNT": safeExcelText(bidFormNames[row.bidForm] || row.bidForm),
+    "Ngày đăng tải KQLCNT": safeExcelText(row.publishedAt),
+    "Số quyết định": safeExcelText(row.decisionNumber),
+    "Ngày ban hành quyết định": safeExcelText(row.decisionDate),
+    "Số nhà thầu tham dự": row.participantCount || "",
+    "Địa điểm": safeExcelText(row.location),
+  };
 }
 
 const hospitalAllSubOuColumnWidths = [
-	8, 18, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60, 20, 22, 26, 42, 20, 22,
-	42, 34, 20, 22, 22, 18, 42,
+  8, 18, 54, 14, 14, 24, 13, 24, 22, 34, 24, 30, 16, 60,
+  20, 22, 26, 42, 20, 22, 42, 34, 20, 22, 22, 18, 42,
 ];
 function groupFor(keyword: string, language: Language = "en") {
-	const value = normalize(keyword);
-	if (/luoi|hernia/.test(value)) return "Thoát vị";
-	if (/dao|ligasure|han mach|sieu am|vessel/.test(value))
-		return "VS&D · Vessel Sealing & Dissector";
-	return copy(language, "Custom search", "Nhóm tìm kiếm tùy chỉnh");
+  const value = normalize(keyword);
+  if (/luoi|hernia/.test(value)) return "Thoát vị";
+  if (/dao|ligasure|han mach|sieu am|vessel/.test(value)) return "VS&D · Vessel Sealing & Dissector";
+  return copy(language, "Custom search", "Nhóm tìm kiếm tùy chỉnh");
 }
 function topBy(
-	records: WinningBidRecord[],
-	key: (record: WinningBidRecord) => string,
-	metric: (record: WinningBidRecord) => number,
-	language: Language = "en",
-	groupSimilarCompanies = false,
+  records: WinningBidRecord[],
+  key: (record: WinningBidRecord) => string,
+  metric: (record: WinningBidRecord) => number,
+  language: Language = "en",
+  groupSimilarCompanies = false,
 ) {
-	const totals = new Map<string, NamedValue>();
-	for (const record of records) {
-		const name =
-			key(record).trim() ||
-			copy(language, "Unknown / review needed", "Chưa xác định / cần kiểm tra");
-		const groupingKey = groupSimilarCompanies ? companyGroupingKey(name) : name;
-		const current = totals.get(groupingKey) || { name, value: 0 };
-		current.value += metric(record);
-		totals.set(groupingKey, current);
-	}
-	return [...totals.values()].sort((a, b) => b.value - a.value).slice(0, 5);
+  const totals = new Map<string, NamedValue>();
+  for (const record of records) {
+    const name = key(record).trim() || copy(language, "Unknown / review needed", "Chưa xác định / cần kiểm tra");
+    const groupingKey = groupSimilarCompanies ? companyGroupingKey(name) : name;
+    const current = totals.get(groupingKey) || { name, value: 0 };
+    current.value += metric(record);
+    totals.set(groupingKey, current);
+  }
+  return [...totals.values()].sort((a, b) => b.value - a.value).slice(0, 5);
 }
 
 function summarize(
-	keyword: string,
-	fetchedAt: string,
-	records: WinningBidRecord[],
-	totalElements: number,
-	truncated: boolean,
-	filters: SearchFilters,
-	source: {
-		keywordRule?: KeywordMasterRule;
-		excludedRecords?: number;
-		portalTotalElements?: number;
-		classificationAudit?: ClassificationAudit;
-	} = {},
-	language: Language = "en",
+  keyword: string,
+  fetchedAt: string,
+  records: WinningBidRecord[],
+  totalElements: number,
+  truncated: boolean,
+  filters: SearchFilters,
+  source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number; classificationAudit?: ClassificationAudit } = {},
+  language: Language = "en",
 ): ProductData {
-	const totalValue = records.reduce((sum, record) => sum + valueOf(record), 0);
-	const totalQuantity = records.reduce(
-		(sum, record) => sum + toNumber(record.khoiLuongDouble ?? record.khoiLuong),
-		0,
-	);
-	const medtronicRecords = records.filter(
-		(record) => companyOf(record) === "Medtronic",
-	);
-	const medtronicValue = medtronicRecords.reduce(
-		(sum, record) => sum + valueOf(record),
-		0,
-	);
-	const medtronicQuantity = medtronicRecords.reduce(
-		(sum, record) => sum + toNumber(record.khoiLuongDouble ?? record.khoiLuong),
-		0,
-	);
-	const dated = records
-		.map((record) => ({
-			record,
-			date: parseDate(record.ngayBanHanhQuyetDinh || record.ngayDangTaiKqlcnt),
-		}))
-		.filter(
-			(item): item is { record: WinningBidRecord; date: Date } =>
-				item.date !== null,
-		)
-		.sort((a, b) => a.date.getTime() - b.date.getTime());
-	const months = new Map<string, { month: string; value: number }>();
-	for (const item of dated) {
-		const key = `${item.date.getFullYear()}-${String(item.date.getMonth() + 1).padStart(2, "0")}`;
-		const current = months.get(key) || {
-			month: `T${item.date.getMonth() + 1}/${String(item.date.getFullYear()).slice(-2)}`,
-			value: 0,
-		};
-		current.value += valueOf(item.record);
-		months.set(key, current);
-	}
-	const trend = [...months.entries()]
-		.sort(([a], [b]) => a.localeCompare(b))
-		.slice(-12)
-		.map(([, value]) => value);
-	const units = new Set(
-		records.map((record) => normalize(record.donViTinh || "")).filter(Boolean),
-	);
-	const missingManufacturerValue = records
-		.filter((record) => !record.hangSanXuat?.trim())
-		.reduce((sum, record) => sum + valueOf(record), 0);
-	const missingShare = totalValue
-		? (missingManufacturerValue / totalValue) * 100
-		: 0;
-	const firstDate = dated.at(0)?.date;
-	const lastDate = dated.at(-1)?.date;
-	const locale = localeFor(language);
-	const dateRange =
-		firstDate && lastDate
-			? `${firstDate.toLocaleDateString(locale)}–${lastDate.toLocaleDateString(locale)}`
-			: copy(language, "All available dates", "Tất cả thời gian có dữ liệu");
-	const medtronicShare = totalValue ? (medtronicValue / totalValue) * 100 : 0;
-	const medtronicQuantityShare = totalQuantity
-		? (medtronicQuantity / totalQuantity) * 100
-		: 0;
-	const audit = source.classificationAudit;
-	const exclusionNote =
-		source.keywordRule && source.excludedRecords
-			? copy(
-					language,
-					` The approved classification rule removed ${source.excludedRecords.toLocaleString(locale)} portal rows (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} without a product-name keyword, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} without confirmation, ${(audit?.matchedExclusion || 0).toLocaleString(locale)} matching an exclusion, ${(audit?.staffExcluded || 0).toLocaleString(locale)} excluded by staff, ${(audit?.staffReclassified || 0).toLocaleString(locale)} assigned by staff to another group, and ${(audit?.unresolvedAmbiguity || 0).toLocaleString(locale)} unresolved multi-rule matches).`,
-					` Rule phân loại đã duyệt loại ${source.excludedRecords.toLocaleString(locale)} dòng trên cổng (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} dòng không có keyword trong Tên thiết bị, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} dòng thiếu Confirmation, ${(audit?.matchedExclusion || 0).toLocaleString(locale)} dòng trúng điều kiện exclude, ${(audit?.staffExcluded || 0).toLocaleString(locale)} dòng được staff xác nhận loại, ${(audit?.staffReclassified || 0).toLocaleString(locale)} dòng được staff chuyển sang nhóm khác và ${(audit?.unresolvedAmbiguity || 0).toLocaleString(locale)} dòng còn trùng nhiều rule).`,
-				)
-			: "";
-	return {
-		keyword,
-		records,
-		group: source.keywordRule
-			? `${source.keywordRule.subOu} · ${source.keywordRule.productGroup}`
-			: groupFor(keyword, language),
-		fetchedAt,
-		truncated,
-		filters,
-		keywordRule: source.keywordRule,
-		excludedRecords: source.excludedRecords || 0,
-		classificationAudit: source.classificationAudit,
-		portalTotalElements: source.portalTotalElements || totalElements,
-		lineItems: records.length,
-		totalElements,
-		totalValue,
-		totalQuantity,
-		tenders: new Set(records.map(tenderResultKey).filter(Boolean)).size,
-		hospitals: new Set(
-			records
-				.filter((record) => record.maCdt || record.tenCdtBmt)
-				.map((record) =>
-					hospitalKey(record.maCdt || "", record.tenCdtBmt || ""),
-				),
-		).size,
-		medtronicValue,
-		medtronicShare,
-		medtronicQuantity,
-		medtronicQuantityShare,
-		dateRange,
-		trend: trend.length
-			? trend
-			: [
-					{
-						month: copy(
-							language,
-							"No decision date",
-							"Chưa có ngày ban hành quyết định",
-						),
-						value: 0,
-					},
-				],
-		manufacturers: topBy(
-			records,
-			(record) => companyOf(record, language),
-			valueOf,
-			language,
-			true,
-		),
-		topHospitals: (() => {
-			const totals = new Map<string, NamedValue>();
-			records.forEach((record) => {
-				const id = record.maCdt || "";
-				const name = hospitalName(id, record.tenCdtBmt || "");
-				const key = hospitalKey(id, name);
-				const current = totals.get(key) || { name, value: 0 };
-				current.value += valueOf(record);
-				totals.set(key, current);
-			});
-			return [...totals.values()].sort((a, b) => b.value - a.value).slice(0, 5);
-		})(),
-		topProducts: topBy(
-			records,
-			(record) =>
-				record.kyMaHieu ||
-				record.chungLoai ||
-				record.nhanHieu ||
-				record.tenThietBi ||
-				"",
-			(record) => toNumber(record.khoiLuongDouble ?? record.khoiLuong),
-			language,
-		),
-		topSuppliers: topBy(
-			records,
-			(record) => formatList(record.winningName),
-			valueOf,
-			language,
-		),
-		insight: medtronicValue
-			? copy(
-					language,
-					`Medtronic-related product labels represent approximately ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of the recorded awarded value in this live search.`,
-					`Các nhãn sản phẩm liên quan đến Medtronic chiếm khoảng ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu ghi nhận trong kết quả tìm kiếm trực tiếp này.`,
-				)
-			: copy(
-					language,
-					"No current records were classified as Medtronic from the available product fields.",
-					"Chưa có bản ghi nào được phân loại là Medtronic từ các trường sản phẩm hiện có.",
-				),
-		qualityNote: copy(
-			language,
-			`The data contains ${units.size} units of measure; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of awarded value has no manufacturer information.${exclusionNote} Manufacturer names are normalized with ${manufacturerMappedRows.toLocaleString(locale)} populated mapping rows before company shares are calculated; ${manufacturerUnmappedRows.toLocaleString(locale)} workbook rows without a target remain unchanged.`,
-			`Dữ liệu có ${units.size} loại đơn vị tính; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu không có thông tin hãng sản xuất.${exclusionNote} Tên hãng được chuẩn hóa bằng ${manufacturerMappedRows.toLocaleString(locale)} dòng quy đổi có kết quả trước khi tính thị phần công ty; ${manufacturerUnmappedRows.toLocaleString(locale)} dòng chưa có hãng đích trong file được giữ nguyên.`,
-		),
-	};
+  const totalValue = records.reduce((sum, record) => sum + valueOf(record), 0);
+  const totalQuantity = records.reduce((sum, record) => sum + toNumber(record.khoiLuongDouble ?? record.khoiLuong), 0);
+  const medtronicRecords = records.filter((record) => companyOf(record) === "Medtronic");
+  const medtronicValue = medtronicRecords.reduce((sum, record) => sum + valueOf(record), 0);
+  const medtronicQuantity = medtronicRecords.reduce((sum, record) => sum + toNumber(record.khoiLuongDouble ?? record.khoiLuong), 0);
+  const dated = records.map((record) => ({ record, date: parseDate(record.ngayBanHanhQuyetDinh || record.ngayDangTaiKqlcnt) }))
+    .filter((item): item is { record: WinningBidRecord; date: Date } => item.date !== null)
+    .sort((a, b) => a.date.getTime() - b.date.getTime());
+  const months = new Map<string, { month: string; value: number }>();
+  for (const item of dated) {
+    const key = `${item.date.getFullYear()}-${String(item.date.getMonth() + 1).padStart(2, "0")}`;
+    const current = months.get(key) || { month: `T${item.date.getMonth() + 1}/${String(item.date.getFullYear()).slice(-2)}`, value: 0 };
+    current.value += valueOf(item.record);
+    months.set(key, current);
+  }
+  const trend = [...months.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(-12).map(([, value]) => value);
+  const units = new Set(records.map((record) => normalize(record.donViTinh || "")).filter(Boolean));
+  const missingManufacturerValue = records.filter((record) => !record.hangSanXuat?.trim()).reduce((sum, record) => sum + valueOf(record), 0);
+  const missingShare = totalValue ? (missingManufacturerValue / totalValue) * 100 : 0;
+  const firstDate = dated.at(0)?.date;
+  const lastDate = dated.at(-1)?.date;
+  const locale = localeFor(language);
+  const dateRange = firstDate && lastDate ? `${firstDate.toLocaleDateString(locale)}–${lastDate.toLocaleDateString(locale)}` : copy(language, "All available dates", "Tất cả thời gian có dữ liệu");
+  const medtronicShare = totalValue ? (medtronicValue / totalValue) * 100 : 0;
+  const medtronicQuantityShare = totalQuantity ? (medtronicQuantity / totalQuantity) * 100 : 0;
+  const audit = source.classificationAudit;
+  const exclusionNote = source.keywordRule && source.excludedRecords
+    ? copy(
+      language,
+      ` The approved classification rule removed ${source.excludedRecords.toLocaleString(locale)} portal rows (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} without a product-name keyword, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} without confirmation, ${(audit?.matchedExclusion || 0).toLocaleString(locale)} matching an exclusion, ${(audit?.staffExcluded || 0).toLocaleString(locale)} excluded by staff, ${(audit?.staffReclassified || 0).toLocaleString(locale)} assigned by staff to another group, and ${(audit?.unresolvedAmbiguity || 0).toLocaleString(locale)} unresolved multi-rule matches).`,
+      ` Rule phân loại đã duyệt loại ${source.excludedRecords.toLocaleString(locale)} dòng trên cổng (${(audit?.missingProductKeyword || 0).toLocaleString(locale)} dòng không có keyword trong Tên thiết bị, ${(audit?.missingConfirmation || 0).toLocaleString(locale)} dòng thiếu Confirmation, ${(audit?.matchedExclusion || 0).toLocaleString(locale)} dòng trúng điều kiện exclude, ${(audit?.staffExcluded || 0).toLocaleString(locale)} dòng được staff xác nhận loại, ${(audit?.staffReclassified || 0).toLocaleString(locale)} dòng được staff chuyển sang nhóm khác và ${(audit?.unresolvedAmbiguity || 0).toLocaleString(locale)} dòng còn trùng nhiều rule).`,
+    )
+    : "";
+  return {
+    keyword,
+    records,
+    group: source.keywordRule ? `${source.keywordRule.subOu} · ${source.keywordRule.productGroup}` : groupFor(keyword, language),
+    fetchedAt,
+    truncated,
+    filters,
+    keywordRule: source.keywordRule,
+    excludedRecords: source.excludedRecords || 0,
+    classificationAudit: source.classificationAudit,
+    portalTotalElements: source.portalTotalElements || totalElements,
+    lineItems: records.length,
+    totalElements,
+    totalValue, totalQuantity,
+    tenders: new Set(records.map(tenderResultKey).filter(Boolean)).size,
+    hospitals: new Set(records.filter((record) => record.maCdt || record.tenCdtBmt).map((record) => hospitalKey(record.maCdt || "", record.tenCdtBmt || ""))).size,
+    medtronicValue, medtronicShare, medtronicQuantity, medtronicQuantityShare, dateRange,
+    trend: trend.length ? trend : [{ month: copy(language, "No decision date", "Chưa có ngày ban hành quyết định"), value: 0 }],
+    manufacturers: topBy(records, (record) => companyOf(record, language), valueOf, language, true),
+    topHospitals: (() => {
+      const totals = new Map<string, NamedValue>();
+      records.forEach((record) => {
+        const id = record.maCdt || "";
+        const name = hospitalName(id, record.tenCdtBmt || "");
+        const key = hospitalKey(id, name);
+        const current = totals.get(key) || { name, value: 0 };
+        current.value += valueOf(record);
+        totals.set(key, current);
+      });
+      return [...totals.values()].sort((a, b) => b.value - a.value).slice(0, 5);
+    })(),
+    topProducts: topBy(records, (record) => record.kyMaHieu || record.chungLoai || record.nhanHieu || record.tenThietBi || "", (record) => toNumber(record.khoiLuongDouble ?? record.khoiLuong), language),
+    topSuppliers: topBy(records, (record) => formatList(record.winningName), valueOf, language),
+    insight: medtronicValue
+      ? copy(language, `Medtronic-related product labels represent approximately ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of the recorded awarded value in this live search.`, `Các nhãn sản phẩm liên quan đến Medtronic chiếm khoảng ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu ghi nhận trong kết quả tìm kiếm trực tiếp này.`)
+      : copy(language, "No current records were classified as Medtronic from the available product fields.", "Chưa có bản ghi nào được phân loại là Medtronic từ các trường sản phẩm hiện có."),
+    qualityNote: copy(language, `The data contains ${units.size} units of measure; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of awarded value has no manufacturer information.${exclusionNote} Manufacturer names are normalized with ${manufacturerMappedRows.toLocaleString(locale)} populated mapping rows before company shares are calculated; ${manufacturerUnmappedRows.toLocaleString(locale)} workbook rows without a target remain unchanged.`, `Dữ liệu có ${units.size} loại đơn vị tính; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu không có thông tin hãng sản xuất.${exclusionNote} Tên hãng được chuẩn hóa bằng ${manufacturerMappedRows.toLocaleString(locale)} dòng quy đổi có kết quả trước khi tính thị phần công ty; ${manufacturerUnmappedRows.toLocaleString(locale)} dòng chưa có hãng đích trong file được giữ nguyên.`),
+  };
 }
 
 function TrendChart({ data }: { data: ProductData["trend"] }) {
-	const language = useLanguage();
-	const width = 720,
-		height = 220;
-	const padding = { top: 18, right: 16, bottom: 34, left: 42 };
-	const max = Math.max(...data.map((point) => point.value), 1);
-	const x = (index: number) =>
-		data.length === 1
-			? width / 2
-			: padding.left +
-				(index * (width - padding.left - padding.right)) / (data.length - 1);
-	const y = (value: number) =>
-		padding.top + (1 - value / max) * (height - padding.top - padding.bottom);
-	const points = data.map((point, index) => `${x(index)},${y(point.value)}`);
-	const area = `${points.join(" ")} ${x(data.length - 1)},${height - padding.bottom} ${x(0)},${height - padding.bottom}`;
-	return (
-		<svg
-			className="trend-chart"
-			viewBox={`0 0 ${width} ${height}`}
-			role="img"
-			aria-label={copy(
-				language,
-				"Awarded value over time",
-				"Diễn biến giá trị trúng thầu",
-			)}
-		>
-			{[0, 0.5, 1].map((ratio) => {
-				const lineY =
-					padding.top + ratio * (height - padding.top - padding.bottom);
-				return (
-					<g key={ratio}>
-						<line
-							className="chart-gridline"
-							x1={padding.left}
-							x2={width - padding.right}
-							y1={lineY}
-							y2={lineY}
-						/>
-						<text className="chart-axis" x="0" y={lineY + 4}>
-							{((max * (1 - ratio)) / 1_000_000_000).toLocaleString(
-								localeFor(language),
-								{ maximumFractionDigits: 0 },
-							)}{" "}
-							{copy(language, "bn", "tỷ")}
-						</text>
-					</g>
-				);
-			})}
-			<polygon className="chart-area" points={area} />
-			<polyline className="chart-line" points={points.join(" ")} />
-			{data.map((point, index) => (
-				<g key={`${point.month}-${index}`}>
-					<circle
-						className="chart-dot"
-						cx={x(index)}
-						cy={y(point.value)}
-						r="3"
-					/>
-					{(index === 0 ||
-						index === data.length - 1 ||
-						index === Math.floor(data.length / 2)) && (
-						<text
-							className="chart-axis chart-month"
-							x={x(index)}
-							y={height - 10}
-							textAnchor={
-								index === 0
-									? "start"
-									: index === data.length - 1
-										? "end"
-										: "middle"
-							}
-						>
-							{point.month}
-						</text>
-					)}
-				</g>
-			))}
-		</svg>
-	);
+  const language = useLanguage();
+  const width = 720, height = 220;
+  const padding = { top: 18, right: 16, bottom: 34, left: 42 };
+  const max = Math.max(...data.map((point) => point.value), 1);
+  const x = (index: number) => data.length === 1 ? width / 2 : padding.left + (index * (width - padding.left - padding.right)) / (data.length - 1);
+  const y = (value: number) => padding.top + (1 - value / max) * (height - padding.top - padding.bottom);
+  const points = data.map((point, index) => `${x(index)},${y(point.value)}`);
+  const area = `${points.join(" ")} ${x(data.length - 1)},${height - padding.bottom} ${x(0)},${height - padding.bottom}`;
+  return <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={copy(language, "Awarded value over time", "Diễn biến giá trị trúng thầu")}>
+    {[0, .5, 1].map((ratio) => { const lineY = padding.top + ratio * (height - padding.top - padding.bottom); return <g key={ratio}><line className="chart-gridline" x1={padding.left} x2={width - padding.right} y1={lineY} y2={lineY} /><text className="chart-axis" x="0" y={lineY + 4}>{((max * (1 - ratio)) / 1_000_000_000).toLocaleString(localeFor(language), { maximumFractionDigits: 0 })} {copy(language, "bn", "tỷ")}</text></g>; })}
+    <polygon className="chart-area" points={area} /><polyline className="chart-line" points={points.join(" ")} />
+    {data.map((point, index) => <g key={`${point.month}-${index}`}><circle className="chart-dot" cx={x(index)} cy={y(point.value)} r="3" />{(index === 0 || index === data.length - 1 || index === Math.floor(data.length / 2)) && <text className="chart-axis chart-month" x={x(index)} y={height - 10} textAnchor={index === 0 ? "start" : index === data.length - 1 ? "end" : "middle"}>{point.month}</text>}</g>)}
+  </svg>;
 }
 
-function HospitalAutocomplete({
-	value,
-	onChange,
-	language,
-	compact = false,
-}: {
-	value: string;
-	onChange: (value: string) => void;
-	language: Language;
-	compact?: boolean;
+function HospitalAutocomplete({ value, onChange, language, compact = false }: {
+  value: string;
+  onChange: (value: string) => void;
+  language: Language;
+  compact?: boolean;
 }) {
-	const { hospitals } = useAutocompleteDirectories();
-	const suggestions = useMemo(
-		() => hospitalSuggestionsFor(hospitals, value),
-		[hospitals, value],
-	);
-	const suggestionValues = useMemo(
-		() =>
-			suggestions.map((entry) => hospitalSelectionLabel(entry.name, entry.id)),
-		[suggestions],
-	);
-	const selected = hospitals.find(
-		(entry) => hospitalSelectionLabel(entry.name, entry.id) === value,
-	)
-		? value
-		: null;
-	return (
-		<Combobox<string>
-			items={suggestionValues}
-			filteredItems={suggestionValues}
-			inputValue={value}
-			value={selected}
-			filter={null}
-			autoComplete="none"
-			autoHighlight
-			onInputValueChange={(next) => onChange(next)}
-			onValueChange={(next) => onChange(next || "")}
-		>
-			<ComboboxInput
-				className={`hospital-autocomplete ${compact ? "is-compact" : ""}`}
-				showClear={Boolean(value)}
-				placeholder={copy(
-					language,
-					"Type a hospital name or ID",
-					"Nhập tên hoặc mã bệnh viện",
-				)}
-				aria-label={copy(
-					language,
-					"Hospital or buyer",
-					"Bệnh viện hoặc chủ đầu tư",
-				)}
-			/>
-			<ComboboxContent className="autocomplete-popup hospital-autocomplete-popup">
-				<ComboboxList>
-					<ComboboxGroup>
-						<ComboboxLabel>
-							{copy(
-								language,
-								"Hospital names found in portal data",
-								"Tên bệnh viện đã tìm thấy trên cổng",
-							)}
-						</ComboboxLabel>
-						{suggestions.map((entry) => (
-							<ComboboxItem
-								className="autocomplete-option"
-								value={hospitalSelectionLabel(entry.name, entry.id)}
-								key={`${entry.name}-${entry.id || ""}`}
-							>
-								<div>
-									<strong>{entry.name}</strong>
-									{entry.id && (
-										<span>
-											{copy(language, "Organization ID", "Mã đơn vị")}:{" "}
-											{entry.id}
-										</span>
-									)}
-								</div>
-							</ComboboxItem>
-						))}
-					</ComboboxGroup>
-					<ComboboxEmpty>
-						{copy(
-							language,
-							"No saved match. You can still enter the exact name.",
-							"Chưa có gợi ý phù hợp. Bạn vẫn có thể nhập tên chính xác.",
-						)}
-					</ComboboxEmpty>
-				</ComboboxList>
-			</ComboboxContent>
-		</Combobox>
-	);
+  const { hospitals } = useAutocompleteDirectories();
+  const suggestions = useMemo(() => hospitalSuggestionsFor(hospitals, value), [hospitals, value]);
+  const suggestionValues = useMemo(() => suggestions.map((entry) => hospitalSelectionLabel(entry.name, entry.id)), [suggestions]);
+  const selected = hospitals.find((entry) => hospitalSelectionLabel(entry.name, entry.id) === value) ? value : null;
+  return <Combobox<string>
+    items={suggestionValues}
+    filteredItems={suggestionValues}
+    inputValue={value}
+    value={selected}
+    filter={null}
+    autoComplete="none"
+    autoHighlight
+    onInputValueChange={(next) => onChange(next)}
+    onValueChange={(next) => onChange(next || "")}
+  >
+    <ComboboxInput
+      className={`hospital-autocomplete ${compact ? "is-compact" : ""}`}
+      showClear={Boolean(value)}
+      placeholder={copy(language, "Type a hospital name or ID", "Nhập tên hoặc mã bệnh viện")}
+      aria-label={copy(language, "Hospital or buyer", "Bệnh viện hoặc chủ đầu tư")}
+    />
+    <ComboboxContent className="autocomplete-popup hospital-autocomplete-popup">
+      <ComboboxList>
+        <ComboboxGroup>
+          <ComboboxLabel>{copy(language, "Hospital names found in portal data", "Tên bệnh viện đã tìm thấy trên cổng")}</ComboboxLabel>
+          {suggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={hospitalSelectionLabel(entry.name, entry.id)} key={`${entry.name}-${entry.id || ""}`}>
+            <div><strong>{entry.name}</strong>{entry.id && <span>{copy(language, "Organization ID", "Mã đơn vị")}: {entry.id}</span>}</div>
+          </ComboboxItem>)}
+        </ComboboxGroup>
+        <ComboboxEmpty>{copy(language, "No saved match. You can still enter the exact name.", "Chưa có gợi ý phù hợp. Bạn vẫn có thể nhập tên chính xác.")}</ComboboxEmpty>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>;
 }
 
-function CompanyAutocomplete({
-	value,
-	onChange,
-	language,
-	compact = false,
-}: {
-	value: string;
-	onChange: (value: string) => void;
-	language: Language;
-	compact?: boolean;
+function CompanyAutocomplete({ value, onChange, language, compact = false }: {
+  value: string;
+  onChange: (value: string) => void;
+  language: Language;
+  compact?: boolean;
 }) {
-	const { companies } = useAutocompleteDirectories();
-	const inputValue = value === "all" ? "" : value;
-	const suggestions = useMemo(
-		() => companySuggestionsFor(companies, inputValue),
-		[companies, inputValue],
-	);
-	const suggestionValues = useMemo(
-		() => suggestions.map((entry) => entry.name),
-		[suggestions],
-	);
-	const selected =
-		companies.find(
-			(entry) =>
-				companyGroupingKey(entry.name) === companyGroupingKey(inputValue),
-		)?.name || null;
-	return (
-		<Combobox<string>
-			items={suggestionValues}
-			filteredItems={suggestionValues}
-			inputValue={inputValue}
-			value={selected}
-			filter={null}
-			autoComplete="none"
-			autoHighlight
-			onInputValueChange={(next) => onChange(next.trim() ? next : "all")}
-			onValueChange={(next) => onChange(next || "all")}
-		>
-			<ComboboxInput
-				className={`company-autocomplete ${compact ? "is-compact" : ""}`}
-				showClear={value !== "all"}
-				placeholder={copy(language, "All companies", "Tất cả công ty")}
-				aria-label={copy(
-					language,
-					"Search company or competitor",
-					"Tìm công ty hoặc đối thủ",
-				)}
-			/>
-			<ComboboxContent className="autocomplete-popup company-autocomplete-popup">
-				<ComboboxList>
-					<ComboboxGroup>
-						<ComboboxLabel>
-							{copy(
-								language,
-								"Companies found in live portal data",
-								"Công ty tìm thấy trong dữ liệu trực tiếp",
-							)}
-						</ComboboxLabel>
-						{suggestions.map((entry) => (
-							<ComboboxItem
-								className="autocomplete-option"
-								value={entry.name}
-								key={companyGroupingKey(entry.name)}
-							>
-								<div>
-									<strong>{entry.name}</strong>
-								</div>
-							</ComboboxItem>
-						))}
-					</ComboboxGroup>
-					<ComboboxEmpty>
-						{copy(
-							language,
-							"No matching company found.",
-							"Không tìm thấy công ty phù hợp.",
-						)}
-					</ComboboxEmpty>
-				</ComboboxList>
-			</ComboboxContent>
-		</Combobox>
-	);
+  const { companies } = useAutocompleteDirectories();
+  const inputValue = value === "all" ? "" : value;
+  const suggestions = useMemo(() => companySuggestionsFor(companies, inputValue), [companies, inputValue]);
+  const suggestionValues = useMemo(() => suggestions.map((entry) => entry.name), [suggestions]);
+  const selected = companies.find((entry) => companyGroupingKey(entry.name) === companyGroupingKey(inputValue))?.name || null;
+  return <Combobox<string>
+    items={suggestionValues}
+    filteredItems={suggestionValues}
+    inputValue={inputValue}
+    value={selected}
+    filter={null}
+    autoComplete="none"
+    autoHighlight
+    onInputValueChange={(next) => onChange(next.trim() ? next : "all")}
+    onValueChange={(next) => onChange(next || "all")}
+  >
+    <ComboboxInput
+      className={`company-autocomplete ${compact ? "is-compact" : ""}`}
+      showClear={value !== "all"}
+      placeholder={copy(language, "All companies", "Tất cả công ty")}
+      aria-label={copy(language, "Search company or competitor", "Tìm công ty hoặc đối thủ")}
+    />
+    <ComboboxContent className="autocomplete-popup company-autocomplete-popup">
+      <ComboboxList>
+        <ComboboxGroup>
+          <ComboboxLabel>{copy(language, "Companies found in live portal data", "Công ty tìm thấy trong dữ liệu trực tiếp")}</ComboboxLabel>
+          {suggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.name} key={companyGroupingKey(entry.name)}>
+            <div><strong>{entry.name}</strong></div>
+          </ComboboxItem>)}
+        </ComboboxGroup>
+        <ComboboxEmpty>{copy(language, "No matching company found.", "Không tìm thấy công ty phù hợp.")}</ComboboxEmpty>
+      </ComboboxList>
+    </ComboboxContent>
+  </Combobox>;
 }
 
-function ProductSearch({
-	loading,
-	error,
-	status,
-	onSearch,
-}: {
-	loading: boolean;
-	error?: string;
-	status?: string;
-	onSearch: (query: string) => void;
-}) {
-	const language = useLanguage();
-	const [query, setQuery] = useState("");
-	const { learnedProducts } = useAutocompleteDirectories();
-	const suggestions = useMemo(
-		() => productSuggestionsFor(learnedProducts, query),
-		[learnedProducts, query],
-	);
-	const suggestionValues = useMemo(
-		() => suggestions.map((entry) => entry.value),
-		[suggestions],
-	);
-	const masterSuggestions = suggestions.filter((entry) => entry.subOu);
-	const learnedSuggestions = suggestions.filter((entry) => !entry.subOu);
-	const selectedSuggestion = suggestions.find(
-		(entry) => normalize(entry.value) === normalize(query),
-	);
-	const selectedRule = keywordRuleFor(query);
-	const submit = () => {
-		if (query.trim() && !loading) onSearch(query.trim());
-	};
-	return (
-		<div className="search-shell">
-			<div className="product-command">
-				<div className="direct-search-head">
-					<strong>
-						{copy(
-							language,
-							"Enter a product, brand, or model",
-							"Nhập sản phẩm, brand hoặc model",
-						)}
-					</strong>
-					<span>
-						{copy(
-							language,
-							"Approved keyword rules are applied automatically when available.",
-							"Quy tắc trong bộ từ khóa chuẩn sẽ được áp dụng tự động khi có.",
-						)}
-					</span>
-				</div>
-				<form
-					onSubmit={(event) => {
-						event.preventDefault();
-						submit();
-					}}
-				>
-					<div className="search-input-row">
-						<Combobox<string>
-							items={suggestionValues}
-							filteredItems={suggestionValues}
-							inputValue={query}
-							value={selectedSuggestion?.value || null}
-							filter={null}
-							autoComplete="none"
-							autoHighlight
-							onInputValueChange={setQuery}
-							onValueChange={(next) => {
-								if (next) setQuery(next);
-							}}
-						>
-							<ComboboxInput
-								className="product-autocomplete"
-								showTrigger={false}
-								placeholder={copy(
-									language,
-									"Example: LigaSure, lưới thoát vị, LF1937…",
-									"Ví dụ: LigaSure, lưới thoát vị, LF1937…",
-								)}
-								aria-label={copy(
-									language,
-									"Live product search",
-									"Tìm kiếm sản phẩm trực tiếp",
-								)}
-							/>
-							<ComboboxContent className="autocomplete-popup product-autocomplete-popup">
-								<ComboboxList>
-									{masterSuggestions.length > 0 && (
-										<ComboboxGroup>
-											<ComboboxLabel>
-												{copy(
-													language,
-													"Approved keyword master",
-													"Bộ từ khóa chuẩn",
-												)}
-											</ComboboxLabel>
-											{masterSuggestions.map((entry) => (
-												<ComboboxItem
-													className="autocomplete-option"
-													value={entry.value}
-													key={`master-${normalize(entry.value)}`}
-												>
-													<div>
-														<strong>{entry.value}</strong>
-														<span>
-															{entry.subOu} · {entry.productGroup}
-														</span>
-													</div>
-												</ComboboxItem>
-											))}
-										</ComboboxGroup>
-									)}
-									{learnedSuggestions.length > 0 && (
-										<ComboboxGroup>
-											<ComboboxLabel>
-												{copy(
-													language,
-													"Brands and models found in live results",
-													"Brand và model tìm thấy trong dữ liệu trực tiếp",
-												)}
-											</ComboboxLabel>
-											{learnedSuggestions.map((entry) => (
-												<ComboboxItem
-													className="autocomplete-option"
-													value={entry.value}
-													key={`learned-${entry.kind}-${normalize(entry.value)}`}
-												>
-													<div>
-														<strong>{entry.value}</strong>
-														<span>
-															{entry.kind === "brand" ? "Brand" : "Model"}
-														</span>
-													</div>
-												</ComboboxItem>
-											))}
-										</ComboboxGroup>
-									)}
-									<ComboboxEmpty>
-										{copy(
-											language,
-											"No saved suggestion. You can still search this exact phrase.",
-											"Chưa có gợi ý phù hợp. Bạn vẫn có thể tìm theo cụm từ này.",
-										)}
-									</ComboboxEmpty>
-								</ComboboxList>
-							</ComboboxContent>
-						</Combobox>
-						<button
-							className="search-button"
-							type="submit"
-							disabled={loading || !query.trim()}
-						>
-							{loading ? <LoaderCircle className="spin" /> : <Search />}
-							<span>
-								{loading
-									? copy(language, "Searching…", "Đang tìm…")
-									: copy(language, "Search", "Tìm kiếm")}
-							</span>
-						</button>
-					</div>
-				</form>
-				{query.trim() && (
-					<div
-						className={`keyword-rule-preview ${selectedRule ? "is-master-rule" : "is-custom-rule"}`}
-					>
-						{selectedRule ? (
-							<>
-								<div>
-									<strong>
-										{copy(
-											language,
-											"Applying approved rule",
-											"Áp dụng quy tắc đã duyệt",
-										)}{" "}
-										#{selectedRule.id}
-									</strong>
-									<span>
-										{selectedRule.subOu} · {selectedRule.productGroup}
-									</span>
-								</div>
-								<p>{selectedRule.method}</p>
-								<div className="rule-baskets">
-									<div className="exclude-list">
-										<span>
-											{copy(language, "Keyword basket:", "Rổ keyword:")}
-										</span>
-										{selectedRule.keywords.map((term) => (
-											<b key={`keyword-${term}`}>{term}</b>
-										))}
-									</div>
-									{selectedRule.confirmations.length > 0 && (
-										<div className="exclude-list confirmation-list">
-											<span>
-												{copy(
-													language,
-													"Confirmation basket:",
-													"Rổ Confirmation:",
-												)}
-											</span>
-											{selectedRule.confirmations.map((term) => (
-												<b key={`confirmation-${term}`}>{term}</b>
-											))}
-										</div>
-									)}
-									{flattenedExclusionTerms(selectedRule).length > 0 && (
-										<div className="exclude-list">
-											<span>
-												{copy(language, "Exclusion basket:", "Rổ exclude:")}
-											</span>
-											{flattenedExclusionTerms(selectedRule).map((term) => (
-												<b key={`exclude-${term}`}>{term}</b>
-											))}
-										</div>
-									)}
-								</div>
-								<p className="ambiguity-explanation">
-									{copy(
-										language,
-										"What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.",
-										"‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.",
-									)}
-								</p>
-							</>
-						) : (
-							<>
-								<div>
-									<strong>
-										{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}
-									</strong>
-									<span>
-										{copy(
-											language,
-											`Outside the ${approvedKeywordCount}-keyword catalog`,
-											`Không thuộc danh mục ${approvedKeywordCount} keyword`,
-										)}
-									</span>
-								</div>
-								<p>
-									{copy(
-										language,
-										"Results will use your exact search phrase without the approved classification gates.",
-										"Kết quả sẽ được lấy theo cụm từ bạn nhập và không áp dụng các bước phân loại đã duyệt.",
-									)}
-								</p>
-							</>
-						)}
-					</div>
-				)}
-			</div>
-			{loading && status && (
-				<p className="search-loading-status">
-					<LoaderCircle className="spin" />
-					{status}
-				</p>
-			)}
-			{error && <p className="search-message">{error}</p>}
-		</div>
-	);
+function ProductSearch({ loading, error, status, onSearch }: { loading: boolean; error?: string; status?: string; onSearch: (query: string) => void }) {
+  const language = useLanguage();
+  const [query, setQuery] = useState("");
+  const { learnedProducts } = useAutocompleteDirectories();
+  const suggestions = useMemo(() => productSuggestionsFor(learnedProducts, query), [learnedProducts, query]);
+  const suggestionValues = useMemo(() => suggestions.map((entry) => entry.value), [suggestions]);
+  const masterSuggestions = suggestions.filter((entry) => entry.subOu);
+  const learnedSuggestions = suggestions.filter((entry) => !entry.subOu);
+  const selectedSuggestion = suggestions.find((entry) => normalize(entry.value) === normalize(query));
+  const selectedRule = keywordRuleFor(query);
+  const submit = () => { if (query.trim() && !loading) onSearch(query.trim()); };
+  return <div className="search-shell">
+    <div className="product-command">
+      <div className="direct-search-head"><strong>{copy(language, "Enter a product, brand, or model", "Nhập sản phẩm, brand hoặc model")}</strong><span>{copy(language, "Approved keyword rules are applied automatically when available.", "Quy tắc trong bộ từ khóa chuẩn sẽ được áp dụng tự động khi có.")}</span></div>
+      <form onSubmit={(event) => { event.preventDefault(); submit(); }}><div className="search-input-row">
+        <Combobox<string>
+          items={suggestionValues}
+          filteredItems={suggestionValues}
+          inputValue={query}
+          value={selectedSuggestion?.value || null}
+          filter={null}
+          autoComplete="none"
+          autoHighlight
+          onInputValueChange={setQuery}
+          onValueChange={(next) => { if (next) setQuery(next); }}
+        >
+          <ComboboxInput className="product-autocomplete" showTrigger={false} placeholder={copy(language, "Example: LigaSure, lưới thoát vị, LF1937…", "Ví dụ: LigaSure, lưới thoát vị, LF1937…")} aria-label={copy(language, "Live product search", "Tìm kiếm sản phẩm trực tiếp")} />
+          <ComboboxContent className="autocomplete-popup product-autocomplete-popup">
+            <ComboboxList>
+              {masterSuggestions.length > 0 && <ComboboxGroup><ComboboxLabel>{copy(language, "Approved keyword master", "Bộ từ khóa chuẩn")}</ComboboxLabel>{masterSuggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.value} key={`master-${normalize(entry.value)}`}><div><strong>{entry.value}</strong><span>{entry.subOu} · {entry.productGroup}</span></div></ComboboxItem>)}</ComboboxGroup>}
+              {learnedSuggestions.length > 0 && <ComboboxGroup><ComboboxLabel>{copy(language, "Brands and models found in live results", "Brand và model tìm thấy trong dữ liệu trực tiếp")}</ComboboxLabel>{learnedSuggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.value} key={`learned-${entry.kind}-${normalize(entry.value)}`}><div><strong>{entry.value}</strong><span>{entry.kind === "brand" ? "Brand" : "Model"}</span></div></ComboboxItem>)}</ComboboxGroup>}
+              <ComboboxEmpty>{copy(language, "No saved suggestion. You can still search this exact phrase.", "Chưa có gợi ý phù hợp. Bạn vẫn có thể tìm theo cụm từ này.")}</ComboboxEmpty>
+            </ComboboxList>
+          </ComboboxContent>
+        </Combobox>
+        <button className="search-button" type="submit" disabled={loading || !query.trim()}>{loading ? <LoaderCircle className="spin" /> : <Search />}<span>{loading ? copy(language, "Searching…", "Đang tìm…") : copy(language, "Search", "Tìm kiếm")}</span></button>
+      </div></form>
+      {query.trim() && <div className={`keyword-rule-preview ${selectedRule ? "is-master-rule" : "is-custom-rule"}`}>
+        {selectedRule ? <><div><strong>{copy(language, "Applying approved rule", "Áp dụng quy tắc đã duyệt")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.method}</p><div className="rule-baskets"><div className="exclude-list"><span>{copy(language, "Keyword basket:", "Rổ keyword:")}</span>{selectedRule.keywords.map((term) => <b key={`keyword-${term}`}>{term}</b>)}</div>{selectedRule.confirmations.length > 0 && <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation basket:", "Rổ Confirmation:")}</span>{selectedRule.confirmations.map((term) => <b key={`confirmation-${term}`}>{term}</b>)}</div>}{flattenedExclusionTerms(selectedRule).length > 0 && <div className="exclude-list"><span>{copy(language, "Exclusion basket:", "Rổ exclude:")}</span>{flattenedExclusionTerms(selectedRule).map((term) => <b key={`exclude-${term}`}>{term}</b>)}</div>}</div><p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.", "‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, `Outside the ${approvedKeywordCount}-keyword catalog`, `Không thuộc danh mục ${approvedKeywordCount} keyword`)}</span></div><p>{copy(language, "Results will use your exact search phrase without the approved classification gates.", "Kết quả sẽ được lấy theo cụm từ bạn nhập và không áp dụng các bước phân loại đã duyệt.")}</p></>}
+      </div>}
+    </div>
+    {loading && status && <p className="search-loading-status"><LoaderCircle className="spin" />{status}</p>}
+    {error && <p className="search-message">{error}</p>}
+  </div>;
 }
 
 function Brand() {
-	const language = useLanguage();
-	return (
-		<div
-			className="brand"
-			aria-label={copy(
-				language,
-				"TenderPulse AI Medtronic analytics",
-				"TenderPulse AI phân tích Medtronic",
-			)}
-		>
-			<span className="brand-name">
-				TenderPulse <b>AI</b>
-			</span>
-			<span className="brand-divider" />
-			<span className="company-label">MEDTRONIC MARKET INTELLIGENCE</span>
-		</div>
-	);
+  const language = useLanguage();
+  return <div className="brand" aria-label={copy(language, "TenderPulse AI Medtronic analytics", "TenderPulse AI phân tích Medtronic")}><span className="brand-name">TenderPulse <b>AI</b></span><span className="brand-divider" /><span className="company-label">MEDTRONIC MARKET INTELLIGENCE</span></div>;
 }
-function SearchHome({
-	loading,
-	error,
-	status,
-	onSearch,
-}: {
-	loading: boolean;
-	error?: string;
-	status?: string;
-	onSearch: (query: string) => void;
-}) {
-	const language = useLanguage();
-	return (
-		<main className="home-page">
-			<section className="search-hero keyword-search-hero">
-				<div className="company-pill">
-					<CheckCircle2 />{" "}
-					{copy(
-						language,
-						"Company view: Medtronic",
-						"Góc nhìn công ty: Medtronic",
-					)}
-				</div>
-				<h1>
-					{copy(language, "Search live tender data", "Tra cứu dữ liệu thầu")}
-					<br />
-					<span>
-						{copy(
-							language,
-							"by product, brand, or model.",
-							"theo sản phẩm, brand hoặc model.",
-						)}
-					</span>
-				</h1>
-				<p>
-					{copy(
-						language,
-						"Type what you want to look up. Each search retrieves the latest public award data and automatically applies a matching approved keyword rule.",
-						"Nhập trực tiếp nội dung cần tra cứu. Mỗi lượt tìm kiếm lấy dữ liệu trúng thầu công khai mới nhất và tự động áp dụng quy tắc từ khóa phù hợp.",
-					)}
-				</p>
-				<ProductSearch
-					loading={loading}
-					error={error}
-					status={status}
-					onSearch={onSearch}
-				/>
-				<div className="source-line">
-					<Database />{" "}
-					{copy(
-						language,
-						"Live data from Mua Sắm Công",
-						"Dữ liệu trực tiếp từ Mua Sắm Công",
-					)}
-				</div>
-			</section>
-			<div className="hero-orbit orbit-one" />
-			<div className="hero-orbit orbit-two" />
-		</main>
-	);
+function SearchHome({ loading, error, status, onSearch }: { loading: boolean; error?: string; status?: string; onSearch: (query: string) => void }) {
+  const language = useLanguage();
+  return <main className="home-page"><section className="search-hero keyword-search-hero">
+    <div className="company-pill"><CheckCircle2 /> {copy(language, "Company view: Medtronic", "Góc nhìn công ty: Medtronic")}</div><h1>{copy(language, "Search live tender data", "Tra cứu dữ liệu thầu")}<br /><span>{copy(language, "by product, brand, or model.", "theo sản phẩm, brand hoặc model.")}</span></h1>
+    <p>{copy(language, "Type what you want to look up. Each search retrieves the latest public award data and automatically applies a matching approved keyword rule.", "Nhập trực tiếp nội dung cần tra cứu. Mỗi lượt tìm kiếm lấy dữ liệu trúng thầu công khai mới nhất và tự động áp dụng quy tắc từ khóa phù hợp.")}</p>
+    <ProductSearch loading={loading} error={error} status={status} onSearch={onSearch} />
+    <div className="source-line"><Database /> {copy(language, "Live data from Mua Sắm Công", "Dữ liệu trực tiếp từ Mua Sắm Công")}</div>
+  </section><div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" /></main>;
 }
-function RankingPanel({
-	eyebrow,
-	title,
-	items,
-	currency = true,
-	company = false,
-}: {
-	eyebrow: string;
-	title: string;
-	items: NamedValue[];
-	currency?: boolean;
-	company?: boolean;
-}) {
-	const language = useLanguage();
-	const max = Math.max(...items.map((item) => item.value), 1);
-	return (
-		<article className="panel manufacturer-panel">
-			<div className="panel-heading">
-				<div>
-					<span className="panel-eyebrow">{eyebrow}</span>
-					<h2>{title}</h2>
-				</div>
-			</div>
-			<div className="rank-list">
-				{items.map((item, index) => (
-					<div
-						className={`rank-row ${company && item.name.includes("Medtronic") ? "is-company" : ""}`}
-						key={item.name}
-					>
-						<div className="rank-label">
-							<span>{index + 1}</span>
-							<strong>{item.name}</strong>
-							<em>
-								{currency
-									? formatVnd(item.value, language)
-									: `${Math.round(item.value).toLocaleString(localeFor(language))} ${copy(language, "products", "sản phẩm")}`}
-							</em>
-						</div>
-						<div className="rank-track">
-							<span style={{ width: `${(item.value / max) * 100}%` }} />
-						</div>
-					</div>
-				))}
-			</div>
-		</article>
-	);
+function RankingPanel({ eyebrow, title, items, currency = true, company = false }: { eyebrow: string; title: string; items: NamedValue[]; currency?: boolean; company?: boolean }) {
+  const language = useLanguage();
+  const max = Math.max(...items.map((item) => item.value), 1);
+  return <article className="panel manufacturer-panel"><div className="panel-heading"><div><span className="panel-eyebrow">{eyebrow}</span><h2>{title}</h2></div></div><div className="rank-list">{items.map((item, index) => <div className={`rank-row ${company && item.name.includes("Medtronic") ? "is-company" : ""}`} key={item.name}><div className="rank-label"><span>{index + 1}</span><strong>{item.name}</strong><em>{currency ? formatVnd(item.value, language) : `${Math.round(item.value).toLocaleString(localeFor(language))} ${copy(language, "products", "sản phẩm")}`}</em></div><div className="rank-track"><span style={{ width: `${(item.value / max) * 100}%` }} /></div></div>)}</div></article>;
 }
 
-function FilterBar({
-	initial,
-	loading,
-	onApply,
-}: {
-	initial: SearchFilters;
-	loading: boolean;
-	onApply: (filters: SearchFilters) => void;
-}) {
-	const language = useLanguage();
-	const [filters, setFilters] = useState<SearchFilters>(initial);
-	const update = (field: keyof SearchFilters, value: string) =>
-		setFilters((current) => ({ ...current, [field]: value }));
-	const hasFilters = Object.entries(filters).some(([key, value]) =>
-		key === "company" ? value !== "all" : Boolean(value),
-	);
+function FilterBar({ initial, loading, onApply }: { initial: SearchFilters; loading: boolean; onApply: (filters: SearchFilters) => void }) {
+  const language = useLanguage();
+  const [filters, setFilters] = useState<SearchFilters>(initial);
+  const update = (field: keyof SearchFilters, value: string) => setFilters((current) => ({ ...current, [field]: value }));
+  const hasFilters = Object.entries(filters).some(([key, value]) => key === "company" ? value !== "all" : Boolean(value));
 
-	return (
-		<form
-			className="filter-bar"
-			onSubmit={(event) => {
-				event.preventDefault();
-				onApply(filters);
-			}}
-		>
-			<div className="filter-title">
-				<Filter />
-				<span>
-					{copy(language, "Filters", "Bộ lọc")}
-					<small>
-						{copy(
-							language,
-							"Applied to live results",
-							"Áp dụng trên dữ liệu trực tiếp",
-						)}
-					</small>
-				</span>
-			</div>
-			<label className="filter-field">
-				<small>
-					{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}
-				</small>
-				<input
-					type="date"
-					value={filters.dateFrom}
-					max={filters.dateTo || undefined}
-					onChange={(event) => update("dateFrom", event.target.value)}
-				/>
-			</label>
-			<label className="filter-field">
-				<small>
-					{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}
-				</small>
-				<input
-					type="date"
-					value={filters.dateTo}
-					min={filters.dateFrom || undefined}
-					onChange={(event) => update("dateTo", event.target.value)}
-				/>
-			</label>
-			<div className="filter-field">
-				<small>
-					{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}
-				</small>
-				<HospitalAutocomplete
-					value={filters.hospital}
-					onChange={(value) => update("hospital", value)}
-					language={language}
-					compact
-				/>
-			</div>
-			<label className="filter-field">
-				<small>
-					{copy(language, "BRAND / MANUFACTURER", "BRAND / HÃNG SẢN XUẤT")}
-				</small>
-				<input
-					type="text"
-					value={filters.brand}
-					onChange={(event) => update("brand", event.target.value)}
-					placeholder={copy(language, "Example: LigaSure", "Ví dụ: LigaSure")}
-				/>
-			</label>
-			<label className="filter-field">
-				<small>{copy(language, "WINNING SUPPLIER", "NHÀ THẦU TRÚNG")}</small>
-				<input
-					type="text"
-					value={filters.supplier}
-					onChange={(event) => update("supplier", event.target.value)}
-					placeholder={copy(language, "Enter name or ID", "Nhập tên hoặc mã")}
-				/>
-			</label>
-			<div className="filter-field">
-				<small>{copy(language, "COMPANY", "CÔNG TY")}</small>
-				<CompanyAutocomplete
-					value={filters.company}
-					onChange={(value) => update("company", value)}
-					language={language}
-					compact
-				/>
-			</div>
-			<div className="filter-actions">
-				<button className="apply-filter" type="submit" disabled={loading}>
-					{loading ? <LoaderCircle className="spin" /> : <Search />}
-					{copy(language, "Apply", "Áp dụng")}
-				</button>
-				<button
-					className="clear-filter"
-					type="button"
-					disabled={loading || !hasFilters}
-					onClick={() => {
-						const cleared = emptyFilters();
-						setFilters(cleared);
-						onApply(cleared);
-					}}
-				>
-					{copy(language, "Clear", "Xóa lọc")}
-				</button>
-			</div>
-		</form>
-	);
+  return <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); onApply(filters); }}>
+    <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Applied to live results", "Áp dụng trên dữ liệu trực tiếp")}</small></span></div>
+    <label className="filter-field"><small>{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}</small><input type="date" value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
+    <label className="filter-field"><small>{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
+    <div className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><HospitalAutocomplete value={filters.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
+    <label className="filter-field"><small>{copy(language, "BRAND / MANUFACTURER", "BRAND / HÃNG SẢN XUẤT")}</small><input type="text" value={filters.brand} onChange={(event) => update("brand", event.target.value)} placeholder={copy(language, "Example: LigaSure", "Ví dụ: LigaSure")} /></label>
+    <label className="filter-field"><small>{copy(language, "WINNING SUPPLIER", "NHÀ THẦU TRÚNG")}</small><input type="text" value={filters.supplier} onChange={(event) => update("supplier", event.target.value)} placeholder={copy(language, "Enter name or ID", "Nhập tên hoặc mã")} /></label>
+    <div className="filter-field"><small>{copy(language, "COMPANY", "CÔNG TY")}</small><CompanyAutocomplete value={filters.company} onChange={(value) => update("company", value)} language={language} compact /></div>
+    <div className="filter-actions"><button className="apply-filter" type="submit" disabled={loading}>{loading ? <LoaderCircle className="spin" /> : <Search />}{copy(language, "Apply", "Áp dụng")}</button><button className="clear-filter" type="button" disabled={loading || !hasFilters} onClick={() => { const cleared = emptyFilters(); setFilters(cleared); onApply(cleared); }}>{copy(language, "Clear", "Xóa lọc")}</button></div>
+  </form>;
 }
 
-function Dashboard({
-	product,
-	loading,
-	error,
-	status,
-	onBack,
-	onSearch,
-}: {
-	product: ProductData;
-	loading: boolean;
-	error?: string;
-	status?: string;
-	onBack: () => void;
-	onSearch: (query: string, filters?: SearchFilters) => void;
-}) {
-	const language = useLanguage();
-	const [exporting, setExporting] = useState(false);
-	const [exportError, setExportError] = useState<string>();
+function Dashboard({ product, loading, error, status, onBack, onSearch }: { product: ProductData; loading: boolean; error?: string; status?: string; onBack: () => void; onSearch: (query: string, filters?: SearchFilters) => void }) {
+  const language = useLanguage();
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string>();
 
-	async function downloadExcel() {
-		setExporting(true);
-		setExportError(undefined);
-		try {
-			if (!product.records.length)
-				throw new Error(
-					copy(
-						language,
-						"There are no results to export.",
-						"Không có kết quả để xuất Excel.",
-					),
-				);
-			const resultRows = product.records.map((record, index) => {
-				const quantity = toNumber(record.khoiLuongDouble ?? record.khoiLuong);
-				const unitPrice = toNumber(record.donGia ?? record.donGiaDuThau);
-				return {
-					STT: index + 1,
-					"Mã TBMT": safeExcelText(record.maTbmt),
-					"Mã định danh CĐT": safeExcelText(record.maCdt),
-					"Tên CĐT": safeExcelText(
-						hospitalName(record.maCdt || "", record.tenCdtBmt || ""),
-					),
-					"Tên thiết bị, vật tư y tế": safeExcelText(record.tenThietBi),
-					"Đơn vị tính": safeExcelText(record.donViTinh),
-					"Khối lượng": quantity,
-					"Xuất xứ": safeExcelText(record.xuatXu),
-					"Mã HS": safeExcelText(record.maHs),
-					"Ký mã hiệu": safeExcelText(record.kyMaHieu),
-					"Nhãn hiệu": safeExcelText(record.nhanHieu),
-					"Hãng sản xuất": safeExcelText(record.hangSanXuat),
-					"Công ty quy đổi": safeExcelText(companyOf(record)),
-					"Chủng loại (model)": safeExcelText(record.chungLoai),
-					"Số lưu hành / giấy phép nhập khẩu": safeExcelText(record.soLuuHanh),
-					"Năm sản xuất": safeExcelText(record.namSanXuat),
-					"Cấu hình, tính năng kỹ thuật": safeExcelText(record.cauHinh),
-					"Đơn giá trúng thầu": unitPrice,
-					"Thành tiền ước tính": quantity * unitPrice,
-					"Mã định danh NT trúng thầu": safeExcelText(
-						formatList(record.winningCode),
-					),
-					"Tên NT trúng thầu": safeExcelText(formatList(record.winningName)),
-					"Hình thức LCNT": safeExcelText(
-						record.bidForm
-							? bidFormNames[record.bidForm] || record.bidForm
-							: "",
-					),
-					"Ngày đăng tải KQLCNT": safeExcelText(record.ngayDangTaiKqlcnt),
-					"Số quyết định": safeExcelText(record.soQuyetDinh),
-					"Ngày ban hành quyết định": safeExcelText(
-						record.ngayBanHanhQuyetDinh,
-					),
-					"Số nhà thầu tham dự": toNumber(record.soNhaThauThamDu) || "",
-					"Địa điểm": safeExcelText(formatLocation(record.diaDiem)),
-				};
-			});
-			const infoRows = [
-				["Thông tin xuất dữ liệu", ""],
-				["Từ khóa", safeExcelText(product.keyword)],
-				...(product.keywordRule
-					? [
-							[
-								"Rule phân loại",
-								`#${product.keywordRule.id} · ${product.keywordRule.subOu} · ${product.keywordRule.productGroup}`,
-							],
-							["Dòng trên cổng không đạt rule", product.excludedRecords],
-							[
-								"Không có keyword trong Tên thiết bị",
-								product.classificationAudit?.missingProductKeyword || 0,
-							],
-							[
-								"Không có Confirmation bắt buộc",
-								product.classificationAudit?.missingConfirmation || 0,
-							],
-							[
-								"Trúng điều kiện exclude",
-								product.classificationAudit?.matchedExclusion || 0,
-							],
-							[
-								"Staff xác nhận loại",
-								product.classificationAudit?.staffExcluded || 0,
-							],
-							[
-								"Staff xác nhận chuyển sang nhóm khác",
-								product.classificationAudit?.staffReclassified || 0,
-							],
-							[
-								"Trùng nhiều rule chưa được xác nhận",
-								product.classificationAudit?.unresolvedAmbiguity || 0,
-							],
-						]
-					: []),
-				[
-					"Quy đổi hãng sản xuất",
-					`${manufacturerMappedRows} dòng có hãng đích; ${manufacturerUnmappedRows} dòng chưa có hãng đích được giữ nguyên`,
-				],
-				[
-					"Thời gian xuất",
-					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-				],
-				["Số dòng kết quả", product.records.length],
-				["Từ ngày", product.filters.dateFrom || "Tất cả"],
-				["Đến ngày", product.filters.dateTo || "Tất cả"],
-				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
-				[
-					"Bệnh viện / chủ đầu tư",
-					safeExcelText(product.filters.hospital || "Tất cả"),
-				],
-				[
-					"Brand / hãng sản xuất",
-					safeExcelText(product.filters.brand || "Tất cả"),
-				],
-				["Nhà thầu trúng", safeExcelText(product.filters.supplier || "Tất cả")],
-				[
-					"Công ty",
-					safeExcelText(
-						product.filters.company !== "all"
-							? companyDisplayNames[product.filters.company] ||
-									product.filters.company
-							: "Tất cả",
-					),
-				],
-				["Nguồn dữ liệu", "Cổng Mua Sắm Công"],
-			];
-			await downloadWorkbook(
-				[
-					{
-						name: "Kết quả",
-						rows: resultRows,
-						columns: [
-							7, 20, 22, 38, 44, 14, 14, 24, 13, 22, 22, 32, 28, 22, 28, 15, 60,
-							20, 20, 26, 42, 34, 20, 22, 22, 18, 38,
-						],
-					},
-					{
-						name: "Thông tin tìm kiếm",
-						rows: infoRows,
-						columns: [28, 65],
-						matrix: true,
-					},
-				],
-				`${formatDownloadDate(new Date())}-${filenameSlug(product.keyword)}.xlsx`,
-			);
-		} catch (caught) {
-			setExportError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not create the Excel file.",
-							"Không thể tạo file Excel.",
-						),
-			);
-		} finally {
-			setExporting(false);
-		}
-	}
+  async function downloadExcel() {
+    setExporting(true);
+    setExportError(undefined);
+    try {
+      if (!product.records.length) throw new Error(copy(language, "There are no results to export.", "Không có kết quả để xuất Excel."));
+      const resultRows = product.records.map((record, index) => {
+        const quantity = toNumber(record.khoiLuongDouble ?? record.khoiLuong);
+        const unitPrice = toNumber(record.donGia ?? record.donGiaDuThau);
+        return {
+          STT: index + 1,
+          "Mã TBMT": safeExcelText(record.maTbmt),
+          "Mã định danh CĐT": safeExcelText(record.maCdt),
+          "Tên CĐT": safeExcelText(hospitalName(record.maCdt || "", record.tenCdtBmt || "")),
+          "Tên thiết bị, vật tư y tế": safeExcelText(record.tenThietBi),
+          "Đơn vị tính": safeExcelText(record.donViTinh),
+          "Khối lượng": quantity,
+          "Xuất xứ": safeExcelText(record.xuatXu),
+          "Mã HS": safeExcelText(record.maHs),
+          "Ký mã hiệu": safeExcelText(record.kyMaHieu),
+          "Nhãn hiệu": safeExcelText(record.nhanHieu),
+          "Hãng sản xuất": safeExcelText(record.hangSanXuat),
+          "Công ty quy đổi": safeExcelText(companyOf(record)),
+          "Chủng loại (model)": safeExcelText(record.chungLoai),
+          "Số lưu hành / giấy phép nhập khẩu": safeExcelText(record.soLuuHanh),
+          "Năm sản xuất": safeExcelText(record.namSanXuat),
+          "Cấu hình, tính năng kỹ thuật": safeExcelText(record.cauHinh),
+          "Đơn giá trúng thầu": unitPrice,
+          "Thành tiền ước tính": quantity * unitPrice,
+          "Mã định danh NT trúng thầu": safeExcelText(formatList(record.winningCode)),
+          "Tên NT trúng thầu": safeExcelText(formatList(record.winningName)),
+          "Hình thức LCNT": safeExcelText(record.bidForm ? bidFormNames[record.bidForm] || record.bidForm : ""),
+          "Ngày đăng tải KQLCNT": safeExcelText(record.ngayDangTaiKqlcnt),
+          "Số quyết định": safeExcelText(record.soQuyetDinh),
+          "Ngày ban hành quyết định": safeExcelText(record.ngayBanHanhQuyetDinh),
+          "Số nhà thầu tham dự": toNumber(record.soNhaThauThamDu) || "",
+          "Địa điểm": safeExcelText(formatLocation(record.diaDiem)),
+        };
+      });
+      const infoRows = [
+        ["Thông tin xuất dữ liệu", ""],
+        ["Từ khóa", safeExcelText(product.keyword)],
+        ...(product.keywordRule ? [
+          ["Rule phân loại", `#${product.keywordRule.id} · ${product.keywordRule.subOu} · ${product.keywordRule.productGroup}`],
+          ["Dòng trên cổng không đạt rule", product.excludedRecords],
+          ["Không có keyword trong Tên thiết bị", product.classificationAudit?.missingProductKeyword || 0],
+          ["Không có Confirmation bắt buộc", product.classificationAudit?.missingConfirmation || 0],
+          ["Trúng điều kiện exclude", product.classificationAudit?.matchedExclusion || 0],
+          ["Staff xác nhận loại", product.classificationAudit?.staffExcluded || 0],
+          ["Staff xác nhận chuyển sang nhóm khác", product.classificationAudit?.staffReclassified || 0],
+          ["Trùng nhiều rule chưa được xác nhận", product.classificationAudit?.unresolvedAmbiguity || 0],
+        ] : []),
+        ["Quy đổi hãng sản xuất", `${manufacturerMappedRows} dòng có hãng đích; ${manufacturerUnmappedRows} dòng chưa có hãng đích được giữ nguyên`],
+        ["Thời gian xuất", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Số dòng kết quả", product.records.length],
+        ["Từ ngày", product.filters.dateFrom || "Tất cả"],
+        ["Đến ngày", product.filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(product.filters.hospital || "Tất cả")],
+        ["Brand / hãng sản xuất", safeExcelText(product.filters.brand || "Tất cả")],
+        ["Nhà thầu trúng", safeExcelText(product.filters.supplier || "Tất cả")],
+        ["Công ty", safeExcelText(product.filters.company !== "all" ? companyDisplayNames[product.filters.company] || product.filters.company : "Tất cả")],
+        ["Nguồn dữ liệu", "Cổng Mua Sắm Công"],
+      ];
+      await downloadWorkbook([
+        { name: "Kết quả", rows: resultRows, columns: [7, 20, 22, 38, 44, 14, 14, 24, 13, 22, 22, 32, 28, 22, 28, 15, 60, 20, 20, 26, 42, 34, 20, 22, 22, 18, 38] },
+        { name: "Thông tin tìm kiếm", rows: infoRows, columns: [28, 65], matrix: true },
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(product.keyword)}.xlsx`);
+    } catch (caught) {
+      setExportError(caught instanceof Error ? caught.message : copy(language, "Could not create the Excel file.", "Không thể tạo file Excel."));
+    } finally {
+      setExporting(false);
+    }
+  }
 
-	return (
-		<main className="dashboard-page">
-			<div className="search-result-toolbar">
-				<div className="result-route">
-					<span>
-						{copy(
-							language,
-							"Product search result",
-							"Kết quả tra cứu sản phẩm",
-						)}
-					</span>
-					<strong>{product.keyword}</strong>
-				</div>
-				<button className="new-search" onClick={onBack}>
-					<ArrowLeft /> {copy(language, "New search", "Tra cứu mới")}
-				</button>
-			</div>
-			<section className="dashboard-shell">
-				{loading && (
-					<div className="live-banner">
-						<LoaderCircle className="spin" />{" "}
-						{status ||
-							copy(
-								language,
-								"Retrieving the latest portal data…",
-								"Đang lấy dữ liệu mới nhất từ cổng…",
-							)}
-					</div>
-				)}
-				{error && (
-					<div className="live-banner live-banner-error">
-						<CircleAlert /> {error}
-					</div>
-				)}
-				{exportError && (
-					<div className="live-banner live-banner-error">
-						<CircleAlert /> {exportError}
-					</div>
-				)}
-				<div className="dashboard-heading">
-					<div>
-						<div className="result-kicker">
-							<span>
-								{copy(
-									language,
-									"MEDTRONIC MARKET OVERVIEW",
-									"TỔNG QUAN THỊ TRƯỜNG MEDTRONIC",
-								)}
-							</span>
-							<i />
-							<span>{product.group}</span>
-						</div>
-						<h1>{product.keyword}</h1>
-						<p>
-							{product.lineItems.toLocaleString(localeFor(language))}{" "}
-							{copy(language, "result rows", "dòng kết quả")} ·{" "}
-							{product.dateRange} · {copy(language, "Updated", "Cập nhật lúc")}{" "}
-							{new Date(product.fetchedAt).toLocaleString(localeFor(language), {
-								timeZone: "Asia/Ho_Chi_Minh",
-							})}
-						</p>
-						{product.keywordRule && (
-							<div className="applied-master-rule">
-								<strong>
-									{copy(language, "Approved rule", "Rule đã duyệt")} #
-									{product.keywordRule.id}
-								</strong>
-								<span>
-									{product.excludedRecords.toLocaleString(localeFor(language))}{" "}
-									{copy(
-										language,
-										"portal rows did not pass the keyword, confirmation, and exclusion gates",
-										"dòng trên cổng không đạt đủ các bước keyword, Confirmation và exclude",
-									)}
-								</span>
-							</div>
-						)}
-					</div>
-					<button
-						className="export-button"
-						type="button"
-						disabled={loading || exporting}
-						onClick={downloadExcel}
-					>
-						{exporting ? <LoaderCircle className="spin" /> : <Download />}
-						<span>
-							{exporting
-								? copy(language, "Creating Excel…", "Đang tạo Excel…")
-								: copy(language, "Export Excel", "Xuất Excel")}
-						</span>
-					</button>
-				</div>
-				<FilterBar
-					key={product.fetchedAt}
-					initial={product.filters}
-					loading={loading}
-					onApply={(filters) => onSearch(product.keyword, filters)}
-				/>
-				<div className="metric-grid">
-					<article className="metric-card">
-						<div className="metric-icon blue">
-							<Trophy />
-						</div>
-						<span>
-							{copy(language, "Total awarded value", "Tổng giá trị trúng thầu")}
-						</span>
-						<strong>{formatVnd(product.totalValue, language)}</strong>
-						<small>
-							{copy(
-								language,
-								"Calculated from the current search results",
-								"Tính trực tiếp từ kết quả tìm kiếm",
-							)}
-						</small>
-					</article>
-					<article className="metric-card company-metric">
-						<div className="metric-icon company">
-							<CheckCircle2 />
-						</div>
-						<span>
-							{copy(
-								language,
-								"Medtronic awarded value",
-								"Giá trị Medtronic trúng",
-							)}
-						</span>
-						<strong>{formatVnd(product.medtronicValue, language)}</strong>
-						<small>
-							{copy(language, "Represents", "Chiếm")}{" "}
-							{product.medtronicShare.toLocaleString(localeFor(language), {
-								maximumFractionDigits: 1,
-							})}
-							% {copy(language, "of market value", "giá trị thị trường")}
-						</small>
-					</article>
-					<article className="metric-card">
-						<div className="metric-icon violet">
-							<Database />
-						</div>
-						<span>
-							{copy(
-								language,
-								"Medtronic unit share",
-								"Thị phần Medtronic theo số lượng",
-							)}
-						</span>
-						<strong>
-							{product.medtronicQuantityShare.toLocaleString(
-								localeFor(language),
-								{ maximumFractionDigits: 1 },
-							)}
-							%
-						</strong>
-						<small>
-							{Math.round(product.medtronicQuantity).toLocaleString(
-								localeFor(language),
-							)}{" "}
-							/{" "}
-							{Math.round(product.totalQuantity).toLocaleString(
-								localeFor(language),
-							)}{" "}
-							{copy(language, "recorded units", "sản phẩm ghi nhận")}
-						</small>
-					</article>
-					<article className="metric-card">
-						<div className="metric-icon green">
-							<Database />
-						</div>
-						<span>{copy(language, "Award results", "Số KQLCNT")}</span>
-						<strong>
-							{product.tenders.toLocaleString(localeFor(language))}
-						</strong>
-						<small>
-							{copy(
-								language,
-								"Distinct award-result IDs",
-								"Tính theo Mã KQLCNT riêng biệt",
-							)}
-						</small>
-					</article>
-					<article className="metric-card">
-						<div className="metric-icon blue">
-							<Building2 />
-						</div>
-						<span>
-							{copy(
-								language,
-								"Hospitals / buyers",
-								"Số bệnh viện / chủ đầu tư",
-							)}
-						</span>
-						<strong>
-							{product.hospitals.toLocaleString(localeFor(language))}
-						</strong>
-						<small>
-							{product.totalElements.toLocaleString(localeFor(language))}{" "}
-							{copy(language, "filtered portal results", "kết quả trên cổng")}
-						</small>
-					</article>
-				</div>
-				<div className="dashboard-grid">
-					<article className="panel trend-panel">
-						<div className="panel-heading">
-							<div>
-								<span className="panel-eyebrow">
-									{copy(language, "AWARDED VALUE", "GIÁ TRỊ TRÚNG THẦU")}
-								</span>
-								<h2>
-									{copy(
-										language,
-										"Awarded value over time",
-										"Diễn biến giá trị theo thời gian",
-									)}
-								</h2>
-							</div>
-							<span className="panel-period">
-								{copy(language, "Current results", "Kết quả hiện tại")} · VND
-							</span>
-						</div>
-						<TrendChart data={product.trend} />
-					</article>
-					<article className="panel company-panel">
-						<div className="company-panel-head">
-							<span>MEDTRONIC</span>
-							<CheckCircle2 />
-						</div>
-						<p>
-							{copy(
-								language,
-								"Estimated company position",
-								"Vị thế công ty ước tính",
-							)}
-						</p>
-						<div className="company-share">
-							{product.medtronicShare.toLocaleString(localeFor(language), {
-								maximumFractionDigits: 1,
-							})}
-							<small>%</small>
-						</div>
-						<div className="share-track">
-							<span
-								style={{ width: `${Math.min(product.medtronicShare, 100)}%` }}
-							/>
-						</div>
-						<strong>
-							{formatVnd(product.medtronicValue, language)}{" "}
-							{copy(language, "recorded value", "giá trị ghi nhận")}
-						</strong>
-					</article>
-					<RankingPanel
-						eyebrow={copy(
-							language,
-							"COMPETITIVE COMPARISON",
-							"SO SÁNH CẠNH TRANH",
-						)}
-						title={copy(
-							language,
-							"Awarded value by company",
-							"Giá trị trúng thầu theo công ty",
-						)}
-						items={product.manufacturers}
-						company
-					/>
-					<RankingPanel
-						eyebrow={copy(language, "CUSTOMER DEMAND", "NHU CẦU KHÁCH HÀNG")}
-						title={copy(
-							language,
-							"Top 5 hospitals by awarded value",
-							"Top 5 bệnh viện theo giá trị trúng thầu",
-						)}
-						items={product.topHospitals}
-					/>
-					<RankingPanel
-						eyebrow={copy(language, "PRODUCT DEMAND", "NHU CẦU SẢN PHẨM")}
-						title={copy(
-							language,
-							"Top 5 models by awarded units",
-							"Top 5 model theo số lượng trúng",
-						)}
-						items={product.topProducts}
-						currency={false}
-					/>
-					<RankingPanel
-						eyebrow={copy(language, "WINNING SUPPLIERS", "NHÀ THẦU")}
-						title={copy(
-							language,
-							"Top 5 suppliers by awarded value",
-							"Top 5 nhà thầu trúng theo giá trị",
-						)}
-						items={product.topSuppliers}
-					/>
-				</div>
-				<div className="insight-grid">
-					<article className="insight-card">
-						<div className="insight-icon">
-							<Sparkles />
-						</div>
-						<div>
-							<span>
-								{copy(language, "TENDERPULSE INSIGHT", "NHẬN ĐỊNH TENDERPULSE")}
-							</span>
-							<p>{product.insight}</p>
-						</div>
-					</article>
-					<article className="quality-card">
-						<CircleAlert />
-						<div>
-							<span>
-								{copy(
-									language,
-									"DATA QUALITY NOTE",
-									"LƯU Ý CHẤT LƯỢNG DỮ LIỆU",
-								)}
-							</span>
-							<p>{product.qualityNote}</p>
-						</div>
-					</article>
-				</div>
-				<p className="dashboard-footnote">
-					{product.truncated
-						? copy(
-								language,
-								`Portal results exceeded the safety limit; the dashboard uses the first ${product.lineItems.toLocaleString(localeFor(language))} records.`,
-								`Kết quả trên cổng vượt giới hạn an toàn; dashboard được tính từ ${product.lineItems.toLocaleString(localeFor(language))} bản ghi đầu tiên.`,
-							)
-						: copy(
-								language,
-								"All figures are recalculated after each search using Mua Sắm Công award data.",
-								"Toàn bộ số liệu được tính sau mỗi lượt tìm kiếm từ dữ liệu trúng thầu từ Mua Sắm Công",
-							)}
-				</p>
-			</section>
-		</main>
-	);
+  return <main className="dashboard-page"><div className="search-result-toolbar"><div className="result-route"><span>{copy(language, "Product search result", "Kết quả tra cứu sản phẩm")}</span><strong>{product.keyword}</strong></div><button className="new-search" onClick={onBack}><ArrowLeft /> {copy(language, "New search", "Tra cứu mới")}</button></div><section className="dashboard-shell">
+    {loading && <div className="live-banner"><LoaderCircle className="spin" /> {status || copy(language, "Retrieving the latest portal data…", "Đang lấy dữ liệu mới nhất từ cổng…")}</div>}{error && <div className="live-banner live-banner-error"><CircleAlert /> {error}</div>}
+    {exportError && <div className="live-banner live-banner-error"><CircleAlert /> {exportError}</div>}
+    <div className="dashboard-heading"><div><div className="result-kicker"><span>{copy(language, "MEDTRONIC MARKET OVERVIEW", "TỔNG QUAN THỊ TRƯỜNG MEDTRONIC")}</span><i /><span>{product.group}</span></div><h1>{product.keyword}</h1><p>{product.lineItems.toLocaleString(localeFor(language))} {copy(language, "result rows", "dòng kết quả")} · {product.dateRange} · {copy(language, "Updated", "Cập nhật lúc")} {new Date(product.fetchedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}</p>{product.keywordRule && <div className="applied-master-rule"><strong>{copy(language, "Approved rule", "Rule đã duyệt")} #{product.keywordRule.id}</strong><span>{product.excludedRecords.toLocaleString(localeFor(language))} {copy(language, "portal rows did not pass the keyword, confirmation, and exclusion gates", "dòng trên cổng không đạt đủ các bước keyword, Confirmation và exclude")}</span></div>}</div><button className="export-button" type="button" disabled={loading || exporting} onClick={downloadExcel}>{exporting ? <LoaderCircle className="spin" /> : <Download />}<span>{exporting ? copy(language, "Creating Excel…", "Đang tạo Excel…") : copy(language, "Export Excel", "Xuất Excel")}</span></button></div>
+    <FilterBar key={product.fetchedAt} initial={product.filters} loading={loading} onApply={(filters) => onSearch(product.keyword, filters)} />
+    <div className="metric-grid">
+      <article className="metric-card"><div className="metric-icon blue"><Trophy /></div><span>{copy(language, "Total awarded value", "Tổng giá trị trúng thầu")}</span><strong>{formatVnd(product.totalValue, language)}</strong><small>{copy(language, "Calculated from the current search results", "Tính trực tiếp từ kết quả tìm kiếm")}</small></article>
+      <article className="metric-card company-metric"><div className="metric-icon company"><CheckCircle2 /></div><span>{copy(language, "Medtronic awarded value", "Giá trị Medtronic trúng")}</span><strong>{formatVnd(product.medtronicValue, language)}</strong><small>{copy(language, "Represents", "Chiếm")} {product.medtronicShare.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}% {copy(language, "of market value", "giá trị thị trường")}</small></article>
+      <article className="metric-card"><div className="metric-icon violet"><Database /></div><span>{copy(language, "Medtronic unit share", "Thị phần Medtronic theo số lượng")}</span><strong>{product.medtronicQuantityShare.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}%</strong><small>{Math.round(product.medtronicQuantity).toLocaleString(localeFor(language))} / {Math.round(product.totalQuantity).toLocaleString(localeFor(language))} {copy(language, "recorded units", "sản phẩm ghi nhận")}</small></article>
+      <article className="metric-card"><div className="metric-icon green"><Database /></div><span>{copy(language, "Award results", "Số KQLCNT")}</span><strong>{product.tenders.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Distinct award-result IDs", "Tính theo Mã KQLCNT riêng biệt")}</small></article>
+      <article className="metric-card"><div className="metric-icon blue"><Building2 /></div><span>{copy(language, "Hospitals / buyers", "Số bệnh viện / chủ đầu tư")}</span><strong>{product.hospitals.toLocaleString(localeFor(language))}</strong><small>{product.totalElements.toLocaleString(localeFor(language))} {copy(language, "filtered portal results", "kết quả trên cổng")}</small></article>
+    </div>
+    <div className="dashboard-grid">
+      <article className="panel trend-panel"><div className="panel-heading"><div><span className="panel-eyebrow">{copy(language, "AWARDED VALUE", "GIÁ TRỊ TRÚNG THẦU")}</span><h2>{copy(language, "Awarded value over time", "Diễn biến giá trị theo thời gian")}</h2></div><span className="panel-period">{copy(language, "Current results", "Kết quả hiện tại")} · VND</span></div><TrendChart data={product.trend} /></article>
+      <article className="panel company-panel"><div className="company-panel-head"><span>MEDTRONIC</span><CheckCircle2 /></div><p>{copy(language, "Estimated company position", "Vị thế công ty ước tính")}</p><div className="company-share">{product.medtronicShare.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}<small>%</small></div><div className="share-track"><span style={{ width: `${Math.min(product.medtronicShare, 100)}%` }} /></div><strong>{formatVnd(product.medtronicValue, language)} {copy(language, "recorded value", "giá trị ghi nhận")}</strong></article>
+      <RankingPanel eyebrow={copy(language, "COMPETITIVE COMPARISON", "SO SÁNH CẠNH TRANH")} title={copy(language, "Awarded value by company", "Giá trị trúng thầu theo công ty")} items={product.manufacturers} company /><RankingPanel eyebrow={copy(language, "CUSTOMER DEMAND", "NHU CẦU KHÁCH HÀNG")} title={copy(language, "Top 5 hospitals by awarded value", "Top 5 bệnh viện theo giá trị trúng thầu")} items={product.topHospitals} />
+      <RankingPanel eyebrow={copy(language, "PRODUCT DEMAND", "NHU CẦU SẢN PHẨM")} title={copy(language, "Top 5 models by awarded units", "Top 5 model theo số lượng trúng")} items={product.topProducts} currency={false} /><RankingPanel eyebrow={copy(language, "WINNING SUPPLIERS", "NHÀ THẦU")} title={copy(language, "Top 5 suppliers by awarded value", "Top 5 nhà thầu trúng theo giá trị")} items={product.topSuppliers} />
+    </div>
+    <div className="insight-grid"><article className="insight-card"><div className="insight-icon"><Sparkles /></div><div><span>{copy(language, "TENDERPULSE INSIGHT", "NHẬN ĐỊNH TENDERPULSE")}</span><p>{product.insight}</p></div></article><article className="quality-card"><CircleAlert /><div><span>{copy(language, "DATA QUALITY NOTE", "LƯU Ý CHẤT LƯỢNG DỮ LIỆU")}</span><p>{product.qualityNote}</p></div></article></div>
+    <p className="dashboard-footnote">{product.truncated ? copy(language, `Portal results exceeded the safety limit; the dashboard uses the first ${product.lineItems.toLocaleString(localeFor(language))} records.`, `Kết quả trên cổng vượt giới hạn an toàn; dashboard được tính từ ${product.lineItems.toLocaleString(localeFor(language))} bản ghi đầu tiên.`) : copy(language, "All figures are recalculated after each search using Mua Sắm Công award data.", "Toàn bộ số liệu được tính sau mỗi lượt tìm kiếm từ dữ liệu trúng thầu từ Mua Sắm Công")}</p>
+  </section></main>;
 }
 
 function percent(value: number, language: Language = "en") {
-	return `${value.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}%`;
+  return `${value.toLocaleString(localeFor(language), { maximumFractionDigits: 1 })}%`;
 }
 
-function mergeNamedValues(
-	slices: OverviewSubOu[],
-	select: (slice: OverviewSubOu) => OverviewNamedValue[],
-) {
-	const totals = new Map<string, OverviewNamedValue>();
-	slices.flatMap(select).forEach((entry) => {
-		const current = totals.get(entry.name) || {
-			name: entry.name,
-			value: 0,
-			units: 0,
-		};
-		current.value += entry.value;
-		current.units += entry.units;
-		totals.set(entry.name, current);
-	});
-	return [...totals.values()].sort((left, right) => right.value - left.value);
+function mergeNamedValues(slices: OverviewSubOu[], select: (slice: OverviewSubOu) => OverviewNamedValue[]) {
+  const totals = new Map<string, OverviewNamedValue>();
+  slices.flatMap(select).forEach((entry) => {
+    const current = totals.get(entry.name) || { name: entry.name, value: 0, units: 0 };
+    current.value += entry.value;
+    current.units += entry.units;
+    totals.set(entry.name, current);
+  });
+  return [...totals.values()].sort((left, right) => right.value - left.value);
 }
 
 function mergeHospitals(slices: OverviewSubOu[]) {
-	const totals = new Map<string, OverviewHospital>();
-	slices
-		.flatMap((slice) => slice.hospitals)
-		.forEach((entry) => {
-			const key = hospitalKey(entry.id, entry.name);
-			const current = totals.get(key) || {
-				name: entry.name,
-				id: entry.id,
-				value: 0,
-				units: 0,
-				products: 0,
-				tenders: 0,
-				competitors: [],
-			};
-			current.value += entry.value;
-			current.units += entry.units;
-			current.products += entry.products;
-			current.tenders += entry.tenders;
-			totals.set(key, current);
-		});
-	return [...totals.values()].sort((left, right) => right.value - left.value);
+  const totals = new Map<string, OverviewHospital>();
+  slices.flatMap((slice) => slice.hospitals).forEach((entry) => {
+    const key = hospitalKey(entry.id, entry.name);
+    const current = totals.get(key) || { name: entry.name, id: entry.id, value: 0, units: 0, products: 0, tenders: 0, competitors: [] };
+    current.value += entry.value;
+    current.units += entry.units;
+    current.products += entry.products;
+    current.tenders += entry.tenders;
+    totals.set(key, current);
+  });
+  return [...totals.values()].sort((left, right) => right.value - left.value);
 }
 
-function HospitalCompetitorSummary({
-	hospital,
-	language,
-}: {
-	hospital: OverviewHospital;
-	language: Language;
-}) {
-	if (!hospital.competitors?.length) {
-		return (
-			<span className="hospital-no-competitor">
-				{copy(language, "No competitor identified", "Chưa xác định đối thủ")}
-			</span>
-		);
-	}
-	return (
-		<div className="hospital-competitor-stack">
-			{hospital.competitors.map((competitor, index) => (
-				<div key={competitor.name}>
-					<strong>
-						{index + 1}. {competitor.name}
-					</strong>
-					<span>
-						MS Value{" "}
-						{percent(
-							hospital.value ? (competitor.value / hospital.value) * 100 : 0,
-							language,
-						)}
-					</span>
-					<small>
-						MS Unit{" "}
-						{percent(
-							hospital.units ? (competitor.units / hospital.units) * 100 : 0,
-							language,
-						)}
-					</small>
-				</div>
-			))}
-		</div>
-	);
+function HospitalCompetitorSummary({ hospital, language }: { hospital: OverviewHospital; language: Language }) {
+  if (!hospital.competitors?.length) {
+    return <span className="hospital-no-competitor">{copy(language, "No competitor identified", "Chưa xác định đối thủ")}</span>;
+  }
+  return <div className="hospital-competitor-stack">
+    {hospital.competitors.map((competitor, index) => <div key={competitor.name}>
+      <strong>{index + 1}. {competitor.name}</strong>
+      <span>MS Value {percent(hospital.value ? (competitor.value / hospital.value) * 100 : 0, language)}</span>
+      <small>MS Unit {percent(hospital.units ? (competitor.units / hospital.units) * 100 : 0, language)}</small>
+    </div>)}
+  </div>;
 }
 
 function SubOuCompetitorStack({
-	slice,
-	language,
-	openCompetitors,
-	exportingKey,
-	disabled,
-	onToggle,
-	onExport,
+  slice,
+  language,
+  openCompetitors,
+  exportingKey,
+  disabled,
+  onToggle,
+  onExport,
 }: {
-	slice: OverviewSubOu;
-	language: Language;
-	openCompetitors: Set<string>;
-	exportingKey?: string;
-	disabled: boolean;
-	onToggle: (key: string) => void;
-	onExport: (competitor: OverviewCompetitor) => void;
+  slice: OverviewSubOu;
+  language: Language;
+  openCompetitors: Set<string>;
+  exportingKey?: string;
+  disabled: boolean;
+  onToggle: (key: string) => void;
+  onExport: (competitor: OverviewCompetitor) => void;
 }) {
-	if (!slice.competitors.length)
-		return (
-			<span>{copy(language, "Insufficient data", "Chưa đủ dữ liệu")}</span>
-		);
-	return (
-		<div className="competitor-stack">
-			{slice.competitors.map((competitor, rank) => {
-				const key = `${slice.name}::${companyGroupingKey(competitor.name)}`;
-				const isOpen = openCompetitors.has(key);
-				return (
-					<div
-						className={`competitor-entry ${isOpen ? "is-open" : ""}`}
-						key={key}
-					>
-						<div className="competitor-entry-main">
-							<button
-								className="competitor-toggle"
-								type="button"
-								onClick={() => onToggle(key)}
-								aria-expanded={isOpen}
-							>
-								<span>
-									{rank + 1}. {competitor.name}
-								</span>
-								<b>
-									MS Value{" "}
-									{percent(
-										slice.marketSize
-											? (competitor.value / slice.marketSize) * 100
-											: 0,
-										language,
-									)}
-								</b>
-								<small>
-									MS Unit{" "}
-									{percent(
-										slice.totalUnits
-											? (competitor.units / slice.totalUnits) * 100
-											: 0,
-										language,
-									)}
-								</small>
-							</button>
-							<button
-								className="competitor-export-button"
-								type="button"
-								title={copy(
-									language,
-									`Export ${competitor.name}`,
-									`Xuất dữ liệu ${competitor.name}`,
-								)}
-								aria-label={copy(
-									language,
-									`Export ${competitor.name} data to Excel`,
-									`Xuất dữ liệu ${competitor.name} ra Excel`,
-								)}
-								disabled={disabled}
-								onClick={() => onExport(competitor)}
-							>
-								{exportingKey === key ? (
-									<LoaderCircle className="spin" />
-								) : (
-									<Download />
-								)}
-							</button>
-						</div>
-						{isOpen && (
-							<div className="competitor-detail">
-								<div className="competitor-detail-metrics">
-									<span>
-										<strong>
-											{competitor.hospitalCount.toLocaleString(
-												localeFor(language),
-											)}
-										</strong>
-										{copy(language, "hospitals", "bệnh viện")}
-									</span>
-									<span>
-										<strong>
-											{competitor.productCount.toLocaleString(
-												localeFor(language),
-											)}
-										</strong>
-										{copy(language, "products", "sản phẩm")}
-									</span>
-									<span>
-										<strong>
-											{competitor.tenderCount.toLocaleString(
-												localeFor(language),
-											)}
-										</strong>
-										{copy(language, "award results", "KQLCNT")}
-									</span>
-								</div>
-								<div className="competitor-top-hospitals">
-									<small>
-										{copy(language, "Top hospitals", "Bệnh viện hàng đầu")}
-									</small>
-									{competitor.topHospitals.slice(0, 3).map((hospital) => (
-										<span key={hospital.name}>
-											<b>{hospital.name}</b>
-											<em>{formatVnd(hospital.value, language)}</em>
-										</span>
-									))}
-								</div>
-							</div>
-						)}
-					</div>
-				);
-			})}
-		</div>
-	);
+  if (!slice.competitors.length) return <span>{copy(language, "Insufficient data", "Chưa đủ dữ liệu")}</span>;
+  return <div className="competitor-stack">
+    {slice.competitors.map((competitor, rank) => {
+      const key = `${slice.name}::${companyGroupingKey(competitor.name)}`;
+      const isOpen = openCompetitors.has(key);
+      return <div className={`competitor-entry ${isOpen ? "is-open" : ""}`} key={key}>
+        <div className="competitor-entry-main">
+          <button className="competitor-toggle" type="button" onClick={() => onToggle(key)} aria-expanded={isOpen}>
+            <span>{rank + 1}. {competitor.name}</span>
+            <b>MS Value {percent(slice.marketSize ? (competitor.value / slice.marketSize) * 100 : 0, language)}</b>
+            <small>MS Unit {percent(slice.totalUnits ? (competitor.units / slice.totalUnits) * 100 : 0, language)}</small>
+          </button>
+          <button className="competitor-export-button" type="button" title={copy(language, `Export ${competitor.name}`, `Xuất dữ liệu ${competitor.name}`)} aria-label={copy(language, `Export ${competitor.name} data to Excel`, `Xuất dữ liệu ${competitor.name} ra Excel`)} disabled={disabled} onClick={() => onExport(competitor)}>
+            {exportingKey === key ? <LoaderCircle className="spin" /> : <Download />}
+          </button>
+        </div>
+        {isOpen && <div className="competitor-detail">
+          <div className="competitor-detail-metrics">
+            <span><strong>{competitor.hospitalCount.toLocaleString(localeFor(language))}</strong>{copy(language, "hospitals", "bệnh viện")}</span>
+            <span><strong>{competitor.productCount.toLocaleString(localeFor(language))}</strong>{copy(language, "products", "sản phẩm")}</span>
+            <span><strong>{competitor.tenderCount.toLocaleString(localeFor(language))}</strong>{copy(language, "award results", "KQLCNT")}</span>
+          </div>
+          <div className="competitor-top-hospitals"><small>{copy(language, "Top hospitals", "Bệnh viện hàng đầu")}</small>{competitor.topHospitals.slice(0, 3).map((hospital) => <span key={hospital.name}><b>{hospital.name}</b><em>{formatVnd(hospital.value, language)}</em></span>)}</div>
+        </div>}
+      </div>;
+    })}
+  </div>;
 }
 
 function mergeTenders(slices: OverviewSubOu[]) {
-	const totals = new Map<string, OverviewTender>();
-	slices
-		.flatMap((slice) => slice.tenders)
-		.forEach((entry) => {
-			const current = totals.get(entry.id) || {
-				id: entry.id,
-				hospital: entry.hospital,
-				value: 0,
-				products: 0,
-			};
-			current.value += entry.value;
-			current.products += entry.products;
-			totals.set(entry.id, current);
-		});
-	return [...totals.values()].sort((left, right) => right.value - left.value);
+  const totals = new Map<string, OverviewTender>();
+  slices.flatMap((slice) => slice.tenders).forEach((entry) => {
+    const current = totals.get(entry.id) || { id: entry.id, hospital: entry.hospital, value: 0, products: 0 };
+    current.value += entry.value;
+    current.products += entry.products;
+    totals.set(entry.id, current);
+  });
+  return [...totals.values()].sort((left, right) => right.value - left.value);
 }
 
-function OverviewFilterBar({
-	filters,
-	catalog,
-	loading,
-	onApply,
-	onDirtyChange,
-}: {
-	filters: OverviewFilterState;
-	catalog: KeywordCatalogItem[];
-	loading: boolean;
-	onApply: (filters: OverviewFilterState) => void;
-	onDirtyChange?: (dirty: boolean) => void;
+function OverviewFilterBar({ filters, catalog, loading, onApply, onDirtyChange }: {
+  filters: OverviewFilterState;
+  catalog: KeywordCatalogItem[];
+  loading: boolean;
+  onApply: (filters: OverviewFilterState) => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }) {
-	const language = useLanguage();
-	const [draft, setDraft] = useState(filters);
-	const update = (field: keyof OverviewFilterState, value: string) => {
-		setDraft((current) => {
-			const next = { ...current, [field]: value };
-			if (field === "subOu") next.productGroup = "all";
-			return next;
-		});
-	};
-	const groups = catalog
-		.filter((item) => draft.subOu === "all" || item.subOu === draft.subOu)
-		.flatMap((item) => item.productGroups)
-		.filter((name, index, values) => values.indexOf(name) === index);
+  const language = useLanguage();
+  const [draft, setDraft] = useState(filters);
+  const update = (field: keyof OverviewFilterState, value: string) => {
+    setDraft((current) => {
+      const next = { ...current, [field]: value };
+      if (field === "subOu") next.productGroup = "all";
+      return next;
+    });
+  };
+  const groups = catalog
+    .filter((item) => draft.subOu === "all" || item.subOu === draft.subOu)
+    .flatMap((item) => item.productGroups)
+    .filter((name, index, values) => values.indexOf(name) === index);
 
-	const dirty = overviewCacheId(draft) !== overviewCacheId(filters);
-	useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
+  const dirty = overviewCacheId(draft) !== overviewCacheId(filters);
+  useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
-	return (
-		<form
-			className="overview-filter"
-			onSubmit={(event) => {
-				event.preventDefault();
-				onDirtyChange?.(false);
-				onApply(draft);
-			}}
-		>
-			<label>
-				<span>
-					{copy(language, "Decision date from", "Ngày quyết định từ")}
-				</span>
-				<input
-					type="date"
-					value={draft.dateFrom}
-					max={draft.dateTo || undefined}
-					onChange={(event) => update("dateFrom", event.target.value)}
-				/>
-			</label>
-			<label>
-				<span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span>
-				<input
-					type="date"
-					value={draft.dateTo}
-					min={draft.dateFrom || undefined}
-					onChange={(event) => update("dateTo", event.target.value)}
-				/>
-			</label>
-			<div className="overview-filter-field">
-				<span>{copy(language, "Hospital", "Bệnh viện")}</span>
-				<HospitalAutocomplete
-					value={draft.hospital}
-					onChange={(value) => update("hospital", value)}
-					language={language}
-					compact
-				/>
-			</div>
-			<label>
-				<span>Sub-OU</span>
-				<select
-					value={draft.subOu}
-					onChange={(event) => update("subOu", event.target.value)}
-				>
-					<option value="all">{copy(language, "All", "Tất cả")}</option>
-					{subOuOrder.map((name) => (
-						<option value={name} key={name}>
-							{name}
-						</option>
-					))}
-				</select>
-			</label>
-			<label>
-				<span>{copy(language, "Product group", "Nhóm sản phẩm")}</span>
-				<select
-					value={draft.productGroup}
-					onChange={(event) => update("productGroup", event.target.value)}
-				>
-					<option value="all">{copy(language, "All", "Tất cả")}</option>
-					{groups.map((name) => (
-						<option value={name} key={name}>
-							{name}
-						</option>
-					))}
-				</select>
-			</label>
-			<div className="overview-filter-field">
-				<span>{copy(language, "Company", "Công ty")}</span>
-				<CompanyAutocomplete
-					value={draft.company}
-					onChange={(value) => update("company", value)}
-					language={language}
-					compact
-				/>
-			</div>
-			<button className="overview-apply" type="submit" disabled={loading}>
-				{loading
-					? copy(language, "Updating…", "Đang cập nhật…")
-					: copy(language, "Apply", "Áp dụng")}
-			</button>
-		</form>
-	);
+  return <form className="overview-filter" onSubmit={(event) => { event.preventDefault(); onDirtyChange?.(false); onApply(draft); }}>
+    <label><span>{copy(language, "Decision date from", "Ngày quyết định từ")}</span><input type="date" value={draft.dateFrom} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
+    <label><span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
+    <div className="overview-filter-field"><span>{copy(language, "Hospital", "Bệnh viện")}</span><HospitalAutocomplete value={draft.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
+    <label><span>Sub-OU</span><select value={draft.subOu} onChange={(event) => update("subOu", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{subOuOrder.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
+    <label><span>{copy(language, "Product group", "Nhóm sản phẩm")}</span><select value={draft.productGroup} onChange={(event) => update("productGroup", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{groups.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
+    <div className="overview-filter-field"><span>{copy(language, "Company", "Công ty")}</span><CompanyAutocomplete value={draft.company} onChange={(value) => update("company", value)} language={language} compact /></div>
+    <button className="overview-apply" type="submit" disabled={loading}>{loading ? copy(language, "Updating…", "Đang cập nhật…") : copy(language, "Apply", "Áp dụng")}</button>
+  </form>;
 }
 
 function MarketOverview() {
-	const language = useLanguage();
-	const initialFilters = useMemo(defaultOverviewFilters, []);
-	const [filters, setFilters] = useState(initialFilters);
-	const [catalog] = useState<KeywordCatalogItem[]>(overviewKeywordCatalog);
-	const [slices, setSlices] = useState<OverviewSubOu[]>([]);
-	const [loading, setLoading] = useState(false);
-	const [loadProgress, setLoadProgress] = useState<OverviewLoadProgress>({
-		completed: 0,
-		total: 0,
-		current: [],
-	});
-	const [lastLoadSummary, setLastLoadSummary] = useState<{
-		succeeded: number;
-		total: number;
-	}>();
-	const [exporting, setExporting] = useState(false);
-	const [exportingSubOu, setExportingSubOu] = useState<string>();
-	const [exportingCompetitor, setExportingCompetitor] = useState<string>();
-	const [exportingHospital, setExportingHospital] = useState<string>();
-	const [exportingHospitalPortfolio, setExportingHospitalPortfolio] =
-		useState(false);
-	const [error, setError] = useState<string>();
-	const [updatedAt, setUpdatedAt] = useState<string>();
-	const [loadedFromCache, setLoadedFromCache] = useState(false);
-	const [filtersDirty, setFiltersDirty] = useState(false);
-	const [openRows, setOpenRows] = useState<Set<string>>(new Set());
-	const [openCompetitors, setOpenCompetitors] = useState<Set<string>>(
-		new Set(),
-	);
-	const [showAllHospitals, setShowAllHospitals] = useState<Set<string>>(
-		new Set(),
-	);
-	const started = useRef(false);
+  const language = useLanguage();
+  const initialFilters = useMemo(defaultOverviewFilters, []);
+  const [filters, setFilters] = useState(initialFilters);
+  const [catalog] = useState<KeywordCatalogItem[]>(overviewKeywordCatalog);
+  const [slices, setSlices] = useState<OverviewSubOu[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loadProgress, setLoadProgress] = useState<OverviewLoadProgress>({ completed: 0, total: 0, current: [] });
+  const [lastLoadSummary, setLastLoadSummary] = useState<{ succeeded: number; total: number }>();
+  const [exporting, setExporting] = useState(false);
+  const [exportingSubOu, setExportingSubOu] = useState<string>();
+  const [exportingCompetitor, setExportingCompetitor] = useState<string>();
+  const [exportingHospital, setExportingHospital] = useState<string>();
+  const [exportingHospitalPortfolio, setExportingHospitalPortfolio] = useState(false);
+  const [error, setError] = useState<string>();
+  const [updatedAt, setUpdatedAt] = useState<string>();
+  const [loadedFromCache, setLoadedFromCache] = useState(false);
+  const [filtersDirty, setFiltersDirty] = useState(false);
+  const [openRows, setOpenRows] = useState<Set<string>>(new Set());
+  const [openCompetitors, setOpenCompetitors] = useState<Set<string>>(new Set());
+  const [showAllHospitals, setShowAllHospitals] = useState<Set<string>>(new Set());
+  const started = useRef(false);
 
-	async function fetchSubOuSlice(
-		subOu: string,
-		nextFilters: OverviewFilterState,
-		completedSubOus: number,
-		totalSubOus: number,
-		forceRefresh = false,
-	) {
-		const facts = new Map<string, OverviewFact>();
-		let sourceTotalElements = 0;
-		let truncated = false;
-		const failedQueries: string[] = [];
-		const rules = keywordMaster.filter(
-			(rule) =>
-				rule.subOu === subOu &&
-				(nextFilters.productGroup === "all" ||
-					rule.productGroup === nextFilters.productGroup),
-		);
-		const productGroups = [...new Set(rules.map((rule) => rule.productGroup))];
-		const seeds = [
-			...new Set(
-				productGroups.flatMap(
-					(group) => MARKET_OVERVIEW_SEARCH_SEEDS[group] || [group],
-				),
-			),
-		];
-		let successfulQueries = 0;
+  async function fetchSubOuSlice(
+    subOu: string,
+    nextFilters: OverviewFilterState,
+    completedSubOus: number,
+    totalSubOus: number,
+    forceRefresh = false,
+  ) {
+    const facts = new Map<string, OverviewFact>();
+    let sourceTotalElements = 0;
+    let truncated = false;
+    const failedQueries: string[] = [];
+    const rules = keywordMaster.filter((rule) =>
+      rule.subOu === subOu &&
+      (nextFilters.productGroup === "all" || rule.productGroup === nextFilters.productGroup),
+    );
+    const productGroups = [...new Set(rules.map((rule) => rule.productGroup))];
+    const seeds = [...new Set(productGroups.flatMap((group) => MARKET_OVERVIEW_SEARCH_SEEDS[group] || [group]))];
+    let successfulQueries = 0;
 
-		for (let seedIndex = 0; seedIndex < seeds.length; seedIndex += 1) {
-			const seed = seeds[seedIndex];
-			try {
-				setLoadProgress({
-					completed: completedSubOus,
-					total: totalSubOus,
-					current: [
-						`${subOu} · ${copy(language, "query", "truy vấn")} ${seedIndex + 1}/${seeds.length}`,
-					],
-				});
-				const result = await collectLiveWinningBids(
-					seed,
-					overviewSearchFilters(nextFilters),
-					{
-						maxPages: 25,
-						forceRefresh,
-						applyKeywordRule: false,
-						onProgress: (progress) =>
-							setLoadProgress({
-								completed: completedSubOus,
-								total: totalSubOus,
-								current: [
-									`${subOu} · ${seedIndex + 1}/${seeds.length} · ${copy(language, "page", "trang")} ${progress.completedPages}/${progress.totalPages}`,
-								],
-							}),
-					},
-				);
-				successfulQueries += 1;
-				sourceTotalElements += result.portalTotalElements;
-				truncated ||= result.truncated;
-				result.records.forEach((record) => {
-					const fact = overviewFactFor(record, rules);
-					if (fact) facts.set(fact.key, fact);
-				});
-			} catch {
-				failedQueries.push(seed);
-			}
-			if (seedIndex + 1 < seeds.length)
-				await new Promise((resolve) => setTimeout(resolve, 100));
-		}
+    for (let seedIndex = 0; seedIndex < seeds.length; seedIndex += 1) {
+      const seed = seeds[seedIndex];
+      try {
+        setLoadProgress({
+          completed: completedSubOus,
+          total: totalSubOus,
+          current: [`${subOu} · ${copy(language, "query", "truy vấn")} ${seedIndex + 1}/${seeds.length}`],
+        });
+        const result = await collectLiveWinningBids(seed, overviewSearchFilters(nextFilters), {
+          maxPages: 25,
+          forceRefresh,
+          applyKeywordRule: false,
+          onProgress: (progress) => setLoadProgress({
+            completed: completedSubOus,
+            total: totalSubOus,
+            current: [`${subOu} · ${seedIndex + 1}/${seeds.length} · ${copy(language, "page", "trang")} ${progress.completedPages}/${progress.totalPages}`],
+          }),
+        });
+        successfulQueries += 1;
+        sourceTotalElements += result.portalTotalElements;
+        truncated ||= result.truncated;
+        result.records.forEach((record) => {
+          const fact = overviewFactFor(record, rules);
+          if (fact) facts.set(fact.key, fact);
+        });
+      } catch {
+        failedQueries.push(seed);
+      }
+      if (seedIndex + 1 < seeds.length) await new Promise((resolve) => setTimeout(resolve, 100));
+    }
 
-		if (seeds.length && !successfulQueries) {
-			throw new Error(
-				copy(
-					language,
-					`Could not update ${subOu}.`,
-					`Không thể cập nhật ${subOu}.`,
-				),
-			);
-		}
+    if (seeds.length && !successfulQueries) {
+      throw new Error(copy(language, `Could not update ${subOu}.`, `Không thể cập nhật ${subOu}.`));
+    }
 
-		return {
-			fetchedAt: new Date().toISOString(),
-			slice: aggregateOverviewFacts(subOu, [...facts.values()], {
-				sourceTotalElements,
-				truncated,
-				failedQueries,
-			}),
-		};
-	}
+    return {
+      fetchedAt: new Date().toISOString(),
+      slice: aggregateOverviewFacts(subOu, [...facts.values()], {
+        sourceTotalElements,
+        truncated,
+        failedQueries,
+      }),
+    };
+  }
 
-	async function loadOverview(
-		nextFilters: OverviewFilterState,
-		availableCatalog = catalog,
-		forceRefresh = false,
-	) {
-		const matchingCatalog = availableCatalog.length
-			? availableCatalog
-			: overviewKeywordCatalog;
-		const targets = matchingCatalog
-			.filter(
-				(item) =>
-					nextFilters.subOu === "all" || item.subOu === nextFilters.subOu,
-			)
-			.filter(
-				(item) =>
-					nextFilters.productGroup === "all" ||
-					item.productGroups.includes(nextFilters.productGroup),
-			)
-			.map((item) => item.subOu);
+  async function loadOverview(nextFilters: OverviewFilterState, availableCatalog = catalog, forceRefresh = false) {
+    const matchingCatalog = availableCatalog.length ? availableCatalog : overviewKeywordCatalog;
+    const targets = matchingCatalog
+      .filter((item) => nextFilters.subOu === "all" || item.subOu === nextFilters.subOu)
+      .filter((item) => nextFilters.productGroup === "all" || item.productGroups.includes(nextFilters.productGroup))
+      .map((item) => item.subOu);
 
-		if (!forceRefresh) {
-			const cached = readOverviewCache(nextFilters);
-			if (cached) {
-				setFilters(nextFilters);
-				setSlices(cached.slices);
-				setUpdatedAt(cached.updatedAt);
-				setLastLoadSummary({
-					succeeded: cached.succeeded,
-					total: cached.total,
-				});
-				setLoadProgress({
-					completed: cached.total,
-					total: cached.total,
-					current: [],
-				});
-				setError(undefined);
-				setLoadedFromCache(true);
-				setLoading(false);
-				return;
-			}
-		}
+    if (!forceRefresh) {
+      const cached = readOverviewCache(nextFilters);
+      if (cached) {
+        setFilters(nextFilters);
+        setSlices(cached.slices);
+        setUpdatedAt(cached.updatedAt);
+        setLastLoadSummary({ succeeded: cached.succeeded, total: cached.total });
+        setLoadProgress({ completed: cached.total, total: cached.total, current: [] });
+        setError(undefined);
+        setLoadedFromCache(true);
+        setLoading(false);
+        return;
+      }
+    }
 
-		setLoading(true);
-		setError(undefined);
-		setLoadedFromCache(false);
-		setLastLoadSummary(undefined);
-		setSlices([]);
-		setFilters(nextFilters);
-		const failures: string[] = [];
-		const successfulSlices: OverviewSubOu[] = [];
-		let latestFetchedAt: string | undefined;
-		let completed = 0;
-		let succeeded = 0;
-		setLoadProgress({ completed: 0, total: targets.length, current: [] });
+    setLoading(true);
+    setError(undefined);
+    setLoadedFromCache(false);
+    setLastLoadSummary(undefined);
+    setSlices([]);
+    setFilters(nextFilters);
+    const failures: string[] = [];
+    const successfulSlices: OverviewSubOu[] = [];
+    let latestFetchedAt: string | undefined;
+    let completed = 0;
+    let succeeded = 0;
+    setLoadProgress({ completed: 0, total: targets.length, current: [] });
 
-		// One Sub-OU at a time is slower on a cold load, but avoids bursting the
-		// portal and Cloudflare Worker with concurrent long-running requests.
-		for (let index = 0; index < targets.length; index += 1) {
-			const batch = targets.slice(index, index + 1);
-			setLoadProgress({ completed, total: targets.length, current: batch });
-			const responses = await Promise.allSettled(
-				batch.map(async (subOu) => {
-					const result = await fetchSubOuSlice(
-						subOu,
-						nextFilters,
-						completed,
-						targets.length,
-						forceRefresh,
-					);
-					if (result.fetchedAt) {
-						latestFetchedAt = result.fetchedAt;
-						setUpdatedAt(result.fetchedAt);
-					}
-					return result.slice;
-				}),
-			);
-			responses.forEach((result, batchIndex) => {
-				if (result.status === "fulfilled") {
-					succeeded += 1;
-					successfulSlices.push(result.value);
-					setSlices((current) =>
-						[...current, result.value].sort(
-							(left, right) =>
-								subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name),
-						),
-					);
-				} else {
-					failures.push(batch[batchIndex]);
-				}
-			});
-			completed += batch.length;
-			setLoadProgress({ completed, total: targets.length, current: [] });
-			if (index + 1 < targets.length)
-				await new Promise((resolve) => setTimeout(resolve, 250));
-		}
-		if (failures.length)
-			setError(
-				copy(
-					language,
-					`Could not load: ${failures.join(", ")}. The remaining Sub-OUs are still shown.`,
-					`Chưa thể tải: ${failures.join(", ")}. Các Sub-OU còn lại vẫn được hiển thị.`,
-				),
-			);
-		setLastLoadSummary({ succeeded, total: targets.length });
-		if (!failures.length) {
-			const sortedSlices = successfulSlices.sort(
-				(left, right) =>
-					subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name),
-			);
-			setSlices(sortedSlices);
-			writeOverviewCache(nextFilters, {
-				// Keep the session cache compact. Detailed facts stay in memory after a
-				// live load and are retrieved for one hospital on demand after a reload.
-				slices: sortedSlices.map(({ facts: _facts, ...slice }) => slice),
-				updatedAt: latestFetchedAt,
-				succeeded,
-				total: targets.length,
-			});
-		}
-		setLoading(false);
-	}
+    // One Sub-OU at a time is slower on a cold load, but avoids bursting the
+    // portal and Cloudflare Worker with concurrent long-running requests.
+    for (let index = 0; index < targets.length; index += 1) {
+      const batch = targets.slice(index, index + 1);
+      setLoadProgress({ completed, total: targets.length, current: batch });
+      const responses = await Promise.allSettled(batch.map(async (subOu) => {
+        const result = await fetchSubOuSlice(subOu, nextFilters, completed, targets.length, forceRefresh);
+        if (result.fetchedAt) {
+          latestFetchedAt = result.fetchedAt;
+          setUpdatedAt(result.fetchedAt);
+        }
+        return result.slice;
+      }));
+      responses.forEach((result, batchIndex) => {
+        if (result.status === "fulfilled") {
+          succeeded += 1;
+          successfulSlices.push(result.value);
+          setSlices((current) => [...current, result.value].sort((left, right) => subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name)));
+        } else {
+          failures.push(batch[batchIndex]);
+        }
+      });
+      completed += batch.length;
+      setLoadProgress({ completed, total: targets.length, current: [] });
+      if (index + 1 < targets.length) await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    if (failures.length) setError(copy(language, `Could not load: ${failures.join(", ")}. The remaining Sub-OUs are still shown.`, `Chưa thể tải: ${failures.join(", ")}. Các Sub-OU còn lại vẫn được hiển thị.`));
+    setLastLoadSummary({ succeeded, total: targets.length });
+    if (!failures.length) {
+      const sortedSlices = successfulSlices.sort((left, right) => subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name));
+      setSlices(sortedSlices);
+      writeOverviewCache(nextFilters, {
+        // Keep the session cache compact. Detailed facts stay in memory after a
+        // live load and are retrieved for one hospital on demand after a reload.
+        slices: sortedSlices.map(({ facts: _facts, ...slice }) => slice),
+        updatedAt: latestFetchedAt,
+        succeeded,
+        total: targets.length,
+      });
+    }
+    setLoading(false);
+  }
 
-	useEffect(() => {
-		if (started.current) return;
-		started.current = true;
-		void loadOverview(initialFilters, overviewKeywordCatalog);
-	}, [initialFilters]);
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    void loadOverview(initialFilters, overviewKeywordCatalog);
+  }, [initialFilters]);
 
-	const totals = useMemo(() => {
-		const marketSize = slices.reduce((sum, slice) => sum + slice.marketSize, 0);
-		const units = slices.reduce((sum, slice) => sum + slice.totalUnits, 0);
-		const medtronicValue = slices.reduce(
-			(sum, slice) => sum + slice.medtronicValue,
-			0,
-		);
-		const medtronicUnits = slices.reduce(
-			(sum, slice) => sum + slice.medtronicUnits,
-			0,
-		);
-		const hospitals = mergeHospitals(slices);
-		const tenders = mergeTenders(slices);
-		return {
-			marketSize,
-			medtronicValueShare: marketSize ? (medtronicValue / marketSize) * 100 : 0,
-			medtronicUnitShare: units ? (medtronicUnits / units) * 100 : 0,
-			hospitals,
-			tenders,
-			suppliers: mergeNamedValues(slices, (slice) => slice.suppliers).filter(
-				(entry) => entry.name !== "Chưa xác định",
-			),
-		};
-	}, [slices]);
-	const hasWarnings = slices.some(
-		(slice) => slice.truncated || slice.failedQueries.length,
-	);
+  const totals = useMemo(() => {
+    const marketSize = slices.reduce((sum, slice) => sum + slice.marketSize, 0);
+    const units = slices.reduce((sum, slice) => sum + slice.totalUnits, 0);
+    const medtronicValue = slices.reduce((sum, slice) => sum + slice.medtronicValue, 0);
+    const medtronicUnits = slices.reduce((sum, slice) => sum + slice.medtronicUnits, 0);
+    const hospitals = mergeHospitals(slices);
+    const tenders = mergeTenders(slices);
+    return {
+      marketSize,
+      medtronicValueShare: marketSize ? (medtronicValue / marketSize) * 100 : 0,
+      medtronicUnitShare: units ? (medtronicUnits / units) * 100 : 0,
+      hospitals,
+      tenders,
+      suppliers: mergeNamedValues(slices, (slice) => slice.suppliers).filter((entry) => entry.name !== "Chưa xác định"),
+    };
+  }, [slices]);
+  const hasWarnings = slices.some((slice) => slice.truncated || slice.failedQueries.length);
 
-	async function exportExcel() {
-		setExporting(true);
-		setError(undefined);
-		try {
-			if (!slices.length)
-				throw new Error(
-					copy(
-						language,
-						"There is no overview data to export.",
-						"Chưa có dữ liệu tổng quan để xuất.",
-					),
-				);
-			const detailedFacts: OverviewFact[] = [];
-			for (let index = 0; index < slices.length; index += 1) {
-				const slice = slices[index];
-				let facts = slice.facts;
-				if (!facts) {
-					const result = await fetchSubOuSlice(
-						slice.name,
-						filters,
-						index,
-						slices.length,
-					);
-					facts = result.slice.facts;
-				}
-				detailedFacts.push(...(facts || []));
-			}
-			const detailRows = detailedFacts.map(overviewDetailExcelRow);
-			const subOuRows = slices.map((slice) => ({
-				"Sub-OU": safeExcelText(slice.name),
-				"Market Size (VND)": slice.marketSize,
-				"Market Share Medtronic (VND)": slice.medtronicValueShare / 100,
-				"Market Share Medtronic (Unit)": slice.medtronicUnitShare / 100,
-				"Số KQLCNT": slice.tenderCount,
-				"Bệnh viện trúng thầu": slice.hospitalCount,
-				"Số sản phẩm": slice.productCount,
-				"Top 1 đối thủ": safeExcelText(slice.competitors[0]?.name),
-				"Top 1 Value": slice.competitors[0]?.value || 0,
-				"Top 1 Unit": slice.competitors[0]?.units || 0,
-				"Top 2 đối thủ": safeExcelText(slice.competitors[1]?.name),
-				"Top 2 Value": slice.competitors[1]?.value || 0,
-				"Top 2 Unit": slice.competitors[1]?.units || 0,
-				"Top 3 đối thủ": safeExcelText(slice.competitors[2]?.name),
-				"Top 3 Value": slice.competitors[2]?.value || 0,
-				"Top 3 Unit": slice.competitors[2]?.units || 0,
-			}));
-			const hospitalRows = slices.flatMap((slice) =>
-				slice.hospitals.map((hospital) => ({
-					"Sub-OU": safeExcelText(slice.name),
-					"Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
-					"Mã định danh CĐT": safeExcelText(hospital.id),
-					"Số sản phẩm": hospital.products,
-					"Số KQLCNT": hospital.tenders,
-					"Số lượng": hospital.units,
-					"Market Size (VND)": hospital.value,
-				})),
-			);
-			const supplierRows = slices.flatMap((slice) =>
-				slice.suppliers.map((supplier) => ({
-					"Sub-OU": safeExcelText(slice.name),
-					"Nhà phân phối": safeExcelText(supplier.name),
-					"Số lượng": supplier.units,
-					"Market Size (VND)": supplier.value,
-				})),
-			);
-			const infoRows = [
-				["Thông tin xuất dữ liệu", ""],
-				[
-					"Ngày tải",
-					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-				],
-				["Từ ngày", filters.dateFrom || "Tất cả"],
-				["Đến ngày", filters.dateTo || "Tất cả"],
-				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
-				["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
-				[
-					"Sub-OU",
-					safeExcelText(filters.subOu !== "all" ? filters.subOu : "Tất cả"),
-				],
-				[
-					"Nhóm sản phẩm",
-					safeExcelText(
-						filters.productGroup !== "all" ? filters.productGroup : "Tất cả",
-					),
-				],
-				[
-					"Công ty",
-					safeExcelText(filters.company !== "all" ? filters.company : "Tất cả"),
-				],
-				["Nguồn", "Cổng Mua Sắm Công"],
-			];
-			await downloadWorkbook(
-				[
-					{
-						name: "Chi tiết kết quả",
-						rows: detailRows,
-						columns: overviewDetailColumnWidths,
-					},
-					{
-						name: "Tổng quan Sub-OU",
-						rows: subOuRows,
-						columns: [22, ...Array(15).fill(22)],
-					},
-					{
-						name: "Bệnh viện",
-						rows: hospitalRows,
-						columns: [22, 48, 24, 16, 16, 16, 22],
-					},
-					{
-						name: "Nhà phân phối",
-						rows: supplierRows,
-						columns: [22, 48, 16, 22],
-					},
-					{ name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
-				],
-				`${formatDownloadDate(new Date())}-tong-quan-thi-truong.xlsx`,
-			);
-		} catch (caught) {
-			setError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not create the Excel file.",
-							"Không thể tạo file Excel.",
-						),
-			);
-		} finally {
-			setExporting(false);
-		}
-	}
+  async function exportExcel() {
+    setExporting(true);
+    setError(undefined);
+    try {
+      if (!slices.length) throw new Error(copy(language, "There is no overview data to export.", "Chưa có dữ liệu tổng quan để xuất."));
+      const detailedFacts: OverviewFact[] = [];
+      for (let index = 0; index < slices.length; index += 1) {
+        const slice = slices[index];
+        let facts = slice.facts;
+        if (!facts) {
+          const result = await fetchSubOuSlice(slice.name, filters, index, slices.length);
+          facts = result.slice.facts;
+        }
+        detailedFacts.push(...(facts || []));
+      }
+      const detailRows = detailedFacts.map(overviewDetailExcelRow);
+      const subOuRows = slices.map((slice) => ({
+        "Sub-OU": safeExcelText(slice.name), "Market Size (VND)": slice.marketSize,
+        "Market Share Medtronic (VND)": slice.medtronicValueShare / 100,
+        "Market Share Medtronic (Unit)": slice.medtronicUnitShare / 100,
+        "Số KQLCNT": slice.tenderCount, "Bệnh viện trúng thầu": slice.hospitalCount, "Số sản phẩm": slice.productCount,
+        "Top 1 đối thủ": safeExcelText(slice.competitors[0]?.name), "Top 1 Value": slice.competitors[0]?.value || 0, "Top 1 Unit": slice.competitors[0]?.units || 0,
+        "Top 2 đối thủ": safeExcelText(slice.competitors[1]?.name), "Top 2 Value": slice.competitors[1]?.value || 0, "Top 2 Unit": slice.competitors[1]?.units || 0,
+        "Top 3 đối thủ": safeExcelText(slice.competitors[2]?.name), "Top 3 Value": slice.competitors[2]?.value || 0, "Top 3 Unit": slice.competitors[2]?.units || 0,
+      }));
+      const hospitalRows = slices.flatMap((slice) => slice.hospitals.map((hospital) => ({
+        "Sub-OU": safeExcelText(slice.name), "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name), "Mã định danh CĐT": safeExcelText(hospital.id),
+        "Số sản phẩm": hospital.products, "Số KQLCNT": hospital.tenders, "Số lượng": hospital.units, "Market Size (VND)": hospital.value,
+      })));
+      const supplierRows = slices.flatMap((slice) => slice.suppliers.map((supplier) => ({
+        "Sub-OU": safeExcelText(slice.name), "Nhà phân phối": safeExcelText(supplier.name), "Số lượng": supplier.units, "Market Size (VND)": supplier.value,
+      })));
+      const infoRows = [
+        ["Thông tin xuất dữ liệu", ""], ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Từ ngày", filters.dateFrom || "Tất cả"], ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
+        ["Sub-OU", safeExcelText(filters.subOu !== "all" ? filters.subOu : "Tất cả")],
+        ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
+        ["Công ty", safeExcelText(filters.company !== "all" ? filters.company : "Tất cả")], ["Nguồn", "Cổng Mua Sắm Công"],
+      ];
+      await downloadWorkbook([
+        { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
+        { name: "Tổng quan Sub-OU", rows: subOuRows, columns: [22, ...Array(15).fill(22)] },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [22, 48, 24, 16, 16, 16, 22] },
+        { name: "Nhà phân phối", rows: supplierRows, columns: [22, 48, 16, 22] },
+        { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+      ], `${formatDownloadDate(new Date())}-tong-quan-thi-truong.xlsx`);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not create the Excel file.", "Không thể tạo file Excel."));
+    } finally {
+      setExporting(false);
+    }
+  }
 
-	async function exportFilteredHospitalAllSubOus() {
-		setExportingHospitalPortfolio(true);
-		setError(undefined);
-		try {
-			if (!filters.hospital.trim()) {
-				throw new Error(
-					copy(
-						language,
-						"Select and apply a hospital before exporting.",
-						"Chọn và áp dụng một bệnh viện trước khi xuất Excel.",
-					),
-				);
-			}
+  async function exportFilteredHospitalAllSubOus() {
+    setExportingHospitalPortfolio(true);
+    setError(undefined);
+    try {
+      if (!filters.hospital.trim()) {
+        throw new Error(copy(language, "Select and apply a hospital before exporting.", "Chọn và áp dụng một bệnh viện trước khi xuất Excel."));
+      }
 
-			const selectedPortalValue = hospitalPortalQuery(filters.hospital);
-			const selectedBuyerId = /^vn[a-z0-9]+$/i.test(selectedPortalValue)
-				? selectedPortalValue.toLowerCase()
-				: "";
-			const selectedName = filters.hospital
-				.replace(/\s*\[[^\]]+\]\s*$/, "")
-				.trim();
-			const exportFilters: OverviewFilterState = { ...filters, subOu: "all" };
-			const allFacts: OverviewFact[] = [];
+      const selectedPortalValue = hospitalPortalQuery(filters.hospital);
+      const selectedBuyerId = /^vn[a-z0-9]+$/i.test(selectedPortalValue)
+        ? selectedPortalValue.toLowerCase()
+        : "";
+      const selectedName = filters.hospital.replace(/\s*\[[^\]]+\]\s*$/, "").trim();
+      const exportFilters: OverviewFilterState = { ...filters, subOu: "all" };
+      const allFacts: OverviewFact[] = [];
 
-			for (let index = 0; index < subOuOrder.length; index += 1) {
-				const subOu = subOuOrder[index];
-				const existingSlice =
-					filters.subOu === "all"
-						? slices.find((item) => item.name === subOu)
-						: undefined;
-				let facts = existingSlice?.facts;
-				if (!facts) {
-					const result = await fetchSubOuSlice(
-						subOu,
-						exportFilters,
-						index,
-						subOuOrder.length,
-					);
-					facts = result.slice.facts;
-				}
-				allFacts.push(...(facts || []));
-			}
+      for (let index = 0; index < subOuOrder.length; index += 1) {
+        const subOu = subOuOrder[index];
+        const existingSlice = filters.subOu === "all" ? slices.find((item) => item.name === subOu) : undefined;
+        let facts = existingSlice?.facts;
+        if (!facts) {
+          const result = await fetchSubOuSlice(subOu, exportFilters, index, subOuOrder.length);
+          facts = result.slice.facts;
+        }
+        allFacts.push(...(facts || []));
+      }
 
-			const hospitalFacts = allFacts.filter((fact) => {
-				if (selectedBuyerId)
-					return fact.buyerId.trim().toLowerCase() === selectedBuyerId;
-				const target = normalize(selectedName);
-				return (
-					normalize(fact.hospital) === target ||
-					normalize(fact.sourceHospital) === target
-				);
-			});
-			if (!hospitalFacts.length) {
-				throw new Error(
-					copy(
-						language,
-						"No classified rows are available for this hospital under the active filters.",
-						"Không có dòng đã phân loại của bệnh viện này theo bộ lọc hiện tại.",
-					),
-				);
-			}
+      const hospitalFacts = allFacts.filter((fact) => {
+        if (selectedBuyerId) return fact.buyerId.trim().toLowerCase() === selectedBuyerId;
+        const target = normalize(selectedName);
+        return normalize(fact.hospital) === target || normalize(fact.sourceHospital) === target;
+      });
+      if (!hospitalFacts.length) {
+        throw new Error(copy(language, "No classified rows are available for this hospital under the active filters.", "Không có dòng đã phân loại của bệnh viện này theo bộ lọc hiện tại."));
+      }
 
-			hospitalFacts.sort((left, right) => {
-				const subOuDifference =
-					subOuOrder.indexOf(left.subOu) - subOuOrder.indexOf(right.subOu);
-				if (subOuDifference) return subOuDifference;
-				return String(right.decisionDate).localeCompare(
-					String(left.decisionDate),
-				);
-			});
-			const canonicalHospital = hospitalFacts[0].hospital;
-			const buyerId = hospitalFacts[0].buyerId;
-			const detailRows = hospitalFacts.map(hospitalAllSubOuExcelRow);
-			const includedSubOus = [
-				...new Set(hospitalFacts.map((fact) => fact.subOu)),
-			];
-			const infoRows = [
-				["Thông tin xuất dữ liệu", ""],
-				["Bệnh viện / chủ đầu tư", safeExcelText(canonicalHospital)],
-				["Mã định danh CĐT", safeExcelText(buyerId)],
-				[
-					"Ngày tải",
-					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-				],
-				["Từ ngày", filters.dateFrom || "Tất cả"],
-				["Đến ngày", filters.dateTo || "Tất cả"],
-				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
-				["Sub-OU", `Tất cả (${includedSubOus.join(", ")})`],
-				[
-					"Nhóm sản phẩm",
-					filters.productGroup !== "all"
-						? safeExcelText(filters.productGroup)
-						: "Tất cả",
-				],
-				[
-					"Công ty",
-					filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả",
-				],
-				["Số dòng chi tiết", hospitalFacts.length],
-				["Nguồn", "Cổng Mua Sắm Công"],
-			];
+      hospitalFacts.sort((left, right) => {
+        const subOuDifference = subOuOrder.indexOf(left.subOu) - subOuOrder.indexOf(right.subOu);
+        if (subOuDifference) return subOuDifference;
+        return String(right.decisionDate).localeCompare(String(left.decisionDate));
+      });
+      const canonicalHospital = hospitalFacts[0].hospital;
+      const buyerId = hospitalFacts[0].buyerId;
+      const detailRows = hospitalFacts.map(hospitalAllSubOuExcelRow);
+      const includedSubOus = [...new Set(hospitalFacts.map((fact) => fact.subOu))];
+      const infoRows = [
+        ["Thông tin xuất dữ liệu", ""],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(canonicalHospital)],
+        ["Mã định danh CĐT", safeExcelText(buyerId)],
+        ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Từ ngày", filters.dateFrom || "Tất cả"],
+        ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+        ["Sub-OU", `Tất cả (${includedSubOus.join(", ")})`],
+        ["Nhóm sản phẩm", filters.productGroup !== "all" ? safeExcelText(filters.productGroup) : "Tất cả"],
+        ["Công ty", filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả"],
+        ["Số dòng chi tiết", hospitalFacts.length],
+        ["Nguồn", "Cổng Mua Sắm Công"],
+      ];
 
-			await downloadWorkbook(
-				[
-					{
-						name: "Chi tiết tất cả Sub-OU",
-						rows: detailRows,
-						columns: hospitalAllSubOuColumnWidths,
-					},
-					{ name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
-				],
-				`${formatDownloadDate(new Date())}-${filenameSlug(canonicalHospital)}-tat-ca-sub-ou.xlsx`,
-			);
-		} catch (caught) {
-			setError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not create the hospital Excel file.",
-							"Không thể tạo file Excel cho bệnh viện.",
-						),
-			);
-		} finally {
-			setExportingHospitalPortfolio(false);
-		}
-	}
+      await downloadWorkbook([
+        { name: "Chi tiết tất cả Sub-OU", rows: detailRows, columns: hospitalAllSubOuColumnWidths },
+        { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(canonicalHospital)}-tat-ca-sub-ou.xlsx`);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not create the hospital Excel file.", "Không thể tạo file Excel cho bệnh viện."));
+    } finally {
+      setExportingHospitalPortfolio(false);
+    }
+  }
 
-	async function exportSubOu(sourceSlice: OverviewSubOu) {
-		setExportingSubOu(sourceSlice.name);
-		setError(undefined);
-		try {
-			let exportSlice = sourceSlice;
-			if (!exportSlice.facts) {
-				const result = await fetchSubOuSlice(sourceSlice.name, filters, 0, 1);
-				exportSlice = result.slice;
-			}
-			const facts = exportSlice.facts || [];
-			if (!facts.length) {
-				throw new Error(
-					copy(
-						language,
-						"No detailed rows are available for this Sub-OU under the active filters.",
-						"Không có dữ liệu chi tiết của Sub-OU này theo bộ lọc hiện tại.",
-					),
-				);
-			}
-			const detailRows = facts.map(overviewDetailExcelRow);
-			const hospitalRows = exportSlice.hospitals.map((hospital) => ({
-				"Sub-OU": safeExcelText(exportSlice.name),
-				"Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
-				"Mã định danh CĐT": safeExcelText(hospital.id),
-				"Số sản phẩm": hospital.products,
-				"Số KQLCNT": hospital.tenders,
-				"Số lượng": hospital.units,
-				"Market Size (VND)": hospital.value,
-				"Top 1 đối thủ": safeExcelText(hospital.competitors?.[0]?.name),
-				"Top 1 MS Value": hospital.value
-					? (hospital.competitors?.[0]?.value || 0) / hospital.value
-					: 0,
-				"Top 1 MS Unit": hospital.units
-					? (hospital.competitors?.[0]?.units || 0) / hospital.units
-					: 0,
-				"Top 2 đối thủ": safeExcelText(hospital.competitors?.[1]?.name),
-				"Top 2 MS Value": hospital.value
-					? (hospital.competitors?.[1]?.value || 0) / hospital.value
-					: 0,
-				"Top 2 MS Unit": hospital.units
-					? (hospital.competitors?.[1]?.units || 0) / hospital.units
-					: 0,
-				"Top 3 đối thủ": safeExcelText(hospital.competitors?.[2]?.name),
-				"Top 3 MS Value": hospital.value
-					? (hospital.competitors?.[2]?.value || 0) / hospital.value
-					: 0,
-				"Top 3 MS Unit": hospital.units
-					? (hospital.competitors?.[2]?.units || 0) / hospital.units
-					: 0,
-			}));
-			const infoRows = [
-				["Thông tin xuất dữ liệu", ""],
-				[
-					"Ngày tải",
-					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-				],
-				["Sub-OU", safeExcelText(exportSlice.name)],
-				["Từ ngày", filters.dateFrom || "Tất cả"],
-				["Đến ngày", filters.dateTo || "Tất cả"],
-				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
-				["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
-				[
-					"Nhóm sản phẩm",
-					safeExcelText(
-						filters.productGroup !== "all" ? filters.productGroup : "Tất cả",
-					),
-				],
-				[
-					"Công ty",
-					safeExcelText(filters.company !== "all" ? filters.company : "Tất cả"),
-				],
-				["Số bệnh viện", exportSlice.hospitalCount],
-				["Số dòng chi tiết", facts.length],
-				["Nguồn", "Cổng Mua Sắm Công"],
-			];
-			await downloadWorkbook(
-				[
-					{
-						name: "Chi tiết kết quả",
-						rows: detailRows,
-						columns: overviewDetailColumnWidths,
-					},
-					{
-						name: "Bệnh viện",
-						rows: hospitalRows,
-						columns: [
-							18, 46, 24, 16, 16, 16, 22, 34, 18, 18, 34, 18, 18, 34, 18, 18,
-						],
-					},
-					{ name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
-				],
-				`${formatDownloadDate(new Date())}-${filenameSlug(exportSlice.name)}.xlsx`,
-			);
-		} catch (caught) {
-			setError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not create the Sub-OU Excel file.",
-							"Không thể tạo file Excel cho Sub-OU.",
-						),
-			);
-		} finally {
-			setExportingSubOu(undefined);
-		}
-	}
+  async function exportSubOu(sourceSlice: OverviewSubOu) {
+    setExportingSubOu(sourceSlice.name);
+    setError(undefined);
+    try {
+      let exportSlice = sourceSlice;
+      if (!exportSlice.facts) {
+        const result = await fetchSubOuSlice(sourceSlice.name, filters, 0, 1);
+        exportSlice = result.slice;
+      }
+      const facts = exportSlice.facts || [];
+      if (!facts.length) {
+        throw new Error(copy(language, "No detailed rows are available for this Sub-OU under the active filters.", "Không có dữ liệu chi tiết của Sub-OU này theo bộ lọc hiện tại."));
+      }
+      const detailRows = facts.map(overviewDetailExcelRow);
+      const hospitalRows = exportSlice.hospitals.map((hospital) => ({
+        "Sub-OU": safeExcelText(exportSlice.name),
+        "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
+        "Mã định danh CĐT": safeExcelText(hospital.id),
+        "Số sản phẩm": hospital.products,
+        "Số KQLCNT": hospital.tenders,
+        "Số lượng": hospital.units,
+        "Market Size (VND)": hospital.value,
+        "Top 1 đối thủ": safeExcelText(hospital.competitors?.[0]?.name),
+        "Top 1 MS Value": hospital.value ? (hospital.competitors?.[0]?.value || 0) / hospital.value : 0,
+        "Top 1 MS Unit": hospital.units ? (hospital.competitors?.[0]?.units || 0) / hospital.units : 0,
+        "Top 2 đối thủ": safeExcelText(hospital.competitors?.[1]?.name),
+        "Top 2 MS Value": hospital.value ? (hospital.competitors?.[1]?.value || 0) / hospital.value : 0,
+        "Top 2 MS Unit": hospital.units ? (hospital.competitors?.[1]?.units || 0) / hospital.units : 0,
+        "Top 3 đối thủ": safeExcelText(hospital.competitors?.[2]?.name),
+        "Top 3 MS Value": hospital.value ? (hospital.competitors?.[2]?.value || 0) / hospital.value : 0,
+        "Top 3 MS Unit": hospital.units ? (hospital.competitors?.[2]?.units || 0) / hospital.units : 0,
+      }));
+      const infoRows = [
+        ["Thông tin xuất dữ liệu", ""],
+        ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Sub-OU", safeExcelText(exportSlice.name)],
+        ["Từ ngày", filters.dateFrom || "Tất cả"],
+        ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
+        ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
+        ["Công ty", safeExcelText(filters.company !== "all" ? filters.company : "Tất cả")],
+        ["Số bệnh viện", exportSlice.hospitalCount],
+        ["Số dòng chi tiết", facts.length],
+        ["Nguồn", "Cổng Mua Sắm Công"],
+      ];
+      await downloadWorkbook([
+        { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 46, 24, 16, 16, 16, 22, 34, 18, 18, 34, 18, 18, 34, 18, 18] },
+        { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(exportSlice.name)}.xlsx`);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not create the Sub-OU Excel file.", "Không thể tạo file Excel cho Sub-OU."));
+    } finally {
+      setExportingSubOu(undefined);
+    }
+  }
 
-	async function exportCompetitor(
-		sourceSlice: OverviewSubOu,
-		competitor: OverviewCompetitor,
-	) {
-		const exportKey = `${sourceSlice.name}::${companyGroupingKey(competitor.name)}`;
-		setExportingCompetitor(exportKey);
-		setError(undefined);
-		try {
-			let facts = sourceSlice.facts;
-			if (!facts) {
-				const result = await fetchSubOuSlice(sourceSlice.name, filters, 0, 1);
-				facts = result.slice.facts;
-			}
-			const competitorFacts = (facts || []).filter(
-				(fact) =>
-					companyGroupingKey(fact.company) ===
-					companyGroupingKey(competitor.name),
-			);
-			if (!competitorFacts.length) {
-				throw new Error(
-					copy(
-						language,
-						"No detailed rows are available for this competitor under the active filters.",
-						"Không có dữ liệu chi tiết của đối thủ này theo bộ lọc hiện tại.",
-					),
-				);
-			}
-			const competitorSlice = aggregateOverviewFacts(
-				sourceSlice.name,
-				competitorFacts,
-				{
-					sourceTotalElements: competitorFacts.length,
-					truncated: false,
-					failedQueries: [],
-				},
-			);
-			const detailRows = competitorFacts.map(overviewDetailExcelRow);
-			const hospitalRows = competitorSlice.hospitals.map((hospital) => ({
-				"Sub-OU": safeExcelText(sourceSlice.name),
-				"Đối thủ": safeExcelText(competitor.name),
-				"Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
-				"Mã định danh CĐT": safeExcelText(hospital.id),
-				"Số sản phẩm": hospital.products,
-				"Số KQLCNT": hospital.tenders,
-				"Số lượng": hospital.units,
-				"Giá trị trúng thầu (VND)": hospital.value,
-			}));
-			const infoRows = [
-				["Thông tin xuất dữ liệu", ""],
-				[
-					"Ngày tải",
-					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-				],
-				["Sub-OU", safeExcelText(sourceSlice.name)],
-				["Đối thủ", safeExcelText(competitor.name)],
-				["Từ ngày", filters.dateFrom || "Tất cả"],
-				["Đến ngày", filters.dateTo || "Tất cả"],
-				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
-				["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
-				[
-					"Nhóm sản phẩm",
-					safeExcelText(
-						filters.productGroup !== "all" ? filters.productGroup : "Tất cả",
-					),
-				],
-				["Số bệnh viện", competitorSlice.hospitalCount],
-				["Số sản phẩm", competitorSlice.productCount],
-				["Số KQLCNT", competitorSlice.tenderCount],
-				["Số dòng chi tiết", competitorFacts.length],
-				["Nguồn", "Cổng Mua Sắm Công"],
-			];
-			await downloadWorkbook(
-				[
-					{
-						name: "Chi tiết kết quả",
-						rows: detailRows,
-						columns: overviewDetailColumnWidths,
-					},
-					{
-						name: "Bệnh viện",
-						rows: hospitalRows,
-						columns: [18, 38, 46, 24, 16, 16, 16, 24],
-					},
-					{ name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
-				],
-				`${formatDownloadDate(new Date())}-${filenameSlug(sourceSlice.name)}-${filenameSlug(competitor.name)}.xlsx`,
-			);
-		} catch (caught) {
-			setError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not create the competitor Excel file.",
-							"Không thể tạo file Excel cho đối thủ.",
-						),
-			);
-		} finally {
-			setExportingCompetitor(undefined);
-		}
-	}
+  async function exportCompetitor(sourceSlice: OverviewSubOu, competitor: OverviewCompetitor) {
+    const exportKey = `${sourceSlice.name}::${companyGroupingKey(competitor.name)}`;
+    setExportingCompetitor(exportKey);
+    setError(undefined);
+    try {
+      let facts = sourceSlice.facts;
+      if (!facts) {
+        const result = await fetchSubOuSlice(sourceSlice.name, filters, 0, 1);
+        facts = result.slice.facts;
+      }
+      const competitorFacts = (facts || []).filter((fact) => companyGroupingKey(fact.company) === companyGroupingKey(competitor.name));
+      if (!competitorFacts.length) {
+        throw new Error(copy(language, "No detailed rows are available for this competitor under the active filters.", "Không có dữ liệu chi tiết của đối thủ này theo bộ lọc hiện tại."));
+      }
+      const competitorSlice = aggregateOverviewFacts(sourceSlice.name, competitorFacts, {
+        sourceTotalElements: competitorFacts.length,
+        truncated: false,
+        failedQueries: [],
+      });
+      const detailRows = competitorFacts.map(overviewDetailExcelRow);
+      const hospitalRows = competitorSlice.hospitals.map((hospital) => ({
+        "Sub-OU": safeExcelText(sourceSlice.name),
+        "Đối thủ": safeExcelText(competitor.name),
+        "Bệnh viện / chủ đầu tư": safeExcelText(hospital.name),
+        "Mã định danh CĐT": safeExcelText(hospital.id),
+        "Số sản phẩm": hospital.products,
+        "Số KQLCNT": hospital.tenders,
+        "Số lượng": hospital.units,
+        "Giá trị trúng thầu (VND)": hospital.value,
+      }));
+      const infoRows = [
+        ["Thông tin xuất dữ liệu", ""],
+        ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Sub-OU", safeExcelText(sourceSlice.name)],
+        ["Đối thủ", safeExcelText(competitor.name)],
+        ["Từ ngày", filters.dateFrom || "Tất cả"],
+        ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+        ["Bệnh viện / chủ đầu tư", safeExcelText(filters.hospital || "Tất cả")],
+        ["Nhóm sản phẩm", safeExcelText(filters.productGroup !== "all" ? filters.productGroup : "Tất cả")],
+        ["Số bệnh viện", competitorSlice.hospitalCount],
+        ["Số sản phẩm", competitorSlice.productCount],
+        ["Số KQLCNT", competitorSlice.tenderCount],
+        ["Số dòng chi tiết", competitorFacts.length],
+        ["Nguồn", "Cổng Mua Sắm Công"],
+      ];
+      await downloadWorkbook([
+        { name: "Chi tiết kết quả", rows: detailRows, columns: overviewDetailColumnWidths },
+        { name: "Bệnh viện", rows: hospitalRows, columns: [18, 38, 46, 24, 16, 16, 16, 24] },
+        { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(sourceSlice.name)}-${filenameSlug(competitor.name)}.xlsx`);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not create the competitor Excel file.", "Không thể tạo file Excel cho đối thủ."));
+    } finally {
+      setExportingCompetitor(undefined);
+    }
+  }
 
-	async function exportHospital(subOu: string, hospital: OverviewHospital) {
-		const buyerKey = hospitalKey(hospital.id, hospital.name);
-		const exportKey = `${subOu}::${buyerKey}`;
-		setExportingHospital(exportKey);
-		setError(undefined);
-		try {
-			let facts = slices.find((item) => item.name === subOu)?.facts;
-			if (!facts?.length) {
-				const result = await fetchSubOuSlice(
-					subOu,
-					{ ...filters, hospital: hospital.id || hospital.name },
-					0,
-					1,
-				);
-				facts = result.slice.facts;
-			}
-			const rows = (facts || [])
-				.filter((fact) => hospitalKey(fact.buyerId, fact.hospital) === buyerKey)
-				.map((fact) => ({ ...fact, subOu }));
-			if (!rows.length) {
-				throw new Error(
-					copy(
-						language,
-						"No detailed rows are available for this hospital under the active filters.",
-						"Không có dữ liệu chi tiết của bệnh viện này theo bộ lọc hiện tại.",
-					),
-				);
-			}
-			const detailRows = rows.map(overviewDetailExcelRow);
-			const infoRows = [
-				["Bệnh viện / chủ đầu tư", safeExcelText(hospital.name)],
-				["Mã định danh CĐT", safeExcelText(hospital.id)],
-				[
-					"Ngày tải",
-					new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-				],
-				["Từ ngày", filters.dateFrom || "Tất cả"],
-				["Đến ngày", filters.dateTo || "Tất cả"],
-				["Trường ngày áp dụng", "Ngày ban hành quyết định"],
-				[
-					"Sub-OU",
-					filters.subOu !== "all" ? safeExcelText(filters.subOu) : "Tất cả",
-				],
-				[
-					"Nhóm sản phẩm",
-					filters.productGroup !== "all"
-						? safeExcelText(filters.productGroup)
-						: "Tất cả",
-				],
-				[
-					"Công ty",
-					filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả",
-				],
-				["Nguồn", "Cổng Mua Sắm Công"],
-			];
-			await downloadWorkbook(
-				[
-					{
-						name: "Chi tiết bệnh viện",
-						rows: detailRows,
-						columns: overviewDetailColumnWidths,
-					},
-					{ name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
-				],
-				`${formatDownloadDate(new Date())}-${filenameSlug(hospital.name)}.xlsx`,
-			);
-		} catch (caught) {
-			setError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not create the hospital Excel file.",
-							"Không thể tạo file Excel cho bệnh viện.",
-						),
-			);
-		} finally {
-			setExportingHospital(undefined);
-		}
-	}
+  async function exportHospital(subOu: string, hospital: OverviewHospital) {
+    const buyerKey = hospitalKey(hospital.id, hospital.name);
+    const exportKey = `${subOu}::${buyerKey}`;
+    setExportingHospital(exportKey);
+    setError(undefined);
+    try {
+      let facts = slices.find((item) => item.name === subOu)?.facts;
+      if (!facts?.length) {
+        const result = await fetchSubOuSlice(subOu, { ...filters, hospital: hospital.id || hospital.name }, 0, 1);
+        facts = result.slice.facts;
+      }
+      const rows = (facts || [])
+        .filter((fact) => hospitalKey(fact.buyerId, fact.hospital) === buyerKey)
+        .map((fact) => ({ ...fact, subOu }));
+      if (!rows.length) {
+        throw new Error(copy(language, "No detailed rows are available for this hospital under the active filters.", "Không có dữ liệu chi tiết của bệnh viện này theo bộ lọc hiện tại."));
+      }
+      const detailRows = rows.map(overviewDetailExcelRow);
+      const infoRows = [
+        ["Bệnh viện / chủ đầu tư", safeExcelText(hospital.name)], ["Mã định danh CĐT", safeExcelText(hospital.id)], ["Ngày tải", new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })],
+        ["Từ ngày", filters.dateFrom || "Tất cả"], ["Đến ngày", filters.dateTo || "Tất cả"],
+        ["Trường ngày áp dụng", "Ngày ban hành quyết định"],
+        ["Sub-OU", filters.subOu !== "all" ? safeExcelText(filters.subOu) : "Tất cả"],
+        ["Nhóm sản phẩm", filters.productGroup !== "all" ? safeExcelText(filters.productGroup) : "Tất cả"],
+        ["Công ty", filters.company !== "all" ? safeExcelText(filters.company) : "Tất cả"], ["Nguồn", "Cổng Mua Sắm Công"],
+      ];
+      await downloadWorkbook([
+        { name: "Chi tiết bệnh viện", rows: detailRows, columns: overviewDetailColumnWidths },
+        { name: "Bộ lọc", rows: infoRows, columns: [30, 64], matrix: true },
+      ], `${formatDownloadDate(new Date())}-${filenameSlug(hospital.name)}.xlsx`);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not create the hospital Excel file.", "Không thể tạo file Excel cho bệnh viện."));
+    } finally {
+      setExportingHospital(undefined);
+    }
+  }
 
-	const toggleRow = (name: string) =>
-		setOpenRows((current) => {
-			const next = new Set(current);
-			if (next.has(name)) next.delete(name);
-			else next.add(name);
-			return next;
-		});
-	const toggleAllHospitals = (name: string) =>
-		setShowAllHospitals((current) => {
-			const next = new Set(current);
-			if (next.has(name)) next.delete(name);
-			else next.add(name);
-			return next;
-		});
-	const toggleCompetitor = (key: string) =>
-		setOpenCompetitors((current) => {
-			const next = new Set(current);
-			if (next.has(key)) next.delete(key);
-			else next.add(key);
-			return next;
-		});
+  const toggleRow = (name: string) => setOpenRows((current) => {
+    const next = new Set(current);
+    if (next.has(name)) next.delete(name); else next.add(name);
+    return next;
+  });
+  const toggleAllHospitals = (name: string) => setShowAllHospitals((current) => {
+    const next = new Set(current);
+    if (next.has(name)) next.delete(name); else next.add(name);
+    return next;
+  });
+  const toggleCompetitor = (key: string) => setOpenCompetitors((current) => {
+    const next = new Set(current);
+    if (next.has(key)) next.delete(key); else next.add(key);
+    return next;
+  });
 
-	const progressPercent = loadProgress.total
-		? Math.round((loadProgress.completed / loadProgress.total) * 100)
-		: 0;
-	const lastLoadLabel = lastLoadSummary
-		? lastLoadSummary.total
-			? copy(
-					language,
-					`Updated ${lastLoadSummary.succeeded}/${lastLoadSummary.total} Sub-OUs`,
-					`Đã cập nhật ${lastLoadSummary.succeeded}/${lastLoadSummary.total} Sub-OU`,
-				)
-			: copy(
-					language,
-					"No Sub-OU matches the current filters.",
-					"Không có Sub-OU phù hợp với bộ lọc.",
-				)
-		: undefined;
+  const progressPercent = loadProgress.total ? Math.round((loadProgress.completed / loadProgress.total) * 100) : 0;
+  const lastLoadLabel = lastLoadSummary
+    ? lastLoadSummary.total
+      ? copy(language, `Updated ${lastLoadSummary.succeeded}/${lastLoadSummary.total} Sub-OUs`, `Đã cập nhật ${lastLoadSummary.succeeded}/${lastLoadSummary.total} Sub-OU`)
+      : copy(language, "No Sub-OU matches the current filters.", "Không có Sub-OU phù hợp với bộ lọc.")
+    : undefined;
 
-	return (
-		<main className="overview-page">
-			<section className="overview-shell">
-				<div className="overview-heading">
-					<div>
-						<h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1>
-						<p>
-							{copy(
-								language,
-								`Award data classified with ${approvedKeywordCount} approved product phrases, confirmation gates, field-specific exclusions, and ${manufacturerMappedRows} populated manufacturer mappings.`,
-								`Dữ liệu trúng thầu được phân loại bằng ${approvedKeywordCount} cụm keyword, rổ Confirmation, điều kiện exclude theo từng trường và ${manufacturerMappedRows} dòng quy đổi hãng có kết quả.`,
-							)}
-						</p>
-					</div>
-					<div className="overview-actions">
-						<span>
-							{loading
-								? copy(
-										language,
-										"Updating live data",
-										"Đang cập nhật dữ liệu trực tiếp",
-									)
-								: loadedFromCache
-									? copy(
-											language,
-											"Loaded from this session's cache",
-											"Đã tải từ bộ nhớ của phiên này",
-										)
-									: updatedAt
-										? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}`
-										: lastLoadLabel ||
-											copy(
-												language,
-												"Not updated yet",
-												"Chưa cập nhật dữ liệu",
-											)}
-						</span>
-						<button
-							className="refresh-overview"
-							type="button"
-							onClick={() => void loadOverview(filters, catalog, true)}
-							disabled={
-								loading ||
-								filtersDirty ||
-								Boolean(exportingSubOu) ||
-								Boolean(exportingCompetitor) ||
-								exportingHospitalPortfolio
-							}
-						>
-							<RefreshCw />
-							{copy(language, "Force refresh", "Làm mới dữ liệu")}
-						</button>
-						<button
-							type="button"
-							onClick={exportExcel}
-							disabled={
-								loading ||
-								exporting ||
-								Boolean(exportingSubOu) ||
-								Boolean(exportingCompetitor) ||
-								exportingHospitalPortfolio ||
-								filtersDirty ||
-								!slices.length
-							}
-						>
-							{exporting
-								? copy(language, "Creating…", "Đang tạo…")
-								: copy(language, "Export Excel", "Xuất Excel")}
-						</button>
-					</div>
-				</div>
-				<OverviewFilterBar
-					key={`${filters.dateFrom}-${filters.dateTo}-${filters.hospital}-${filters.subOu}-${filters.productGroup}-${filters.company}`}
-					filters={filters}
-					catalog={catalog}
-					loading={loading}
-					onApply={loadOverview}
-					onDirtyChange={setFiltersDirty}
-				/>
-				{filtersDirty && (
-					<div className="overview-notice pending-filter-notice" role="status">
-						{copy(
-							language,
-							"Filters have changed. Select Apply before exporting so the dashboard and Excel use the new values.",
-							"Bộ lọc đã thay đổi. Hãy chọn Áp dụng trước khi xuất để dashboard và Excel cùng dùng giá trị mới.",
-						)}
-					</div>
-				)}
-				{loading && (
-					<div className="overview-loading" role="status" aria-live="polite">
-						<div className="loading-copy">
-							<div>
-								<strong>
-									{copy(
-										language,
-										"Retrieving the latest data from Mua Sắm Công",
-										"Đang lấy dữ liệu mới nhất từ Cổng Mua Sắm Công",
-									)}
-								</strong>
-								<span>
-									{loadProgress.current.length
-										? `${copy(language, "Processing", "Đang xử lý")}: ${loadProgress.current.join(", ")}`
-										: copy(
-												language,
-												"Preparing queries…",
-												"Đang chuẩn bị truy vấn…",
-											)}
-								</span>
-							</div>
-							<b>
-								{loadProgress.completed}/{loadProgress.total || "…"} Sub-OU ·{" "}
-								{progressPercent}%
-							</b>
-						</div>
-						<div className="loading-progress" aria-hidden="true">
-							<span style={{ width: `${progressPercent}%` }} />
-						</div>
-						<small>
-							{copy(
-								language,
-								"Each Sub-OU appears as soon as it finishes processing.",
-								"Kết quả của từng Sub-OU sẽ xuất hiện ngay khi xử lý xong.",
-							)}
-						</small>
-					</div>
-				)}
-				{!loading && lastLoadLabel && !error && (
-					<div className="overview-load-complete" role="status">
-						{lastLoadLabel}
-					</div>
-				)}
-				{error && <div className="overview-notice error-notice">{error}</div>}
-				{hasWarnings && (
-					<div className="overview-notice">
-						{copy(
-							language,
-							"Some queries were limited or incomplete. Do not use these rows as final figures until the update is complete.",
-							"Một số truy vấn bị giới hạn hoặc chưa hoàn tất. Không dùng các dòng này làm số liệu cuối cùng cho đến khi cập nhật đủ.",
-						)}
-					</div>
-				)}
-				<div className="overview-metrics">
-					<article>
-						<span>Market size</span>
-						<strong>{formatVnd(totals.marketSize, language)}</strong>
-						<small>
-							{copy(
-								language,
-								"Awarded value within the selected scope",
-								"Giá trị trúng thầu trong phạm vi lọc",
-							)}
-						</small>
-					</article>
-					<article>
-						<span>
-							{copy(
-								language,
-								"Medtronic share · value",
-								"Thị phần Medtronic · giá trị",
-							)}
-						</span>
-						<strong>{percent(totals.medtronicValueShare, language)}</strong>
-						<small>
-							{copy(
-								language,
-								"Covidien and LigaSure are mapped to Medtronic",
-								"Covidien và LigaSure được quy đổi vào Medtronic",
-							)}
-						</small>
-					</article>
-					<article>
-						<span>
-							{copy(
-								language,
-								"Medtronic share · units",
-								"Thị phần Medtronic · số lượng",
-							)}
-						</span>
-						<strong>{percent(totals.medtronicUnitShare, language)}</strong>
-						<small>
-							{copy(
-								language,
-								"Calculated from recorded product quantities",
-								"Tính theo số lượng sản phẩm ghi nhận",
-							)}
-						</small>
-					</article>
-					<article>
-						<span>{copy(language, "Award results", "Số KQLCNT")}</span>
-						<strong>
-							{totals.tenders.length.toLocaleString(localeFor(language))}
-						</strong>
-						<small>
-							{copy(
-								language,
-								"Distinct award-result IDs",
-								"Mã KQLCNT riêng biệt",
-							)}
-						</small>
-					</article>
-					<article className="hospital-portfolio-metric">
-						<button
-							className="hospital-portfolio-export"
-							type="button"
-							title={
-								filters.hospital
-									? copy(
-											language,
-											"Export this hospital across all Sub-OUs",
-											"Xuất toàn bộ Sub-OU của bệnh viện đang chọn",
-										)
-									: copy(
-											language,
-											"Select and apply a hospital filter first",
-											"Chọn và áp dụng bộ lọc bệnh viện trước",
-										)
-							}
-							aria-label={copy(
-								language,
-								"Export selected hospital across all Sub-OUs",
-								"Xuất toàn bộ Sub-OU của bệnh viện đang chọn",
-							)}
-							disabled={
-								!filters.hospital ||
-								loading ||
-								filtersDirty ||
-								exporting ||
-								Boolean(exportingSubOu) ||
-								Boolean(exportingCompetitor) ||
-								Boolean(exportingHospital) ||
-								exportingHospitalPortfolio ||
-								!slices.length
-							}
-							onClick={() => void exportFilteredHospitalAllSubOus()}
-						>
-							{exportingHospitalPortfolio ? (
-								<LoaderCircle className="spin" />
-							) : (
-								<Download />
-							)}
-						</button>
-						<span>
-							{copy(language, "Winning hospitals", "Bệnh viện trúng thầu")}
-						</span>
-						<strong>
-							{totals.hospitals
-								.filter((item) => item.name !== "Chưa xác định")
-								.length.toLocaleString(localeFor(language))}
-						</strong>
-						<small>
-							{filters.hospital
-								? copy(
-										language,
-										"Export all Sub-OUs for the selected hospital",
-										"Xuất tất cả Sub-OU của bệnh viện đã chọn",
-									)
-								: copy(
-										language,
-										"Select a hospital to enable export",
-										"Chọn bệnh viện để bật chức năng xuất",
-									)}
-						</small>
-					</article>
-				</div>
+  return <main className="overview-page"><section className="overview-shell">
+    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, `Award data classified with ${approvedKeywordCount} approved product phrases, confirmation gates, field-specific exclusions, and ${manufacturerMappedRows} populated manufacturer mappings.`, `Dữ liệu trúng thầu được phân loại bằng ${approvedKeywordCount} cụm keyword, rổ Confirmation, điều kiện exclude theo từng trường và ${manufacturerMappedRows} dòng quy đổi hãng có kết quả.`)}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Updating live data", "Đang cập nhật dữ liệu trực tiếp") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void loadOverview(filters, catalog, true)} disabled={loading || filtersDirty || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio}><RefreshCw />{copy(language, "Force refresh", "Làm mới dữ liệu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
+    <OverviewFilterBar key={`${filters.dateFrom}-${filters.dateTo}-${filters.hospital}-${filters.subOu}-${filters.productGroup}-${filters.company}`} filters={filters} catalog={catalog} loading={loading} onApply={loadOverview} onDirtyChange={setFiltersDirty} />
+    {filtersDirty && <div className="overview-notice pending-filter-notice" role="status">{copy(language, "Filters have changed. Select Apply before exporting so the dashboard and Excel use the new values.", "Bộ lọc đã thay đổi. Hãy chọn Áp dụng trước khi xuất để dashboard và Excel cùng dùng giá trị mới.")}</div>}
+    {loading && <div className="overview-loading" role="status" aria-live="polite">
+      <div className="loading-copy"><div><strong>{copy(language, "Retrieving the latest data from Mua Sắm Công", "Đang lấy dữ liệu mới nhất từ Cổng Mua Sắm Công")}</strong><span>{loadProgress.current.length ? `${copy(language, "Processing", "Đang xử lý")}: ${loadProgress.current.join(", ")}` : copy(language, "Preparing queries…", "Đang chuẩn bị truy vấn…")}</span></div><b>{loadProgress.completed}/{loadProgress.total || "…"} Sub-OU · {progressPercent}%</b></div>
+      <div className="loading-progress" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></div>
+      <small>{copy(language, "Each Sub-OU appears as soon as it finishes processing.", "Kết quả của từng Sub-OU sẽ xuất hiện ngay khi xử lý xong.")}</small>
+    </div>}
+    {!loading && lastLoadLabel && !error && <div className="overview-load-complete" role="status">{lastLoadLabel}</div>}
+    {error && <div className="overview-notice error-notice">{error}</div>}
+    {hasWarnings && <div className="overview-notice">{copy(language, "Some queries were limited or incomplete. Do not use these rows as final figures until the update is complete.", "Một số truy vấn bị giới hạn hoặc chưa hoàn tất. Không dùng các dòng này làm số liệu cuối cùng cho đến khi cập nhật đủ.")}</div>}
+    <div className="overview-metrics">
+      <article><span>Market size</span><strong>{formatVnd(totals.marketSize, language)}</strong><small>{copy(language, "Awarded value within the selected scope", "Giá trị trúng thầu trong phạm vi lọc")}</small></article>
+      <article><span>{copy(language, "Medtronic share · value", "Thị phần Medtronic · giá trị")}</span><strong>{percent(totals.medtronicValueShare, language)}</strong><small>{copy(language, "Covidien and LigaSure are mapped to Medtronic", "Covidien và LigaSure được quy đổi vào Medtronic")}</small></article>
+      <article><span>{copy(language, "Medtronic share · units", "Thị phần Medtronic · số lượng")}</span><strong>{percent(totals.medtronicUnitShare, language)}</strong><small>{copy(language, "Calculated from recorded product quantities", "Tính theo số lượng sản phẩm ghi nhận")}</small></article>
+      <article><span>{copy(language, "Award results", "Số KQLCNT")}</span><strong>{totals.tenders.length.toLocaleString(localeFor(language))}</strong><small>{copy(language, "Distinct award-result IDs", "Mã KQLCNT riêng biệt")}</small></article>
+      <article className="hospital-portfolio-metric"><button className="hospital-portfolio-export" type="button" title={filters.hospital ? copy(language, "Export this hospital across all Sub-OUs", "Xuất toàn bộ Sub-OU của bệnh viện đang chọn") : copy(language, "Select and apply a hospital filter first", "Chọn và áp dụng bộ lọc bệnh viện trước")} aria-label={copy(language, "Export selected hospital across all Sub-OUs", "Xuất toàn bộ Sub-OU của bệnh viện đang chọn")} disabled={!filters.hospital || loading || filtersDirty || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || Boolean(exportingHospital) || exportingHospitalPortfolio || !slices.length} onClick={() => void exportFilteredHospitalAllSubOus()}>{exportingHospitalPortfolio ? <LoaderCircle className="spin" /> : <Download />}</button><span>{copy(language, "Winning hospitals", "Bệnh viện trúng thầu")}</span><strong>{totals.hospitals.filter((item) => item.name !== "Chưa xác định").length.toLocaleString(localeFor(language))}</strong><small>{filters.hospital ? copy(language, "Export all Sub-OUs for the selected hospital", "Xuất tất cả Sub-OU của bệnh viện đã chọn") : copy(language, "Select a hospital to enable export", "Chọn bệnh viện để bật chức năng xuất")}</small></article>
+    </div>
 
-				<section className="subou-section">
-					<div className="section-title">
-						<div>
-							<h2>
-								{copy(language, "Analysis by Sub-OU", "Phân tích theo Sub-OU")}
-							</h2>
-							<p>
-								{copy(
-									language,
-									"Select the hospital count at the end of a row to view product details.",
-									"Chọn số bệnh viện ở cuối mỗi dòng để xem chi tiết sản phẩm.",
-								)}
-							</p>
-						</div>
-						{loading && (
-							<span className="loading-label">
-								{copy(language, "Received", "Đã nhận")} {slices.length}/
-								{loadProgress.total || "…"}{" "}
-								{copy(language, "results", "kết quả")}
-							</span>
-						)}
-					</div>
-					<div className="subou-table-wrap">
-						<table className="subou-table">
-							<thead>
-								<tr>
-									<th>Sub-OU</th>
-									<th>Market size</th>
-									<th>Medtronic share</th>
-									<th>
-										{copy(language, "Top 3 competitors", "Top 3 đối thủ")}
-									</th>
-									<th>{copy(language, "Award results", "KQLCNT")}</th>
-									<th>{copy(language, "Hospitals", "Bệnh viện")}</th>
-								</tr>
-							</thead>
-							<tbody>
-								{slices.map((slice, index) => (
-									<Fragment key={slice.name}>
-										<tr className={openRows.has(slice.name) ? "is-open" : ""}>
-											<td>
-												<div className="subou-name-cell">
-													<span className="subou-index">
-														{String(index + 1).padStart(2, "0")}
-													</span>
-													<div>
-														<strong>{slice.name}</strong>
-														<small>
-															{slice.productCount.toLocaleString(
-																localeFor(language),
-															)}{" "}
-															{copy(language, "products", "sản phẩm")}
-														</small>
-													</div>
-												</div>
-											</td>
-											<td>
-												<strong>{formatVnd(slice.marketSize, language)}</strong>
-												<small>
-													{Math.round(slice.totalUnits).toLocaleString(
-														localeFor(language),
-													)}{" "}
-													{copy(language, "units", "đơn vị")}
-												</small>
-											</td>
-											<td>
-												<strong>
-													{percent(slice.medtronicValueShare, language)}{" "}
-													<em>{copy(language, "value", "giá trị")}</em>
-												</strong>
-												<small>
-													{percent(slice.medtronicUnitShare, language)}{" "}
-													{copy(language, "units", "số lượng")}
-												</small>
-											</td>
-											<td>
-												<SubOuCompetitorStack
-													slice={slice}
-													language={language}
-													openCompetitors={openCompetitors}
-													exportingKey={exportingCompetitor}
-													disabled={
-														loading ||
-														filtersDirty ||
-														exporting ||
-														Boolean(exportingSubOu) ||
-														Boolean(exportingCompetitor) ||
-														Boolean(exportingHospital) ||
-														exportingHospitalPortfolio
-													}
-													onToggle={toggleCompetitor}
-													onExport={(competitor) =>
-														void exportCompetitor(slice, competitor)
-													}
-												/>
-											</td>
-											<td>
-												<strong>
-													{slice.tenderCount.toLocaleString(
-														localeFor(language),
-													)}
-												</strong>
-											</td>
-											<td>
-												<div className="subou-hospital-actions">
-													<button
-														className="hospital-expand"
-														type="button"
-														onClick={() => toggleRow(slice.name)}
-														aria-expanded={openRows.has(slice.name)}
-													>
-														<span>
-															<strong>
-																{slice.hospitalCount.toLocaleString(
-																	localeFor(language),
-																)}
-															</strong>
-															<small>
-																{copy(language, "hospitals", "bệnh viện")}
-															</small>
-														</span>
-														<b>
-															{openRows.has(slice.name)
-																? copy(language, "Collapse", "Thu gọn")
-																: copy(language, "View", "Xem")}
-														</b>
-													</button>
-													<button
-														className="subou-export-button"
-														type="button"
-														title={copy(
-															language,
-															`Export all ${slice.name} data`,
-															`Xuất toàn bộ dữ liệu ${slice.name}`,
-														)}
-														aria-label={copy(
-															language,
-															`Export all ${slice.name} data to Excel`,
-															`Xuất toàn bộ dữ liệu ${slice.name} ra Excel`,
-														)}
-														disabled={
-															loading ||
-															filtersDirty ||
-															exporting ||
-															Boolean(exportingSubOu) ||
-															Boolean(exportingCompetitor) ||
-															Boolean(exportingHospital) ||
-															exportingHospitalPortfolio
-														}
-														onClick={() => void exportSubOu(slice)}
-													>
-														{exportingSubOu === slice.name ? (
-															<LoaderCircle className="spin" />
-														) : (
-															<Download />
-														)}
-													</button>
-												</div>
-											</td>
-										</tr>
-										{openRows.has(slice.name) && (
-											<tr className="hospital-detail-row">
-												<td colSpan={6}>
-													<div className="hospital-detail">
-														<div className="hospital-detail-head">
-															<div>
-																<strong>
-																	{copy(
-																		language,
-																		"Hospitals in",
-																		"Bệnh viện thuộc",
-																	)}{" "}
-																	{slice.name}
-																</strong>
-																<span>
-																	{copy(
-																		language,
-																		"Product count reflects distinct models/codes after classification. Competitor shares are calculated within each hospital. Export uses this hospital and every active dashboard filter.",
-																		"Số sản phẩm là số model/mã hiệu riêng biệt sau phân loại. Thị phần đối thủ được tính riêng trong từng bệnh viện. File xuất áp dụng bệnh viện này và toàn bộ bộ lọc hiện tại.",
-																	)}
-																</span>
-															</div>
-															<button
-																type="button"
-																onClick={() => toggleRow(slice.name)}
-															>
-																{copy(language, "Close", "Đóng")}
-															</button>
-														</div>
-														<div className="hospital-mini-table">
-															<div className="hospital-mini-head">
-																<span>
-																	{copy(
-																		language,
-																		"Hospital / buyer",
-																		"Bệnh viện / chủ đầu tư",
-																	)}
-																</span>
-																<span>
-																	{copy(language, "Products", "Sản phẩm")}
-																</span>
-																<span>
-																	{copy(language, "Award results", "KQLCNT")}
-																</span>
-																<span>
-																	{copy(
-																		language,
-																		"Top competitors",
-																		"Đối thủ hàng đầu",
-																	)}
-																</span>
-																<span>
-																	{copy(language, "Units", "Số lượng")}
-																</span>
-																<span>
-																	{copy(language, "Value", "Giá trị")}
-																</span>
-															</div>
-															{slice.hospitals
-																.slice(
-																	0,
-																	showAllHospitals.has(slice.name)
-																		? undefined
-																		: 8,
-																)
-																.map((hospital) => {
-																	const exportKey = `${slice.name}::${hospitalKey(hospital.id, hospital.name)}`;
-																	return (
-																		<div
-																			className="hospital-mini-row"
-																			key={hospitalKey(
-																				hospital.id,
-																				hospital.name,
-																			)}
-																		>
-																			<div className="hospital-name-cell">
-																				<strong
-																					title={hospital.id || undefined}
-																				>
-																					{hospital.name}
-																				</strong>
-																				<button
-																					className="hospital-export-button"
-																					type="button"
-																					title={
-																						filtersDirty
-																							? copy(
-																									language,
-																									"Apply the changed filters before exporting",
-																									"Áp dụng bộ lọc mới trước khi xuất",
-																								)
-																							: copy(
-																									language,
-																									"Export this hospital",
-																									"Xuất Excel bệnh viện này",
-																								)
-																					}
-																					aria-label={copy(
-																						language,
-																						`Export ${hospital.name} to Excel`,
-																						`Xuất Excel cho ${hospital.name}`,
-																					)}
-																					disabled={
-																						loading ||
-																						filtersDirty ||
-																						Boolean(exportingHospital) ||
-																						Boolean(exportingSubOu) ||
-																						Boolean(exportingCompetitor) ||
-																						exportingHospitalPortfolio
-																					}
-																					onClick={() =>
-																						void exportHospital(
-																							slice.name,
-																							hospital,
-																						)
-																					}
-																				>
-																					{exportingHospital === exportKey ? (
-																						<LoaderCircle className="spin" />
-																					) : (
-																						<Download />
-																					)}
-																				</button>
-																			</div>
-																			<span>
-																				{hospital.products.toLocaleString(
-																					localeFor(language),
-																				)}
-																			</span>
-																			<span>
-																				{hospital.tenders.toLocaleString(
-																					localeFor(language),
-																				)}
-																			</span>
-																			<HospitalCompetitorSummary
-																				hospital={hospital}
-																				language={language}
-																			/>
-																			<span>
-																				{Math.round(
-																					hospital.units,
-																				).toLocaleString(localeFor(language))}
-																			</span>
-																			<span>
-																				{formatVnd(hospital.value, language)}
-																			</span>
-																		</div>
-																	);
-																})}
-														</div>
-														{slice.hospitals.length > 8 && (
-															<button
-																className="show-more-hospitals"
-																type="button"
-																onClick={() => toggleAllHospitals(slice.name)}
-															>
-																{showAllHospitals.has(slice.name)
-																	? copy(
-																			language,
-																			"Show first 8 hospitals",
-																			"Hiện 8 bệnh viện đầu",
-																		)
-																	: copy(
-																			language,
-																			`View all ${slice.hospitals.length} hospitals`,
-																			`Xem toàn bộ ${slice.hospitals.length} bệnh viện`,
-																		)}
-															</button>
-														)}
-													</div>
-												</td>
-											</tr>
-										)}
-									</Fragment>
-								))}
-								{loading &&
-									!slices.length &&
-									Array.from({ length: 3 }, (_, index) => (
-										<tr
-											className="subou-skeleton-row"
-											key={`skeleton-${index}`}
-											aria-hidden="true"
-										>
-											<td>
-												<span className="skeleton-block skeleton-name" />
-											</td>
-											<td>
-												<span className="skeleton-block skeleton-value" />
-											</td>
-											<td>
-												<span className="skeleton-block skeleton-value" />
-											</td>
-											<td>
-												<span className="skeleton-block skeleton-wide" />
-											</td>
-											<td>
-												<span className="skeleton-block skeleton-short" />
-											</td>
-											<td>
-												<span className="skeleton-block skeleton-short" />
-											</td>
-										</tr>
-									))}
-								{!slices.length && !loading && (
-									<tr>
-										<td className="empty-overview" colSpan={6}>
-											{copy(
-												language,
-												"No data matches the current filters.",
-												"Không có dữ liệu phù hợp với bộ lọc hiện tại.",
-											)}
-										</td>
-									</tr>
-								)}
-							</tbody>
-						</table>
-					</div>
-				</section>
+    <section className="subou-section"><div className="section-title"><div><h2>{copy(language, "Analysis by Sub-OU", "Phân tích theo Sub-OU")}</h2><p>{copy(language, "Select the hospital count at the end of a row to view product details.", "Chọn số bệnh viện ở cuối mỗi dòng để xem chi tiết sản phẩm.")}</p></div>{loading && <span className="loading-label">{copy(language, "Received", "Đã nhận")} {slices.length}/{loadProgress.total || "…"} {copy(language, "results", "kết quả")}</span>}</div>
+      <div className="subou-table-wrap"><table className="subou-table"><thead><tr><th>Sub-OU</th><th>Market size</th><th>Medtronic share</th><th>{copy(language, "Top 3 competitors", "Top 3 đối thủ")}</th><th>{copy(language, "Award results", "KQLCNT")}</th><th>{copy(language, "Hospitals", "Bệnh viện")}</th></tr></thead><tbody>
+        {slices.map((slice, index) => <Fragment key={slice.name}>
+          <tr className={openRows.has(slice.name) ? "is-open" : ""}>
+            <td><div className="subou-name-cell"><span className="subou-index">{String(index + 1).padStart(2, "0")}</span><div><strong>{slice.name}</strong><small>{slice.productCount.toLocaleString(localeFor(language))} {copy(language, "products", "sản phẩm")}</small></div></div></td>
+            <td><strong>{formatVnd(slice.marketSize, language)}</strong><small>{Math.round(slice.totalUnits).toLocaleString(localeFor(language))} {copy(language, "units", "đơn vị")}</small></td>
+            <td><strong>{percent(slice.medtronicValueShare, language)} <em>{copy(language, "value", "giá trị")}</em></strong><small>{percent(slice.medtronicUnitShare, language)} {copy(language, "units", "số lượng")}</small></td>
+            <td><SubOuCompetitorStack slice={slice} language={language} openCompetitors={openCompetitors} exportingKey={exportingCompetitor} disabled={loading || filtersDirty || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || Boolean(exportingHospital) || exportingHospitalPortfolio} onToggle={toggleCompetitor} onExport={(competitor) => void exportCompetitor(slice, competitor)} /></td>
+            <td><strong>{slice.tenderCount.toLocaleString(localeFor(language))}</strong></td>
+            <td><div className="subou-hospital-actions"><button className="hospital-expand" type="button" onClick={() => toggleRow(slice.name)} aria-expanded={openRows.has(slice.name)}><span><strong>{slice.hospitalCount.toLocaleString(localeFor(language))}</strong><small>{copy(language, "hospitals", "bệnh viện")}</small></span><b>{openRows.has(slice.name) ? copy(language, "Collapse", "Thu gọn") : copy(language, "View", "Xem")}</b></button><button className="subou-export-button" type="button" title={copy(language, `Export all ${slice.name} data`, `Xuất toàn bộ dữ liệu ${slice.name}`)} aria-label={copy(language, `Export all ${slice.name} data to Excel`, `Xuất toàn bộ dữ liệu ${slice.name} ra Excel`)} disabled={loading || filtersDirty || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || Boolean(exportingHospital) || exportingHospitalPortfolio} onClick={() => void exportSubOu(slice)}>{exportingSubOu === slice.name ? <LoaderCircle className="spin" /> : <Download />}</button></div></td>
+          </tr>
+          {openRows.has(slice.name) && <tr className="hospital-detail-row"><td colSpan={6}><div className="hospital-detail"><div className="hospital-detail-head"><div><strong>{copy(language, "Hospitals in", "Bệnh viện thuộc")} {slice.name}</strong><span>{copy(language, "Product count reflects distinct models/codes after classification. Competitor shares are calculated within each hospital. Export uses this hospital and every active dashboard filter.", "Số sản phẩm là số model/mã hiệu riêng biệt sau phân loại. Thị phần đối thủ được tính riêng trong từng bệnh viện. File xuất áp dụng bệnh viện này và toàn bộ bộ lọc hiện tại.")}</span></div><button type="button" onClick={() => toggleRow(slice.name)}>{copy(language, "Close", "Đóng")}</button></div><div className="hospital-mini-table"><div className="hospital-mini-head"><span>{copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")}</span><span>{copy(language, "Products", "Sản phẩm")}</span><span>{copy(language, "Award results", "KQLCNT")}</span><span>{copy(language, "Top competitors", "Đối thủ hàng đầu")}</span><span>{copy(language, "Units", "Số lượng")}</span><span>{copy(language, "Value", "Giá trị")}</span></div>{slice.hospitals.slice(0, showAllHospitals.has(slice.name) ? undefined : 8).map((hospital) => { const exportKey = `${slice.name}::${hospitalKey(hospital.id, hospital.name)}`; return <div className="hospital-mini-row" key={hospitalKey(hospital.id, hospital.name)}><div className="hospital-name-cell"><strong title={hospital.id || undefined}>{hospital.name}</strong><button className="hospital-export-button" type="button" title={filtersDirty ? copy(language, "Apply the changed filters before exporting", "Áp dụng bộ lọc mới trước khi xuất") : copy(language, "Export this hospital", "Xuất Excel bệnh viện này")} aria-label={copy(language, `Export ${hospital.name} to Excel`, `Xuất Excel cho ${hospital.name}`)} disabled={loading || filtersDirty || Boolean(exportingHospital) || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio} onClick={() => void exportHospital(slice.name, hospital)}>{exportingHospital === exportKey ? <LoaderCircle className="spin" /> : <Download />}</button></div><span>{hospital.products.toLocaleString(localeFor(language))}</span><span>{hospital.tenders.toLocaleString(localeFor(language))}</span><HospitalCompetitorSummary hospital={hospital} language={language} /><span>{Math.round(hospital.units).toLocaleString(localeFor(language))}</span><span>{formatVnd(hospital.value, language)}</span></div>; })}</div>{slice.hospitals.length > 8 && <button className="show-more-hospitals" type="button" onClick={() => toggleAllHospitals(slice.name)}>{showAllHospitals.has(slice.name) ? copy(language, "Show first 8 hospitals", "Hiện 8 bệnh viện đầu") : copy(language, `View all ${slice.hospitals.length} hospitals`, `Xem toàn bộ ${slice.hospitals.length} bệnh viện`)}</button>}</div></td></tr>}
+        </Fragment>)}
+        {loading && !slices.length && Array.from({ length: 3 }, (_, index) => <tr className="subou-skeleton-row" key={`skeleton-${index}`} aria-hidden="true">
+          <td><span className="skeleton-block skeleton-name" /></td><td><span className="skeleton-block skeleton-value" /></td><td><span className="skeleton-block skeleton-value" /></td><td><span className="skeleton-block skeleton-wide" /></td><td><span className="skeleton-block skeleton-short" /></td><td><span className="skeleton-block skeleton-short" /></td>
+        </tr>)}
+        {!slices.length && !loading && <tr><td className="empty-overview" colSpan={6}>{copy(language, "No data matches the current filters.", "Không có dữ liệu phù hợp với bộ lọc hiện tại.")}</td></tr>}
+      </tbody></table></div>
+    </section>
 
-				<div className="overview-bottom-grid">
-					<OverviewList
-						title={copy(
-							language,
-							"Top 5 distributors by market size",
-							"Top 5 nhà phân phối theo market size",
-						)}
-						rows={totals.suppliers.slice(0, 5)}
-					/>
-					<OverviewList
-						title={copy(
-							language,
-							"Top 5 hospitals by market size",
-							"Top 5 bệnh viện theo market size",
-						)}
-						rows={totals.hospitals.slice(0, 5)}
-						meta={(row) =>
-							`${(row as OverviewHospital).products} ${copy(language, "products", "sản phẩm")}`
-						}
-					/>
-					<article className="overview-list">
-						<h3>
-							{copy(
-								language,
-								"Top 5 award results by value",
-								"Top 5 KQLCNT theo giá trị",
-							)}
-						</h3>
-						<div>
-							{totals.tenders.slice(0, 5).map((tender, index) => (
-								<div className="overview-list-row" key={tender.id}>
-									<span>{index + 1}</span>
-									<div>
-										<strong>{tender.id}</strong>
-										<small>
-											{tender.hospital} · {tender.products}{" "}
-											{copy(language, "products", "sản phẩm")}
-										</small>
-									</div>
-									<b>{formatVnd(tender.value, language)}</b>
-								</div>
-							))}
-						</div>
-					</article>
-				</div>
-			</section>
-		</main>
-	);
+    <div className="overview-bottom-grid">
+      <OverviewList title={copy(language, "Top 5 distributors by market size", "Top 5 nhà phân phối theo market size")} rows={totals.suppliers.slice(0, 5)} />
+      <OverviewList title={copy(language, "Top 5 hospitals by market size", "Top 5 bệnh viện theo market size")} rows={totals.hospitals.slice(0, 5)} meta={(row) => `${(row as OverviewHospital).products} ${copy(language, "products", "sản phẩm")}`} />
+      <article className="overview-list"><h3>{copy(language, "Top 5 award results by value", "Top 5 KQLCNT theo giá trị")}</h3><div>{totals.tenders.slice(0, 5).map((tender, index) => <div className="overview-list-row" key={tender.id}><span>{index + 1}</span><div><strong>{tender.id}</strong><small>{tender.hospital} · {tender.products} {copy(language, "products", "sản phẩm")}</small></div><b>{formatVnd(tender.value, language)}</b></div>)}</div></article>
+    </div>
+  </section></main>;
 }
 
-function OverviewList({
-	title,
-	rows,
-	meta,
-}: {
-	title: string;
-	rows: OverviewNamedValue[];
-	meta?: (row: OverviewNamedValue) => string;
-}) {
-	const language = useLanguage();
-	return (
-		<article className="overview-list">
-			<h3>{title}</h3>
-			<div>
-				{rows.map((row, index) => (
-					<div className="overview-list-row" key={row.name}>
-						<span>{index + 1}</span>
-						<div>
-							<strong>{row.name}</strong>
-							<small>
-								{meta
-									? meta(row)
-									: `${Math.round(row.units).toLocaleString(localeFor(language))} ${copy(language, "units", "đơn vị")}`}
-							</small>
-						</div>
-						<b>{formatVnd(row.value, language)}</b>
-					</div>
-				))}
-			</div>
-		</article>
-	);
+function OverviewList({ title, rows, meta }: { title: string; rows: OverviewNamedValue[]; meta?: (row: OverviewNamedValue) => string }) {
+  const language = useLanguage();
+  return <article className="overview-list"><h3>{title}</h3><div>{rows.map((row, index) => <div className="overview-list-row" key={row.name}><span>{index + 1}</span><div><strong>{row.name}</strong><small>{meta ? meta(row) : `${Math.round(row.units).toLocaleString(localeFor(language))} ${copy(language, "units", "đơn vị")}`}</small></div><b>{formatVnd(row.value, language)}</b></div>)}</div></article>;
 }
 
-function SearchExperience({
-	resume,
-	onActivity,
-}: {
-	resume?: ActivityItem;
-	onActivity: (activity: ActivityItem) => void;
-}) {
-	const language = useLanguage();
-	const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(
-		null,
-	);
-	const [loading, setLoading] = useState(false);
-	const [loadingStatus, setLoadingStatus] = useState<string>();
-	const [error, setError] = useState<string>();
-	const lastResult = useRef<
-		| {
-				keyword: string;
-				fetchedAt: string;
-				records: WinningBidRecord[];
-				totalElements: number;
-				truncated: boolean;
-				filters: SearchFilters;
-				source: {
-					keywordRule?: KeywordMasterRule;
-					excludedRecords?: number;
-					portalTotalElements?: number;
-					classificationAudit?: ClassificationAudit;
-				};
-		  }
-		| undefined
-	>(undefined);
-	async function searchLive(
-		keyword: string,
-		filters: SearchFilters = emptyFilters(),
-	) {
-		setLoading(true);
-		setError(undefined);
-		setLoadingStatus(
-			copy(
-				language,
-				"Connecting to Mua Sắm Công…",
-				"Đang kết nối Cổng Mua Sắm Công…",
-			),
-		);
-		try {
-			const fetchedAt = new Date().toISOString();
-			const data = await collectLiveWinningBids(keyword, filters, {
-				maxPages: 25,
-				onProgress: (progress) => {
-					setLoadingStatus(
-						copy(
-							language,
-							`Loaded page ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} matching rows`,
-							`Đã tải trang ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} dòng phù hợp`,
-						),
-					);
-					if (progress.records.length) {
-						const totalElements = progress.keywordRule
-							? progress.records.length
-							: progress.portalTotalElements;
-						setSelectedProduct(
-							summarize(
-								keyword,
-								fetchedAt,
-								progress.records,
-								totalElements,
-								progress.truncated,
-								filters,
-								{
-									keywordRule: progress.keywordRule,
-									excludedRecords: progress.excludedRecords,
-									portalTotalElements: progress.portalTotalElements,
-									classificationAudit: progress.classificationAudit,
-								},
-								language,
-							),
-						);
-					}
-				},
-			});
-			const records = data.records;
-			if (!records.length)
-				throw new Error(
-					copy(
-						language,
-						`No current award data was found for “${keyword}”.`,
-						`Không tìm thấy dữ liệu trúng thầu hiện tại cho “${keyword}”.`,
-					),
-				);
-			const result = {
-				keyword,
-				fetchedAt,
-				records,
-				totalElements: data.totalElements || records.length,
-				truncated: Boolean(data.truncated),
-				filters,
-				source: {
-					keywordRule: data.keywordRule,
-					excludedRecords: data.excludedRecords,
-					portalTotalElements: data.portalTotalElements,
-					classificationAudit: data.classificationAudit,
-				},
-			};
-			lastResult.current = result;
-			setSelectedProduct(
-				summarize(
-					result.keyword,
-					result.fetchedAt,
-					result.records,
-					result.totalElements,
-					result.truncated,
-					result.filters,
-					result.source,
-					language,
-				),
-			);
-			onActivity({
-				id: `${Date.now()}-${filenameSlug(keyword)}`,
-				keyword,
-				searchedAt: new Date().toISOString(),
-				filters,
-			});
-		} catch (caught) {
-			setError(
-				caught instanceof Error
-					? caught.message
-					: copy(
-							language,
-							"Could not complete the live search.",
-							"Không thể thực hiện tìm kiếm trực tiếp.",
-						),
-			);
-		} finally {
-			setLoading(false);
-			setLoadingStatus(undefined);
-		}
-	}
-	useEffect(() => {
-		if (resume) void searchLive(resume.keyword, resume.filters);
-	}, [resume?.id]);
-	useEffect(() => {
-		const result = lastResult.current;
-		if (result)
-			setSelectedProduct(
-				summarize(
-					result.keyword,
-					result.fetchedAt,
-					result.records,
-					result.totalElements,
-					result.truncated,
-					result.filters,
-					result.source,
-					language,
-				),
-			);
-	}, [language]);
-	if (!selectedProduct)
-		return (
-			<SearchHome
-				loading={loading}
-				error={error}
-				status={loadingStatus}
-				onSearch={searchLive}
-			/>
-		);
-	return (
-		<Dashboard
-			product={selectedProduct}
-			loading={loading}
-			error={error}
-			status={loadingStatus}
-			onBack={() => {
-				setSelectedProduct(null);
-				setError(undefined);
-			}}
-			onSearch={searchLive}
-		/>
-	);
+function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onActivity: (activity: ActivityItem) => void }) {
+  const language = useLanguage();
+  const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState<string>();
+  const [error, setError] = useState<string>();
+  const lastResult = useRef<{
+    keyword: string;
+    fetchedAt: string;
+    records: WinningBidRecord[];
+    totalElements: number;
+    truncated: boolean;
+    filters: SearchFilters;
+    source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number; classificationAudit?: ClassificationAudit };
+  } | undefined>(undefined);
+  async function searchLive(keyword: string, filters: SearchFilters = emptyFilters()) {
+    setLoading(true); setError(undefined); setLoadingStatus(copy(language, "Connecting to Mua Sắm Công…", "Đang kết nối Cổng Mua Sắm Công…"));
+    try {
+      const fetchedAt = new Date().toISOString();
+      const data = await collectLiveWinningBids(keyword, filters, {
+        maxPages: 25,
+        onProgress: (progress) => {
+          setLoadingStatus(copy(
+            language,
+            `Loaded page ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} matching rows`,
+            `Đã tải trang ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} dòng phù hợp`,
+          ));
+          if (progress.records.length) {
+            const totalElements = progress.keywordRule ? progress.records.length : progress.portalTotalElements;
+            setSelectedProduct(summarize(keyword, fetchedAt, progress.records, totalElements, progress.truncated, filters, {
+              keywordRule: progress.keywordRule,
+              excludedRecords: progress.excludedRecords,
+              portalTotalElements: progress.portalTotalElements,
+              classificationAudit: progress.classificationAudit,
+            }, language));
+          }
+        },
+      });
+      const records = data.records;
+      if (!records.length) throw new Error(copy(language, `No current award data was found for “${keyword}”.`, `Không tìm thấy dữ liệu trúng thầu hiện tại cho “${keyword}”.`));
+      const result = {
+        keyword,
+        fetchedAt,
+        records,
+        totalElements: data.totalElements || records.length,
+        truncated: Boolean(data.truncated),
+        filters,
+        source: {
+          keywordRule: data.keywordRule,
+          excludedRecords: data.excludedRecords,
+          portalTotalElements: data.portalTotalElements,
+          classificationAudit: data.classificationAudit,
+        },
+      };
+      lastResult.current = result;
+      setSelectedProduct(summarize(result.keyword, result.fetchedAt, result.records, result.totalElements, result.truncated, result.filters, result.source, language));
+      onActivity({ id: `${Date.now()}-${filenameSlug(keyword)}`, keyword, searchedAt: new Date().toISOString(), filters });
+    } catch (caught) { setError(caught instanceof Error ? caught.message : copy(language, "Could not complete the live search.", "Không thể thực hiện tìm kiếm trực tiếp.")); }
+    finally { setLoading(false); setLoadingStatus(undefined); }
+  }
+  useEffect(() => {
+    if (resume) void searchLive(resume.keyword, resume.filters);
+  }, [resume?.id]);
+  useEffect(() => {
+    const result = lastResult.current;
+    if (result) setSelectedProduct(summarize(result.keyword, result.fetchedAt, result.records, result.totalElements, result.truncated, result.filters, result.source, language));
+  }, [language]);
+  if (!selectedProduct) return <SearchHome loading={loading} error={error} status={loadingStatus} onSearch={searchLive} />;
+  return <Dashboard product={selectedProduct} loading={loading} error={error} status={loadingStatus} onBack={() => { setSelectedProduct(null); setError(undefined); }} onSearch={searchLive} />;
 }
 
 export default function Home() {
-	const [language, setLanguage] = useState<Language>("en");
-	const [activeTab, setActiveTab] = useState("overview");
-	const [activity, setActivity] = useState<ActivityItem[]>([]);
-	const [resume, setResume] = useState<ActivityItem>();
-	const [showActivity, setShowActivity] = useState(false);
-	const localReady = useRef(false);
+  const [language, setLanguage] = useState<Language>("en");
+  const [activeTab, setActiveTab] = useState("overview");
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [resume, setResume] = useState<ActivityItem>();
+  const [showActivity, setShowActivity] = useState(false);
+  const localReady = useRef(false);
 
-	useEffect(() => {
-		const storedTab = window.localStorage.getItem("tenderpulse.active-tab");
-		const storedActivity = window.localStorage.getItem(
-			"tenderpulse.recent-activity",
-		);
-		const storedLanguage = window.localStorage.getItem("tenderpulse.language");
-		if (storedTab === "overview" || storedTab === "search")
-			setActiveTab(storedTab);
-		if (storedLanguage === "vi") {
-			setLanguage("vi");
-			document.documentElement.lang = "vi";
-		}
-		if (storedActivity) {
-			try {
-				setActivity(JSON.parse(storedActivity) as ActivityItem[]);
-			} catch {
-				/* Ignore invalid older local data. */
-			}
-		}
-		localReady.current = true;
-	}, []);
+  useEffect(() => {
+    const storedTab = window.localStorage.getItem("tenderpulse.active-tab");
+    const storedActivity = window.localStorage.getItem("tenderpulse.recent-activity");
+    const storedLanguage = window.localStorage.getItem("tenderpulse.language");
+    if (storedTab === "overview" || storedTab === "search") setActiveTab(storedTab);
+    if (storedLanguage === "vi") {
+      setLanguage("vi");
+      document.documentElement.lang = "vi";
+    }
+    if (storedActivity) {
+      try { setActivity(JSON.parse(storedActivity) as ActivityItem[]); } catch { /* Ignore invalid older local data. */ }
+    }
+    localReady.current = true;
+  }, []);
 
-	const changeTab = (value: string) => {
-		setActiveTab(value);
-		if (localReady.current)
-			window.localStorage.setItem("tenderpulse.active-tab", value);
-	};
-	const changeLanguage = (value: Language) => {
-		setLanguage(value);
-		document.documentElement.lang = value;
-		window.localStorage.setItem("tenderpulse.language", value);
-	};
-	const rememberActivity = (next: ActivityItem) => {
-		setActivity((current) => {
-			const updated = [
-				next,
-				...current.filter(
-					(item) => normalize(item.keyword) !== normalize(next.keyword),
-				),
-			].slice(0, 8);
-			window.localStorage.setItem(
-				"tenderpulse.recent-activity",
-				JSON.stringify(updated),
-			);
-			return updated;
-		});
-	};
-	const reopenActivity = (item: ActivityItem) => {
-		setResume({ ...item, id: `${item.id}-${Date.now()}` });
-		changeTab("search");
-		setShowActivity(false);
-	};
+  const changeTab = (value: string) => {
+    setActiveTab(value);
+    if (localReady.current) window.localStorage.setItem("tenderpulse.active-tab", value);
+  };
+  const changeLanguage = (value: Language) => {
+    setLanguage(value);
+    document.documentElement.lang = value;
+    window.localStorage.setItem("tenderpulse.language", value);
+  };
+  const rememberActivity = (next: ActivityItem) => {
+    setActivity((current) => {
+      const updated = [next, ...current.filter((item) => normalize(item.keyword) !== normalize(next.keyword))].slice(0, 8);
+      window.localStorage.setItem("tenderpulse.recent-activity", JSON.stringify(updated));
+      return updated;
+    });
+  };
+  const reopenActivity = (item: ActivityItem) => {
+    setResume({ ...item, id: `${item.id}-${Date.now()}` });
+    changeTab("search");
+    setShowActivity(false);
+  };
 
-	return (
-		<LanguageContext.Provider value={language}>
-			<Tabs className="app-tabs" value={activeTab} onValueChange={changeTab}>
-				<header className="app-header">
-					<Brand />
-					<TabsList className="main-tabs" variant="line">
-						<TabsTrigger value="overview">
-							{copy(language, "Market overview", "Tổng quan thị trường")}
-						</TabsTrigger>
-						<TabsTrigger value="search">
-							{copy(language, "Product search", "Tra cứu sản phẩm")}
-						</TabsTrigger>
-					</TabsList>
-					<div className="header-actions">
-						<div
-							className="language-switch"
-							role="group"
-							aria-label="Interface language"
-						>
-							<button
-								className={language === "en" ? "is-active" : ""}
-								type="button"
-								onClick={() => changeLanguage("en")}
-								aria-pressed={language === "en"}
-							>
-								EN
-							</button>
-							<button
-								className={language === "vi" ? "is-active" : ""}
-								type="button"
-								onClick={() => changeLanguage("vi")}
-								aria-pressed={language === "vi"}
-							>
-								VI
-							</button>
-						</div>
-						<div className="activity-menu">
-							<button
-								type="button"
-								onClick={() => setShowActivity((current) => !current)}
-								aria-expanded={showActivity}
-							>
-								{copy(language, "Recent activity", "Hoạt động gần đây")}
-								{activity.length ? <span>{activity.length}</span> : null}
-							</button>
-							{showActivity && (
-								<div className="activity-panel">
-									<div className="activity-panel-head">
-										<strong>
-											{copy(
-												language,
-												"Activity on this device",
-												"Hoạt động trên thiết bị này",
-											)}
-										</strong>
-										<button
-											type="button"
-											onClick={() => setShowActivity(false)}
-										>
-											{copy(language, "Close", "Đóng")}
-										</button>
-									</div>
-									{activity.length ? (
-										activity.map((item) => (
-											<button
-												className="activity-item"
-												type="button"
-												key={item.id}
-												onClick={() => reopenActivity(item)}
-											>
-												<strong>{item.keyword}</strong>
-												<span>
-													{new Date(item.searchedAt).toLocaleString(
-														localeFor(language),
-													)}
-												</span>
-											</button>
-										))
-									) : (
-										<p>
-											{copy(
-												language,
-												"No saved searches yet.",
-												"Chưa có lượt tra cứu nào được lưu.",
-											)}
-										</p>
-									)}
-								</div>
-							)}
-						</div>
-					</div>
-				</header>
-				<TabsContent className="app-tab-content" value="overview">
-					<MarketOverview />
-				</TabsContent>
-				<TabsContent className="app-tab-content" value="search">
-					<SearchExperience resume={resume} onActivity={rememberActivity} />
-				</TabsContent>
-			</Tabs>
-		</LanguageContext.Provider>
-	);
+  return <LanguageContext.Provider value={language}><Tabs className="app-tabs" value={activeTab} onValueChange={changeTab}>
+    <header className="app-header"><Brand /><TabsList className="main-tabs" variant="line"><TabsTrigger value="overview">{copy(language, "Market overview", "Tổng quan thị trường")}</TabsTrigger><TabsTrigger value="search">{copy(language, "Product search", "Tra cứu sản phẩm")}</TabsTrigger></TabsList><div className="header-actions"><div className="language-switch" role="group" aria-label="Interface language"><button className={language === "en" ? "is-active" : ""} type="button" onClick={() => changeLanguage("en")} aria-pressed={language === "en"}>EN</button><button className={language === "vi" ? "is-active" : ""} type="button" onClick={() => changeLanguage("vi")} aria-pressed={language === "vi"}>VI</button></div><div className="activity-menu"><button type="button" onClick={() => setShowActivity((current) => !current)} aria-expanded={showActivity}>{copy(language, "Recent activity", "Hoạt động gần đây")}{activity.length ? <span>{activity.length}</span> : null}</button>{showActivity && <div className="activity-panel"><div className="activity-panel-head"><strong>{copy(language, "Activity on this device", "Hoạt động trên thiết bị này")}</strong><button type="button" onClick={() => setShowActivity(false)}>{copy(language, "Close", "Đóng")}</button></div>{activity.length ? activity.map((item) => <button className="activity-item" type="button" key={item.id} onClick={() => reopenActivity(item)}><strong>{item.keyword}</strong><span>{new Date(item.searchedAt).toLocaleString(localeFor(language))}</span></button>) : <p>{copy(language, "No saved searches yet.", "Chưa có lượt tra cứu nào được lưu.")}</p>}</div>}</div></div></header>
+    <TabsContent className="app-tab-content" value="overview"><MarketOverview /></TabsContent>
+    <TabsContent className="app-tab-content" value="search"><SearchExperience resume={resume} onActivity={rememberActivity} /></TabsContent>
+  </Tabs></LanguageContext.Provider>;
 }

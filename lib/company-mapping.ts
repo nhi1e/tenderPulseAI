@@ -1,4 +1,8 @@
-import { mappedManufacturerFromMaster, normalizedManufacturerName } from "@/lib/classification-rules";
+import {
+  mappedManufacturerDirectoryName,
+  mappedManufacturerFromMaster,
+  normalizedManufacturerName,
+} from "@/lib/classification-rules";
 
 export function normalizeCompanyText(value: string) {
   return value
@@ -38,9 +42,9 @@ export function collapseRepeatedCompanyName(value: string) {
 
 export function mappedCompanyName(searchableText: string, fallback = "") {
   const workbookMappedManufacturer = mappedManufacturerFromMaster(fallback);
-  if (workbookMappedManufacturer) return workbookMappedManufacturer;
-
-  const normalized = normalizeCompanyText(searchableText);
+  const normalized = normalizeCompanyText(
+    [searchableText, workbookMappedManufacturer].filter(Boolean).join(" | "),
+  );
   const compact = normalized.replace(/\s/g, "");
 
   if (/medtronic|covidien|coviden|covididen|ligasure/.test(compact)) return "Medtronic";
@@ -54,7 +58,36 @@ export function mappedCompanyName(searchableText: string, fallback = "") {
   if (/miconvey/.test(compact)) return "Miconvey";
   if (/innolcon/.test(compact)) return "Innolcon";
 
-  return collapseRepeatedCompanyName(normalizedManufacturerName(fallback));
+  return collapseRepeatedCompanyName(workbookMappedManufacturer || normalizedManufacturerName(fallback));
+}
+
+export function companyDirectoryName(value: string) {
+  const directoryMapping = (source: string) => {
+    const first = mappedManufacturerDirectoryName(source);
+    if (!first) return undefined;
+    const second = mappedManufacturerDirectoryName(first);
+    return second && second.length > first.length ? second : first;
+  };
+  const reviewed = directoryMapping(value);
+  if (reviewed) return collapseRepeatedCompanyName(reviewed).trim();
+
+  // Portal values often prepend a field label to an otherwise reviewed
+  // manufacturer name. Remove only the leading label, then consult the same
+  // master again instead of maintaining company-specific exceptions.
+  const withoutLeadingLabel = value.replace(
+    /^\s*[-•]?\s*(?:(?:hãng|nhà)\s+sản\s+xuất(?:\s+máy\s+chính)?|hãng\s+sản\s+xuất\s*\/\s*cơ\s+sở\s+sản\s+xuất)\s*:\s*/iu,
+    "",
+  ).trim();
+  if (withoutLeadingLabel !== value.trim()) {
+    const reviewedWithoutLabel = directoryMapping(withoutLeadingLabel);
+    if (reviewedWithoutLabel) return collapseRepeatedCompanyName(reviewedWithoutLabel).trim();
+  }
+
+  const mapped = mappedCompanyName(withoutLeadingLabel || value, withoutLeadingLabel || value).trim();
+  // Unreviewed compound portal cells are not one company. Keep them out of
+  // autocomplete until item-level attribution is available.
+  if (/[;|\n]/.test(value) || /\s\/\s/.test(value) || mapped.length > 120) return "";
+  return mapped;
 }
 
 export function companyGroupingKey(value: string) {

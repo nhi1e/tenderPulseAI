@@ -57,7 +57,9 @@ type ManufacturerMappingEntry = {
 type ManufacturerAliasEntry = {
   sourceRow: number;
   lookupKey: string;
+  aliases?: string[];
   canonical: string;
+  reportingName?: string;
   parent?: string;
   scope?: string;
   status?: string;
@@ -222,10 +224,24 @@ export function flattenedExclusionTerms(rule: ProductClassificationRule) {
 
 function manufacturerLookupKey(value: string) {
   return normalizeRuleText(value)
+    .replace(/\s*\(\s*\d+(?:[.,]\d+)?\s*\)\s*$/u, "")
     .replace(/[“”‘’'"`´]/g, "")
     .replace(/[^\p{L}\p{N}]+/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function manufacturerLookupKeys(value: string) {
+  const raw = String(value || "").trim();
+  const withoutLabel = raw.replace(
+    /^\s*[-•]?\s*(?:(?:hãng|nhà)\s+sản\s+xuất(?:\s+(?:máy|thiết bị)\s+chính)?|hãng\s+chủ\s+sở\s+hữu|chủ\s+sở\s+hữu)\s*:\s*/iu,
+    "",
+  );
+  const withoutCountry = withoutLabel.replace(
+    /\s*[/,-]\s*(?:đức|anh|mỹ|hoa kỳ|tây ban nha|thụy sĩ|ấn độ|nhật bản|trung quốc|united kingdom|germany|uk|usa)\s*$/iu,
+    "",
+  );
+  return [...new Set([raw, withoutLabel, withoutCountry].map(manufacturerLookupKey).filter(Boolean))];
 }
 
 function canonicalManufacturerName(value: string) {
@@ -248,22 +264,90 @@ for (const entry of manufacturerMappingJson.entries as ManufacturerMappingEntry[
 }
 
 const reviewedManufacturerAliases = new Map<string, string>();
+const reviewedManufacturerDirectory = new Map<string, string | null>();
+const reviewedManufacturerSplitKeys = new Set<string>();
 for (const entry of manufacturerAliasesJson.entries as ManufacturerAliasEntry[]) {
-  const key = manufacturerLookupKey(entry.lookupKey);
+  const keys = [...new Set([
+    ...manufacturerLookupKeys(entry.lookupKey),
+    ...(entry.aliases || []).flatMap(manufacturerLookupKeys),
+    ...manufacturerLookupKeys(entry.canonical),
+  ])];
   const canonical = canonicalManufacturerName(entry.canonical);
-  if (key && canonical) reviewedManufacturerAliases.set(key, canonical);
+  const needsItemSplit = normalizeRuleText([entry.parent, entry.status].filter(Boolean).join(" "))
+    .includes("can tach");
+  if (needsItemSplit) {
+    keys.forEach((key) => {
+      reviewedManufacturerSplitKeys.add(key);
+      reviewedManufacturerDirectory.set(key, null);
+    });
+    continue;
+  }
+  const reportingName = canonicalManufacturerName(entry.reportingName || entry.parent || entry.canonical);
+  keys.forEach((key) => {
+    if (key && reportingName) reviewedManufacturerAliases.set(key, reportingName);
+    if (key && reportingName) reviewedManufacturerDirectory.set(key, reportingName);
+  });
 }
 
 export function mappedManufacturerFromMaster(value: string | undefined) {
   const raw = String(value || "").trim();
   if (!raw) return undefined;
-  const key = manufacturerLookupKey(raw);
   // The original manufacturer master remains authoritative. Sheet 05 fills
-  // the previously unmapped spelling clusters with one canonical display name.
-  return manufacturerMappings.get(key) || reviewedManufacturerAliases.get(key);
+  // the previously unmapped spelling clusters with one reporting identity.
+  for (const key of manufacturerLookupKeys(raw)) {
+    const master = manufacturerMappings.get(key);
+    if (master) return master;
+  }
+  for (const key of manufacturerLookupKeys(raw)) {
+    if (reviewedManufacturerSplitKeys.has(key)) return undefined;
+    const alias = reviewedManufacturerAliases.get(key);
+    if (alias) return alias;
+  }
+  if (!/[;|+]/.test(raw)) {
+    const compact = manufacturerLookupKey(raw).replace(/\s/g, "");
+    if (compact.startsWith("amnotec")) return "AMNOTEC International Medical GmbH";
+    if (compact.startsWith("sutter")) return "Sutter Medizintechnik";
+    if (compact.includes("systagenixwoundmanage")) return "Solventum Corporation";
+    if (compact.startsWith("karlstorz") || compact.startsWith("storzendoskop")) return "KARL STORZ";
+  }
+  return undefined;
+}
+
+export function mappedManufacturerDirectoryName(value: string | undefined) {
+  const raw = String(value || "").trim();
+  if (!raw) return undefined;
+  for (const key of manufacturerLookupKeys(raw)) {
+    if (reviewedManufacturerDirectory.has(key)) {
+      return reviewedManufacturerDirectory.get(key) || undefined;
+    }
+  }
+  for (const key of manufacturerLookupKeys(raw)) {
+    const mapped = manufacturerMappings.get(key);
+    if (mapped) return mapped;
+  }
+  if (!/[;|+]/.test(raw)) {
+    const compact = manufacturerLookupKey(raw).replace(/\s/g, "");
+    if (compact.startsWith("amnotec")) return "AMNOTEC International Medical GmbH";
+    if (compact.startsWith("sutter")) return "Sutter Medizintechnik";
+    if (compact.includes("systagenixwoundmanage")) return "Solventum Corporation";
+    if (compact.startsWith("karlstorz") || compact.startsWith("storzendoskop")) return "KARL STORZ";
+  }
+  return undefined;
 }
 
 export function normalizedManufacturerName(value: string | undefined) {
   const raw = String(value || "").trim();
   return mappedManufacturerFromMaster(raw) || canonicalManufacturerName(raw);
+}
+
+export function manufacturerDirectoryNames() {
+  const names = new Map<string, string>();
+  const add = (value: string | null | undefined) => {
+    const name = canonicalManufacturerName(String(value || "").trim());
+    if (!name || name.length > 180) return;
+    names.set(manufacturerLookupKey(name), name);
+  };
+  manufacturerMappings.forEach(add);
+  reviewedManufacturerDirectory.forEach(add);
+  return [...names.values()].sort((left, right) => left.localeCompare(right, "vi"));
 }
