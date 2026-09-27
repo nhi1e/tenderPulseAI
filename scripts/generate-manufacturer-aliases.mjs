@@ -19,8 +19,10 @@ function cleanCanonicalName(value) {
   return String(value || "")
     .trim()
     .replace(/^["“”]+|["“”]+$/g, "")
-    .replace(/^\s*-\s*/, "")
+    .replace(/^\s*[-•.,;:]+\s*/, "")
     .replace(/\s+/g, " ")
+    .replace(/\s*\/?\s*(?:việt nam\s*)?mã\s+hàng\s*:.*$/iu, "")
+    .replace(/\s*[/,-]\s*(?:đức|anh|mỹ|hoa kỳ|tây ban nha|thụy sĩ|ấn độ|nhật bản|trung quốc|việt nam|thổ nhĩ kỳ|turkey|ý|pháp|bỉ|hàn quốc|hy lạp|đài loan|austria|peru|bulgaria|pakistan|vương quốc anh|united kingdom|cộng hòa séc|germany|uk|usa)\s*$/iu, "")
     .trim();
 }
 
@@ -45,6 +47,22 @@ function isSplitRequired(parent, status) {
   return normalizedKey(`${parent} ${status}`).includes("can tach");
 }
 
+function isPlausibleCompanyName(value) {
+  const cleaned = cleanCanonicalName(value);
+  const key = normalizedKey(cleaned);
+  if (!cleaned || cleaned.length > 120 || !/[A-Za-z\p{L}]/u.test(cleaned)) return false;
+  if (/^\d+(?:\s*(?:\d+|xx|thang|nam))*$/.test(key)) return false;
+  if (/^[a-z]\d+$/.test(key)) return false;
+  if (/^(?:hang|nha) san xuat$/.test(key)) return false;
+  if (/^(?:khong xac dinh|chua xac dinh|unknown|n a|na)$/.test(key)) return false;
+  if (/^(?:chi tiet|thong tin chi tiet|theo|nhu bang|gom nhieu ma hang|cung cap khi giao hang)/.test(key)) return false;
+  if (/^bang danh muc hang hoa/.test(key)) return false;
+  if (/^(?:nhieu hang|ao|an do|duc|my|trung quoc|viet nam|cai|soi|beijing|fujian|gangzhou|guangzhou|jiangsu|shaoxing|shenzhen|tianjin|tonglu|zhejiang)$/.test(key)) return false;
+  if (/[;|+]/u.test(cleaned)) return false;
+  if ((cleaned.match(/\//g)?.length || 0) >= 2) return false;
+  return true;
+}
+
 function reportingName(canonical, parent, status) {
   const canonicalKey = normalizedKey(canonical).replace(/\s/g, "");
   const parentKey = normalizedKey(parent).replace(/\s/g, "");
@@ -65,14 +83,16 @@ function reportingName(canonical, parent, status) {
   // market-share aggregation. It consolidates the many KARL STORZ, B. Braun,
   // Medtronic, etc. spellings while preserving the source value separately.
   if (parentKey && !/^(nhieuhang|chuaxacdinh|khongxacdinh|unknown)/.test(parentKey)) {
-    return cleanCanonicalName(parent)
+    const candidate = cleanCanonicalName(parent)
       .replace(/\s*[/,-]\s*(?:đức|anh|mỹ|hoa kỳ|united kingdom|germany|uk|usa)\s*$/iu, "")
       .replace(/^b\.?\s*braun surgical$/iu, "B. Braun")
       .replace(/^sutter$/iu, "Sutter Medizintechnik")
       .trim();
+    return isPlausibleCompanyName(candidate) ? candidate : "";
   }
 
-  return stripOccurrenceCount(canonical);
+  const fallback = stripOccurrenceCount(canonical);
+  return isPlausibleCompanyName(fallback) ? fallback : "";
 }
 
 function sourceAliases(row) {

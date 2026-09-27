@@ -1,5 +1,11 @@
 # TenderPulse AI
 
+## v15 company alias cleanup
+
+- Groups 3M legal entities, country subsidiaries, and factories under `3M Company`.
+- Removes portal metadata such as `Xuất xứ: Việt Nam` before building the company directory.
+- Refreshes the saved company directory and overview cache so old raw aliases do not remain visible.
+
 Live Medtronic market-intelligence dashboard for Vietnam public procurement award data.
 
 ## Included

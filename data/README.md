@@ -50,6 +50,12 @@ not only from companies encountered during the current browser session. Changes
 to this mapping also invalidate the overview session cache so stale source names
 cannot remain visible after a mapping update.
 
-Rows containing several independent manufacturers remain a composite canonical
-label until item-level source data can separate them. They are not assigned to
-one constituent company merely because that company appears first.
+Values that are not company names (for example years, quantities, warranty
+periods, country-only values, field labels and “see attached table” text) are
+kept out of the company directory. Portal labels and country suffixes are
+removed before a company name is displayed.
+
+Rows containing several independent manufacturers are not exposed as a single
+company and are not assigned to the first listed manufacturer. They remain
+`Unknown / review needed` until item-level source data can separate them. A
+numbered list is collapsed only when every numbered item names the same company.

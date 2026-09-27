@@ -50,6 +50,10 @@ test("exposes consolidated Sheet 05 companies to dashboard autocomplete", () => 
   assert.ok(names.has("KARL STORZ"));
   assert.ok(names.has("Sutter Medizintechnik"));
   assert.ok(names.has("Solventum Corporation"));
+  assert.ok(names.has("3M Company"));
+  ["10", "1500", "200", "2024", "2025", "3006.xx.xx", "50", "60 tháng", "Hãng sản xuất:", "Beijing", "Jiangsu", "Shenzhen", "Zhejiang"].forEach((name) => {
+    assert.ok(!names.has(name), name);
+  });
 });
 
 test("enforces all 167 staff decisions", () => {

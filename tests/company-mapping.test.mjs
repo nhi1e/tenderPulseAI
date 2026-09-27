@@ -117,3 +117,62 @@ test("does not expose a multi-manufacturer source cell as one autocomplete compa
     "",
   );
 });
+
+test("removes non-company values imported from the manufacturer review sheet", () => {
+  const invalidValues = ["10", "1500", "200", "2024", "2025", "3006.xx.xx", "50", "60 tháng", "Hãng sản xuất:"];
+  invalidValues.forEach((value) => assert.equal(mapping.companyDirectoryName(value), "", value));
+});
+
+test("cleans portal field labels and uses an explicit owner", () => {
+  assert.equal(
+    mapping.companyDirectoryName("Hãng/ nhà sản xuất máy chính: GE Ultrasound Korea, Ltd - Hãng chủ sở hữu máy chính: GE Ultrasound Korea, Ltd"),
+    "GE Ultrasound Korea, Ltd",
+  );
+  assert.equal(
+    mapping.companyDirectoryName('" Hãng sản xuất: Intuitive Surgical, Inc. "'),
+    "Intuitive Surgical, Inc.",
+  );
+});
+
+test("collapses a numbered list when every item names the same company", () => {
+  assert.equal(
+    mapping.companyDirectoryName("1. Nexxmed Equipamentos Ltda 2. Nexxmed Equipamentos Ltda 3. Nexxmed Equipamentos Ltda"),
+    "Nexxmed Equipamentos Ltda",
+  );
+});
+
+test("keeps a numbered list of different manufacturers out of autocomplete", () => {
+  assert.equal(
+    mapping.companyDirectoryName("1. Pearsalls Ltd 2. Arthrex Manufacturing, Inc. 3. Arthrex, Inc. 4. Arthrex, Inc. 5. Viant Costa Rica, S.A."),
+    "",
+  );
+});
+
+test("groups the misspelled Medipac legal-name variant with the reviewed company", () => {
+  assert.equal(
+    mapping.companyDirectoryName(". TH. KAZANTZIDI S S.AMEDIPAC"),
+    "TH. KAZANTZIDIS S.A",
+  );
+});
+
+test("removes embedded origin metadata from a manufacturer name", () => {
+  assert.equal(
+    mapping.companyDirectoryName("3A Medical Xuất xứ: Việt Nam"),
+    "3A Medical",
+  );
+});
+
+test("groups 3M country, factory and legal entities under 3M Company", () => {
+  const variants = [
+    "3M",
+    "3M Company",
+    "3M Brookings Manufacturing Facility",
+    "3M Deutschland GmbH",
+    "3M Edumex S.A de C.V",
+    "3M Medical Devices and Materials Manufacturing (Shanghai) Company Limited",
+  ];
+  variants.forEach((value) => {
+    assert.equal(mapping.mappedCompanyName(value, value), "3M Company", value);
+    assert.equal(mapping.companyDirectoryName(value), "3M Company", value);
+  });
+});

@@ -115,10 +115,10 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v9";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v11";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
-const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v4";
+const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v6";
 const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
 const initialHospitals: HospitalDirectoryEntry[] = [
   ...hospitalDirectoryEntries(),
