@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const runtimeModule = path.join(root, "lib", `.classification-rules-test-${process.pid}.ts`);
+const searchConfigRuntimeModule = path.join(root, "lib", `.market-overview-config-test-${process.pid}.mjs`);
 const source = (await readFile(path.join(root, "lib", "classification-rules.ts"), "utf8"))
   .replace(
     'from "@/data/classification-rules.json";',
@@ -25,13 +26,20 @@ const source = (await readFile(path.join(root, "lib", "classification-rules.ts")
   );
 
 await writeFile(runtimeModule, source);
+const searchConfigSource = (await readFile(path.join(root, "lib", "market-overview-config.ts"), "utf8"))
+  .replace("export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> =", "export const MARKET_OVERVIEW_SEARCH_SEEDS =");
+await writeFile(searchConfigRuntimeModule, searchConfigSource);
 const rules = await import(`${pathToFileURL(runtimeModule).href}?test=${Date.now()}`);
+const searchConfig = await import(`${pathToFileURL(searchConfigRuntimeModule).href}?test=${Date.now()}`);
 const staffOverrides = JSON.parse(
   await readFile(path.join(root, "data", "staff-classification-overrides.json"), "utf8"),
 );
 
 after(async () => {
-  await rm(runtimeModule, { force: true });
+  await Promise.all([
+    rm(runtimeModule, { force: true }),
+    rm(searchConfigRuntimeModule, { force: true }),
+  ]);
 });
 
 test("imports every completed staff-review row exactly once", () => {
@@ -143,10 +151,18 @@ test("classifies Lexington Endo Stapling devices and cartridges from the staff s
   assert.equal(device?.rule.productGroup, "Dụng cụ khâu cắt nối nội soi");
 
   const cartridge = rules.classifyProductRecord({
-    productName: "Băng ghim cắt khâu các cỡ có trợ lực",
+    productName: "Băng ghim có trợ lực các cỡ",
     brand: "Lexington Medical, Inc",
     configuration: "Tương thích với dụng cụ cắt khâu nối nội soi tích hợp trợ lực",
   });
   assert.equal(cartridge?.rule.subOu, "Endo Stapling");
   assert.equal(cartridge?.rule.productGroup, "Băng ghim nội soi");
+});
+
+
+test("retrieves Lexington cartridges by a product-name anchor before classification", () => {
+  const seeds = searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Băng ghim nội soi"];
+  assert.ok(seeds.includes("băng ghim"));
+  assert.ok(seeds.includes("băng đạn"));
+  assert.ok(seeds.includes("ghim khâu"));
 });
