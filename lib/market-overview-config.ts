@@ -1,11 +1,11 @@
 export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> = {
-  // Rules with Confirmation use every confirmation phrase as a retrieval seed.
-  // This produces a superset because Confirmation may occur in the product name,
-  // brand, or technical configuration; the complete rule is applied after download.
+  // Retrieval seeds intentionally create a superset. Product-name anchors are
+  // included when portal configuration-field matching is incomplete; the full
+  // approved keyword, confirmation, exclusion, and staff rules run after download.
   "Dao siêu âm": ["siêu âm"],
   "Dao hàn mạch": ["hàn mạch"],
-  "Băng ghim nội soi": ["nội soi", "cắt nối", "khâu nối"],
-  "Dụng cụ khâu cắt nối nội soi": ["nội soi", "cắt nối", "khâu nối"],
+  "Băng ghim nội soi": ["băng ghim", "băng đạn", "ghim khâu", "cắt nối"],
+  "Dụng cụ khâu cắt nối nội soi": ["nội soi", "cắt nối", "khâu nối", "máy cắt nối"],
   "Băng ghim mổ mở": ["mổ mở", "mổ hở"],
   "Dụng cụ khâu cắt nối mổ mở": ["mổ mở", "mổ hở"],
   "Dụng cụ khâu nối tròn": ["nối tròn", "nối vòng", "nối ống tiêu hóa tròn"],
