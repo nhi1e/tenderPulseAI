@@ -74,6 +74,9 @@ type LiveCollectionProgress = {
   classificationAudit?: ClassificationAudit;
   keywordRule?: KeywordMasterRule;
   truncated: boolean;
+  completedQueries?: number;
+  totalQueries?: number;
+  currentQuery?: string;
 };
 type ProductData = {
   keyword: string; group: string; fetchedAt: string; truncated: boolean;
@@ -115,7 +118,7 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v11";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v12";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
 const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v6";
@@ -320,6 +323,16 @@ function productSuggestionsFor(learnedProducts: LearnedProductEntry[], query: st
 function keywordRuleFor(keyword: string) {
   return ruleForSearchTerm(keyword);
 }
+function productSearchSeeds(keyword: string, rule: KeywordMasterRule | undefined) {
+  const values = [keyword, ...(rule ? MARKET_OVERVIEW_SEARCH_SEEDS[rule.productGroup] || [] : [])];
+  const seen = new Set<string>();
+  return values.filter((value) => {
+    const key = searchableText(value);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 function classificationRecord(record: WinningBidRecord) {
   return {
     sourceId: record.id,
@@ -447,6 +460,69 @@ async function collectLiveWinningBids(
     keywordRule: rule,
     totalPages: portalTotalPages,
     truncated: portalTotalPages > maxPages,
+  };
+}
+async function collectProductSearchWinningBids(
+  keyword: string,
+  filters: SearchFilters,
+  options: {
+    maxPages?: number;
+    forceRefresh?: boolean;
+    onProgress?: (progress: LiveCollectionProgress) => void;
+  } = {},
+) {
+  const rule = keywordRuleFor(keyword);
+  const seeds = productSearchSeeds(keyword, rule);
+  if (!rule || seeds.length === 1) {
+    return collectLiveWinningBids(keyword, filters, options);
+  }
+
+  const merged = new Map<string, WinningBidRecord>();
+  let loadedPages = 0;
+  let truncated = false;
+
+  for (let queryIndex = 0; queryIndex < seeds.length; queryIndex += 1) {
+    const seed = seeds[queryIndex];
+    let previousCompletedPages = 0;
+    const result = await collectLiveWinningBids(seed, filters, {
+      maxPages: options.maxPages,
+      forceRefresh: options.forceRefresh,
+      applyKeywordRule: false,
+      onProgress: (progress) => {
+        progress.records.forEach((record) => merged.set(recordKey(record), record));
+        const classified = applyKeywordRule([...merged.values()], rule);
+        options.onProgress?.({
+          ...progress,
+          records: classified.records,
+          portalTotalElements: merged.size,
+          excludedRecords: merged.size - classified.records.length,
+          classificationAudit: classified.audit,
+          keywordRule: rule,
+          completedQueries: queryIndex + 1,
+          totalQueries: seeds.length,
+          currentQuery: seed,
+        });
+        previousCompletedPages = progress.completedPages;
+      },
+    });
+    result.records.forEach((record) => merged.set(recordKey(record), record));
+    loadedPages += previousCompletedPages;
+    truncated = truncated || result.truncated;
+  }
+
+  const rawRecords = [...merged.values()];
+  const classified = applyKeywordRule(rawRecords, rule);
+  const records = classified.records;
+  rememberAutocompleteValues(rawRecords);
+  return {
+    records,
+    totalElements: records.length,
+    portalTotalElements: rawRecords.length,
+    excludedRecords: rawRecords.length - records.length,
+    classificationAudit: classified.audit,
+    keywordRule: rule,
+    totalPages: loadedPages,
+    truncated,
   };
 }
 function toNumber(value: unknown) {
@@ -811,6 +887,14 @@ function summarize(
   const medtronicShare = totalValue ? (medtronicValue / totalValue) * 100 : 0;
   const medtronicQuantityShare = totalQuantity ? (medtronicQuantity / totalQuantity) * 100 : 0;
   const audit = source.classificationAudit;
+  const classifiedRows = records.reduce((total, record) => total + (classifyProductRecord(classificationRecord(record)) ? 1 : 0), 0);
+  const classificationNote = !source.keywordRule && records.length
+    ? copy(
+      language,
+      ` ${classifiedRows.toLocaleString(locale)}/${records.length.toLocaleString(locale)} returned rows were assigned to an approved Sub-OU and product group; unclassified rows remain visible for review.`,
+      ` ${classifiedRows.toLocaleString(locale)}/${records.length.toLocaleString(locale)} dòng trả về đã được gán Sub-OU và nhóm sản phẩm theo rule đã duyệt; các dòng chưa phân loại vẫn được giữ lại để kiểm tra.`,
+    )
+    : "";
   const exclusionNote = source.keywordRule && source.excludedRecords
     ? copy(
       language,
@@ -854,7 +938,7 @@ function summarize(
     insight: medtronicValue
       ? copy(language, `Medtronic-related product labels represent approximately ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of the recorded awarded value in this live search.`, `Các nhãn sản phẩm liên quan đến Medtronic chiếm khoảng ${medtronicShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu ghi nhận trong kết quả tìm kiếm trực tiếp này.`)
       : copy(language, "No current records were classified as Medtronic from the available product fields.", "Chưa có bản ghi nào được phân loại là Medtronic từ các trường sản phẩm hiện có."),
-    qualityNote: copy(language, `The data contains ${units.size} units of measure; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of awarded value has no manufacturer information.${exclusionNote} Manufacturer names are normalized with ${manufacturerMappedRows.toLocaleString(locale)} populated mapping rows before company shares are calculated; ${manufacturerUnmappedRows.toLocaleString(locale)} workbook rows without a target remain unchanged.`, `Dữ liệu có ${units.size} loại đơn vị tính; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu không có thông tin hãng sản xuất.${exclusionNote} Tên hãng được chuẩn hóa bằng ${manufacturerMappedRows.toLocaleString(locale)} dòng quy đổi có kết quả trước khi tính thị phần công ty; ${manufacturerUnmappedRows.toLocaleString(locale)} dòng chưa có hãng đích trong file được giữ nguyên.`),
+    qualityNote: copy(language, `The data contains ${units.size} units of measure; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% of awarded value has no manufacturer information.${classificationNote}${exclusionNote} Manufacturer names are normalized with ${manufacturerMappedRows.toLocaleString(locale)} populated mapping rows before company shares are calculated; ${manufacturerUnmappedRows.toLocaleString(locale)} workbook rows without a target remain unchanged.`, `Dữ liệu có ${units.size} loại đơn vị tính; ${missingShare.toLocaleString(locale, { maximumFractionDigits: 1 })}% giá trị trúng thầu không có thông tin hãng sản xuất.${classificationNote}${exclusionNote} Tên hãng được chuẩn hóa bằng ${manufacturerMappedRows.toLocaleString(locale)} dòng quy đổi có kết quả trước khi tính thị phần công ty; ${manufacturerUnmappedRows.toLocaleString(locale)} dòng chưa có hãng đích trong file được giữ nguyên.`),
   };
 }
 
@@ -995,7 +1079,7 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
         <button className="search-button" type="submit" disabled={loading || !query.trim()}>{loading ? <LoaderCircle className="spin" /> : <Search />}<span>{loading ? copy(language, "Searching…", "Đang tìm…") : copy(language, "Search", "Tìm kiếm")}</span></button>
       </div></form>
       {query.trim() && <div className={`keyword-rule-preview ${selectedRule ? "is-master-rule" : "is-custom-rule"}`}>
-        {selectedRule ? <><div><strong>{copy(language, "Applying approved rule", "Áp dụng quy tắc đã duyệt")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.method}</p><div className="rule-baskets"><div className="exclude-list"><span>{copy(language, "Keyword basket:", "Rổ keyword:")}</span>{selectedRule.keywords.map((term) => <b key={`keyword-${term}`}>{term}</b>)}</div>{selectedRule.confirmations.length > 0 && <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation basket:", "Rổ Confirmation:")}</span>{selectedRule.confirmations.map((term) => <b key={`confirmation-${term}`}>{term}</b>)}</div>}{flattenedExclusionTerms(selectedRule).length > 0 && <div className="exclude-list"><span>{copy(language, "Exclusion basket:", "Rổ exclude:")}</span>{flattenedExclusionTerms(selectedRule).map((term) => <b key={`exclude-${term}`}>{term}</b>)}</div>}</div><p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.", "‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, `Outside the ${approvedKeywordCount}-keyword catalog`, `Không thuộc danh mục ${approvedKeywordCount} keyword`)}</span></div><p>{copy(language, "Results will use your exact search phrase without the approved classification gates.", "Kết quả sẽ được lấy theo cụm từ bạn nhập và không áp dụng các bước phân loại đã duyệt.")}</p></>}
+        {selectedRule ? <><div><strong>{copy(language, "Applying approved rule", "Áp dụng quy tắc đã duyệt")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.method}</p><div className="rule-baskets"><div className="exclude-list"><span>{copy(language, "Keyword basket:", "Rổ keyword:")}</span>{selectedRule.keywords.map((term) => <b key={`keyword-${term}`}>{term}</b>)}</div>{selectedRule.confirmations.length > 0 && <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation basket:", "Rổ Confirmation:")}</span>{selectedRule.confirmations.map((term) => <b key={`confirmation-${term}`}>{term}</b>)}</div>}{flattenedExclusionTerms(selectedRule).length > 0 && <div className="exclude-list"><span>{copy(language, "Exclusion basket:", "Rổ exclude:")}</span>{flattenedExclusionTerms(selectedRule).map((term) => <b key={`exclude-${term}`}>{term}</b>)}</div>}</div><p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.", "‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, `Outside the ${approvedKeywordCount}-keyword catalog`, `Không thuộc danh mục ${approvedKeywordCount} keyword`)}</span></div><p>{copy(language, "The portal is searched using your phrase. Returned rows are still classified with the approved rules and staff decisions when possible; unclassified rows remain visible.", "Cổng được tìm theo cụm từ bạn nhập. Các dòng trả về vẫn được phân loại bằng rule đã duyệt và quyết định của staff khi có thể; dòng chưa phân loại vẫn được giữ lại để kiểm tra.")}</p></>}
       </div>}
     </div>
     {loading && status && <p className="search-loading-status"><LoaderCircle className="spin" />{status}</p>}
@@ -1053,8 +1137,12 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
       const resultRows = product.records.map((record, index) => {
         const quantity = toNumber(record.khoiLuongDouble ?? record.khoiLuong);
         const unitPrice = toNumber(record.donGia ?? record.donGiaDuThau);
+        const classification = classifyProductRecord(classificationRecord(record));
         return {
           STT: index + 1,
+          "Sub-OU đã phân loại": safeExcelText(classification?.rule.subOu || ""),
+          "Nhóm sản phẩm đã phân loại": safeExcelText(classification?.rule.productGroup || ""),
+          "Từ khóa phân loại": safeExcelText(classification?.evaluation.matchedKeyword || ""),
           "Mã TBMT": safeExcelText(record.maTbmt),
           "Mã định danh CĐT": safeExcelText(record.maCdt),
           "Tên CĐT": safeExcelText(hospitalName(record.maCdt || "", record.tenCdtBmt || "")),
@@ -1109,7 +1197,7 @@ function Dashboard({ product, loading, error, status, onBack, onSearch }: { prod
         ["Nguồn dữ liệu", "Cổng Mua Sắm Công"],
       ];
       await downloadWorkbook([
-        { name: "Kết quả", rows: resultRows, columns: [7, 20, 22, 38, 44, 14, 14, 24, 13, 22, 22, 32, 28, 22, 28, 15, 60, 20, 20, 26, 42, 34, 20, 22, 22, 18, 38] },
+        { name: "Kết quả", rows: resultRows, columns: [7, 18, 30, 28, 20, 22, 38, 44, 14, 14, 24, 13, 22, 22, 32, 28, 22, 28, 15, 60, 20, 20, 26, 42, 34, 20, 22, 22, 18, 38] },
         { name: "Thông tin tìm kiếm", rows: infoRows, columns: [28, 65], matrix: true },
       ], `${formatDownloadDate(new Date())}-${filenameSlug(product.keyword)}.xlsx`);
     } catch (caught) {
@@ -1839,13 +1927,20 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
     setLoading(true); setError(undefined); setLoadingStatus(copy(language, "Connecting to Mua Sắm Công…", "Đang kết nối Cổng Mua Sắm Công…"));
     try {
       const fetchedAt = new Date().toISOString();
-      const data = await collectLiveWinningBids(keyword, filters, {
+      const data = await collectProductSearchWinningBids(keyword, filters, {
         maxPages: 25,
         onProgress: (progress) => {
+          const queryProgress = progress.totalQueries && progress.currentQuery
+            ? copy(
+              language,
+              `Query ${progress.completedQueries}/${progress.totalQueries}: ${progress.currentQuery} · `,
+              `Truy vấn ${progress.completedQueries}/${progress.totalQueries}: ${progress.currentQuery} · `,
+            )
+            : "";
           setLoadingStatus(copy(
             language,
-            `Loaded page ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} matching rows`,
-            `Đã tải trang ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} dòng phù hợp`,
+            `${queryProgress}Loaded page ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} matching rows`,
+            `${queryProgress}Đã tải trang ${progress.completedPages}/${progress.totalPages} · ${progress.records.length.toLocaleString(localeFor(language))} dòng phù hợp`,
           ));
           if (progress.records.length) {
             const totalElements = progress.keywordRule ? progress.records.length : progress.portalTotalElements;
