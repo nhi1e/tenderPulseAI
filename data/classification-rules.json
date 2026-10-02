@@ -1,9 +1,9 @@
 {
   "source": {
-    "workbook": "rule_phan_nhom_san_pham_10_9.xlsx",
-    "sheet": "Danh mục rule keyword",
-    "version": "2026-09-23",
-    "staffReview": "TenderPulseAI_staff_rule_review_23.9.xlsx / 01_Trùng rule",
+    "workbook": "bổ sung rule mới 01.10.xlsx",
+    "sheet": "Danh mục rule keyword cần edit",
+    "version": "2026-10-01",
+    "staffReview": "TenderPulseAI_staff_rule_review_23.9.xlsx / 01_Trùng rule; bổ sung rule mới 01.10.xlsx",
     "normalization": "Unicode NFC, lowercase, replace line breaks with spaces, collapse whitespace, trim, preserve Vietnamese diacritics"
   },
   "rules": [
@@ -15,10 +15,10 @@
       "keywords": ["Dao siêu âm", "Dao mổ siêu âm", "Tay ( lưỡi) dao siêu âm", "Lưỡi dao siêu âm", "Dao cắt siêu âm", "Dao cắt cầm máu siêu âm", "Lưỡi dao"],
       "confirmations": ["Siêu âm"],
       "exclusions": [
-        { "fields": ["productName"], "match": "startsWith", "terms": ["Dây dẫn", "bộ phát", "bộ dây", "bộ phận chuyển đổi", "pin sạc", "sạc pin", "khay hấp", "khay lắp", "hệ thống", "bộ phận truyền xung động", "Phụ kiện", "ống chụp"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["Dây dẫn", "bộ phát", "bộ dây", "bộ phận chuyển đổi", "pin sạc", "sạc pin", "khay hấp", "khay lắp", "hệ thống", "bộ phận truyền xung động", "Phụ kiện", "ống chụp", "dây dao", "dây cáp", "bộ sạc", "khay sạc", "pin", "bàn đạp"] },
         { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["CUSA", "robot"] }
       ],
-      "method": "Tên sản phẩm phải có một cụm trong rổ keyword và Tên/Nhãn hiệu/Cấu hình phải có “siêu âm”. Loại phụ kiện, hệ thống, CUSA và robot theo đúng phạm vi trường được duyệt."
+      "method": "Tên sản phẩm phải có một cụm trong rổ keyword và Tên/Nhãn hiệu/Cấu hình phải có “siêu âm”. Loại dây dao, dây/cáp, bộ hoặc khay sạc, pin, bàn đạp, phụ kiện, hệ thống, CUSA và robot theo đúng phạm vi trường được duyệt ngày 01.10."
     },
     {
       "id": 2,
@@ -39,12 +39,12 @@
       "subOu": "Endo Stapling",
       "productGroup": "Băng ghim nội soi",
       "keywords": ["Băng ghim", "Băng đạn", "Băng ( đạn)", "Ghim khâu", "Ghim"],
-      "confirmations": ["Nội soi", "cắt nối", "khâu nối"],
+      "confirmations": ["Nội soi"],
       "exclusions": [
         { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "nối vòng", "circular", "longo", "cố định", "tử cung"] },
         { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler", "bộ máy"] }
       ],
-      "method": "Nhận băng/ghim có xác nhận nội soi, cắt nối hoặc khâu nối; loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn, Longo, cố định hoặc tử cung theo xác nhận staff 23.9."
+      "method": "Nhận băng/ghim khi Tên/Nhãn hiệu/Cấu hình có confirmation “nội soi”; loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn/nối vòng, circular, Longo, cố định hoặc tử cung theo điều chỉnh ngày 01.10."
     },
     {
       "id": 4,
@@ -52,12 +52,16 @@
       "subOu": "Endo Stapling",
       "productGroup": "Dụng cụ khâu cắt nối nội soi",
       "keywords": ["Dụng cụ", "Máy cắt nối", "Stapler nội soi"],
-      "confirmations": ["nội soi", "cắt nối", "khâu nối"],
-      "exclusions": [
-        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "nối vòng", "circular", "longo", "cố định lưới", "trĩ", "tử cung", "đơn cực", "lưỡng cực", "tròn", "tay dao", "định vị", "thoát vị", "trocar", "điện cực"] },
-        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim"] }
+      "confirmations": ["nội soi", "khâu cắt", "cắt khâu", "khâu nối", "nối khâu", "cắt nối", "nối cắt"],
+      "confirmationGroups": [
+        ["nội soi"],
+        ["khâu cắt", "cắt khâu", "khâu nối", "nối khâu", "cắt nối", "nối cắt"]
       ],
-      "method": "Nhận dụng cụ với confirmation nội soi/cắt nối/khâu nối; loại các nhóm mổ mở, nối tròn, cố định lưới/thoát vị, trocar và điện cực theo xác nhận staff 23.9."
+      "exclusions": [
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["cột sống", "tai mũi họng", "tiết niệu", "niệu quản", "ngoại thận", "sản", "phụ khoa", "tán sỏi", "âm đạo", "hậu môn", "sinh thiết", "khớp vai", "khớp gối", "khử khuẩn", "robot", "nội khí quản", "NKQ", "sọ não", "vá nhĩ tai", "ống sống", "mạch vành", "cidex", "bảo vệ vết mổ", "ngáng miệng"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim", "hệ thống", "dung dịch", "chổi", "que", "tay bắt", "dầu", "tủ", "máy rửa", "hộp", "khay", "màn phủ"] }
+      ],
+      "method": "Tên sản phẩm phải có keyword dụng cụ/máy cắt nối/stapler nội soi; đồng thời Tên/Nhãn hiệu/Cấu hình phải có “nội soi” và ít nhất một cụm khâu-cắt-nối đã duyệt. Sau đó loại các chuyên khoa, hệ thống và phụ kiện trong rổ exclude ngày 01.10."
     },
     {
       "id": 5,
@@ -67,10 +71,10 @@
       "keywords": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim"],
       "confirmations": ["mổ mở", "mổ hở"],
       "exclusions": [
-        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "circular", "longo"] },
+        { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "nối vòng", "circular", "longo", "tròn"] },
         { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler"] }
       ],
-      "method": "Nhận băng/ghim có xác nhận mổ mở hoặc mổ hở; loại dụng cụ, nội soi, nối tròn và Longo. Không dùng riêng từ Endo để loại."
+      "method": "Nhận băng/ghim có xác nhận mổ mở hoặc mổ hở; loại dụng cụ, nội soi, nối tròn/nối vòng, circular, Longo và “tròn” theo điều chỉnh ngày 01.10."
     },
     {
       "id": 6,
@@ -78,12 +82,16 @@
       "subOu": "Open Stapling",
       "productGroup": "Dụng cụ khâu cắt nối mổ mở",
       "keywords": ["dụng cụ", "máy cắt nối", "stapler mổ mở"],
-      "confirmations": ["mổ mở", "mổ hở"],
+      "confirmations": ["mổ mở", "mổ hở", "khâu cắt", "cắt khâu", "khâu nối", "nối khâu", "cắt nối", "nối cắt"],
+      "confirmationGroups": [
+        ["mổ mở", "mổ hở"],
+        ["khâu cắt", "cắt khâu", "khâu nối", "nối khâu", "cắt nối", "nối cắt"]
+      ],
       "exclusions": [
         { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["nội soi", "nối tròn", "nối vòng", "circular", "longo", "thắt", "chỉ"] },
         { "fields": ["productName"], "match": "startsWith", "terms": ["băng ghim", "băng đạn", "băng (đạn)", "ghim khâu", "ghim cho máy", "tay dao", "ghim"] }
       ],
-      "method": "Nhận dụng cụ có xác nhận mổ mở hoặc mổ hở; loại băng ghim, nội soi, nối tròn/nối vòng/circular, Longo, thắt và chỉ."
+      "method": "Tên sản phẩm phải có keyword dụng cụ/máy cắt nối/stapler mổ mở; đồng thời Tên/Nhãn hiệu/Cấu hình phải có mổ mở/mổ hở và ít nhất một cụm khâu-cắt-nối đã duyệt. Sau đó áp dụng rổ exclude ngày 01.10."
     },
     {
       "id": 7,
@@ -180,9 +188,9 @@
       "keywords": ["tấm điện cực", "điện cực trung tính", "miếng dán điện cực", "bản cực trung tính", "tấm dán điện", "thảm điện cực", "mash điện", "tấm lắc đôi điện cực"],
       "confirmations": ["trung tính"],
       "exclusions": [
-        { "fields": ["productName"], "match": "startsWith", "terms": ["dây nối", "cáp nối", "dây cáp"] }
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dây nối", "cáp nối", "dây cáp", "dây"] }
       ],
-      "method": "Nhận tấm điện cực có confirmation trung tính; chỉ loại dây/cáp khi nằm ở đầu Tên thiết bị."
+      "method": "Nhận tấm điện cực có confirmation trung tính; loại mọi Tên thiết bị bắt đầu bằng dây hoặc cáp theo điều chỉnh ngày 01.10."
     },
     {
       "id": 15,
