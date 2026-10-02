@@ -1094,7 +1094,7 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
             <ComboboxList>
               {masterSuggestions.length > 0 && <ComboboxGroup><ComboboxLabel>{copy(language, "Approved keyword master", "Bộ từ khóa chuẩn")}</ComboboxLabel>{masterSuggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.value} key={`master-${normalize(entry.value)}`}><div><strong>{entry.value}</strong><span>{entry.subOu} · {entry.productGroup}</span></div></ComboboxItem>)}</ComboboxGroup>}
               {learnedSuggestions.length > 0 && <ComboboxGroup><ComboboxLabel>{copy(language, "Brands and models found in live results", "Brand và model tìm thấy trong dữ liệu trực tiếp")}</ComboboxLabel>{learnedSuggestions.map((entry) => <ComboboxItem className="autocomplete-option" value={entry.value} key={`learned-${entry.kind}-${normalize(entry.value)}`}><div><strong>{entry.value}</strong><span>{entry.kind === "brand" ? "Brand" : "Model"}</span></div></ComboboxItem>)}</ComboboxGroup>}
-              <ComboboxEmpty>{copy(language, "No saved suggestion. You can still search this exact phrase.", "Chưa có gợi ý phù hợp. Bạn vẫn có thể tìm theo cụm từ này.")}</ComboboxEmpty>
+              <ComboboxEmpty>{copy(language, "No saved suggestion. Search will still combine terms across product, brand, model, and manufacturer.", "Chưa có gợi ý đã lưu. Hệ thống vẫn sẽ kết hợp các từ trong tên sản phẩm, brand, model và hãng sản xuất.")}</ComboboxEmpty>
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
