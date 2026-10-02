@@ -24,6 +24,7 @@ import {
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
+import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
   aggregateOverviewFacts,
@@ -324,7 +325,9 @@ function keywordRuleFor(keyword: string) {
   return ruleForSearchTerm(keyword);
 }
 function productSearchSeeds(keyword: string, rule: KeywordMasterRule | undefined) {
-  const values = [keyword, ...(rule ? MARKET_OVERVIEW_SEARCH_SEEDS[rule.productGroup] || [] : [])];
+  const values = rule
+    ? [keyword, ...(MARKET_OVERVIEW_SEARCH_SEEDS[rule.productGroup] || [])]
+    : customProductSearchSeeds(keyword);
   const seen = new Set<string>();
   return values.filter((value) => {
     const key = searchableText(value);
@@ -376,6 +379,17 @@ function applyKeywordRule(records: WinningBidRecord[], rule: KeywordMasterRule |
     return false;
   });
   return { records: matched, audit };
+}
+function filterProductSearchRecords(
+  records: WinningBidRecord[],
+  keyword: string,
+  rule: KeywordMasterRule | undefined,
+): { records: WinningBidRecord[]; audit?: ClassificationAudit } {
+  if (rule) return applyKeywordRule(records, rule);
+  return {
+    records: records.filter((record) => recordMatchesCustomProductSearch(record, keyword)),
+    audit: undefined,
+  };
 }
 function portalPageUrl(keyword: string, page: number, filters: SearchFilters, forceRefresh = false) {
   const params = new URLSearchParams({ keyword, page: String(page), pageSize: "1000" });
@@ -473,8 +487,16 @@ async function collectProductSearchWinningBids(
 ) {
   const rule = keywordRuleFor(keyword);
   const seeds = productSearchSeeds(keyword, rule);
-  if (!rule || seeds.length === 1) {
-    return collectLiveWinningBids(keyword, filters, options);
+  if (seeds.length === 1) {
+    const result = await collectLiveWinningBids(keyword, filters, options);
+    if (rule) return result;
+    const filtered = filterProductSearchRecords(result.records, keyword, rule);
+    return {
+      ...result,
+      records: filtered.records,
+      totalElements: filtered.records.length,
+      excludedRecords: result.records.length - filtered.records.length,
+    };
   }
 
   const merged = new Map<string, WinningBidRecord>();
@@ -490,7 +512,7 @@ async function collectProductSearchWinningBids(
       applyKeywordRule: false,
       onProgress: (progress) => {
         progress.records.forEach((record) => merged.set(recordKey(record), record));
-        const classified = applyKeywordRule([...merged.values()], rule);
+        const classified = filterProductSearchRecords([...merged.values()], keyword, rule);
         options.onProgress?.({
           ...progress,
           records: classified.records,
@@ -511,7 +533,7 @@ async function collectProductSearchWinningBids(
   }
 
   const rawRecords = [...merged.values()];
-  const classified = applyKeywordRule(rawRecords, rule);
+  const classified = filterProductSearchRecords(rawRecords, keyword, rule);
   const records = classified.records;
   rememberAutocompleteValues(rawRecords);
   return {
@@ -1079,7 +1101,7 @@ function ProductSearch({ loading, error, status, onSearch }: { loading: boolean;
         <button className="search-button" type="submit" disabled={loading || !query.trim()}>{loading ? <LoaderCircle className="spin" /> : <Search />}<span>{loading ? copy(language, "Searching…", "Đang tìm…") : copy(language, "Search", "Tìm kiếm")}</span></button>
       </div></form>
       {query.trim() && <div className={`keyword-rule-preview ${selectedRule ? "is-master-rule" : "is-custom-rule"}`}>
-        {selectedRule ? <><div><strong>{copy(language, "Applying approved rule", "Áp dụng quy tắc đã duyệt")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.method}</p><div className="rule-baskets"><div className="exclude-list"><span>{copy(language, "Keyword basket:", "Rổ keyword:")}</span>{selectedRule.keywords.map((term) => <b key={`keyword-${term}`}>{term}</b>)}</div>{selectedRule.confirmationGroups?.length ? <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation groups (all required):", "Nhóm Confirmation (phải đạt đủ):")}</span>{selectedRule.confirmationGroups.map((group, index) => <b key={`confirmation-group-${index}`}>{index + 1}. {group.join(" / ")}</b>)}</div> : selectedRule.confirmations.length > 0 && <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation basket:", "Rổ Confirmation:")}</span>{selectedRule.confirmations.map((term) => <b key={`confirmation-${term}`}>{term}</b>)}</div>}{flattenedExclusionTerms(selectedRule).length > 0 && <div className="exclude-list"><span>{copy(language, "Exclusion basket:", "Rổ exclude:")}</span>{flattenedExclusionTerms(selectedRule).map((term) => <b key={`exclude-${term}`}>{term}</b>)}</div>}</div><p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.", "‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, `Outside the ${approvedKeywordCount}-keyword catalog`, `Không thuộc danh mục ${approvedKeywordCount} keyword`)}</span></div><p>{copy(language, "The portal is searched using your phrase. Returned rows are still classified with the approved rules and staff decisions when possible; unclassified rows remain visible.", "Cổng được tìm theo cụm từ bạn nhập. Các dòng trả về vẫn được phân loại bằng rule đã duyệt và quyết định của staff khi có thể; dòng chưa phân loại vẫn được giữ lại để kiểm tra.")}</p></>}
+        {selectedRule ? <><div><strong>{copy(language, "Applying approved rule", "Áp dụng quy tắc đã duyệt")} #{selectedRule.id}</strong><span>{selectedRule.subOu} · {selectedRule.productGroup}</span></div><p>{selectedRule.method}</p><div className="rule-baskets"><div className="exclude-list"><span>{copy(language, "Keyword basket:", "Rổ keyword:")}</span>{selectedRule.keywords.map((term) => <b key={`keyword-${term}`}>{term}</b>)}</div>{selectedRule.confirmationGroups?.length ? <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation groups (all required):", "Nhóm Confirmation (phải đạt đủ):")}</span>{selectedRule.confirmationGroups.map((group, index) => <b key={`confirmation-group-${index}`}>{index + 1}. {group.join(" / ")}</b>)}</div> : selectedRule.confirmations.length > 0 && <div className="exclude-list confirmation-list"><span>{copy(language, "Confirmation basket:", "Rổ Confirmation:")}</span>{selectedRule.confirmations.map((term) => <b key={`confirmation-${term}`}>{term}</b>)}</div>}{flattenedExclusionTerms(selectedRule).length > 0 && <div className="exclude-list"><span>{copy(language, "Exclusion basket:", "Rổ exclude:")}</span>{flattenedExclusionTerms(selectedRule).map((term) => <b key={`exclude-${term}`}>{term}</b>)}</div>}</div><p className="ambiguity-explanation">{copy(language, "What ‘removed’ means: a portal row is counted only when the product name contains an approved keyword, the required confirmation appears in the product name, brand, or technical configuration, and no field-specific exclusion matches. A row that fails any of those gates is excluded from every KPI. Missing manufacturer or price data alone does not trigger the product rule.", "‘Đã loại’ nghĩa là gì: một dòng trên cổng chỉ được tính khi Tên thiết bị có keyword đã duyệt, confirmation bắt buộc xuất hiện trong Tên thiết bị, Nhãn hiệu hoặc Cấu hình kỹ thuật, và không trúng điều kiện exclude theo đúng phạm vi trường. Dòng không đạt một trong các bước này sẽ không được đưa vào bất kỳ KPI nào. Thiếu hãng sản xuất hoặc giá không tự động làm dòng bị loại theo rule sản phẩm.")}</p></> : <><div><strong>{copy(language, "Custom search", "Tìm kiếm tùy chỉnh")}</strong><span>{copy(language, `Outside the ${approvedKeywordCount}-keyword catalog`, `Không thuộc danh mục ${approvedKeywordCount} keyword`)}</span></div><p>{copy(language, "The portal searches the phrase plus a specific fallback term, then keeps rows where every entered term appears across product name, brand, model, manufacturer, or technical configuration. Returned rows are still classified with the approved rules and staff decisions when possible.", "Cổng được tìm bằng cả cụm từ và một từ đặc trưng dự phòng, sau đó hệ thống chỉ giữ các dòng có đầy đủ từ đã nhập trong Tên sản phẩm, Nhãn hiệu, Model, Hãng sản xuất hoặc Cấu hình kỹ thuật. Các dòng trả về vẫn được phân loại bằng rule đã duyệt và quyết định của staff khi có thể.")}</p></>}
       </div>}
     </div>
     {loading && status && <p className="search-loading-status"><LoaderCircle className="spin" />{status}</p>}
