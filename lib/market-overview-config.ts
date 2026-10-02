@@ -4,7 +4,7 @@ export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> = {
   // approved keyword, confirmation, exclusion, and staff rules run after download.
   "Dao siêu âm": ["siêu âm"],
   "Dao hàn mạch": ["hàn mạch"],
-  "Băng ghim nội soi": ["băng ghim", "băng đạn", "ghim khâu", "cắt nối"],
+  "Băng ghim nội soi": ["băng ghim", "băng đạn", "ghim khâu", "nội soi"],
   "Dụng cụ khâu cắt nối nội soi": ["nội soi", "cắt nối", "khâu nối", "máy cắt nối"],
   "Băng ghim mổ mở": ["mổ mở", "mổ hở"],
   "Dụng cụ khâu cắt nối mổ mở": ["mổ mở", "mổ hở"],
