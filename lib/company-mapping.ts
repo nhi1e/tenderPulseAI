@@ -60,8 +60,23 @@ function cleanCompanyCandidate(value: string) {
       /\s*[/,-]\s*(?:đức|anh|mỹ|hoa kỳ|tây ban nha|thụy sĩ|ấn độ|nhật bản|trung quốc|việt nam|thổ nhĩ kỳ|turkey|ý|pháp|bỉ|hàn quốc|hy lạp|đài loan|austria|peru|bulgaria|pakistan|vương quốc anh|united kingdom|cộng hòa séc|germany|uk|usa)\s*$/iu,
       "",
     )
+    .replace(
+      /\s*\(\s*(?:hệ\s+thống\s+máy\s+chính|máy\s+chính|thiết\s+bị\s+chính|hệ\s+thống\s+thiết\s+bị\s+chính)\s*\)\s*$/iu,
+      "",
+    )
     .replace(/^[.,;:]+\s*/u, "")
     .replace(/\s*["'“”‘’;,|]+\s*$/u, "")
+    .trim();
+}
+
+function canonicalCompanyDisplayName(value: string) {
+  return cleanCompanyCandidate(collapseRepeatedCompanyName(value))
+    .replace(/\bLexing\s+ton\b/giu, "Lexington")
+    .replace(/\bMedica\s+l\b/giu, "Medical")
+    .replace(/\bInstrumentations\b/giu, "Instrumentation")
+    .replace(/\bIndustries\b/giu, "Industry")
+    .replace(/\s+Industry\s*$/iu, "")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
@@ -99,9 +114,9 @@ function looksLikeCompoundManufacturerCell(value: string) {
   if (/[;|\n]/u.test(source) || /\s+hoặc\s+/iu.test(source)) return true;
 
   const entityMentions = source.match(
-    /\b(?:ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|s\.?a\.?|s\.r\.l\.?|medizintechnik)\b/giu,
+    /\b(?:ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|s\.?a\.?|s\.?p\.?a\.?|s\.r\.l\.?|medizintechnik)\b/giu,
   )?.length || 0;
-  return entityMentions > 1 && (/\s+-\s+/u.test(source) || /\s+\/\s+/u.test(source));
+  return entityMentions > 1 && (/\s+-\s+/u.test(source) || /\s+\/\s+/u.test(source) || /,\s*/u.test(source));
 }
 
 export function mappedCompanyName(searchableText: string, fallback = "") {
@@ -117,7 +132,7 @@ export function mappedCompanyName(searchableText: string, fallback = "") {
     return "";
   }
 
-  const remappedCandidate = mappedManufacturerFromMaster(cleanedFallback) || cleanedFallback;
+  const remappedCandidate = mappedManufacturerFromMaster(cleanedFallback) || canonicalCompanyDisplayName(cleanedFallback);
   const normalized = normalizeCompanyText(
     [searchableText, workbookMappedManufacturer, remappedCandidate].filter(Boolean).join(" | "),
   );
@@ -134,7 +149,7 @@ export function mappedCompanyName(searchableText: string, fallback = "") {
   if (/miconvey/.test(compact)) return "Miconvey";
   if (/innolcon/.test(compact)) return "Innolcon";
 
-  const finalName = collapseRepeatedCompanyName(
+  const finalName = canonicalCompanyDisplayName(
     workbookMappedManufacturer || mappedManufacturerFromMaster(remappedCandidate) || normalizedManufacturerName(remappedCandidate),
   );
   return isPlausibleManufacturerName(finalName) ? finalName : "";
@@ -148,7 +163,7 @@ export function companyDirectoryName(value: string) {
     return second && second.length > first.length ? second : first;
   };
   const reviewed = directoryMapping(value);
-  if (reviewed && isPlausibleManufacturerName(reviewed)) return collapseRepeatedCompanyName(reviewed).trim();
+  if (reviewed && isPlausibleManufacturerName(reviewed)) return canonicalCompanyDisplayName(reviewed);
 
   // Portal values often prepend a field label to an otherwise reviewed
   // manufacturer name. Remove only the leading label, then consult the same
@@ -159,7 +174,7 @@ export function companyDirectoryName(value: string) {
   ).trim();
   if (withoutLeadingLabel !== value.trim()) {
     const reviewedWithoutLabel = directoryMapping(withoutLeadingLabel);
-    if (reviewedWithoutLabel) return collapseRepeatedCompanyName(reviewedWithoutLabel).trim();
+    if (reviewedWithoutLabel) return canonicalCompanyDisplayName(reviewedWithoutLabel);
   }
 
   const mapped = mappedCompanyName(withoutLeadingLabel || value, withoutLeadingLabel || value).trim();
@@ -170,13 +185,16 @@ export function companyDirectoryName(value: string) {
 }
 
 export function companyGroupingKey(value: string) {
-  const mapped = mappedCompanyName(value, value);
-  return normalizeCompanyText(mapped)
-    .replace(/\bjoint stock company\b/g, "jsc")
-    .replace(/\bcompany\b/g, "co")
-    .replace(/\bcorporation\b/g, "corp")
-    .replace(/\blimited\b/g, "ltd")
-    .replace(/\bincorporated\b/g, "inc")
-    .replace(/\bcong ty( co phan| trach nhiem huu han| tnhh)?\b/g, "")
-    .replace(/\s/g, "") || "unknown";
+  const mapped = canonicalCompanyDisplayName(mappedCompanyName(value, value) || value);
+  const normalized = normalizeCompanyText(mapped)
+    .replace(/\b(?:he thong may chinh|may chinh|thiet bi chinh|he thong thiet bi chinh)\b/g, " ")
+    .replace(/\b(?:joint stock company|company|corporation|limited|incorporated|inc|corp|co|ltd|llc|plc|pte|gmbh|ag|sa|spa|srl|jsc)\b/g, " ")
+    .replace(/\bcong ty( co phan| trach nhiem huu han| tnhh)?\b/g, " ")
+    .replace(/\b(?:medical|healthcare|instrument|instruments|instrumentation|instrumentations|industry|industries|technology|technologies|device|devices|equipment|system|systems|manufacturing)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const familyKey = normalized.replace(/\s/g, "");
+  if (familyKey) return familyKey;
+
+  return normalizeCompanyText(mapped).replace(/\s/g, "") || "unknown";
 }
