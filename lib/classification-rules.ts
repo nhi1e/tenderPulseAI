@@ -23,6 +23,7 @@ export type ProductClassificationRule = {
   productGroup: string;
   keywords: string[];
   confirmations: string[];
+  confirmationGroups?: string[][];
   exclusions: RuleExclusion[];
   method: string;
 };
@@ -144,15 +145,27 @@ export function evaluateProductRule(
   if (!matchedKeywords.length) return { matched: false, reason: "product-keyword" };
 
   const confirmationFields = [record.productName, record.brand, record.configuration];
-  const matchedConfirmation = rule.confirmations
-    .map((term) => ({ term, normalized: normalizeRuleText(term) }))
-    .find(({ normalized }) => normalized && confirmationFields.some((field) => field.includes(normalized)));
+  const confirmationGroups = rule.confirmationGroups?.length
+    ? rule.confirmationGroups
+    : rule.confirmations.length
+      ? [rule.confirmations]
+      : [];
+  const matchedConfirmationGroups = confirmationGroups.map((group) =>
+    group
+      .map((term) => ({ term, normalized: normalizeRuleText(term) }))
+      .find(({ normalized }) => normalized && confirmationFields.some((field) => field.includes(normalized))),
+  );
+  const matchedConfirmation = matchedConfirmationGroups
+    .filter((match): match is { term: string; normalized: string } => Boolean(match))
+    .map((match) => match.term)
+    .join(" + ") || undefined;
 
-  if (rule.confirmations.length && !matchedConfirmation) {
+  if (confirmationGroups.length && matchedConfirmationGroups.some((match) => !match)) {
     return {
       matched: false,
       reason: "confirmation",
       matchedKeyword: matchedKeywords[0].keyword,
+      matchedConfirmation,
     };
   }
 
@@ -163,7 +176,7 @@ export function evaluateProductRule(
         matched: false,
         reason: "exclusion",
         matchedKeyword: matchedKeywords[0].keyword,
-        matchedConfirmation: matchedConfirmation?.term,
+        matchedConfirmation,
         matchedExclusion,
       };
     }
@@ -173,7 +186,7 @@ export function evaluateProductRule(
     matched: true,
     reason: "matched",
     matchedKeyword: matchedKeywords[0].keyword,
-    matchedConfirmation: matchedConfirmation?.term,
+    matchedConfirmation,
   };
 }
 

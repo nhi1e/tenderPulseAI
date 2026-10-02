@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const runtimeModule = path.join(root, "lib", `.classification-rules-test-${process.pid}.ts`);
+const searchConfigRuntimeModule = path.join(root, "lib", `.market-overview-config-test-${process.pid}.mjs`);
 const source = (await readFile(path.join(root, "lib", "classification-rules.ts"), "utf8"))
   .replace(
     'from "@/data/classification-rules.json";',
@@ -25,13 +26,20 @@ const source = (await readFile(path.join(root, "lib", "classification-rules.ts")
   );
 
 await writeFile(runtimeModule, source);
+const searchConfigSource = (await readFile(path.join(root, "lib", "market-overview-config.ts"), "utf8"))
+  .replace("export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> =", "export const MARKET_OVERVIEW_SEARCH_SEEDS =");
+await writeFile(searchConfigRuntimeModule, searchConfigSource);
 const rules = await import(`${pathToFileURL(runtimeModule).href}?test=${Date.now()}`);
+const searchConfig = await import(`${pathToFileURL(searchConfigRuntimeModule).href}?test=${Date.now()}`);
 const staffOverrides = JSON.parse(
   await readFile(path.join(root, "data", "staff-classification-overrides.json"), "utf8"),
 );
 
 after(async () => {
-  await rm(runtimeModule, { force: true });
+  await Promise.all([
+    rm(runtimeModule, { force: true }),
+    rm(searchConfigRuntimeModule, { force: true }),
+  ]);
 });
 
 test("imports every completed staff-review row exactly once", () => {
@@ -127,7 +135,7 @@ test("classifies Meril Endo Stapling devices and cartridges from the staff sampl
   const cartridge = rules.classifyProductRecord({
     productName: "Băng ghim cho dụng cụ cắt nối thẳng an toàn các cỡ",
     brand: "MECRW30/ MECRW45/ MECRW60",
-    configuration: "Băng ghim tương thích với dụng cụ cắt nối thẳng an toàn các cỡ",
+    configuration: "Băng ghim tương thích với dụng cụ cắt nối thẳng nội soi an toàn các cỡ",
   });
   assert.equal(cartridge?.rule.subOu, "Endo Stapling");
   assert.equal(cartridge?.rule.productGroup, "Băng ghim nội soi");
@@ -143,10 +151,121 @@ test("classifies Lexington Endo Stapling devices and cartridges from the staff s
   assert.equal(device?.rule.productGroup, "Dụng cụ khâu cắt nối nội soi");
 
   const cartridge = rules.classifyProductRecord({
-    productName: "Băng ghim cắt khâu các cỡ có trợ lực",
+    productName: "Băng ghim có trợ lực các cỡ",
     brand: "Lexington Medical, Inc",
     configuration: "Tương thích với dụng cụ cắt khâu nối nội soi tích hợp trợ lực",
   });
   assert.equal(cartridge?.rule.subOu, "Endo Stapling");
   assert.equal(cartridge?.rule.productGroup, "Băng ghim nội soi");
+});
+
+
+test("loads the 01.10 staff rule revision", () => {
+  assert.equal(rules.classificationSource.version, "2026-10-01");
+  assert.equal(rules.classificationSource.sheet, "Danh mục rule keyword cần edit");
+});
+
+test("requires both Endo Stapling instrument confirmation groups", () => {
+  const rule = rules.classificationRules.find((candidate) =>
+    candidate.productGroup === "Dụng cụ khâu cắt nối nội soi"
+  );
+  assert.ok(rule);
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ phẫu thuật nội soi dùng một lần",
+  }, rule).reason, "confirmation");
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ khâu cắt mô dùng trong phẫu thuật",
+  }, rule).reason, "confirmation");
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ phẫu thuật nội soi",
+    configuration: "Dùng để khâu cắt mô và cầm máu",
+  }, rule).matched, true);
+});
+
+test("applies the expanded Endo Stapling exclusions after both confirmations", () => {
+  const rule = rules.classificationRules.find((candidate) =>
+    candidate.productGroup === "Dụng cụ khâu cắt nối nội soi"
+  );
+  assert.ok(rule);
+
+  const specialty = rules.evaluateProductRule({
+    productName: "Dụng cụ khâu cắt nội soi cột sống",
+  }, rule);
+  assert.equal(specialty.reason, "exclusion");
+  assert.equal(specialty.matchedExclusion, "cột sống");
+
+  const system = rules.evaluateProductRule({
+    productName: "Hệ thống dụng cụ khâu cắt nối nội soi",
+  }, rule);
+  assert.equal(system.reason, "exclusion");
+  assert.equal(system.matchedExclusion, "hệ thống");
+});
+
+test("requires both Open Stapling instrument confirmation groups", () => {
+  const rule = rules.classificationRules.find((candidate) =>
+    candidate.productGroup === "Dụng cụ khâu cắt nối mổ mở"
+  );
+  assert.ok(rule);
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ phẫu thuật mổ mở dùng một lần",
+  }, rule).reason, "confirmation");
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ khâu cắt mô dùng một lần",
+  }, rule).reason, "confirmation");
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ khâu cắt mô dùng trong mổ mở",
+  }, rule).matched, true);
+});
+
+test("requires nội soi for Endo Stapling cartridges", () => {
+  const rule = rules.classificationRules.find((candidate) =>
+    candidate.productGroup === "Băng ghim nội soi"
+  );
+  assert.ok(rule);
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Băng ghim cho dụng cụ cắt nối thẳng",
+  }, rule).reason, "confirmation");
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Băng ghim cho dụng cụ cắt nối thẳng",
+    configuration: "Sử dụng trong phẫu thuật nội soi",
+  }, rule).matched, true);
+});
+
+test("applies the new 01.10 accessory exclusions", () => {
+  const ultrasonic = rules.classificationRules.find((candidate) => candidate.productGroup === "Dao siêu âm");
+  const openCartridge = rules.classificationRules.find((candidate) => candidate.productGroup === "Băng ghim mổ mở");
+  const neutralPad = rules.classificationRules.find((candidate) => candidate.productGroup === "Tấm điện cực trung tính");
+  assert.ok(ultrasonic);
+  assert.ok(openCartridge);
+  assert.ok(neutralPad);
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dây dao siêu âm",
+  }, ultrasonic).reason, "exclusion");
+  assert.equal(rules.evaluateProductRule({
+    productName: "Bàn đạp cho dao siêu âm",
+  }, ultrasonic).reason, "exclusion");
+  assert.equal(rules.evaluateProductRule({
+    productName: "Băng ghim tròn dùng trong mổ mở",
+  }, openCartridge).reason, "exclusion");
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dây cho tấm điện cực trung tính",
+  }, neutralPad).reason, "exclusion");
+});
+
+
+test("retrieves Lexington cartridges by a product-name anchor before classification", () => {
+  const seeds = searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Băng ghim nội soi"];
+  assert.ok(seeds.includes("băng ghim"));
+  assert.ok(seeds.includes("băng đạn"));
+  assert.ok(seeds.includes("ghim khâu"));
+  assert.ok(seeds.includes("nội soi"));
 });
