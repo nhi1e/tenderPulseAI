@@ -176,3 +176,58 @@ test("groups 3M country, factory and legal entities under 3M Company", () => {
     assert.equal(mapping.companyDirectoryName(value), "3M Company", value);
   });
 });
+
+
+test("groups common portal aliases with spelling, legal-suffix, and annotation differences", () => {
+  const groups = [
+    {
+      expectedKey: "advanced",
+      variants: ["Advanced Instrumentation Inc", "Advanced Instrumentations, Inc."],
+    },
+    {
+      expectedKey: "leica singapore",
+      variants: [
+        "Leica Instruments (Singapore) Pte Ltd",
+        "Leica Instruments (Singapore) Pte Ltd (Hệ thống máy chính)",
+      ],
+    },
+    {
+      expectedKey: "lexington",
+      variants: ["Lexing ton Medica l, Inc.", "Lexington"],
+    },
+    {
+      expectedKey: "adi",
+      variants: ["ADI", "ADI Industry"],
+    },
+  ];
+
+  groups.forEach(({ expectedKey, variants }) => {
+    const keys = variants.map(mapping.companyGroupingKey);
+    assert.equal(new Set(keys).size, 1, variants.join(" <> "));
+    assert.equal(keys[0], expectedKey.replace(/\s/g, ""), variants.join(" <> "));
+  });
+});
+
+test("cleans the duplicate aliases before showing them in the company dropdown", () => {
+  assert.equal(mapping.companyDirectoryName("ADI Industry"), "ADI");
+  assert.equal(mapping.companyDirectoryName("Advanced Instrumentations, Inc."), "Advanced Instrumentation, Inc.");
+  assert.equal(
+    mapping.companyDirectoryName("Leica Instruments (Singapore) Pte Ltd (Hệ thống máy chính)"),
+    "Leica Instruments (Singapore) Pte Ltd",
+  );
+  assert.equal(mapping.companyDirectoryName("Lexing ton Medica l, Inc."), "Lexington Medical, Inc.");
+});
+
+test("does not expose a comma-separated multi-manufacturer cell as one company", () => {
+  assert.equal(
+    mapping.companyDirectoryName("Adler Ortho S.p.A, Tecres S.p.A."),
+    "",
+  );
+});
+
+test("does not merge unrelated companies that only share an industry word", () => {
+  assert.notEqual(
+    mapping.companyGroupingKey("Advanced Medical"),
+    mapping.companyGroupingKey("Applied Medical"),
+  );
+});
