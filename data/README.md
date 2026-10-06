@@ -33,9 +33,13 @@ KQLCNT is counted from an explicit result identifier when the portal provides on
 Hospital search suggestions display their buyer ID and a selected suggestion searches by ID, so the portal can return all naming variants. Detailed Excel files retain `Tên CĐT` exactly as reported by the portal and add a separate grouped display-name column. Update the proposed names in this JSON file when the team confirms corrections; the buyer ID remains the stable identity.
 # Manufacturer alias normalization
 
-`manufacturer-aliases.json` contains all 749 clusters from sheet
-`05_Hãng chưa mapping` of the staff review workbook dated 23 September 2026.
-Every listed source variant is indexed. Occurrence suffixes such as `(1)` and
+`manufacturer-aliases.json` contains the 714 populated clusters from the
+completed `05_Hãng chưa mapping` sheet in `sheetedit(1).xlsx`, supplied on
+6 October 2026. Its reviewed mapping decisions are unchanged from the prior
+2 October workbook. The 36
+deleted non-manufacturer placeholders from the earlier draft are no longer
+indexed, and the completed parent/brand-owner decisions now drive company
+reporting. Every listed source variant is indexed. Occurrence suffixes such as `(1)` and
 `(12)`, punctuation/capitalization differences, field labels and trailing
 country labels are ignored during lookup. Rows sharing the same reviewed
 parent/brand-owner identity are aggregated together; for example, the Sutter
@@ -55,7 +59,9 @@ periods, country-only values, field labels and “see attached table” text) ar
 kept out of the company directory. Portal labels and country suffixes are
 removed before a company name is displayed.
 
-Rows containing several independent manufacturers are not exposed as a single
-company and are not assigned to the first listed manufacturer. They remain
-`Unknown / review needed` until item-level source data can separate them. A
+Rows explicitly marked `Cần tách dữ liệu`, or containing several independent
+manufacturers without one confirmed reporting parent, are not exposed as a
+single company and are not assigned to the first listed manufacturer. They
+remain `Unknown / review needed` until item-level source data can separate them.
+Their award value still remains in total Market Size. A
 numbered list is collapsed only when every numbered item names the same company.

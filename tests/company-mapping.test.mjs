@@ -20,6 +20,10 @@ const mappingSource = (await readFile(path.join(root, "lib", "company-mapping.ts
 await writeFile(mappingRuntime, mappingSource);
 
 const mapping = await import(`${pathToFileURL(mappingRuntime).href}?test=${Date.now()}`);
+const rules = await import(`${pathToFileURL(rulesRuntime).href}?test=${Date.now()}`);
+const reviewedAliases = JSON.parse(
+  await readFile(path.join(root, "data", "manufacturer-aliases.json"), "utf8"),
+);
 
 after(async () => {
   await Promise.all([rm(rulesRuntime, { force: true }), rm(mappingRuntime, { force: true })]);
@@ -43,6 +47,29 @@ test("groups Sheet 05 punctuation variants under one canonical manufacturer", ()
     mapping.mappedCompanyName("B.Braun Surgical S.A/ Tây Ban Nha", "B.Braun Surgical S.A/ Tây Ban Nha"),
     "B. Braun",
   );
+});
+
+test("loads the completed Sheet 05 manufacturer review", () => {
+  assert.equal(reviewedAliases.source.workbook, "sheetedit(1).xlsx");
+  assert.equal(reviewedAliases.source.version, "2026-10-06");
+  assert.equal(reviewedAliases.entries.length, 714);
+});
+
+test("uses a confirmed parent for related legal entities in one source cell", () => {
+  const value = "1. Smith & Nephew Inc., Endoscopy Division; 2. ArthroCare Corporation";
+  assert.equal(mapping.mappedCompanyName(value, value), "Smith & Nephew");
+  assert.equal(mapping.companyDirectoryName(value), "Smith & Nephew");
+});
+
+test("uses the reviewed Sheet 05 parent for CPT spelling variants", () => {
+  const variants = [
+    "Công ty TNHH chỉ CPT",
+    "Công ty TNHH Chỉ khâu phẫu thuật CPT",
+    "Công ty TNHH chỉ phẩu thuật CPT",
+  ];
+  variants.forEach((value) => {
+    assert.equal(mapping.companyDirectoryName(value), "Công ty TNHH Chỉ Phẫu Thuật Việt Nam", value);
+  });
 });
 
 test("uses the reviewed canonical name for an otherwise unmapped manufacturer", () => {
@@ -74,11 +101,69 @@ test("shows reviewed AMNOTEC spellings as one autocomplete company", () => {
   });
 });
 
-test("uses reviewed parent mappings for every company, not only AMNOTEC", () => {
+test("does not force a reviewed multi-company cell into the first parent", () => {
   assert.equal(
     mapping.companyDirectoryName("Karl Storz/ Đức - BOWA - Electronic GmbH & Co.KG - Rominger Medizintechnik GmbH - HUPEER Metallwerke GmbH & Co.KG - Tecomet,Inc/ Mỹ - Devon Innovations Private Limited/ Ấn Độ"),
-    "KARL STORZ",
+    "",
   );
+});
+
+test("accepts ordinary Co., Ltd. legal names in autocomplete", () => {
+  const names = [
+    "21 Century Medical Co., Ltd",
+    "Anrei Medical (Hangzhou) Co., Ltd.",
+    "Jiangsu Brightness Medical Devices Co., Ltd",
+    "Guangzhou T.K Medical Instrument Co., Ltd",
+  ];
+  names.forEach((value) => assert.ok(mapping.companyDirectoryName(value), value));
+});
+
+test("keeps a plus sign used in a legal company suffix", () => {
+  assert.equal(
+    mapping.companyDirectoryName("RUDOLF Medical GmbH + Co. KG"),
+    "RUDOLF Medical GmbH + Co. KG",
+  );
+});
+
+test("country annotations do not create separate company groups", () => {
+  const groups = [
+    ["Baisheng Medical Co., Ltd", "Baisheng Medical Co., Ltd./ Trung Quốc"],
+    ["Nissha Medical Technologies Ltd", "Nissha Medical Technologies Ltd./ Vương quốc Anh"],
+    ["Medico (Huaian) Co., Ltd", "Medico (Huaian) Co., Ltd - Trung Quốc"],
+  ];
+  groups.forEach((variants) => {
+    const keys = variants.map(mapping.companyGroupingKey);
+    assert.equal(new Set(keys).size, 1, variants.join(" <> "));
+  });
+});
+
+test("uses the same resolved company for dropdowns and KPI grouping", () => {
+  const variants = [
+    "Covidien Medical Products (Shanghai) Manufacturing, LLC",
+    "NPA de México S. de R.L. de C.V.",
+    "AMNOTEC",
+    "Karl Storz Imaging Inc.",
+    "Lexing ton Medica l, Inc.",
+    "Meril Endo Surgery Pvt. Ltd",
+  ];
+  variants.forEach((value) => {
+    const kpiName = mapping.mappedCompanyName(value, value);
+    assert.equal(mapping.companyDirectoryName(value), kpiName, value);
+  });
+});
+
+test("keeps reviewed item-split aliases out of autocomplete and company KPIs", () => {
+  const splitEntry = rules.manufacturerDirectoryNames().find((value) => /nhiều hãng|cần tách/iu.test(value));
+  assert.equal(splitEntry, undefined);
+  const compound = "AMNOTEC International Medical GmbH; KARL STORZ SE & CO. KG; Tecomet, Inc.";
+  assert.equal(mapping.companyDirectoryName(compound), "");
+  assert.equal(mapping.mappedCompanyName(compound, compound), "");
+});
+
+test("recognizes slash-labelled owner metadata instead of treating it as a company list", () => {
+  const value = "Hãng/ Nước sản xuất: Olympus Winter & Ibe GmbH/ Đức Hãng/ Nước chủ sở hữu: Olympus Winter & Ibe GmbH/ Đức";
+  assert.equal(mapping.companyDirectoryName(value), "Olympus");
+  assert.equal(mapping.mappedCompanyName(value, value), "Olympus");
 });
 
 test("removes portal occurrence suffixes before alias lookup", () => {
@@ -177,13 +262,9 @@ test("groups 3M country, factory and legal entities under 3M Company", () => {
   });
 });
 
-
 test("groups common portal aliases with spelling, legal-suffix, and annotation differences", () => {
   const groups = [
-    {
-      expectedKey: "advanced",
-      variants: ["Advanced Instrumentation Inc", "Advanced Instrumentations, Inc."],
-    },
+    { expectedKey: "advanced", variants: ["Advanced Instrumentation Inc", "Advanced Instrumentations, Inc."] },
     {
       expectedKey: "leica singapore",
       variants: [
@@ -191,14 +272,8 @@ test("groups common portal aliases with spelling, legal-suffix, and annotation d
         "Leica Instruments (Singapore) Pte Ltd (Hệ thống máy chính)",
       ],
     },
-    {
-      expectedKey: "lexington",
-      variants: ["Lexing ton Medica l, Inc.", "Lexington"],
-    },
-    {
-      expectedKey: "adi",
-      variants: ["ADI", "ADI Industry"],
-    },
+    { expectedKey: "lexington", variants: ["Lexing ton Medica l, Inc.", "Lexington"] },
+    { expectedKey: "adi", variants: ["ADI", "ADI Industry"] },
   ];
 
   groups.forEach(({ expectedKey, variants }) => {
@@ -219,10 +294,7 @@ test("cleans the duplicate aliases before showing them in the company dropdown",
 });
 
 test("does not expose a comma-separated multi-manufacturer cell as one company", () => {
-  assert.equal(
-    mapping.companyDirectoryName("Adler Ortho S.p.A, Tecres S.p.A."),
-    "",
-  );
+  assert.equal(mapping.companyDirectoryName("Adler Ortho S.p.A, Tecres S.p.A."), "");
 });
 
 test("does not merge unrelated companies that only share an industry word", () => {

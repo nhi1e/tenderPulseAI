@@ -5,8 +5,11 @@ import * as XLSX from "xlsx";
 
 const workbookPath = process.argv[2];
 if (!workbookPath) {
-  throw new Error("Usage: node scripts/generate-manufacturer-aliases.mjs <staff-review.xlsx>");
+  throw new Error(
+    "Usage: node scripts/generate-manufacturer-aliases.mjs <staff-review.xlsx> [review-date]",
+  );
 }
+const reviewDate = process.argv[3] || new Date().toISOString().slice(0, 10);
 
 const workbook = XLSX.read(await readFile(workbookPath), { type: "buffer" });
 const sheetName = "05_Hãng chưa mapping";
@@ -43,8 +46,11 @@ function normalizedKey(value) {
     .trim();
 }
 
-function isSplitRequired(parent, status) {
-  return normalizedKey(`${parent} ${status}`).includes("can tach");
+function isSplitRequired(parent, status, scope, canonical) {
+  const decision = normalizedKey(`${parent} ${status}`);
+  const scopedInstruction = normalizedKey(scope);
+  return decision.includes("can tach") ||
+    (scopedInstruction.includes("can tach") && !isPlausibleCompanyName(canonical));
 }
 
 function isPlausibleCompanyName(value) {
@@ -58,16 +64,25 @@ function isPlausibleCompanyName(value) {
   if (/^(?:chi tiet|thong tin chi tiet|theo|nhu bang|gom nhieu ma hang|cung cap khi giao hang)/.test(key)) return false;
   if (/^bang danh muc hang hoa/.test(key)) return false;
   if (/^(?:nhieu hang|ao|an do|duc|my|trung quoc|viet nam|cai|soi|beijing|fujian|gangzhou|guangzhou|jiangsu|shaoxing|shenzhen|tianjin|tonglu|zhejiang)$/.test(key)) return false;
-  if (/[;|+]/u.test(cleaned)) return false;
+  if (/[;|]/u.test(cleaned)) return false;
+  // A plus sign is part of valid brands such as Smith+Nephew. Only treat it
+  // as a separator when it is surrounded by whitespace (for example A + B).
+  if (
+    /\s+\+\s+/u.test(cleaned) &&
+    !/^smith\s*\+\s*nephew\b/iu.test(cleaned) &&
+    !/\+\s*co\.?\s*(?:kg\.?)?\s*$/iu.test(cleaned)
+  ) {
+    return false;
+  }
   if ((cleaned.match(/\//g)?.length || 0) >= 2) return false;
   return true;
 }
 
-function reportingName(canonical, parent, status) {
+function reportingName(canonical, parent, status, scope) {
   const canonicalKey = normalizedKey(canonical).replace(/\s/g, "");
   const parentKey = normalizedKey(parent).replace(/\s/g, "");
 
-  if (isSplitRequired(parent, status)) return "";
+  if (isSplitRequired(parent, status, scope, canonical)) return "";
 
   // High-confidence brand families that appear on several Sheet 05 rows.
   // These are spelling/legal-name/country variants, not fuzzy guesses.
@@ -105,15 +120,16 @@ const entries = rows.slice(6).flatMap((row, offset) => {
   const canonical = cleanCanonicalName(row[13] || row[1]);
   if (!lookupKey || !canonical) return [];
   const parent = cleanCanonicalName(row[14]);
+  const scope = String(row[15] || "").trim();
   const status = String(row[16] || "").trim();
   return [{
     sourceRow: offset + 7,
     lookupKey,
     aliases: sourceAliases(row),
     canonical,
-    reportingName: reportingName(canonical, parent, status),
+    reportingName: reportingName(canonical, parent, status, scope),
     parent,
-    scope: String(row[15] || "").trim(),
+    scope,
     status,
   }];
 });
@@ -122,8 +138,8 @@ const output = {
   source: {
     workbook: path.basename(workbookPath),
     sheet: sheetName,
-    version: "2026-09-23",
-    note: "All aliases in Sheet 05 are indexed. Occurrence suffixes, punctuation, country suffixes, spelling variants and confirmed parent/brand-owner identities are consolidated for reporting. Rows requiring item-level splitting are not forced into one company.",
+    version: reviewDate,
+    note: "Staff-reviewed Sheet 05 is the alias source. Occurrence suffixes, punctuation, country suffixes, spelling variants and confirmed parent/brand-owner identities are consolidated for reporting. Deleted non-manufacturer placeholders are not retained. Rows requiring item-level splitting are not forced into one company.",
   },
   entries,
 };
