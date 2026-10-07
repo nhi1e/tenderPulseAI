@@ -366,6 +366,14 @@ button:disabled { cursor: wait; opacity: .66; }
 .filter-field input { width: 100%; min-width: 0; height: 33px; padding: 0 8px; border: 1px solid #d8e0eb; border-radius: 7px; background: #fff; color: #35445e; font-size: 12px; outline: none; }
 .filter-field input:focus { border-color: #85a9ed; box-shadow: 0 0 0 2px rgba(24, 91, 216, .08); }
 .filter-field input::placeholder { color: #a1aabb; }
+.bounded-date-trigger { display: flex; width: 100%; min-width: 0; height: 33px; align-items: center; justify-content: space-between; gap: 7px; padding: 0 8px; border: 1px solid #d8e0eb; border-radius: 7px; background: #fff; color: #35445e; font-size: 12px; outline: none; text-align: left; }
+.bounded-date-trigger:hover { border-color: #adc1e2; background: #fbfdff; }
+.bounded-date-trigger:focus-visible { border-color: #85a9ed; box-shadow: 0 0 0 2px rgba(24, 91, 216, .08); }
+.bounded-date-trigger span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bounded-date-trigger svg { width: 14px; height: 14px; flex: none; color: #71809a; }
+.bounded-date-popover { width: auto; padding: 0; overflow: hidden; }
+.bounded-date-clear { width: calc(100% - 24px); margin: 0 12px 12px; padding: 8px 10px; border: 1px solid #d7e1ef; border-radius: 7px; background: #f7faff; color: #315c99; font-size: 11px; font-weight: 750; }
+.bounded-date-clear:hover { border-color: #aac1e6; background: #edf4ff; }
 .filter-field .hospital-autocomplete, .filter-field .company-autocomplete { width: 100%; height: 33px; border-color: #d8e0eb; border-radius: 7px; box-shadow: none; }
 .filter-field .hospital-autocomplete [data-slot="input-group-control"], .filter-field .company-autocomplete [data-slot="input-group-control"] { height: 31px; padding: 0 7px; border: 0; box-shadow: none; }
 .filter-actions { display: grid; align-content: center; gap: 5px; min-width: 76px; padding: 8px; border-left: 1px solid var(--line); }
@@ -508,6 +516,9 @@ button:disabled { cursor: wait; opacity: .66; }
 .overview-filter label > span, .overview-filter-field > span { margin-bottom: 5px; color: #637087; font-size: 11px; font-weight: 800; }
 .overview-filter input, .overview-filter select { width: 100%; min-width: 0; height: 30px; padding: 0; border: 0; background: #fff; color: #1f3150; font-size: 13px; font-weight: 650; outline: 0; }
 .overview-filter input::placeholder { color: #9da6b5; }
+.overview-filter .bounded-date-trigger { height: 30px; padding: 0; border: 0; color: #1f3150; font-size: 13px; font-weight: 650; }
+.overview-filter .bounded-date-trigger:hover { background: transparent; color: #123f84; }
+.overview-filter .bounded-date-trigger:focus-visible { box-shadow: none; }
 .overview-filter .hospital-autocomplete, .overview-filter .company-autocomplete { height: 31px; border: 0; box-shadow: none; }
 .overview-filter .hospital-autocomplete [data-slot="input-group-control"], .overview-filter .company-autocomplete [data-slot="input-group-control"] { height: 30px; padding: 0; }
 .overview-apply { min-width: 108px; border: 0; background: #123f84; color: #fff; font-size: 12px; font-weight: 800; }
