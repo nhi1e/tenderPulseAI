@@ -85,7 +85,17 @@ function portalPayload(keyword: string, pageNumber: number, pageSize: number, fi
   return [{ pageSize, pageNumber, query: queries }];
 }
 
-async function fetchPortalPage(body: string, attempt = 1): Promise<Response> {
+async function fetchPortalPage(
+  body: string,
+  debug: { requestId: string; keyword: string; page: number },
+  attempt = 1,
+): Promise<Response> {
+  const startedAt = Date.now();
+  console.info(`[TenderPulse:${debug.requestId}] portal fetch start`, {
+    keyword: debug.keyword,
+    page: debug.page,
+    attempt,
+  });
   const response = await fetch(PORTAL_SEARCH_URL, {
     method: "POST",
     headers: {
@@ -97,10 +107,17 @@ async function fetchPortalPage(body: string, attempt = 1): Promise<Response> {
     body,
     signal: AbortSignal.timeout(PORTAL_REQUEST_TIMEOUT_MS),
   });
+  console.info(`[TenderPulse:${debug.requestId}] portal fetch response`, {
+    keyword: debug.keyword,
+    page: debug.page,
+    attempt,
+    status: response.status,
+    elapsedMs: Date.now() - startedAt,
+  });
   if (attempt < 3 && (response.status === 429 || response.status >= 500)) {
     await response.body?.cancel();
     await new Promise((resolve) => setTimeout(resolve, attempt * 500));
-    return fetchPortalPage(body, attempt + 1);
+    return fetchPortalPage(body, debug, attempt + 1);
   }
   return response;
 }
@@ -114,6 +131,8 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
   const page = Math.max(0, Math.floor(Number(url.searchParams.get("page")) || 0));
   const pageSize = Math.max(50, Math.min(1000, Math.floor(Number(url.searchParams.get("pageSize")) || 1000)));
   const forceRefresh = url.searchParams.get("refresh") === "1";
+  const requestId = crypto.randomUUID().slice(0, 8);
+  const requestStartedAt = Date.now();
   const filters: PortalFilters = {
     dateFrom: clean(url.searchParams.get("dateFrom"), 10),
     dateTo: clean(url.searchParams.get("dateTo"), 10),
@@ -132,30 +151,72 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
   canonicalUrl.searchParams.delete("refresh");
   const cacheKey = new Request(canonicalUrl.toString(), { method: "GET" });
   const cache = (caches as unknown as { default?: Cache }).default;
+  console.info(`[TenderPulse:${requestId}] proxy request`, {
+    keyword,
+    page,
+    pageSize,
+    dateFrom: filters.dateFrom || undefined,
+    dateTo: filters.dateTo || undefined,
+    hospitalFilter: Boolean(filters.hospital),
+    brandFilter: Boolean(filters.brand),
+    supplierFilter: Boolean(filters.supplier),
+    forceRefresh,
+  });
   if (!forceRefresh && cache) {
     const cached = await cache.match(cacheKey);
     if (cached) {
       const headers = new Headers(cached.headers);
       headers.set("X-TenderPulse-Cache", "HIT");
+      headers.set("X-TenderPulse-Request", requestId);
+      console.info(`[TenderPulse:${requestId}] cache hit`, {
+        keyword,
+        page,
+        elapsedMs: Date.now() - requestStartedAt,
+      });
       return new Response(cached.body, { status: cached.status, headers });
     }
   }
 
   try {
-    const portalResponse = await fetchPortalPage(JSON.stringify(portalPayload(keyword, page, pageSize, filters)));
+    const portalResponse = await fetchPortalPage(
+      JSON.stringify(portalPayload(keyword, page, pageSize, filters)),
+      { requestId, keyword, page },
+    );
     if (!portalResponse.ok || !portalResponse.body) {
       await portalResponse.body?.cancel();
+      console.error(`[TenderPulse:${requestId}] portal rejected request`, {
+        keyword,
+        page,
+        status: portalResponse.status,
+        elapsedMs: Date.now() - requestStartedAt,
+      });
       return Response.json({ error: `Portal request failed with status ${portalResponse.status}.` }, { status: 502 });
     }
+    const portalElapsedMs = Date.now() - requestStartedAt;
     const headers = new Headers();
     headers.set("Content-Type", portalResponse.headers.get("Content-Type") || "application/json; charset=utf-8");
     headers.set("Cache-Control", `public, max-age=60, s-maxage=${PORTAL_CACHE_SECONDS}`);
     headers.set("X-TenderPulse-Cache", "MISS");
+    headers.set("X-TenderPulse-Request", requestId);
+    headers.set("X-TenderPulse-Portal-Ms", String(portalElapsedMs));
+    headers.set("Server-Timing", `portal;dur=${portalElapsedMs}`);
+    console.info(`[TenderPulse:${requestId}] proxy response ready`, {
+      keyword,
+      page,
+      status: 200,
+      cache: "MISS",
+      elapsedMs: portalElapsedMs,
+    });
     const response = new Response(portalResponse.body, { status: 200, headers });
     if (cache) ctx.waitUntil(cache.put(cacheKey, response.clone()).catch(() => undefined));
     return response;
   } catch (error) {
-    console.error("Portal page proxy failed", error);
+    console.error(`[TenderPulse:${requestId}] portal proxy failed`, {
+      keyword,
+      page,
+      elapsedMs: Date.now() - requestStartedAt,
+      error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
+    });
     if (error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError")) {
       return Response.json({
         error: "Cổng Mua Sắm Công phản hồi quá chậm cho truy vấn này.",
