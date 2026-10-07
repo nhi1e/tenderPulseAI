@@ -3,12 +3,15 @@
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft, Building2, CheckCircle2, CircleAlert,
-  Database, Download, Filter, LoaderCircle, RefreshCw, Search, Sparkles, Trophy,
+  CalendarDays, Database, Download, Filter, LoaderCircle, RefreshCw, Search, Sparkles, Trophy,
 } from "lucide-react";
+import { enUS, vi } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Combobox, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput,
   ComboboxItem, ComboboxLabel, ComboboxList,
 } from "@/components/ui/combobox";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { companyDirectoryName, companyGroupingKey, mappedCompanyName } from "@/lib/company-mapping";
 import {
@@ -185,6 +188,72 @@ function boundedSearchFilters(filters: SearchFilters): SearchFilters {
 
 function boundedOverviewFilters(filters: OverviewFilterState): OverviewFilterState {
   return { ...filters, dateFrom: boundedDateFrom(filters.dateFrom), dateTo: boundedDateTo(filters.dateTo) };
+}
+
+const marketDataStartDate = new Date(2023, 0, 1);
+
+function parseDateInput(value: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return undefined;
+  const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
+function BoundedDatePicker({
+  value,
+  onChange,
+  min = MARKET_DATA_AVAILABLE_FROM,
+  max,
+  allowEmpty = false,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  min?: string;
+  max?: string;
+  allowEmpty?: boolean;
+}) {
+  const language = useLanguage();
+  const [open, setOpen] = useState(false);
+  const today = useMemo(() => new Date(), []);
+  const selected = parseDateInput(value);
+  const minimum = parseDateInput(min) || marketDataStartDate;
+  const requestedMaximum = parseDateInput(max || "") || today;
+  const maximum = requestedMaximum < minimum ? minimum : requestedMaximum;
+  const displayValue = selected
+    ? selected.toLocaleDateString(localeFor(language), { day: "2-digit", month: "short", year: "numeric" })
+    : copy(language, "Latest", "Mới nhất");
+
+  return <Popover open={open} onOpenChange={setOpen}>
+    <PopoverTrigger asChild>
+      <button
+        type="button"
+        className="bounded-date-trigger"
+        aria-label={copy(language, `Choose date, currently ${displayValue}`, `Chọn ngày, hiện tại ${displayValue}`)}
+      >
+        <span>{displayValue}</span><CalendarDays aria-hidden="true" />
+      </button>
+    </PopoverTrigger>
+    <PopoverContent className="bounded-date-popover" align="start">
+      <Calendar
+        mode="single"
+        selected={selected}
+        defaultMonth={selected || maximum}
+        onSelect={(date) => {
+          if (!date) return;
+          onChange(dateInputValue(date));
+          setOpen(false);
+        }}
+        captionLayout="dropdown"
+        startMonth={marketDataStartDate}
+        endMonth={maximum}
+        disabled={{ before: minimum, after: maximum }}
+        locale={language === "vi" ? vi : enUS}
+      />
+      {allowEmpty && value ? <button type="button" className="bounded-date-clear" onClick={() => { onChange(""); setOpen(false); }}>
+        {copy(language, "Use latest available date", "Dùng ngày mới nhất hiện có")}
+      </button> : null}
+    </PopoverContent>
+  </Popover>;
 }
 
 function normalize(value: string) {
@@ -1220,8 +1289,8 @@ function FilterBar({ initial, loading, onApply }: { initial: SearchFilters; load
 
   return <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); const bounded = boundedSearchFilters(filters); setFilters(bounded); onApply(bounded); }}>
     <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Applied to live results", "Áp dụng trên dữ liệu trực tiếp")}</small></span></div>
-    <label className="filter-field"><small>{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}</small><input type="date" value={filters.dateFrom} min={MARKET_DATA_AVAILABLE_FROM} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", boundedDateFrom(event.target.value))} /></label>
-    <label className="filter-field"><small>{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || MARKET_DATA_AVAILABLE_FROM} onChange={(event) => update("dateTo", boundedDateTo(event.target.value))} /></label>
+    <div className="filter-field"><small>{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}</small><BoundedDatePicker value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(value) => update("dateFrom", boundedDateFrom(value))} /></div>
+    <div className="filter-field"><small>{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}</small><BoundedDatePicker value={filters.dateTo} min={filters.dateFrom || MARKET_DATA_AVAILABLE_FROM} allowEmpty onChange={(value) => update("dateTo", boundedDateTo(value))} /></div>
     <div className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><HospitalAutocomplete value={filters.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label className="filter-field"><small>{copy(language, "BRAND / MANUFACTURER", "BRAND / HÃNG SẢN XUẤT")}</small><input type="text" value={filters.brand} onChange={(event) => update("brand", event.target.value)} placeholder={copy(language, "Example: LigaSure", "Ví dụ: LigaSure")} /></label>
     <label className="filter-field"><small>{copy(language, "WINNING SUPPLIER", "NHÀ THẦU TRÚNG")}</small><input type="text" value={filters.supplier} onChange={(event) => update("supplier", event.target.value)} placeholder={copy(language, "Enter name or ID", "Nhập tên hoặc mã")} /></label>
@@ -1460,8 +1529,8 @@ function OverviewFilterBar({ filters, catalog, loading, onApply, onDirtyChange }
   useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
   return <form className="overview-filter" onSubmit={(event) => { event.preventDefault(); const bounded = boundedOverviewFilters(draft); setDraft(bounded); onDirtyChange?.(false); onApply(bounded); }}>
-    <label><span>{copy(language, "Decision date from", "Ngày quyết định từ")}</span><input type="date" value={draft.dateFrom} min={MARKET_DATA_AVAILABLE_FROM} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", boundedDateFrom(event.target.value))} /></label>
-    <label><span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || MARKET_DATA_AVAILABLE_FROM} onChange={(event) => update("dateTo", boundedDateTo(event.target.value))} /></label>
+    <div className="overview-filter-field date-filter-field"><span>{copy(language, "Decision date from", "Ngày quyết định từ")}</span><BoundedDatePicker value={draft.dateFrom} max={draft.dateTo || undefined} onChange={(value) => update("dateFrom", boundedDateFrom(value))} /></div>
+    <div className="overview-filter-field date-filter-field"><span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span><BoundedDatePicker value={draft.dateTo} min={draft.dateFrom || MARKET_DATA_AVAILABLE_FROM} onChange={(value) => update("dateTo", boundedDateTo(value))} /></div>
     <div className="overview-filter-field"><span>{copy(language, "Hospital", "Bệnh viện")}</span><HospitalAutocomplete value={draft.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label><span>Sub-OU</span><select value={draft.subOu} onChange={(event) => update("subOu", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{subOuOrder.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
     <label><span>{copy(language, "Product group", "Nhóm sản phẩm")}</span><select value={draft.productGroup} onChange={(event) => update("productGroup", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{groups.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
