@@ -3,7 +3,7 @@ import manufacturerAliasesJson from "@/data/manufacturer-aliases.json";
 import manufacturerMappingJson from "@/data/manufacturer-mapping.json";
 import staffClassificationOverridesJson from "@/data/staff-classification-overrides.json";
 
-export type ClassificationField = "productName" | "brand" | "configuration";
+export type ClassificationField = "productName" | "brand" | "manufacturer" | "configuration";
 export type ClassificationRecord = Partial<Record<ClassificationField, string | undefined>> & {
   sourceId?: string;
 };
@@ -103,8 +103,23 @@ function normalizedRecord(record: ClassificationRecord) {
   return {
     productName: normalizeRuleText(record.productName),
     brand: normalizeRuleText(record.brand),
+    manufacturer: normalizeRuleText(record.manufacturer),
     configuration: normalizeRuleText(record.configuration),
   };
+}
+
+function isMerilStraightEndoCartridgeException(
+  record: ReturnType<typeof normalizedRecord>,
+  rule: ProductClassificationRule,
+) {
+  if (rule.subOu !== "Endo Stapling" || rule.productGroup !== "Băng ghim nội soi") return false;
+
+  const manufacturerText = `${record.brand} ${record.manufacturer}`;
+  if (!manufacturerText.includes("meril")) return false;
+
+  const productText = `${record.productName} ${record.configuration}`;
+  return productText.includes("băng ghim cho dụng cụ cắt nối thẳng an toàn") ||
+    productText.includes("băng ghim tương thích với dụng cụ cắt nối thẳng an toàn");
 }
 
 function exclusionMatch(
@@ -160,7 +175,13 @@ export function evaluateProductRule(
     .map((match) => match.term)
     .join(" + ") || undefined;
 
-  if (confirmationGroups.length && matchedConfirmationGroups.some((match) => !match)) {
+  const matchedMerilException = isMerilStraightEndoCartridgeException(record, rule);
+
+  if (
+    confirmationGroups.length &&
+    matchedConfirmationGroups.some((match) => !match) &&
+    !matchedMerilException
+  ) {
     return {
       matched: false,
       reason: "confirmation",
@@ -186,7 +207,8 @@ export function evaluateProductRule(
     matched: true,
     reason: "matched",
     matchedKeyword: matchedKeywords[0].keyword,
-    matchedConfirmation,
+    matchedConfirmation: matchedConfirmation ||
+      (matchedMerilException ? "Meril + băng ghim cho dụng cụ cắt nối thẳng an toàn" : undefined),
   };
 }
 
@@ -244,8 +266,42 @@ function manufacturerLookupKey(value: string) {
     .trim();
 }
 
+const trailingCountryQualifier = new RegExp(
+  String.raw`\s*(?:[/,;]|-\s*)\s*(?:đức|anh|mỹ|hoa\s*kỳ|tây\s*ban\s*nha|thụy\s*sĩ|ấn\s*độ|nhật\s*bản|trung\s*quốc|việt\s*nam|thổ\s*nhĩ\s*kỳ|ý|pháp|bỉ|hàn\s*quốc|hy\s*lạp|đài\s*loan|vương\s*quốc\s*anh|cộng\s*hòa\s*séc|united\s*kingdom|united\s*states(?:\s*of\s*america)?|south\s*korea|czech\s*republic|germany|china|mexico|japan|taiwan|austria|peru|bulgaria|pakistan|turkey|france|italy|spain|korea|uk|usa|tq)\s*$`,
+  "iu",
+);
+
+export function stripManufacturerCountrySuffix(value: string) {
+  let cleaned = String(value || "").trim();
+  let previous = "";
+  while (cleaned && cleaned !== previous) {
+    previous = cleaned;
+    cleaned = cleaned.replace(trailingCountryQualifier, "").trim();
+  }
+  return cleaned;
+}
+
+function looksLikeMultipleManufacturerCell(value: string) {
+  const source = stripManufacturerCountrySuffix(String(value || "").replace(/[\r\n]+/g, " ").trim());
+  // Manufacturer/site plus an explicitly labelled owner is a hierarchy, not
+  // an ambiguous list. The owner resolver handles it separately.
+  if (/(?:hãng\s*\/\s*nước\s+chủ\s+sở\s+hữu|hãng\s+chủ\s+sở\s+hữu|chủ\s+sở\s+hữu|brand\s+owner|legal\s+manufacturer)/iu.test(source)) {
+    return false;
+  }
+  const segments = source
+    .split(/\s*(?:;|\||\/|\s+-\s+|\s+\+\s+)\s*/u)
+    .map((part) => stripManufacturerCountrySuffix(part).trim())
+    .filter(Boolean);
+  if (segments.length < 2) return false;
+
+  const legalSuffix = /\b(?:ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|kg|s\.?a\.?|s\.?p\.?a\.?|s\.?r\.?l\.?|sp\.?\s*z\.?\s*o\.?\s*o\.?|medizintechnik)\b/iu;
+  const bareLegalSuffix = /^(?:and|&|ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|kg|s\.?a\.?|s\.?p\.?a\.?|s\.?r\.?l\.?)\.?$/iu;
+  const companySegments = segments.filter((part) => legalSuffix.test(part) && !bareLegalSuffix.test(part));
+  return companySegments.length > 1 || segments.length >= 3;
+}
+
 function cleanManufacturerDisplayName(value: string) {
-  return String(value || "")
+  const cleaned = String(value || "")
     .replace(/[\r\n]+/g, " ")
     .replace(/\s+/g, " ")
     .replace(/^\s*[-•"'“”‘’]+\s*/u, "")
@@ -256,13 +312,10 @@ function cleanManufacturerDisplayName(value: string) {
       /\s+(?:xuất\s+xứ|nước\s+sản\s+xuất|quốc\s+gia\s+sản\s+xuất)\s*:\s*.+$/iu,
       "",
     )
-    .replace(
-      /\s*[/,-]\s*(?:đức|anh|mỹ|hoa kỳ|tây ban nha|thụy sĩ|ấn độ|nhật bản|trung quốc|việt nam|thổ nhĩ kỳ|turkey|ý|pháp|bỉ|hàn quốc|hy lạp|đài loan|austria|peru|bulgaria|pakistan|vương quốc anh|united kingdom|cộng hòa séc|germany|uk|usa)\s*$/iu,
-      "",
-    )
     .replace(/^[.,;:]+\s*/u, "")
     .replace(/\s*[;,|]+\s*$/u, "")
     .trim();
+  return stripManufacturerCountrySuffix(cleaned);
 }
 
 export function isPlausibleManufacturerName(value: string | undefined) {
@@ -278,17 +331,11 @@ export function isPlausibleManufacturerName(value: string | undefined) {
   if (/^[a-z]\d+$/u.test(key)) return false;
   if (/^(?:hang|nha) san xuat$/u.test(key)) return false;
   if (/^(?:khong xac dinh|chua xac dinh|unknown|n a|na)$/u.test(key)) return false;
+  if (/^(?:nhieu hang|can tach|nhieu hang can tach theo item)/u.test(key)) return false;
   if (/^(?:chi tiet|thong tin chi tiet|theo|nhu bang|gom nhieu ma hang|cung cap khi giao hang)/u.test(key)) return false;
   if (/^bang danh muc hang hoa/u.test(key)) return false;
   if (/^(?:nhieu hang|ao|an do|duc|my|trung quoc|viet nam|cai|soi|beijing|fujian|gangzhou|guangzhou|jiangsu|shaoxing|shenzhen|tianjin|tonglu|zhejiang)$/u.test(key)) return false;
-  if (/[;|+]/u.test(cleaned)) return false;
-
-  const entityMentions = cleaned.match(
-    /\b(?:ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|s\.?a\.?|s\.r\.l\.?|medizintechnik)\b/giu,
-  )?.length || 0;
-  if (entityMentions > 1 && (/\s+-\s+/u.test(cleaned) || /\s*\/\s*/u.test(cleaned) || /,\s*/u.test(cleaned))) {
-    return false;
-  }
+  if (/[;|]/u.test(cleaned)) return false;
   if ((cleaned.match(/\//g)?.length || 0) >= 2) return false;
   return true;
 }
@@ -308,7 +355,7 @@ function manufacturerLookupKeys(value: string) {
 
 function explicitManufacturerOwner(value: string) {
   const match = String(value || "").match(
-    /(?:hãng\s+chủ\s+sở\s+hữu(?:\s+máy\s+chính)?|chủ\s+sở\s+hữu|brand\s+owner|legal\s+manufacturer)\s*:\s*(.+)$/iu,
+    /(?:hãng(?:\s*\/\s*nước)?\s+chủ\s+sở\s+hữu(?:\s+máy\s+chính)?|chủ\s+sở\s+hữu|brand\s+owner|legal\s+manufacturer)\s*:\s*(.+)$/iu,
   );
   if (!match) return "";
   const owner = cleanManufacturerDisplayName(match[1]);
@@ -325,8 +372,9 @@ function canonicalManufacturerName(value: string) {
   if (/^(covidien|coviden|covididen|medtronic)$/.test(key)) return "Medtronic";
   if (/^johnson(&|and)?johnson$/.test(key) || key === "ethicon") return "Johnson & Johnson";
   if (key === "bbraun") return "B. Braun";
+  if (/^amnotec(?:intera?tionalmedicalgmbh)?$/.test(key)) return "AMNOTEC International Medical GmbH";
   if (key === "conmed") return "Conmed";
-  if (key === "smithnephew") return "Smith & Nephew";
+  if (/^smithnephew(?:plc)?$/.test(key)) return "Smith & Nephew";
   if (key === "nhânxuân") return "Nhân Xuân";
   if (key.includes("thkazantzidi") || key.includes("thkazatzidi")) return "TH. KAZANTZIDIS S.A";
   return cleaned.replace(/\s+/g, " ").replace(/,+$/, "").trim();
@@ -350,9 +398,14 @@ for (const entry of manufacturerAliasesJson.entries as ManufacturerAliasEntry[])
     ...(entry.aliases || []).flatMap(manufacturerLookupKeys),
     ...manufacturerLookupKeys(entry.canonical),
   ])];
-  const canonical = canonicalManufacturerName(entry.canonical);
-  const needsItemSplit = normalizeRuleText([entry.parent, entry.status].filter(Boolean).join(" "))
-    .includes("can tach");
+  const reviewState = manufacturerLookupKey([entry.parent, entry.status].filter(Boolean).join(" "))
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d");
+  const needsItemSplit =
+    reviewState.includes("can tach") ||
+    reviewState.includes("nhieu hang") ||
+    (!entry.reportingName && looksLikeMultipleManufacturerCell(entry.canonical));
   if (needsItemSplit) {
     keys.forEach((key) => {
       reviewedManufacturerSplitKeys.add(key);
@@ -377,51 +430,45 @@ for (const entry of manufacturerAliasesJson.entries as ManufacturerAliasEntry[])
 export function mappedManufacturerFromMaster(value: string | undefined) {
   const raw = String(value || "").trim();
   if (!raw) return undefined;
+  const keys = manufacturerLookupKeys(raw);
+  // A reviewed multi-manufacturer cell must remain unattributed until the
+  // individual items can be separated. Its awarded value still remains in
+  // total market size.
+  if (keys.some((key) => reviewedManufacturerSplitKeys.has(key))) return undefined;
   // The original manufacturer master remains authoritative. Sheet 05 fills
   // the previously unmapped spelling clusters with one reporting identity.
-  for (const key of manufacturerLookupKeys(raw)) {
+  for (const key of keys) {
     const master = manufacturerMappings.get(key);
     if (master) return master;
   }
-  for (const key of manufacturerLookupKeys(raw)) {
-    if (reviewedManufacturerSplitKeys.has(key)) return undefined;
+  for (const key of keys) {
     const alias = reviewedManufacturerAliases.get(key);
     if (alias) return alias;
   }
   if (!/[;|+]/.test(raw)) {
     const compact = manufacturerLookupKey(raw).replace(/\s/g, "");
-    if (compact.startsWith("amnotec")) return "AMNOTEC International Medical GmbH";
-    if (compact.startsWith("sutter")) return "Sutter Medizintechnik";
+    if (/^amnotec(?:intera?tionalmedicalgmbh)?$/.test(compact)) return "AMNOTEC International Medical GmbH";
+    if (/^sutter(?:medizintechnik(?:gmbh)?)?$/.test(compact)) return "Sutter Medizintechnik";
     if (compact.includes("systagenixwoundmanage")) return "Solventum Corporation";
     if (compact.startsWith("karlstorz") || compact.startsWith("storzendoskop")) return "KARL STORZ";
   }
   return undefined;
 }
 
-export function mappedManufacturerDirectoryName(value: string | undefined) {
+export function requiresManufacturerItemSplit(value: string | undefined) {
   const raw = String(value || "").trim();
-  if (!raw) return undefined;
-  for (const key of manufacturerLookupKeys(raw)) {
-    if (reviewedManufacturerDirectory.has(key)) {
-      return reviewedManufacturerDirectory.get(key) || undefined;
-    }
-  }
-  for (const key of manufacturerLookupKeys(raw)) {
-    const mapped = manufacturerMappings.get(key);
-    if (mapped) return mapped;
-  }
-  if (!/[;|+]/.test(raw)) {
-    const compact = manufacturerLookupKey(raw).replace(/\s/g, "");
-    if (compact.startsWith("amnotec")) return "AMNOTEC International Medical GmbH";
-    if (compact.startsWith("sutter")) return "Sutter Medizintechnik";
-    if (compact.includes("systagenixwoundmanage")) return "Solventum Corporation";
-    if (compact.startsWith("karlstorz") || compact.startsWith("storzendoskop")) return "KARL STORZ";
-  }
-  return undefined;
+  return Boolean(raw) && manufacturerLookupKeys(raw).some((key) => reviewedManufacturerSplitKeys.has(key));
+}
+
+export function mappedManufacturerDirectoryName(value: string | undefined) {
+  // Autocomplete, filters, exports and KPI calculations deliberately share
+  // the exact same resolver and precedence order.
+  return mappedManufacturerFromMaster(value);
 }
 
 export function normalizedManufacturerName(value: string | undefined) {
   const raw = String(value || "").trim();
+  if (requiresManufacturerItemSplit(raw)) return "";
   const mapped = mappedManufacturerFromMaster(raw) || canonicalManufacturerName(raw);
   return isPlausibleManufacturerName(mapped) ? mapped : "";
 }

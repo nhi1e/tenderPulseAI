@@ -119,10 +119,10 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v14";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v15";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
-const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v7";
+const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v8";
 const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
 const initialHospitals: HospitalDirectoryEntry[] = [
   ...hospitalDirectoryEntries(),
@@ -341,6 +341,7 @@ function classificationRecord(record: WinningBidRecord) {
     sourceId: record.id,
     productName: record.tenThietBi,
     brand: record.nhanHieu,
+    manufacturer: record.hangSanXuat,
     configuration: record.cauHinh,
   };
 }

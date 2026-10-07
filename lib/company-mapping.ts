@@ -1,8 +1,9 @@
 import {
   isPlausibleManufacturerName,
-  mappedManufacturerDirectoryName,
   mappedManufacturerFromMaster,
   normalizedManufacturerName,
+  requiresManufacturerItemSplit,
+  stripManufacturerCountrySuffix,
 } from "@/lib/classification-rules";
 
 export function normalizeCompanyText(value: string) {
@@ -42,7 +43,7 @@ export function collapseRepeatedCompanyName(value: string) {
 }
 
 function cleanCompanyCandidate(value: string) {
-  return String(value || "")
+  const cleaned = String(value || "")
     .replace(/[\r\n]+/g, " ")
     .replace(/\s+/g, " ")
     .replace(/^\s*[-•"'“”‘’]+\s*/u, "")
@@ -57,16 +58,13 @@ function cleanCompanyCandidate(value: string) {
       "",
     )
     .replace(
-      /\s*[/,-]\s*(?:đức|anh|mỹ|hoa kỳ|tây ban nha|thụy sĩ|ấn độ|nhật bản|trung quốc|việt nam|thổ nhĩ kỳ|turkey|ý|pháp|bỉ|hàn quốc|hy lạp|đài loan|austria|peru|bulgaria|pakistan|vương quốc anh|united kingdom|cộng hòa séc|germany|uk|usa)\s*$/iu,
-      "",
-    )
-    .replace(
       /\s*\(\s*(?:hệ\s+thống\s+máy\s+chính|máy\s+chính|thiết\s+bị\s+chính|hệ\s+thống\s+thiết\s+bị\s+chính)\s*\)\s*$/iu,
       "",
     )
     .replace(/^[.,;:]+\s*/u, "")
     .replace(/\s*["'“”‘’;,|]+\s*$/u, "")
     .trim();
+  return stripManufacturerCountrySuffix(cleaned);
 }
 
 function canonicalCompanyDisplayName(value: string) {
@@ -82,7 +80,7 @@ function canonicalCompanyDisplayName(value: string) {
 
 function explicitOwnerCandidate(value: string) {
   const match = String(value || "").match(
-    /(?:hãng\s+chủ\s+sở\s+hữu(?:\s+máy\s+chính)?|chủ\s+sở\s+hữu|brand\s+owner|legal\s+manufacturer)\s*:\s*(.+?)(?=\s+-\s*(?:(?:hãng|nhà)\s+sản\s+xuất|hãng\s+chủ\s+sở\s+hữu)|$)/iu,
+    /(?:hãng(?:\s*\/\s*nước)?\s+chủ\s+sở\s+hữu(?:\s+máy\s+chính)?|chủ\s+sở\s+hữu|brand\s+owner|legal\s+manufacturer)\s*:\s*(.+?)(?=\s+-\s*(?:(?:hãng|nhà)\s+sản\s+xuất|hãng(?:\s*\/\s*nước)?\s+chủ\s+sở\s+hữu)|$)/iu,
   );
   if (!match) return "";
   const owner = cleanCompanyCandidate(match[1]);
@@ -108,19 +106,25 @@ function singleEnumeratedCompany(value: string) {
 }
 
 function looksLikeCompoundManufacturerCell(value: string) {
-  const source = String(value || "").trim();
+  const source = stripManufacturerCountrySuffix(String(value || "").trim());
   const enumerated = enumeratedCompanyParts(source);
   if (enumerated.length > 1 && new Set(enumerated.map(normalizeCompanyText)).size > 1) return true;
   if (/[;|\n]/u.test(source) || /\s+hoặc\s+/iu.test(source)) return true;
 
-  const entityMentions = source.match(
-    /\b(?:ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|s\.?a\.?|s\.?p\.?a\.?|s\.r\.l\.?|medizintechnik)\b/giu,
-  )?.length || 0;
-  return entityMentions > 1 && (/\s+-\s+/u.test(source) || /\s+\/\s+/u.test(source) || /,\s*/u.test(source));
+  // Count company-bearing segments, not legal suffix tokens. "Co., Ltd." is
+  // one company, while "Adler Ortho S.p.A, Tecres S.p.A." is two.
+  const legalSuffix = /\b(?:ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|s\.?a\.?|s\.?p\.?a\.?|s\.?r\.?l\.?|medizintechnik)\b/iu;
+  const bareLegalSuffix = /^(?:and|&|ltd|limited|inc|incorporated|gmbh|corp|corporation|company|co|plc|llc|pvt|ag|kg|s\.?a\.?|s\.?p\.?a\.?|s\.?r\.?l\.?)\.?$/iu;
+  const companyBearingSegments = source
+    .split(/\s*(?:,|\/|\s+-\s+|\s+\+\s+)\s*/u)
+    .map((part) => part.trim())
+    .filter((part) => part && legalSuffix.test(part) && !bareLegalSuffix.test(part));
+  return companyBearingSegments.length > 1;
 }
 
 export function mappedCompanyName(searchableText: string, fallback = "") {
   const rawFallback = String(fallback || "").trim();
+  if (requiresManufacturerItemSplit(rawFallback)) return "";
   const workbookMappedManufacturer = mappedManufacturerFromMaster(rawFallback);
   const ownerCandidate = explicitOwnerCandidate(rawFallback);
   const repeatedEnumeratedCandidate = singleEnumeratedCompany(rawFallback);
@@ -156,32 +160,11 @@ export function mappedCompanyName(searchableText: string, fallback = "") {
 }
 
 export function companyDirectoryName(value: string) {
-  const directoryMapping = (source: string) => {
-    const first = mappedManufacturerDirectoryName(source);
-    if (!first) return undefined;
-    const second = mappedManufacturerDirectoryName(first);
-    return second && second.length > first.length ? second : first;
-  };
-  const reviewed = directoryMapping(value);
-  if (reviewed && isPlausibleManufacturerName(reviewed)) return canonicalCompanyDisplayName(reviewed);
-
-  // Portal values often prepend a field label to an otherwise reviewed
-  // manufacturer name. Remove only the leading label, then consult the same
-  // master again instead of maintaining company-specific exceptions.
-  const withoutLeadingLabel = value.replace(
-    /^\s*[-•"'“”‘’]?\s*(?:(?:hãng\s*\/\s*nhà|hãng|nhà)\s+sản\s+xuất(?:\s+(?:máy|thiết bị)\s+chính)?|hãng\s+sản\s+xuất\s*\/\s*cơ\s+sở\s+sản\s+xuất|manufacturer)\s*:\s*/iu,
-    "",
-  ).trim();
-  if (withoutLeadingLabel !== value.trim()) {
-    const reviewedWithoutLabel = directoryMapping(withoutLeadingLabel);
-    if (reviewedWithoutLabel) return canonicalCompanyDisplayName(reviewedWithoutLabel);
-  }
-
-  const mapped = mappedCompanyName(withoutLeadingLabel || value, withoutLeadingLabel || value).trim();
+  const mapped = mappedCompanyName(value, value).trim();
   // Unreviewed compound portal cells are not one company. Keep them out of
   // autocomplete until item-level attribution is available.
   if (!isPlausibleManufacturerName(mapped)) return "";
-  return mapped;
+  return canonicalCompanyDisplayName(mapped);
 }
 
 export function companyGroupingKey(value: string) {
