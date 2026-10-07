@@ -35,3 +35,9 @@ test("emits structured timing logs for portal pages, seeds, and Sub-OUs", () => 
   assert.match(page, /\[TenderPulse\] Sub-OU complete/);
   assert.match(page, /\[TenderPulse\] overview load complete/);
 });
+
+test("loads independent overview seeds with bounded concurrency", () => {
+  assert.match(page, /const seedConcurrency = Math\.min\(2, seeds\.length\)/);
+  assert.match(page, /Promise\.all\(Array\.from\(\{ length: seedConcurrency \}, \(\) => runSeedWorker\(\)\)\)/);
+  assert.match(page, /classification rules, page limit, deduplication, or final aggregation/);
+});
