@@ -90,6 +90,28 @@ test("staff classifications take precedence over text rules", () => {
   assert.equal(result?.evaluation.reason, "staff-review");
 });
 
+test("recovers a unique staff decision from tender ID and product name when a raw Excel row has no portal UUID", () => {
+  const counts = new Map();
+  staffOverrides.decisions.forEach((decision) => {
+    const key = `${decision.tenderId || ""}::${decision.productName || ""}`;
+    counts.set(key, (counts.get(key) || 0) + 1);
+  });
+  const decision = staffOverrides.decisions.find((candidate) =>
+    candidate.action === "classify" &&
+    candidate.tenderId &&
+    candidate.productName &&
+    counts.get(`${candidate.tenderId}::${candidate.productName}`) === 1
+  );
+  assert.ok(decision);
+  const result = rules.classifyProductRecord({
+    tenderId: decision.tenderId,
+    productName: decision.productName,
+  });
+  assert.equal(result?.rule.subOu, decision.subOu);
+  assert.equal(result?.rule.productGroup, decision.productGroup);
+  assert.equal(result?.evaluation.reason, "staff-review");
+});
+
 test("staff exclusions and unresolved rows stay out of KPIs", () => {
   assert.equal(rules.classifyProductRecord({
     sourceId: "0884765e-413f-472e-9f41-87a5f3a82740",

@@ -1,0 +1,57 @@
+name: Update market snapshot
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Use incremental for the daily refresh or full for a new baseline"
+        required: true
+        default: incremental
+        type: choice
+        options:
+          - incremental
+          - full
+  schedule:
+    # 01:30 in Vietnam. The dashboard will use the last completed snapshot
+    # while this job refreshes the most recent 30-day window.
+    - cron: "30 18 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: market-snapshot
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - run: npm ci
+
+      - name: Refresh snapshot
+        env:
+          SYNC_MODE: ${{ github.event.inputs.mode || 'incremental' }}
+        run: node --import tsx scripts/sync-market-snapshot.ts --mode "$SYNC_MODE"
+
+      - name: Commit updated snapshot
+        run: |
+          if git diff --quiet -- public/data/market-snapshot; then
+            echo "No snapshot changes to commit."
+            exit 0
+          fi
+          git config user.name "tenderpulse-data-bot"
+          git config user.email "tenderpulse-data-bot@users.noreply.github.com"
+          git add public/data/market-snapshot
+          git commit -m "Update daily market snapshot"
+          git push

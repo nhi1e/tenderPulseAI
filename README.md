@@ -23,6 +23,7 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - Competitor aliases normalized before value-share and unit-share calculations
 - One completed overview load per filter scope is cached for the current browser session
 - Force-refresh control to bypass and replace the session cache
+- A partitioned daily market snapshot for fast overview loading without repeated full live searches
 - English interface by default with a persistent English/Vietnamese switch
 
 The date range filters by `Ngày ban hành quyết định` (award-decision date), as confirmed by staff. Detailed exports retain both the decision date and the KQLCNT publication date for traceability. Product rows that match more than one rule are no longer assigned using a first-rule-wins shortcut: an exact reviewed decision is applied when available, otherwise the row remains outside KPI calculations until confirmed.
@@ -72,3 +73,55 @@ Cloudflare Workers Free allows very little CPU time per request, so the deployed
 - The completed overview is also cached in `sessionStorage`, so returning to the tab during the same browser session does not repeat the full load.
 
 This removes the former `/api/winning-bids` and `/api/market-overview/segment` CPU bottlenecks that caused HTTP 503 errors for larger Sub-OUs on the Free plan. An individual search is capped at 25 portal pages; the interface marks the result as limited if the portal reports more pages.
+
+## Persistent market snapshot
+
+The market overview checks `public/data/market-snapshot/manifest.json` first. When a ready snapshot covers the requested dates, the browser downloads only the matching year/Sub-OU partitions and applies the hospital, product-group, and company filters locally. Product search remains live. **Force refresh** deliberately bypasses the snapshot and queries the portal.
+
+The snapshot retains the fields needed by every overview Excel export, including the original manufacturer, brand, model, technical configuration, bidder, buyer, TBMT, decision and publication dates, quantity, price, and location. It also stores the approved Sub-OU/product-group classification and normalized company.
+
+### Fastest first import: existing raw Excel files
+
+Do not commit the very large raw workbooks. Import them locally and commit only the generated classified partitions:
+
+```bash
+npm run data:import -- \
+  --date-from 2023-01-01 \
+  --date-to 2026-10-07 \
+  "/path/raw-winning-bids-part-001.xlsx" \
+  "/path/raw-winning-bids-part-002.xlsx"
+```
+
+Pass every raw part in the same command. The importer accepts the Vietnamese columns exported by the existing full-portal collector. It deduplicates source rows, applies the current staff-reviewed product and manufacturer rules, and writes:
+
+- `manifest.json`: coverage and partition inventory
+- `partitions/<year>/<sub-ou>.json`: dashboard and export records
+- `daily-changes.json`: new, changed, and removed records for the future alert interface
+
+Review the counts, then commit `public/data/market-snapshot`.
+
+### Portal baseline and daily refresh
+
+If the raw Excel baseline is unavailable, the collector can retrieve all medical-supply award rows directly. It splits the period into month-sized requests and refuses to save a partial snapshot if a request fails:
+
+```bash
+npm run data:full -- --date-from 2023-01-01 --date-to 2026-10-07
+```
+
+After a baseline exists, refresh only the recent rolling window:
+
+```bash
+npm run data:sync
+```
+
+The default lookback is 30 days so corrections to recently published portal records are detected. Override it with `--lookback 60` when needed.
+
+When classification or manufacturer rules change, re-run them over the saved snapshot without contacting the portal:
+
+```bash
+npm run data:reclassify
+```
+
+The GitHub Actions workflow `.github/workflows/update-market-snapshot.yml` runs every day at 01:30 Vietnam time and commits changed snapshot files. It can also be started manually with `incremental` or `full` mode from the Actions tab. The repository must allow GitHub Actions to write contents.
+
+The initial checked-in manifest is intentionally `empty`; until the first import or full sync is committed, the overview continues using the existing live-search fallback.

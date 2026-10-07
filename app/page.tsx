@@ -24,6 +24,7 @@ import {
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
+import { loadOverviewFactsFromSnapshot } from "@/lib/market-snapshot";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
@@ -119,7 +120,7 @@ const overviewKeywordCatalog: KeywordCatalogItem[] = subOuOrder.map((subOu) => (
   productGroups: [...new Set(keywordMaster.filter((rule) => rule.subOu === subOu).map((rule) => rule.productGroup))],
   keywords: keywordMaster.filter((rule) => rule.subOu === subOu).flatMap((rule) => rule.keywords),
 }));
-const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v15";
+const OVERVIEW_CACHE_KEY = "tenderpulse.overview-session-cache.v16";
 const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
 const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v8";
@@ -339,6 +340,7 @@ function productSearchSeeds(keyword: string, rule: KeywordMasterRule | undefined
 function classificationRecord(record: WinningBidRecord) {
   return {
     sourceId: record.id,
+    tenderId: record.maTbmt,
     productName: record.tenThietBi,
     brand: record.nhanHieu,
     manufacturer: record.hangSanXuat,
@@ -1477,6 +1479,27 @@ function MarketOverview() {
     forceRefresh = false,
   ) {
     const subOuStartedAt = performance.now();
+    if (!forceRefresh) {
+      const snapshot = await loadOverviewFactsFromSnapshot(subOu, nextFilters);
+      if (snapshot) {
+        console.info("[TenderPulse] Sub-OU loaded from daily snapshot", {
+          subOu,
+          generatedAt: snapshot.generatedAt,
+          facts: snapshot.facts.length,
+          sourceRecords: snapshot.sourceRecords,
+          elapsedMs: Math.round(performance.now() - subOuStartedAt),
+        });
+        return {
+          fetchedAt: snapshot.generatedAt,
+          slice: aggregateOverviewFacts(subOu, snapshot.facts, {
+            sourceTotalElements: snapshot.sourceRecords,
+            truncated: false,
+            failedQueries: [],
+          }),
+        };
+      }
+    }
+
     const facts = new Map<string, OverviewFact>();
     let sourceTotalElements = 0;
     let truncated = false;

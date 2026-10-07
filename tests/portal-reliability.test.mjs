@@ -41,3 +41,10 @@ test("loads independent overview seeds with bounded concurrency", () => {
   assert.match(page, /Promise\.all\(Array\.from\(\{ length: seedConcurrency \}, \(\) => runSeedWorker\(\)\)\)/);
   assert.match(page, /classification rules, page limit, deduplication, or final aggregation/);
 });
+
+test("prefers the daily snapshot and reserves live loading for fallback or force refresh", () => {
+  assert.match(page, /loadOverviewFactsFromSnapshot\(subOu, nextFilters\)/);
+  assert.match(page, /if \(!forceRefresh\)/);
+  assert.match(page, /Sub-OU loaded from daily snapshot/);
+  assert.match(page, /tenderpulse\.overview-session-cache\.v16/);
+});
