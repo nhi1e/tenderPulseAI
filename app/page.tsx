@@ -2,7 +2,7 @@
 
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ArrowLeft, Building2, CheckCircle2, CircleAlert,
+  ArrowLeft, Bell, Building2, CheckCircle2, CheckCheck, CircleAlert,
   CalendarDays, Database, Download, Filter, LoaderCircle, RefreshCw, Search, Sparkles, Trophy,
 } from "lucide-react";
 import { enUS, vi } from "date-fns/locale";
@@ -28,6 +28,7 @@ import {
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
 import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
+import { alertsFromDailyChanges, type TenderAlert, type TenderAlertSource } from "@/lib/tender-alerts";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
@@ -108,6 +109,7 @@ type OverviewFilterState = {
 type KeywordCatalogItem = { subOu: string; productGroups: string[]; keywords: string[] };
 type KeywordMasterRule = ProductClassificationRule;
 type ActivityItem = { id: string; keyword: string; searchedAt: string; filters: SearchFilters };
+type AlertFeedSource = "d1" | "snapshot";
 type OverviewLoadProgress = { completed: number; total: number; current: string[] };
 type HospitalDirectoryEntry = { name: string; id?: string };
 type CompanyDirectoryEntry = { name: string };
@@ -128,6 +130,8 @@ const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
 const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v8";
 const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
+const ALERT_READER_KEY = "tenderpulse.alert-reader.v1";
+const ALERT_LOCAL_READ_KEY = "tenderpulse.alert-read.v1";
 const initialHospitals: HospitalDirectoryEntry[] = [
   ...hospitalDirectoryEntries(),
   { name: "Bệnh viện Bạch Mai" },
@@ -2275,6 +2279,159 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
   return <Dashboard product={selectedProduct} loading={loading} error={error} status={loadingStatus} onBack={() => { setSelectedProduct(null); setError(undefined); }} onSearch={searchLive} />;
 }
 
+function readLocalAlertIds() {
+  try {
+    const values = JSON.parse(window.localStorage.getItem(ALERT_LOCAL_READ_KEY) || "[]");
+    return new Set(Array.isArray(values) ? values.map(String) : []);
+  } catch {
+    return new Set<string>();
+  }
+}
+
+function rememberLocalAlertIds(ids: string[]) {
+  const stored = readLocalAlertIds();
+  ids.forEach((id) => stored.add(id));
+  window.localStorage.setItem(ALERT_LOCAL_READ_KEY, JSON.stringify([...stored].slice(-2_000)));
+}
+
+function AlertCenter() {
+  const language = useLanguage();
+  const [readerId, setReaderId] = useState("");
+  const [alerts, setAlerts] = useState<TenderAlert[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [source, setSource] = useState<AlertFeedSource>("snapshot");
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>();
+  const [exporting, setExporting] = useState(false);
+
+  async function loadAlerts(activeReaderId: string) {
+    setLoading(true);
+    setError(undefined);
+    try {
+      const response = await fetch(`/api/alerts?reader=${encodeURIComponent(activeReaderId)}&limit=100`, { cache: "no-store" });
+      if (response.ok) {
+        const data = await response.json() as { alerts?: TenderAlert[]; unreadCount?: number };
+        setAlerts(Array.isArray(data.alerts) ? data.alerts : []);
+        setUnreadCount(Number(data.unreadCount || 0));
+        setSource("d1");
+        return;
+      }
+
+      const [manifest, changesResponse] = await Promise.all([
+        readMarketSnapshotManifest(fetch, true),
+        fetch("/data/market-snapshot/daily-changes.json", { cache: "no-store" }),
+      ]);
+      if (!changesResponse.ok) throw new Error("Snapshot alert feed is unavailable.");
+      const changes = await changesResponse.json() as {
+        generatedAt?: string;
+        new?: TenderAlertSource[];
+        changed?: TenderAlertSource[];
+      };
+      const fallbackAlerts = manifest?.lastSync?.mode === "incremental"
+        ? alertsFromDailyChanges(changes).sort((left, right) => right.detectedAt.localeCompare(left.detectedAt)).slice(0, 100)
+        : [];
+      const readIds = readLocalAlertIds();
+      const withReadState = fallbackAlerts.map((alert) => ({
+        ...alert,
+        readAt: readIds.has(alert.id) ? alert.detectedAt : null,
+      }));
+      setAlerts(withReadState);
+      setUnreadCount(withReadState.filter((alert) => !alert.readAt).length);
+      setSource("snapshot");
+    } catch (caught) {
+      setAlerts([]);
+      setUnreadCount(0);
+      setError(caught instanceof Error ? caught.message : copy(language, "Could not load alerts.", "Không thể tải cảnh báo."));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    let storedReader = window.localStorage.getItem(ALERT_READER_KEY) || "";
+    if (!storedReader) {
+      storedReader = crypto.randomUUID();
+      window.localStorage.setItem(ALERT_READER_KEY, storedReader);
+    }
+    setReaderId(storedReader);
+    void loadAlerts(storedReader);
+    const timer = window.setInterval(() => void loadAlerts(storedReader), 5 * 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  async function markRead(alertIds: string[], all = false) {
+    if (!alertIds.length && !all) return;
+    const readAt = new Date().toISOString();
+    const ids = all ? alerts.filter((alert) => !alert.readAt).map((alert) => alert.id) : alertIds;
+    rememberLocalAlertIds(ids);
+    setAlerts((current) => current.map((alert) => ids.includes(alert.id) ? { ...alert, readAt } : alert));
+    setUnreadCount((current) => all ? 0 : Math.max(0, current - ids.length));
+    if (source !== "d1" || !readerId) return;
+    try {
+      await fetch("/api/alerts/read", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ readerId, alertIds: all ? undefined : ids, all }),
+      });
+    } catch {
+      // The local read state keeps the interface usable during a brief network interruption.
+    }
+  }
+
+  async function exportAlerts() {
+    setExporting(true);
+    try {
+      await downloadWorkbook([{
+        name: language === "en" ? "New portal entries" : "KQLCNT mới",
+        rows: alerts.map((alert) => ({
+          [copy(language, "Status", "Trạng thái")]: alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật"),
+          [copy(language, "Detected at", "Thời điểm phát hiện")]: new Date(alert.detectedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" }),
+          "Sub-OU": alert.subOu,
+          [copy(language, "Product group", "Nhóm sản phẩm")]: alert.productGroup,
+          [copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")]: alert.hospital,
+          [copy(language, "Buyer ID", "Mã định danh CĐT")]: alert.buyerId,
+          [copy(language, "Product name", "Tên thiết bị, vật tư y tế")]: alert.productName,
+          [copy(language, "Product code", "Ký mã hiệu")]: alert.productCode,
+          [copy(language, "Brand", "Nhãn hiệu")]: alert.brand,
+          [copy(language, "Manufacturer", "Hãng sản xuất")]: alert.manufacturer,
+          [copy(language, "Normalized company", "Công ty đã quy đổi")]: alert.company,
+          [copy(language, "Winning supplier", "Tên NT trúng thầu")]: alert.supplier,
+          [copy(language, "Tender notice ID", "Mã TBMT")]: alert.tenderNotice,
+          [copy(language, "Award result ID", "Mã KQLCNT")]: alert.tender,
+          [copy(language, "Decision date", "Ngày ban hành quyết định")]: alert.decisionDate,
+          [copy(language, "Publication date", "Ngày đăng tải KQLCNT")]: alert.publishedAt,
+          [copy(language, "Quantity", "Khối lượng")]: alert.units,
+          [copy(language, "Unit price", "Đơn giá trúng thầu")]: alert.unitPrice,
+          [copy(language, "Estimated value", "Thành tiền ước tính")]: alert.value,
+        })),
+        columns: [12, 21, 18, 30, 40, 20, 52, 24, 24, 34, 28, 40, 18, 22, 22, 22, 14, 20, 22],
+      }], `${dateInputValue(new Date()).split("-").reverse().join("-")}-new-muasamcong-entries.xlsx`);
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  const latestDetectedAt = alerts[0]?.detectedAt;
+  return <div className="alert-menu">
+    <button className={unreadCount ? "has-unread" : ""} type="button" onClick={() => { setShow((current) => !current); if (!show && readerId) void loadAlerts(readerId); }} aria-expanded={show} aria-label={copy(language, "New Mua Sắm Công entries", "KQLCNT mới trên Mua Sắm Công")}>
+      <Bell />{unreadCount ? <span>{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
+    </button>
+    {show && <div className="alert-panel">
+      <div className="alert-panel-head"><div><strong>{copy(language, "New Mua Sắm Công entries", "KQLCNT mới trên Mua Sắm Công")}</strong><small>{latestDetectedAt ? `${copy(language, "Last checked", "Kiểm tra gần nhất")} ${new Date(latestDetectedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : copy(language, "Alerts begin after the next incremental update.", "Cảnh báo sẽ bắt đầu sau lần cập nhật tăng dần tiếp theo.")}</small></div><button type="button" onClick={() => setShow(false)}>{copy(language, "Close", "Đóng")}</button></div>
+      <div className="alert-panel-actions"><button type="button" disabled={!unreadCount} onClick={() => void markRead([], true)}><CheckCheck />{copy(language, "Mark all read", "Đánh dấu đã đọc")}</button><button type="button" disabled={!alerts.length || exporting} onClick={() => void exportAlerts()}><Download />{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export", "Xuất Excel")}</button></div>
+      {loading ? <div className="alert-panel-state"><LoaderCircle className="spin" />{copy(language, "Loading alerts…", "Đang tải cảnh báo…")}</div> : error ? <div className="alert-panel-state is-error">{error}</div> : alerts.length ? <div className="alert-list">{alerts.map((alert) => <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => void markRead([alert.id])}>
+        <span className={`alert-kind is-${alert.kind}`}>{alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật")}</span>
+        <strong>{alert.productName || copy(language, "Unnamed product", "Sản phẩm chưa có tên")}</strong>
+        <span>{[alert.subOu, alert.productGroup].filter(Boolean).join(" · ")}</span>
+        <span>{[alert.hospital, alert.company].filter(Boolean).join(" · ")}</span>
+        <small>{[alert.tenderNotice ? `TBMT ${alert.tenderNotice}` : "", alert.decisionDate].filter(Boolean).join(" · ")}</small>
+      </button>)}</div> : <div className="alert-panel-state">{copy(language, "No new classified entries yet.", "Chưa có KQLCNT mới đã được phân loại.")}</div>}
+      <div className="alert-panel-foot">{source === "d1" ? copy(language, "Synced alert history", "Lịch sử cảnh báo đã đồng bộ") : copy(language, "Showing the latest saved snapshot", "Đang hiển thị bản cập nhật đã lưu gần nhất")}</div>
+    </div>}
+  </div>;
+}
+
 export default function Home() {
   const [language, setLanguage] = useState<Language>("en");
   const [activeTab, setActiveTab] = useState("overview");
@@ -2321,7 +2478,7 @@ export default function Home() {
   };
 
   return <LanguageContext.Provider value={language}><Tabs className="app-tabs" value={activeTab} onValueChange={changeTab}>
-    <header className="app-header"><Brand /><TabsList className="main-tabs" variant="line"><TabsTrigger value="overview">{copy(language, "Market overview", "Tổng quan thị trường")}</TabsTrigger><TabsTrigger value="search">{copy(language, "Product search", "Tra cứu sản phẩm")}</TabsTrigger></TabsList><div className="header-actions"><div className="language-switch" role="group" aria-label="Interface language"><button className={language === "en" ? "is-active" : ""} type="button" onClick={() => changeLanguage("en")} aria-pressed={language === "en"}>EN</button><button className={language === "vi" ? "is-active" : ""} type="button" onClick={() => changeLanguage("vi")} aria-pressed={language === "vi"}>VI</button></div><div className="activity-menu"><button type="button" onClick={() => setShowActivity((current) => !current)} aria-expanded={showActivity}>{copy(language, "Recent activity", "Hoạt động gần đây")}{activity.length ? <span>{activity.length}</span> : null}</button>{showActivity && <div className="activity-panel"><div className="activity-panel-head"><strong>{copy(language, "Activity on this device", "Hoạt động trên thiết bị này")}</strong><button type="button" onClick={() => setShowActivity(false)}>{copy(language, "Close", "Đóng")}</button></div>{activity.length ? activity.map((item) => <button className="activity-item" type="button" key={item.id} onClick={() => reopenActivity(item)}><strong>{item.keyword}</strong><span>{new Date(item.searchedAt).toLocaleString(localeFor(language))}</span></button>) : <p>{copy(language, "No saved searches yet.", "Chưa có lượt tra cứu nào được lưu.")}</p>}</div>}</div></div></header>
+    <header className="app-header"><Brand /><TabsList className="main-tabs" variant="line"><TabsTrigger value="overview">{copy(language, "Market overview", "Tổng quan thị trường")}</TabsTrigger><TabsTrigger value="search">{copy(language, "Product search", "Tra cứu sản phẩm")}</TabsTrigger></TabsList><div className="header-actions"><div className="language-switch" role="group" aria-label="Interface language"><button className={language === "en" ? "is-active" : ""} type="button" onClick={() => changeLanguage("en")} aria-pressed={language === "en"}>EN</button><button className={language === "vi" ? "is-active" : ""} type="button" onClick={() => changeLanguage("vi")} aria-pressed={language === "vi"}>VI</button></div><AlertCenter /><div className="activity-menu"><button type="button" onClick={() => setShowActivity((current) => !current)} aria-expanded={showActivity}>{copy(language, "Recent activity", "Hoạt động gần đây")}{activity.length ? <span>{activity.length}</span> : null}</button>{showActivity && <div className="activity-panel"><div className="activity-panel-head"><strong>{copy(language, "Activity on this device", "Hoạt động trên thiết bị này")}</strong><button type="button" onClick={() => setShowActivity(false)}>{copy(language, "Close", "Đóng")}</button></div>{activity.length ? activity.map((item) => <button className="activity-item" type="button" key={item.id} onClick={() => reopenActivity(item)}><strong>{item.keyword}</strong><span>{new Date(item.searchedAt).toLocaleString(localeFor(language))}</span></button>) : <p>{copy(language, "No saved searches yet.", "Chưa có lượt tra cứu nào được lưu.")}</p>}</div>}</div></div></header>
     <TabsContent className="app-tab-content" value="overview"><MarketOverview /></TabsContent>
     <TabsContent className="app-tab-content" value="search"><SearchExperience resume={resume} onActivity={rememberActivity} /></TabsContent>
   </Tabs></LanguageContext.Provider>;
