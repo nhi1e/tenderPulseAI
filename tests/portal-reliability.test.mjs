@@ -26,3 +26,12 @@ test("resumes an incomplete overview from cached successful Sub-OUs", () => {
   assert.match(page, /writeOverviewCache\(nextFilters/);
   assert.match(page, /pendingTargets\.length/);
 });
+
+test("emits structured timing logs for portal pages, seeds, and Sub-OUs", () => {
+  assert.match(worker, /\[TenderPulse:\$\{requestId\}\] proxy request/);
+  assert.match(worker, /X-TenderPulse-Portal-Ms/);
+  assert.match(page, /\[TenderPulse\] page response/);
+  assert.match(page, /\[TenderPulse\] seed complete/);
+  assert.match(page, /\[TenderPulse\] Sub-OU complete/);
+  assert.match(page, /\[TenderPulse\] overview load complete/);
+});

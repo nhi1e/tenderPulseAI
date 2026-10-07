@@ -410,8 +410,20 @@ async function fetchPortalPage(keyword: string, page: number, filters: SearchFil
   let lastError: unknown;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    const attemptStartedAt = performance.now();
+    console.info("[TenderPulse] page request start", { keyword, page, attempt, forceRefresh });
     try {
       response = await fetch(url);
+      console.info("[TenderPulse] page response", {
+        keyword,
+        page,
+        attempt,
+        status: response.status,
+        cache: response.headers.get("X-TenderPulse-Cache") || "unknown",
+        requestId: response.headers.get("X-TenderPulse-Request") || undefined,
+        portalMs: Number(response.headers.get("X-TenderPulse-Portal-Ms")) || undefined,
+        elapsedMs: Math.round(performance.now() - attemptStartedAt),
+      });
       // A 504 is the portal's explicit 25-second boundary. Repeating the same
       // expensive query immediately would only make the user wait twice.
       const retryable = response.status === 429 || response.status === 502 || response.status === 503;
@@ -419,6 +431,13 @@ async function fetchPortalPage(keyword: string, page: number, filters: SearchFil
       lastError = new Error(`Portal proxy returned ${response.status}.`);
     } catch (error) {
       lastError = error;
+      console.error("[TenderPulse] page request failed", {
+        keyword,
+        page,
+        attempt,
+        elapsedMs: Math.round(performance.now() - attemptStartedAt),
+        error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
+      });
     }
     if (attempt < maxAttempts) await new Promise((resolve) => setTimeout(resolve, 750));
   }
@@ -431,11 +450,30 @@ async function fetchPortalPage(keyword: string, page: number, filters: SearchFil
   try {
     data = body ? JSON.parse(body) as { page?: PortalPage; error?: string } : undefined;
   } catch {
+    console.error("[TenderPulse] invalid proxy response", {
+      keyword,
+      page,
+      status: response.status,
+      bodyPreview: body.slice(0, 160),
+    });
     throw new Error(lastError instanceof Error ? lastError.message : "The data service returned an invalid response.");
   }
   if (!response.ok || !data?.page || !Array.isArray(data.page.content)) {
+    console.error("[TenderPulse] unusable portal page", {
+      keyword,
+      page,
+      status: response.status,
+      error: data?.error,
+    });
     throw new Error(data?.error || "Could not retrieve this portal page.");
   }
+  console.info("[TenderPulse] page parsed", {
+    keyword,
+    page,
+    records: data.page.content.length,
+    totalPages: data.page.totalPages,
+    totalElements: data.page.totalElements,
+  });
   return data.page;
 }
 async function collectLiveWinningBids(
@@ -1438,6 +1476,7 @@ function MarketOverview() {
     totalSubOus: number,
     forceRefresh = false,
   ) {
+    const subOuStartedAt = performance.now();
     const facts = new Map<string, OverviewFact>();
     let sourceTotalElements = 0;
     let truncated = false;
@@ -1449,9 +1488,25 @@ function MarketOverview() {
     const productGroups = [...new Set(rules.map((rule) => rule.productGroup))];
     const seeds = [...new Set(productGroups.flatMap((group) => MARKET_OVERVIEW_SEARCH_SEEDS[group] || [group]))];
     let successfulQueries = 0;
+    console.info("[TenderPulse] Sub-OU start", {
+      subOu,
+      productGroups,
+      seeds,
+      seedCount: seeds.length,
+      dateFrom: nextFilters.dateFrom,
+      dateTo: nextFilters.dateTo,
+      forceRefresh,
+    });
 
     for (let seedIndex = 0; seedIndex < seeds.length; seedIndex += 1) {
       const seed = seeds[seedIndex];
+      const seedStartedAt = performance.now();
+      console.info("[TenderPulse] seed start", {
+        subOu,
+        seed,
+        seedNumber: seedIndex + 1,
+        seedCount: seeds.length,
+      });
       try {
         setLoadProgress({
           completed: completedSubOus,
@@ -1475,15 +1530,45 @@ function MarketOverview() {
           const fact = overviewFactFor(record, rules);
           if (fact) facts.set(fact.key, fact);
         });
-      } catch {
+        console.info("[TenderPulse] seed complete", {
+          subOu,
+          seed,
+          elapsedMs: Math.round(performance.now() - seedStartedAt),
+          portalElements: result.portalTotalElements,
+          acceptedFacts: facts.size,
+          totalPages: result.totalPages,
+          truncated: result.truncated,
+        });
+      } catch (error) {
         failedQueries.push(seed);
+        console.error("[TenderPulse] seed failed", {
+          subOu,
+          seed,
+          elapsedMs: Math.round(performance.now() - seedStartedAt),
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
       if (seedIndex + 1 < seeds.length) await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     if (seeds.length && !successfulQueries) {
+      console.error("[TenderPulse] Sub-OU failed", {
+        subOu,
+        seeds,
+        elapsedMs: Math.round(performance.now() - subOuStartedAt),
+      });
       throw new Error(copy(language, `Could not update ${subOu}.`, `Không thể cập nhật ${subOu}.`));
     }
+
+    console.info("[TenderPulse] Sub-OU complete", {
+      subOu,
+      elapsedMs: Math.round(performance.now() - subOuStartedAt),
+      successfulQueries,
+      failedQueries,
+      facts: facts.size,
+      sourceTotalElements,
+      truncated,
+    });
 
     return {
       fetchedAt: new Date().toISOString(),
@@ -1496,6 +1581,7 @@ function MarketOverview() {
   }
 
   async function loadOverview(nextFilters: OverviewFilterState, availableCatalog = catalog, forceRefresh = false) {
+    const overviewStartedAt = performance.now();
     const matchingCatalog = availableCatalog.length ? availableCatalog : overviewKeywordCatalog;
     const targets = matchingCatalog
       .filter((item) => nextFilters.subOu === "all" || item.subOu === nextFilters.subOu)
@@ -1506,6 +1592,13 @@ function MarketOverview() {
     const cachedSlices = (cached?.slices || []).filter((slice) => targets.includes(slice.name));
     const cachedNames = new Set(cachedSlices.map((slice) => slice.name));
     const pendingTargets = targets.filter((subOu) => !cachedNames.has(subOu));
+    console.info("[TenderPulse] overview load start", {
+      filters: nextFilters,
+      targets,
+      cachedSubOus: [...cachedNames],
+      pendingTargets,
+      forceRefresh,
+    });
 
     // A partially completed load is useful. Restore the successful Sub-OUs
     // immediately, then request only the missing ones instead of restarting all
@@ -1519,6 +1612,10 @@ function MarketOverview() {
       setError(undefined);
       setLoadedFromCache(true);
       if (!pendingTargets.length) {
+        console.info("[TenderPulse] overview restored entirely from session cache", {
+          targets,
+          elapsedMs: Math.round(performance.now() - overviewStartedAt),
+        });
         setLoading(false);
         return;
       }
@@ -1576,6 +1673,13 @@ function MarketOverview() {
     setSlices(sortedSlices);
     setLoadedFromCache(false);
     setLoading(false);
+    console.info("[TenderPulse] overview load complete", {
+      elapsedMs: Math.round(performance.now() - overviewStartedAt),
+      succeeded,
+      total: targets.length,
+      failures,
+      loadedSubOus: sortedSlices.map((slice) => slice.name),
+    });
   }
 
   useEffect(() => {
