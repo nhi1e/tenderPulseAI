@@ -97,6 +97,28 @@ test("does not use a snapshot outside its completed coverage", async () => {
   assert.equal(result, undefined);
 });
 
+test("uses a complete 2023 snapshot when the selected start date is earlier than portal availability", async () => {
+  const partitionPath = "/data/market-snapshot/partitions/2026/endo-stapling.json";
+  const manifest = {
+    schemaVersion: 1,
+    status: "ready",
+    generatedAt: "2026-10-07T00:00:00Z",
+    coverage: { dateFrom: "2023-01-01", dateTo: "2026-10-07" },
+    records: 1,
+    partitions: [{ subOu: "Endo Stapling", year: "2026", path: partitionPath, records: 1 }],
+  };
+  const fetcher = snapshotFetcher(manifest, { [partitionPath]: [fact()] });
+  await snapshot.readMarketSnapshotManifest(fetcher, true);
+  const result = await snapshot.loadOverviewFactsFromSnapshot("Endo Stapling", {
+    dateFrom: "2022-01-01",
+    dateTo: "2026-10-07",
+    hospital: "",
+    productGroup: "all",
+    company: "all",
+  }, fetcher);
+  assert.deepEqual(result?.facts.map((row) => row.key), ["row-1"]);
+});
+
 test("collector keeps a complete raw-field snapshot and incremental change log", async () => {
   const script = await readFile(path.join(root, "scripts", "sync-market-snapshot.ts"), "utf8");
   const workflow = await readFile(path.join(root, ".github", "workflows", "update-market-snapshot.yml"), "utf8");

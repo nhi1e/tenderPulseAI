@@ -24,7 +24,7 @@ import {
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
-import { loadOverviewFactsFromSnapshot } from "@/lib/market-snapshot";
+import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot } from "@/lib/market-snapshot";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
@@ -168,7 +168,23 @@ function localeFor(language: Language) {
 }
 
 function emptyFilters(): SearchFilters {
-  return { dateFrom: "", dateTo: "", hospital: "", brand: "", supplier: "", company: "all" };
+  return { dateFrom: MARKET_DATA_AVAILABLE_FROM, dateTo: "", hospital: "", brand: "", supplier: "", company: "all" };
+}
+
+function boundedDateFrom(value: string) {
+  return !value || value < MARKET_DATA_AVAILABLE_FROM ? MARKET_DATA_AVAILABLE_FROM : value;
+}
+
+function boundedDateTo(value: string) {
+  return value && value < MARKET_DATA_AVAILABLE_FROM ? MARKET_DATA_AVAILABLE_FROM : value;
+}
+
+function boundedSearchFilters(filters: SearchFilters): SearchFilters {
+  return { ...filters, dateFrom: boundedDateFrom(filters.dateFrom), dateTo: boundedDateTo(filters.dateTo) };
+}
+
+function boundedOverviewFilters(filters: OverviewFilterState): OverviewFilterState {
+  return { ...filters, dateFrom: boundedDateFrom(filters.dateFrom), dateTo: boundedDateTo(filters.dateTo) };
 }
 
 function normalize(value: string) {
@@ -395,12 +411,13 @@ function filterProductSearchRecords(
   };
 }
 function portalPageUrl(keyword: string, page: number, filters: SearchFilters, forceRefresh = false) {
+  const boundedFilters = boundedSearchFilters(filters);
   const params = new URLSearchParams({ keyword, page: String(page), pageSize: "1000" });
-  if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
-  if (filters.dateTo) params.set("dateTo", filters.dateTo);
-  if (filters.hospital) params.set("hospital", hospitalPortalQuery(filters.hospital));
-  if (filters.brand) params.set("brand", filters.brand);
-  if (filters.supplier) params.set("supplier", filters.supplier);
+  params.set("dateFrom", boundedFilters.dateFrom);
+  if (boundedFilters.dateTo) params.set("dateTo", boundedFilters.dateTo);
+  if (boundedFilters.hospital) params.set("hospital", hospitalPortalQuery(boundedFilters.hospital));
+  if (boundedFilters.brand) params.set("brand", boundedFilters.brand);
+  if (boundedFilters.supplier) params.set("supplier", boundedFilters.supplier);
   if (filters.company && filters.company !== "all") params.set("company", filters.company);
   if (forceRefresh) params.set("refresh", "1");
   return `/api/portal-search-page?${params.toString()}`;
@@ -761,9 +778,10 @@ function companyOf(record: WinningBidRecord, language: Language = "en") {
   return mappedCompanyName(searchable, record.hangSanXuat || "") || copy(language, "Unknown / review needed", "Chưa xác định / cần kiểm tra");
 }
 function overviewSearchFilters(filters: OverviewFilterState): SearchFilters {
+  const boundedFilters = boundedOverviewFilters(filters);
   return {
-    dateFrom: filters.dateFrom,
-    dateTo: filters.dateTo,
+    dateFrom: boundedFilters.dateFrom,
+    dateTo: boundedFilters.dateTo,
     hospital: filters.hospital,
     brand: "",
     supplier: "",
@@ -1194,12 +1212,16 @@ function FilterBar({ initial, loading, onApply }: { initial: SearchFilters; load
   const language = useLanguage();
   const [filters, setFilters] = useState<SearchFilters>(initial);
   const update = (field: keyof SearchFilters, value: string) => setFilters((current) => ({ ...current, [field]: value }));
-  const hasFilters = Object.entries(filters).some(([key, value]) => key === "company" ? value !== "all" : Boolean(value));
+  const hasFilters = Object.entries(filters).some(([key, value]) => {
+    if (key === "company") return value !== "all";
+    if (key === "dateFrom") return value !== MARKET_DATA_AVAILABLE_FROM;
+    return Boolean(value);
+  });
 
-  return <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); onApply(filters); }}>
+  return <form className="filter-bar" onSubmit={(event) => { event.preventDefault(); const bounded = boundedSearchFilters(filters); setFilters(bounded); onApply(bounded); }}>
     <div className="filter-title"><Filter /><span>{copy(language, "Filters", "Bộ lọc")}<small>{copy(language, "Applied to live results", "Áp dụng trên dữ liệu trực tiếp")}</small></span></div>
-    <label className="filter-field"><small>{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}</small><input type="date" value={filters.dateFrom} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
-    <label className="filter-field"><small>{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
+    <label className="filter-field"><small>{copy(language, "DECISION DATE FROM", "NGÀY QUYẾT ĐỊNH TỪ")}</small><input type="date" value={filters.dateFrom} min={MARKET_DATA_AVAILABLE_FROM} max={filters.dateTo || undefined} onChange={(event) => update("dateFrom", boundedDateFrom(event.target.value))} /></label>
+    <label className="filter-field"><small>{copy(language, "DECISION DATE TO", "NGÀY QUYẾT ĐỊNH ĐẾN")}</small><input type="date" value={filters.dateTo} min={filters.dateFrom || MARKET_DATA_AVAILABLE_FROM} onChange={(event) => update("dateTo", boundedDateTo(event.target.value))} /></label>
     <div className="filter-field"><small>{copy(language, "HOSPITAL / BUYER", "BỆNH VIỆN / CHỦ ĐẦU TƯ")}</small><HospitalAutocomplete value={filters.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label className="filter-field"><small>{copy(language, "BRAND / MANUFACTURER", "BRAND / HÃNG SẢN XUẤT")}</small><input type="text" value={filters.brand} onChange={(event) => update("brand", event.target.value)} placeholder={copy(language, "Example: LigaSure", "Ví dụ: LigaSure")} /></label>
     <label className="filter-field"><small>{copy(language, "WINNING SUPPLIER", "NHÀ THẦU TRÚNG")}</small><input type="text" value={filters.supplier} onChange={(event) => update("supplier", event.target.value)} placeholder={copy(language, "Enter name or ID", "Nhập tên hoặc mã")} /></label>
@@ -1437,9 +1459,9 @@ function OverviewFilterBar({ filters, catalog, loading, onApply, onDirtyChange }
   const dirty = overviewCacheId(draft) !== overviewCacheId(filters);
   useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
-  return <form className="overview-filter" onSubmit={(event) => { event.preventDefault(); onDirtyChange?.(false); onApply(draft); }}>
-    <label><span>{copy(language, "Decision date from", "Ngày quyết định từ")}</span><input type="date" value={draft.dateFrom} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", event.target.value)} /></label>
-    <label><span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || undefined} onChange={(event) => update("dateTo", event.target.value)} /></label>
+  return <form className="overview-filter" onSubmit={(event) => { event.preventDefault(); const bounded = boundedOverviewFilters(draft); setDraft(bounded); onDirtyChange?.(false); onApply(bounded); }}>
+    <label><span>{copy(language, "Decision date from", "Ngày quyết định từ")}</span><input type="date" value={draft.dateFrom} min={MARKET_DATA_AVAILABLE_FROM} max={draft.dateTo || undefined} onChange={(event) => update("dateFrom", boundedDateFrom(event.target.value))} /></label>
+    <label><span>{copy(language, "Decision date to", "Ngày quyết định đến")}</span><input type="date" value={draft.dateTo} min={draft.dateFrom || MARKET_DATA_AVAILABLE_FROM} onChange={(event) => update("dateTo", boundedDateTo(event.target.value))} /></label>
     <div className="overview-filter-field"><span>{copy(language, "Hospital", "Bệnh viện")}</span><HospitalAutocomplete value={draft.hospital} onChange={(value) => update("hospital", value)} language={language} compact /></div>
     <label><span>Sub-OU</span><select value={draft.subOu} onChange={(event) => update("subOu", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{subOuOrder.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
     <label><span>{copy(language, "Product group", "Nhóm sản phẩm")}</span><select value={draft.productGroup} onChange={(event) => update("productGroup", event.target.value)}><option value="all">{copy(language, "All", "Tất cả")}</option>{groups.map((name) => <option value={name} key={name}>{name}</option>)}</select></label>
@@ -2110,10 +2132,11 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
     source: { keywordRule?: KeywordMasterRule; excludedRecords?: number; portalTotalElements?: number; classificationAudit?: ClassificationAudit };
   } | undefined>(undefined);
   async function searchLive(keyword: string, filters: SearchFilters = emptyFilters()) {
+    const appliedFilters = boundedSearchFilters(filters);
     setLoading(true); setError(undefined); setLoadingStatus(copy(language, "Connecting to Mua Sắm Công…", "Đang kết nối Cổng Mua Sắm Công…"));
     try {
       const fetchedAt = new Date().toISOString();
-      const data = await collectProductSearchWinningBids(keyword, filters, {
+      const data = await collectProductSearchWinningBids(keyword, appliedFilters, {
         maxPages: 25,
         onProgress: (progress) => {
           const queryProgress = progress.totalQueries && progress.currentQuery
@@ -2130,7 +2153,7 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
           ));
           if (progress.records.length) {
             const totalElements = progress.keywordRule ? progress.records.length : progress.portalTotalElements;
-            setSelectedProduct(summarize(keyword, fetchedAt, progress.records, totalElements, progress.truncated, filters, {
+            setSelectedProduct(summarize(keyword, fetchedAt, progress.records, totalElements, progress.truncated, appliedFilters, {
               keywordRule: progress.keywordRule,
               excludedRecords: progress.excludedRecords,
               portalTotalElements: progress.portalTotalElements,
@@ -2147,7 +2170,7 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
         records,
         totalElements: data.totalElements || records.length,
         truncated: Boolean(data.truncated),
-        filters,
+        filters: appliedFilters,
         source: {
           keywordRule: data.keywordRule,
           excludedRecords: data.excludedRecords,
@@ -2157,7 +2180,7 @@ function SearchExperience({ resume, onActivity }: { resume?: ActivityItem; onAct
       };
       lastResult.current = result;
       setSelectedProduct(summarize(result.keyword, result.fetchedAt, result.records, result.totalElements, result.truncated, result.filters, result.source, language));
-      onActivity({ id: `${Date.now()}-${filenameSlug(keyword)}`, keyword, searchedAt: new Date().toISOString(), filters });
+      onActivity({ id: `${Date.now()}-${filenameSlug(keyword)}`, keyword, searchedAt: new Date().toISOString(), filters: appliedFilters });
     } catch (caught) { setError(caught instanceof Error ? caught.message : copy(language, "Could not complete the live search.", "Không thể thực hiện tìm kiếm trực tiếp.")); }
     finally { setLoading(false); setLoadingStatus(undefined); }
   }
