@@ -6,6 +6,7 @@ import staffClassificationOverridesJson from "@/data/staff-classification-overri
 export type ClassificationField = "productName" | "brand" | "manufacturer" | "configuration";
 export type ClassificationRecord = Partial<Record<ClassificationField, string | undefined>> & {
   sourceId?: string;
+  tenderId?: string;
 };
 export type ExclusionMatch = "contains" | "startsWith" | "startsWithUnlessContains";
 
@@ -86,8 +87,41 @@ const staffClassificationDecisions = new Map(
     .map((decision) => [decision.sourceId, decision]),
 );
 
+function staffDecisionText(value: string | undefined) {
+  return normalizeRuleText(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function staffDecisionMatchKey(tenderId: string | undefined, productName: string | undefined) {
+  const tender = staffDecisionText(tenderId);
+  const product = staffDecisionText(productName);
+  return tender && product ? `${tender}::${product}` : "";
+}
+
+const staffDecisionCandidatesByTenderProduct = new Map<string, StaffClassificationDecision[]>();
+(staffClassificationOverridesJson.decisions as StaffClassificationDecision[]).forEach((decision) => {
+  const key = staffDecisionMatchKey(decision.tenderId, decision.productName);
+  if (!key) return;
+  const candidates = staffDecisionCandidatesByTenderProduct.get(key) || [];
+  candidates.push(decision);
+  staffDecisionCandidatesByTenderProduct.set(key, candidates);
+});
+
 export function staffReviewDecisionFor(sourceId: string | undefined) {
   return sourceId ? staffClassificationDecisions.get(sourceId) : undefined;
+}
+
+export function staffReviewDecisionForRecord(record: ClassificationRecord) {
+  const exact = staffReviewDecisionFor(record.sourceId);
+  if (exact) return exact;
+  const key = staffDecisionMatchKey(record.tenderId, record.productName);
+  const candidates = key ? staffDecisionCandidatesByTenderProduct.get(key) : undefined;
+  return candidates?.length === 1 ? candidates[0] : undefined;
 }
 
 export function normalizeRuleText(value: string | undefined) {
@@ -219,7 +253,7 @@ export function classifyProductRecord(
   const uniqueRules = [...new Map(rules.map((rule) => [rule.id, rule])).values()]
     .sort((left, right) => left.priority - right.priority);
 
-  const staffDecision = staffReviewDecisionFor(record.sourceId);
+  const staffDecision = staffReviewDecisionForRecord(record);
   if (staffDecision) {
     if (staffDecision.action !== "classify") return undefined;
     const rule = uniqueRules.find((candidate) =>
