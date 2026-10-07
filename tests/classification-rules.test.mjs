@@ -161,7 +161,7 @@ test("classifies Lexington Endo Stapling devices and cartridges from the staff s
 
 
 test("loads the 01.10 staff rule revision", () => {
-  assert.equal(rules.classificationSource.version, "2026-10-01");
+  assert.equal(rules.classificationSource.version, "2026-10-06");
   assert.equal(rules.classificationSource.sheet, "Danh mục rule keyword cần edit");
 });
 
@@ -237,6 +237,53 @@ test("requires nội soi for Endo Stapling cartridges", () => {
     productName: "Băng ghim cho dụng cụ cắt nối thẳng",
     configuration: "Sử dụng trong phẫu thuật nội soi",
   }, rule).matched, true);
+});
+
+test("applies the approved narrow Meril exception when nội soi is omitted", () => {
+  const rule = rules.classificationRules.find((candidate) =>
+    candidate.productGroup === "Băng ghim nội soi"
+  );
+  assert.ok(rule);
+
+  const straight = rules.evaluateProductRule({
+    productName: "Băng ghim cho dụng cụ cắt nối thẳng an toàn các cỡ",
+    manufacturer: "Meril Endo Surgery Pvt. Ltd",
+    configuration: "Ghim Titan với 3 hàng ghim so le; lưỡi dao mới trên mỗi băng ghim",
+  }, rule);
+  assert.equal(straight.matched, true);
+  assert.match(straight.matchedConfirmation, /Meril/);
+
+  const curved = rules.classifyProductRecord({
+    productName: "Băng ghim cho dụng cụ cắt nối thẳng an toàn các cỡ có đầu cong",
+    brand: "Meril",
+    configuration: "Xuất xứ Ấn Độ; chiều cao ghim đóng dùng cho mô trung bình đến dày",
+  });
+  assert.equal(curved?.rule.subOu, "Endo Stapling");
+  assert.equal(curved?.rule.productGroup, "Băng ghim nội soi");
+});
+
+test("does not broaden the Meril exception to unrelated or excluded cartridges", () => {
+  const rule = rules.classificationRules.find((candidate) =>
+    candidate.productGroup === "Băng ghim nội soi"
+  );
+  assert.ok(rule);
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Băng ghim cho dụng cụ cắt nối thẳng an toàn các cỡ",
+    manufacturer: "Other Manufacturer",
+  }, rule).reason, "confirmation");
+
+  assert.equal(rules.evaluateProductRule({
+    productName: "Băng ghim các cỡ",
+    manufacturer: "Meril Endo Surgery Pvt. Ltd",
+  }, rule).reason, "confirmation");
+
+  const excluded = rules.evaluateProductRule({
+    productName: "Băng ghim cho dụng cụ cắt nối thẳng an toàn các cỡ dùng trong mổ mở",
+    manufacturer: "Meril Endo Surgery Pvt. Ltd",
+  }, rule);
+  assert.equal(excluded.reason, "exclusion");
+  assert.equal(excluded.matchedExclusion, "mổ mở");
 });
 
 test("applies the new 01.10 accessory exclusions", () => {

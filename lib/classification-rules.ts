@@ -3,7 +3,7 @@ import manufacturerAliasesJson from "@/data/manufacturer-aliases.json";
 import manufacturerMappingJson from "@/data/manufacturer-mapping.json";
 import staffClassificationOverridesJson from "@/data/staff-classification-overrides.json";
 
-export type ClassificationField = "productName" | "brand" | "configuration";
+export type ClassificationField = "productName" | "brand" | "manufacturer" | "configuration";
 export type ClassificationRecord = Partial<Record<ClassificationField, string | undefined>> & {
   sourceId?: string;
 };
@@ -103,8 +103,23 @@ function normalizedRecord(record: ClassificationRecord) {
   return {
     productName: normalizeRuleText(record.productName),
     brand: normalizeRuleText(record.brand),
+    manufacturer: normalizeRuleText(record.manufacturer),
     configuration: normalizeRuleText(record.configuration),
   };
+}
+
+function isMerilStraightEndoCartridgeException(
+  record: ReturnType<typeof normalizedRecord>,
+  rule: ProductClassificationRule,
+) {
+  if (rule.subOu !== "Endo Stapling" || rule.productGroup !== "Băng ghim nội soi") return false;
+
+  const manufacturerText = `${record.brand} ${record.manufacturer}`;
+  if (!manufacturerText.includes("meril")) return false;
+
+  const productText = `${record.productName} ${record.configuration}`;
+  return productText.includes("băng ghim cho dụng cụ cắt nối thẳng an toàn") ||
+    productText.includes("băng ghim tương thích với dụng cụ cắt nối thẳng an toàn");
 }
 
 function exclusionMatch(
@@ -160,7 +175,13 @@ export function evaluateProductRule(
     .map((match) => match.term)
     .join(" + ") || undefined;
 
-  if (confirmationGroups.length && matchedConfirmationGroups.some((match) => !match)) {
+  const matchedMerilException = isMerilStraightEndoCartridgeException(record, rule);
+
+  if (
+    confirmationGroups.length &&
+    matchedConfirmationGroups.some((match) => !match) &&
+    !matchedMerilException
+  ) {
     return {
       matched: false,
       reason: "confirmation",
@@ -186,7 +207,8 @@ export function evaluateProductRule(
     matched: true,
     reason: "matched",
     matchedKeyword: matchedKeywords[0].keyword,
-    matchedConfirmation,
+    matchedConfirmation: matchedConfirmation ||
+      (matchedMerilException ? "Meril + băng ghim cho dụng cụ cắt nối thẳng an toàn" : undefined),
   };
 }
 

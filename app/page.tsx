@@ -341,6 +341,7 @@ function classificationRecord(record: WinningBidRecord) {
     sourceId: record.id,
     productName: record.tenThietBi,
     brand: record.nhanHieu,
+    manufacturer: record.hangSanXuat,
     configuration: record.cauHinh,
   };
 }

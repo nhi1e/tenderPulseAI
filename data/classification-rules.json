@@ -2,8 +2,9 @@
   "source": {
     "workbook": "bổ sung rule mới 01.10.xlsx",
     "sheet": "Danh mục rule keyword cần edit",
-    "version": "2026-10-01",
+    "version": "2026-10-06",
     "staffReview": "TenderPulseAI_staff_rule_review_23.9.xlsx / 01_Trùng rule; bổ sung rule mới 01.10.xlsx",
+    "staffException": "Xác nhận 06.10: băng ghim Meril cho dụng cụ cắt nối thẳng an toàn được xếp vào Băng ghim nội soi dù mô tả không có từ nội soi; các exclude vẫn áp dụng.",
     "normalization": "Unicode NFC, lowercase, replace line breaks with spaces, collapse whitespace, trim, preserve Vietnamese diacritics"
   },
   "rules": [
@@ -44,7 +45,7 @@
         { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["mổ mở", "mổ hở", "nối tròn", "nối vòng", "circular", "longo", "cố định", "tử cung"] },
         { "fields": ["productName"], "match": "startsWith", "terms": ["dụng cụ", "tay dụng cụ", "máy", "stapler", "bộ máy"] }
       ],
-      "method": "Nhận băng/ghim khi Tên/Nhãn hiệu/Cấu hình có confirmation “nội soi”; loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn/nối vòng, circular, Longo, cố định hoặc tử cung theo điều chỉnh ngày 01.10."
+      "method": "Nhận băng/ghim khi Tên/Nhãn hiệu/Cấu hình có confirmation “nội soi”. Ngoại lệ đã xác nhận: băng ghim Meril cho/tương thích với dụng cụ cắt nối thẳng an toàn được nhận dù không có từ “nội soi”. Vẫn loại dụng cụ/máy ở đầu tên và loại mổ mở, nối tròn/nối vòng, circular, Longo, cố định hoặc tử cung."
     },
     {
       "id": 4,
