@@ -56,7 +56,10 @@ test("prefers the daily snapshot and reloads it without forcing live portal sear
 test("enforces the public data boundary of January 1, 2023", () => {
   assert.match(worker, /MARKET_DATA_AVAILABLE_FROM = "2023-01-01"/);
   assert.match(worker, /filters\.dateFrom < MARKET_DATA_AVAILABLE_FROM/);
-  assert.match(page, /min=\{MARKET_DATA_AVAILABLE_FROM\}/);
+  assert.match(page, /const marketDataStartDate = new Date\(2023, 0, 1\)/);
+  assert.match(page, /captionLayout="dropdown"/);
+  assert.match(page, /startMonth=\{marketDataStartDate\}/);
+  assert.doesNotMatch(page, /type="date"/);
   assert.match(page, /boundedSearchFilters\(filters\)/);
   assert.match(page, /boundedOverviewFilters\(draft\)/);
 });
