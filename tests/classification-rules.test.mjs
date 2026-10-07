@@ -334,3 +334,9 @@ test("uses approved Suture product phrases instead of generic portal searches", 
   assert.ok(!seeds.has("khâu"));
   assert.ok(!seeds.has("phẫu thuật"));
 });
+
+test("does not use the broad VS&D confirmation term as a portal query", () => {
+  const seeds = searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Dao siêu âm"];
+  assert.deepEqual(seeds, ["dao siêu âm"]);
+  assert.ok(!seeds.includes("siêu âm"));
+});

@@ -412,7 +412,10 @@ async function fetchPortalPage(keyword: string, page: number, filters: SearchFil
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       response = await fetch(url);
-      if (response.ok || (response.status !== 429 && response.status < 500)) break;
+      // A 504 is the portal's explicit 25-second boundary. Repeating the same
+      // expensive query immediately would only make the user wait twice.
+      const retryable = response.status === 429 || response.status === 502 || response.status === 503;
+      if (response.ok || !retryable) break;
       lastError = new Error(`Portal proxy returned ${response.status}.`);
     } catch (error) {
       lastError = error;

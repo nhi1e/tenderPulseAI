@@ -2,7 +2,7 @@ export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> = {
   // Retrieval seeds intentionally create a superset. Product-name anchors are
   // included when portal configuration-field matching is incomplete; the full
   // approved keyword, confirmation, exclusion, and staff rules run after download.
-  "Dao siêu âm": ["siêu âm"],
+  "Dao siêu âm": ["dao siêu âm"],
   "Dao hàn mạch": ["hàn mạch"],
   // Avoid the very broad `nội soi` request. Every accepted cartridge must
   // contain a cartridge anchor, and every accepted instrument must contain
