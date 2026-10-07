@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1791402746102,
+      "tag": "0000_tranquil_bastion",
+      "breakpoints": true
+    }
+  ]
 }
