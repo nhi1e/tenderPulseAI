@@ -22,7 +22,8 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - Covidien/LigaSure mapped to Medtronic and Ethicon mapped to Johnson & Johnson before KPI calculations
 - Competitor aliases normalized before value-share and unit-share calculations
 - One completed overview load per filter scope is cached for the current browser session
-- Force-refresh control to bypass and replace the session cache
+- Reload-snapshot control to clear the session cache and read the saved partitions again
+- New-entry alerts for classified Mua Sắm Công records, with read state and Excel export
 - A partitioned daily market snapshot for fast overview loading without repeated full live searches
 - English interface by default with a persistent English/Vietnamese switch
 
@@ -76,7 +77,7 @@ This removes the former `/api/winning-bids` and `/api/market-overview/segment` C
 
 ## Persistent market snapshot
 
-The market overview checks `public/data/market-snapshot/manifest.json` first. When a ready snapshot covers the requested dates, the browser downloads only the matching year/Sub-OU partitions and applies the hospital, product-group, and company filters locally. Product search remains live. **Force refresh** deliberately bypasses the snapshot and queries the portal.
+The market overview checks `public/data/market-snapshot/manifest.json` first. When a ready snapshot covers the requested dates, the browser downloads only the matching year/Sub-OU partitions and applies the hospital, product-group, and company filters locally. Product search remains live. **Reload snapshot** clears the browser cache and reads the saved partitions again; it does not start a full portal scrape.
 
 The snapshot retains the fields needed by every overview Excel export, including the original manufacturer, brand, model, technical configuration, bidder, buyer, TBMT, decision and publication dates, quantity, price, and location. It also stores the approved Sub-OU/product-group classification and normalized company.
 
@@ -125,3 +126,43 @@ npm run data:reclassify
 The GitHub Actions workflow `.github/workflows/update-market-snapshot.yml` runs every day at 01:30 Vietnam time and commits changed snapshot files. It can also be started manually with `incremental` or `full` mode from the Actions tab. The repository must allow GitHub Actions to write contents.
 
 The initial checked-in manifest is intentionally `empty`; until the first import or full sync is committed, the overview continues using the existing live-search fallback.
+
+## New-entry alerts
+
+Alerts are created only after an **incremental** snapshot refresh. A full/import baseline is deliberately ignored so the first deployment does not label every historical award as new.
+
+Each incremental run:
+
+1. rechecks the rolling portal window;
+2. applies the approved classification, exclusion, hospital and manufacturer rules;
+3. compares the classified record key and content hash with the saved snapshot;
+4. sends only new and changed records to the protected alert endpoint;
+5. stores deduplicated events in D1 and updates the dashboard notification badge.
+
+The page falls back to the latest `daily-changes.json` when D1 is not configured, so the most recent incremental alerts remain visible on that browser. D1 adds persistent history and per-browser read state across deployments.
+
+### One-time D1 setup
+
+Create a small database for alert history and apply the generated migration:
+
+```bash
+npx wrangler login
+npx wrangler d1 create tenderpulse-alerts
+npx wrangler d1 execute tenderpulse-alerts --remote --file=drizzle/0000_tranquil_bastion.sql
+```
+
+In the Cloudflare Worker settings, add a D1 binding named `DB` pointing to `tenderpulse-alerts`. Also add an encrypted Worker secret named `ALERT_INGEST_TOKEN` with a long random value.
+
+Add the same value to the GitHub repository secret `TENDERPULSE_ALERT_INGEST_TOKEN`. Optionally add a repository variable named `TENDERPULSE_ALERTS_URL` when the production endpoint is not:
+
+```text
+https://tenderpulseai.tnhile2004.workers.dev/api/alerts/ingest
+```
+
+The ingestion endpoint rejects requests without the matching bearer token. Repeated workflow runs are safe: each alert ID includes the classified content hash and D1 ignores duplicates.
+
+To test publication manually after an incremental sync:
+
+```bash
+TENDERPULSE_ALERT_INGEST_TOKEN="your-token" npm run alerts:publish
+```
