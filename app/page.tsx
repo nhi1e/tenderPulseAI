@@ -24,7 +24,7 @@ import {
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
-import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot } from "@/lib/market-snapshot";
+import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
@@ -1499,6 +1499,7 @@ function MarketOverview() {
     completedSubOus: number,
     totalSubOus: number,
     forceRefresh = false,
+    snapshotOnly = false,
   ) {
     const subOuStartedAt = performance.now();
     if (!forceRefresh) {
@@ -1520,6 +1521,9 @@ function MarketOverview() {
           }),
         };
       }
+    }
+    if (snapshotOnly) {
+      throw new Error(copy(language, "The saved snapshot does not cover this date range.", "Dữ liệu đã lưu chưa bao phủ khoảng thời gian này."));
     }
 
     const facts = new Map<string, OverviewFact>();
@@ -1635,7 +1639,7 @@ function MarketOverview() {
     };
   }
 
-  async function loadOverview(nextFilters: OverviewFilterState, availableCatalog = catalog, forceRefresh = false) {
+  async function loadOverview(nextFilters: OverviewFilterState, availableCatalog = catalog, forceRefresh = false, snapshotOnly = false) {
     const overviewStartedAt = performance.now();
     const matchingCatalog = availableCatalog.length ? availableCatalog : overviewKeywordCatalog;
     const targets = matchingCatalog
@@ -1643,7 +1647,7 @@ function MarketOverview() {
       .filter((item) => nextFilters.productGroup === "all" || item.productGroups.includes(nextFilters.productGroup))
       .map((item) => item.subOu);
 
-    const cached = forceRefresh ? undefined : readOverviewCache(nextFilters);
+    const cached = forceRefresh || snapshotOnly ? undefined : readOverviewCache(nextFilters);
     const cachedSlices = (cached?.slices || []).filter((slice) => targets.includes(slice.name));
     const cachedNames = new Set(cachedSlices.map((slice) => slice.name));
     const pendingTargets = targets.filter((subOu) => !cachedNames.has(subOu));
@@ -1653,6 +1657,7 @@ function MarketOverview() {
       cachedSubOus: [...cachedNames],
       pendingTargets,
       forceRefresh,
+      snapshotOnly,
     });
 
     // A partially completed load is useful. Restore the successful Sub-OUs
@@ -1695,7 +1700,7 @@ function MarketOverview() {
       const batch = pendingTargets.slice(index, index + 1);
       setLoadProgress({ completed, total: targets.length, current: batch });
       const responses = await Promise.allSettled(batch.map(async (subOu) => {
-        const result = await fetchSubOuSlice(subOu, nextFilters, completed, targets.length, forceRefresh);
+        const result = await fetchSubOuSlice(subOu, nextFilters, completed, targets.length, forceRefresh, snapshotOnly);
         if (result.fetchedAt) {
           latestFetchedAt = result.fetchedAt;
           setUpdatedAt(result.fetchedAt);
@@ -1735,6 +1740,12 @@ function MarketOverview() {
       failures,
       loadedSubOus: sortedSlices.map((slice) => slice.name),
     });
+  }
+
+  async function reloadSavedSnapshot() {
+    if (typeof window !== "undefined") window.sessionStorage.removeItem(OVERVIEW_CACHE_KEY);
+    await readMarketSnapshotManifest(fetch, true);
+    await loadOverview(filters, catalog, false, true);
   }
 
   useEffect(() => {
@@ -2064,7 +2075,7 @@ function MarketOverview() {
     : undefined;
 
   return <main className="overview-page"><section className="overview-shell">
-    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, `Award data classified with ${approvedKeywordCount} approved product phrases, confirmation gates, field-specific exclusions, and ${manufacturerMappedRows} populated manufacturer mappings.`, `Dữ liệu trúng thầu được phân loại bằng ${approvedKeywordCount} cụm keyword, rổ Confirmation, điều kiện exclude theo từng trường và ${manufacturerMappedRows} dòng quy đổi hãng có kết quả.`)}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Updating live data", "Đang cập nhật dữ liệu trực tiếp") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void loadOverview(filters, catalog, true)} disabled={loading || filtersDirty || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio}><RefreshCw />{copy(language, "Force refresh", "Làm mới dữ liệu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
+    <div className="overview-heading"><div><h1>{copy(language, "Market overview", "Tổng quan thị trường")}</h1><p>{copy(language, `Award data classified with ${approvedKeywordCount} approved product phrases, confirmation gates, field-specific exclusions, and ${manufacturerMappedRows} populated manufacturer mappings.`, `Dữ liệu trúng thầu được phân loại bằng ${approvedKeywordCount} cụm keyword, rổ Confirmation, điều kiện exclude theo từng trường và ${manufacturerMappedRows} dòng quy đổi hãng có kết quả.`)}</p></div><div className="overview-actions"><span>{loading ? copy(language, "Loading saved data", "Đang tải dữ liệu đã lưu") : loadedFromCache ? copy(language, "Loaded from this session's cache", "Đã tải từ bộ nhớ của phiên này") : updatedAt ? `${copy(language, "Updated", "Cập nhật")} ${new Date(updatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : lastLoadLabel || copy(language, "Not updated yet", "Chưa cập nhật dữ liệu")}</span><button className="refresh-overview" type="button" onClick={() => void reloadSavedSnapshot()} disabled={loading || filtersDirty || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio}><RefreshCw />{copy(language, "Reload snapshot", "Tải lại dữ liệu đã lưu")}</button><button type="button" onClick={exportExcel} disabled={loading || exporting || Boolean(exportingSubOu) || Boolean(exportingCompetitor) || exportingHospitalPortfolio || filtersDirty || !slices.length}>{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export Excel", "Xuất Excel")}</button></div></div>
     <OverviewFilterBar key={`${filters.dateFrom}-${filters.dateTo}-${filters.hospital}-${filters.subOu}-${filters.productGroup}-${filters.company}`} filters={filters} catalog={catalog} loading={loading} onApply={loadOverview} onDirtyChange={setFiltersDirty} />
     {filtersDirty && <div className="overview-notice pending-filter-notice" role="status">{copy(language, "Filters have changed. Select Apply before exporting so the dashboard and Excel use the new values.", "Bộ lọc đã thay đổi. Hãy chọn Áp dụng trước khi xuất để dashboard và Excel cùng dùng giá trị mới.")}</div>}
     {loading && <div className="overview-loading" role="status" aria-live="polite">
