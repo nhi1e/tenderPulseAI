@@ -4,12 +4,33 @@ export const MARKET_OVERVIEW_SEARCH_SEEDS: Record<string, string[]> = {
   // approved keyword, confirmation, exclusion, and staff rules run after download.
   "Dao siêu âm": ["siêu âm"],
   "Dao hàn mạch": ["hàn mạch"],
-  "Băng ghim nội soi": ["băng ghim", "băng đạn", "ghim khâu", "nội soi"],
-  "Dụng cụ khâu cắt nối nội soi": ["nội soi", "cắt nối", "khâu nối", "máy cắt nối"],
+  // Avoid the very broad `nội soi` request. Every accepted cartridge must
+  // contain a cartridge anchor, and every accepted instrument must contain
+  // one of the second confirmation-group phrases below.
+  "Băng ghim nội soi": ["băng ghim", "băng đạn", "ghim khâu", "ghim nội soi"],
+  "Dụng cụ khâu cắt nối nội soi": ["khâu cắt", "cắt khâu", "khâu nối", "nối khâu", "cắt nối", "nối cắt"],
   "Băng ghim mổ mở": ["mổ mở", "mổ hở"],
   "Dụng cụ khâu cắt nối mổ mở": ["mổ mở", "mổ hở"],
   "Dụng cụ khâu nối tròn": ["nối tròn", "nối vòng", "nối ống tiêu hóa tròn"],
-  "Chỉ phẫu thuật": ["khâu", "phẫu thuật"],
+  // Exact approved product anchors are faster and more reliable than the old
+  // generic `khâu` and `phẫu thuật` searches, which returned large amounts of
+  // unrelated equipment before the product rule could filter it.
+  "Chỉ phẫu thuật": [
+    "chỉ khâu",
+    "chỉ phẫu thuật",
+    "chỉ thép khâu",
+    "chỉ tan",
+    "chỉ tự tiêu",
+    "chỉ không tiêu",
+    "chỉ catgut",
+    "chỉ silk",
+    "chỉ nylon",
+    "chỉ nilon",
+    "chỉ prolene",
+    "chỉ vicryl",
+    "chỉ kháng khuẩn",
+    "chỉ polyester",
+  ],
   "Lưới thoát vị": ["thoát vị"],
   "Dụng cụ cố định lưới thoát vị": ["cố định lưới"],
   Trocar: ["trocar"],

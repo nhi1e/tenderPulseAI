@@ -5,6 +5,10 @@ import handler from "vinext/server/app-router-entry";
 const PORTAL_SEARCH_URL =
   "https://muasamcong.mpi.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
 const PORTAL_CACHE_SECONDS = 30 * 60;
+// The procurement portal regularly needs slightly more than 25 seconds for
+// high-volume searches.  Aborting exactly at 25 seconds made a different
+// Sub-OU disappear on otherwise identical dashboard loads.
+const PORTAL_REQUEST_TIMEOUT_MS = 45_000;
 
 interface Env {
   ASSETS: Fetcher;
@@ -91,7 +95,7 @@ async function fetchPortalPage(body: string, attempt = 1): Promise<Response> {
       Referer: "https://muasamcong.mpi.gov.vn/web/guest/winning-bid-data",
     },
     body,
-    signal: AbortSignal.timeout(25_000),
+    signal: AbortSignal.timeout(PORTAL_REQUEST_TIMEOUT_MS),
   });
   if (attempt < 3 && (response.status === 429 || response.status >= 500)) {
     await response.body?.cancel();
