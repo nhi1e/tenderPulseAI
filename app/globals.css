@@ -482,6 +482,37 @@ button:disabled { cursor: wait; opacity: .66; }
 .language-switch { display: inline-flex; overflow: hidden; padding: 2px; border: 1px solid #d7e0ec; border-radius: 8px; background: #f5f7fb; }
 .language-switch button { min-width: 31px; height: 28px; padding: 0 7px; border: 0; border-radius: 6px; background: transparent; color: #728097; font-size: 10px; font-weight: 850; }
 .language-switch button.is-active { background: #fff; color: var(--blue-dark); box-shadow: 0 1px 4px rgba(25, 46, 80, .13); }
+.alert-menu { position: relative; }
+.alert-menu > button { position: relative; display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid #d7e0ec; border-radius: 8px; background: #fff; color: #5c6b82; }
+.alert-menu > button:hover, .alert-menu > button.has-unread { border-color: #aac0e5; color: var(--blue); background: #f7faff; }
+.alert-menu > button svg { width: 15px; height: 15px; }
+.alert-menu > button > span { position: absolute; top: -6px; right: -6px; display: grid; min-width: 17px; height: 17px; padding: 0 4px; place-items: center; border: 2px solid #fff; border-radius: 999px; background: #e24855; color: #fff; font-size: 8px; font-weight: 850; }
+.alert-panel { position: absolute; z-index: 60; right: 0; top: 43px; width: min(480px, calc(100vw - 28px)); overflow: hidden; border: 1px solid #d4deec; border-radius: 13px; background: #fff; box-shadow: 0 20px 50px rgba(24, 42, 73, .18); }
+.alert-panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 14px 15px 12px; border-bottom: 1px solid #edf0f5; }
+.alert-panel-head > div { display: grid; gap: 3px; }
+.alert-panel-head strong { color: #193766; font-size: 13px; }
+.alert-panel-head small { color: #8692a4; font-size: 9px; line-height: 1.4; }
+.alert-panel-head > button { border: 0; background: transparent; color: #7d8798; font-size: 10px; }
+.alert-panel-actions { display: flex; gap: 7px; padding: 9px 12px; border-bottom: 1px solid #edf0f5; background: #f8faff; }
+.alert-panel-actions button { display: inline-flex; height: 28px; align-items: center; gap: 5px; padding: 0 9px; border: 1px solid #d5dfed; border-radius: 7px; background: #fff; color: #4c6487; font-size: 9px; font-weight: 800; }
+.alert-panel-actions button:hover:not(:disabled) { border-color: #9eb8e4; color: var(--blue); }
+.alert-panel-actions svg { width: 12px; height: 12px; }
+.alert-list { max-height: min(520px, calc(100vh - 190px)); overflow-y: auto; overscroll-behavior: contain; }
+.alert-item { position: relative; display: grid; width: 100%; gap: 4px; padding: 12px 15px 12px 18px; border: 0; border-bottom: 1px solid #edf0f5; background: #fff; text-align: left; }
+.alert-item::before { position: absolute; top: 17px; left: 7px; width: 5px; height: 5px; border-radius: 999px; background: var(--blue); content: ""; }
+.alert-item:hover { background: #f7faff; }
+.alert-item.is-read { background: #fcfcfd; opacity: .72; }
+.alert-item.is-read::before { background: transparent; }
+.alert-item strong { padding-right: 58px; color: #263b5c; font-size: 11px; line-height: 1.4; }
+.alert-item > span:not(.alert-kind) { color: #718097; font-size: 9px; line-height: 1.35; }
+.alert-item small { color: #919bad; font-size: 8px; }
+.alert-kind { position: absolute; top: 12px; right: 14px; padding: 3px 6px; border-radius: 999px; font-size: 8px; font-weight: 850; text-transform: uppercase; }
+.alert-kind.is-new { color: #126247; background: #e5f7ef; }
+.alert-kind.is-updated { color: #8a5510; background: #fff1d8; }
+.alert-panel-state { display: flex; min-height: 130px; align-items: center; justify-content: center; gap: 7px; padding: 20px; color: #78859a; font-size: 10px; text-align: center; }
+.alert-panel-state svg { width: 15px; }
+.alert-panel-state.is-error { color: #a64249; }
+.alert-panel-foot { padding: 8px 12px; background: #f8faff; color: #8b96a7; font-size: 8px; text-align: center; }
 .activity-menu { position: relative; justify-self: end; }
 .activity-menu > button { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 11px; border: 1px solid #d7e0ec; border-radius: 8px; background: #fff; color: #526077; font-size: 11px; font-weight: 750; }
 .activity-menu > button:hover { border-color: #aac0e5; color: var(--blue-dark); }
@@ -679,6 +710,8 @@ button:disabled { cursor: wait; opacity: .66; }
   .main-tabs { height: 42px !important; }
   .main-tabs [data-slot="tabs-trigger"] { height: 42px; font-size: 11px; }
   .activity-menu > button { padding: 0 9px; font-size: 10px; }
+  .alert-panel { position: fixed; top: 104px; right: 14px; left: 14px; width: auto; }
+  .alert-list { max-height: calc(100vh - 250px); }
   .header-actions { gap: 5px; }
   .language-switch button { min-width: 28px; padding: 0 5px; }
   .overview-page { min-height: calc(100vh - 100px); }
