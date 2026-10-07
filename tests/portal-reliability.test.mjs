@@ -42,11 +42,15 @@ test("loads independent overview seeds with bounded concurrency", () => {
   assert.match(page, /classification rules, page limit, deduplication, or final aggregation/);
 });
 
-test("prefers the daily snapshot and reserves live loading for fallback or force refresh", () => {
+test("prefers the daily snapshot and reloads it without forcing live portal searches", () => {
   assert.match(page, /loadOverviewFactsFromSnapshot\(subOu, nextFilters\)/);
   assert.match(page, /if \(!forceRefresh\)/);
   assert.match(page, /Sub-OU loaded from daily snapshot/);
   assert.match(page, /tenderpulse\.overview-session-cache\.v16/);
+  assert.match(page, /readMarketSnapshotManifest\(fetch, true\)/);
+  assert.match(page, /loadOverview\(filters, catalog, false, true\)/);
+  assert.match(page, /Reload snapshot/);
+  assert.doesNotMatch(page, /onClick=\{\(\) => void loadOverview\(filters, catalog, true\)\}/);
 });
 
 test("enforces the public data boundary of January 1, 2023", () => {
