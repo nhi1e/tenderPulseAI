@@ -404,13 +404,34 @@ function portalPageUrl(keyword: string, page: number, filters: SearchFilters, fo
   return `/api/portal-search-page?${params.toString()}`;
 }
 async function fetchPortalPage(keyword: string, page: number, filters: SearchFilters, forceRefresh = false) {
-  const response = await fetch(portalPageUrl(keyword, page, filters, forceRefresh));
+  const url = portalPageUrl(keyword, page, filters, forceRefresh);
+  const maxAttempts = 2;
+  let response: Response | undefined;
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      response = await fetch(url);
+      // A 504 is the portal's explicit 25-second boundary. Repeating the same
+      // expensive query immediately would only make the user wait twice.
+      const retryable = response.status === 429 || response.status === 502 || response.status === 503;
+      if (response.ok || !retryable) break;
+      lastError = new Error(`Portal proxy returned ${response.status}.`);
+    } catch (error) {
+      lastError = error;
+    }
+    if (attempt < maxAttempts) await new Promise((resolve) => setTimeout(resolve, 750));
+  }
+
+  if (!response) {
+    throw lastError instanceof Error ? lastError : new Error("Could not connect to the data service.");
+  }
   const body = await response.text();
   let data: { page?: PortalPage; error?: string } | undefined;
   try {
     data = body ? JSON.parse(body) as { page?: PortalPage; error?: string } : undefined;
   } catch {
-    throw new Error("The data service returned an invalid response.");
+    throw new Error(lastError instanceof Error ? lastError.message : "The data service returned an invalid response.");
   }
   if (!response.ok || !data?.page || !Array.isArray(data.page.content)) {
     throw new Error(data?.error || "Could not retrieve this portal page.");
@@ -1481,16 +1502,23 @@ function MarketOverview() {
       .filter((item) => nextFilters.productGroup === "all" || item.productGroups.includes(nextFilters.productGroup))
       .map((item) => item.subOu);
 
-    if (!forceRefresh) {
-      const cached = readOverviewCache(nextFilters);
-      if (cached) {
-        setFilters(nextFilters);
-        setSlices(cached.slices);
-        setUpdatedAt(cached.updatedAt);
-        setLastLoadSummary({ succeeded: cached.succeeded, total: cached.total });
-        setLoadProgress({ completed: cached.total, total: cached.total, current: [] });
-        setError(undefined);
-        setLoadedFromCache(true);
+    const cached = forceRefresh ? undefined : readOverviewCache(nextFilters);
+    const cachedSlices = (cached?.slices || []).filter((slice) => targets.includes(slice.name));
+    const cachedNames = new Set(cachedSlices.map((slice) => slice.name));
+    const pendingTargets = targets.filter((subOu) => !cachedNames.has(subOu));
+
+    // A partially completed load is useful. Restore the successful Sub-OUs
+    // immediately, then request only the missing ones instead of restarting all
+    // seven after one transient portal timeout.
+    if (cachedSlices.length) {
+      setFilters(nextFilters);
+      setSlices(cachedSlices);
+      setUpdatedAt(cached?.updatedAt);
+      setLastLoadSummary({ succeeded: cachedSlices.length, total: targets.length });
+      setLoadProgress({ completed: cachedSlices.length, total: targets.length, current: [] });
+      setError(undefined);
+      setLoadedFromCache(true);
+      if (!pendingTargets.length) {
         setLoading(false);
         return;
       }
@@ -1498,21 +1526,21 @@ function MarketOverview() {
 
     setLoading(true);
     setError(undefined);
-    setLoadedFromCache(false);
+    setLoadedFromCache(Boolean(cachedSlices.length));
     setLastLoadSummary(undefined);
-    setSlices([]);
+    if (!cachedSlices.length) setSlices([]);
     setFilters(nextFilters);
     const failures: string[] = [];
-    const successfulSlices: OverviewSubOu[] = [];
-    let latestFetchedAt: string | undefined;
-    let completed = 0;
-    let succeeded = 0;
-    setLoadProgress({ completed: 0, total: targets.length, current: [] });
+    const successfulSlices: OverviewSubOu[] = [...cachedSlices];
+    let latestFetchedAt: string | undefined = cached?.updatedAt;
+    let completed = cachedSlices.length;
+    let succeeded = cachedSlices.length;
+    setLoadProgress({ completed, total: targets.length, current: [] });
 
     // One Sub-OU at a time is slower on a cold load, but avoids bursting the
     // portal and Cloudflare Worker with concurrent long-running requests.
-    for (let index = 0; index < targets.length; index += 1) {
-      const batch = targets.slice(index, index + 1);
+    for (let index = 0; index < pendingTargets.length; index += 1) {
+      const batch = pendingTargets.slice(index, index + 1);
       setLoadProgress({ completed, total: targets.length, current: batch });
       const responses = await Promise.allSettled(batch.map(async (subOu) => {
         const result = await fetchSubOuSlice(subOu, nextFilters, completed, targets.length, forceRefresh);
@@ -1533,22 +1561,20 @@ function MarketOverview() {
       });
       completed += batch.length;
       setLoadProgress({ completed, total: targets.length, current: [] });
-      if (index + 1 < targets.length) await new Promise((resolve) => setTimeout(resolve, 250));
-    }
-    if (failures.length) setError(copy(language, `Could not load: ${failures.join(", ")}. The remaining Sub-OUs are still shown.`, `Chưa thể tải: ${failures.join(", ")}. Các Sub-OU còn lại vẫn được hiển thị.`));
-    setLastLoadSummary({ succeeded, total: targets.length });
-    if (!failures.length) {
-      const sortedSlices = successfulSlices.sort((left, right) => subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name));
-      setSlices(sortedSlices);
+      const sortedSlices = [...successfulSlices].sort((left, right) => subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name));
       writeOverviewCache(nextFilters, {
-        // Keep the session cache compact. Detailed facts stay in memory after a
-        // live load and are retrieved for one hospital on demand after a reload.
         slices: sortedSlices.map(({ facts: _facts, ...slice }) => slice),
         updatedAt: latestFetchedAt,
         succeeded,
         total: targets.length,
       });
+      if (index + 1 < pendingTargets.length) await new Promise((resolve) => setTimeout(resolve, 250));
     }
+    if (failures.length) setError(copy(language, `Could not load: ${failures.join(", ")}. The remaining Sub-OUs are still shown.`, `Chưa thể tải: ${failures.join(", ")}. Các Sub-OU còn lại vẫn được hiển thị.`));
+    setLastLoadSummary({ succeeded, total: targets.length });
+    const sortedSlices = successfulSlices.sort((left, right) => subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name));
+    setSlices(sortedSlices);
+    setLoadedFromCache(false);
     setLoading(false);
   }
 

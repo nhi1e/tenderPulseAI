@@ -5,6 +5,10 @@ import handler from "vinext/server/app-router-entry";
 const PORTAL_SEARCH_URL =
   "https://muasamcong.mpi.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
 const PORTAL_CACHE_SECONDS = 30 * 60;
+// Keep a bounded request time. Retrieval seeds are intentionally specific so
+// normal portal searches should complete below this boundary; a timeout is
+// surfaced separately instead of silently waiting and retrying for 45+ seconds.
+const PORTAL_REQUEST_TIMEOUT_MS = 25_000;
 
 interface Env {
   ASSETS: Fetcher;
@@ -91,7 +95,7 @@ async function fetchPortalPage(body: string, attempt = 1): Promise<Response> {
       Referer: "https://muasamcong.mpi.gov.vn/web/guest/winning-bid-data",
     },
     body,
-    signal: AbortSignal.timeout(25_000),
+    signal: AbortSignal.timeout(PORTAL_REQUEST_TIMEOUT_MS),
   });
   if (attempt < 3 && (response.status === 429 || response.status >= 500)) {
     await response.body?.cancel();
@@ -152,6 +156,12 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
     return response;
   } catch (error) {
     console.error("Portal page proxy failed", error);
+    if (error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError")) {
+      return Response.json({
+        error: "Cổng Mua Sắm Công phản hồi quá chậm cho truy vấn này.",
+        code: "PORTAL_TIMEOUT",
+      }, { status: 504 });
+    }
     return Response.json({ error: "Không thể kết nối với Cổng Mua Sắm Công." }, { status: 502 });
   }
 }

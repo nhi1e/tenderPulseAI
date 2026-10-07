@@ -309,10 +309,34 @@ test("applies the new 01.10 accessory exclusions", () => {
 });
 
 
-test("retrieves Lexington cartridges by a product-name anchor before classification", () => {
+test("retrieves Endo cartridges by product anchors without the broad nội soi query", () => {
   const seeds = searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Băng ghim nội soi"];
   assert.ok(seeds.includes("băng ghim"));
   assert.ok(seeds.includes("băng đạn"));
   assert.ok(seeds.includes("ghim khâu"));
-  assert.ok(seeds.includes("nội soi"));
+  assert.ok(seeds.includes("ghim nội soi"));
+  assert.ok(!seeds.includes("nội soi"));
+});
+
+test("uses every required Endo instrument confirmation phrase as a retrieval seed", () => {
+  const seeds = new Set(searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Dụng cụ khâu cắt nối nội soi"]);
+  ["khâu cắt", "cắt khâu", "khâu nối", "nối khâu", "cắt nối", "nối cắt"].forEach((term) => {
+    assert.ok(seeds.has(term), `missing Endo retrieval seed: ${term}`);
+  });
+  assert.ok(!seeds.has("nội soi"));
+});
+
+test("uses approved Suture product phrases instead of generic portal searches", () => {
+  const seeds = new Set(searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Chỉ phẫu thuật"]);
+  const rule = rules.classificationRules.find((candidate) => candidate.productGroup === "Chỉ phẫu thuật");
+  assert.ok(rule);
+  rule.keywords.forEach((term) => assert.ok(seeds.has(term.toLowerCase()), `missing Suture retrieval seed: ${term}`));
+  assert.ok(!seeds.has("khâu"));
+  assert.ok(!seeds.has("phẫu thuật"));
+});
+
+test("does not use the broad VS&D confirmation term as a portal query", () => {
+  const seeds = searchConfig.MARKET_OVERVIEW_SEARCH_SEEDS["Dao siêu âm"];
+  assert.deepEqual(seeds, ["dao siêu âm"]);
+  assert.ok(!seeds.includes("siêu âm"));
 });
