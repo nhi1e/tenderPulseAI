@@ -1493,63 +1493,73 @@ function MarketOverview() {
       productGroups,
       seeds,
       seedCount: seeds.length,
+      seedConcurrency: Math.min(2, seeds.length),
       dateFrom: nextFilters.dateFrom,
       dateTo: nextFilters.dateTo,
       forceRefresh,
     });
 
-    for (let seedIndex = 0; seedIndex < seeds.length; seedIndex += 1) {
-      const seed = seeds[seedIndex];
-      const seedStartedAt = performance.now();
-      console.info("[TenderPulse] seed start", {
-        subOu,
-        seed,
-        seedNumber: seedIndex + 1,
-        seedCount: seeds.length,
-      });
-      try {
-        setLoadProgress({
-          completed: completedSubOus,
-          total: totalSubOus,
-          current: [`${subOu} · ${copy(language, "query", "truy vấn")} ${seedIndex + 1}/${seeds.length}`],
+    // The approved retrieval seeds are independent. Running two at a time
+    // overlaps portal/body-transfer wait without changing the seed list,
+    // classification rules, page limit, deduplication, or final aggregation.
+    let nextSeedIndex = 0;
+    const seedConcurrency = Math.min(2, seeds.length);
+    const runSeedWorker = async () => {
+      while (nextSeedIndex < seeds.length) {
+        const seedIndex = nextSeedIndex;
+        nextSeedIndex += 1;
+        const seed = seeds[seedIndex];
+        const seedStartedAt = performance.now();
+        console.info("[TenderPulse] seed start", {
+          subOu,
+          seed,
+          seedNumber: seedIndex + 1,
+          seedCount: seeds.length,
         });
-        const result = await collectLiveWinningBids(seed, overviewSearchFilters(nextFilters), {
-          maxPages: 25,
-          forceRefresh,
-          applyKeywordRule: false,
-          onProgress: (progress) => setLoadProgress({
+        try {
+          setLoadProgress({
             completed: completedSubOus,
             total: totalSubOus,
-            current: [`${subOu} · ${seedIndex + 1}/${seeds.length} · ${copy(language, "page", "trang")} ${progress.completedPages}/${progress.totalPages}`],
-          }),
-        });
-        successfulQueries += 1;
-        sourceTotalElements += result.portalTotalElements;
-        truncated ||= result.truncated;
-        result.records.forEach((record) => {
-          const fact = overviewFactFor(record, rules);
-          if (fact) facts.set(fact.key, fact);
-        });
-        console.info("[TenderPulse] seed complete", {
-          subOu,
-          seed,
-          elapsedMs: Math.round(performance.now() - seedStartedAt),
-          portalElements: result.portalTotalElements,
-          acceptedFacts: facts.size,
-          totalPages: result.totalPages,
-          truncated: result.truncated,
-        });
-      } catch (error) {
-        failedQueries.push(seed);
-        console.error("[TenderPulse] seed failed", {
-          subOu,
-          seed,
-          elapsedMs: Math.round(performance.now() - seedStartedAt),
-          error: error instanceof Error ? error.message : String(error),
-        });
+            current: [`${subOu} · ${copy(language, "query", "truy vấn")} ${seedIndex + 1}/${seeds.length}`],
+          });
+          const result = await collectLiveWinningBids(seed, overviewSearchFilters(nextFilters), {
+            maxPages: 25,
+            forceRefresh,
+            applyKeywordRule: false,
+            onProgress: (progress) => setLoadProgress({
+              completed: completedSubOus,
+              total: totalSubOus,
+              current: [`${subOu} · ${seedIndex + 1}/${seeds.length} · ${copy(language, "page", "trang")} ${progress.completedPages}/${progress.totalPages}`],
+            }),
+          });
+          successfulQueries += 1;
+          sourceTotalElements += result.portalTotalElements;
+          truncated ||= result.truncated;
+          result.records.forEach((record) => {
+            const fact = overviewFactFor(record, rules);
+            if (fact) facts.set(fact.key, fact);
+          });
+          console.info("[TenderPulse] seed complete", {
+            subOu,
+            seed,
+            elapsedMs: Math.round(performance.now() - seedStartedAt),
+            portalElements: result.portalTotalElements,
+            acceptedFacts: facts.size,
+            totalPages: result.totalPages,
+            truncated: result.truncated,
+          });
+        } catch (error) {
+          failedQueries.push(seed);
+          console.error("[TenderPulse] seed failed", {
+            subOu,
+            seed,
+            elapsedMs: Math.round(performance.now() - seedStartedAt),
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
       }
-      if (seedIndex + 1 < seeds.length) await new Promise((resolve) => setTimeout(resolve, 100));
-    }
+    };
+    await Promise.all(Array.from({ length: seedConcurrency }, () => runSeedWorker()));
 
     if (seeds.length && !successfulQueries) {
       console.error("[TenderPulse] Sub-OU failed", {
