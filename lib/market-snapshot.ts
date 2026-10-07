@@ -3,6 +3,10 @@ import type { OverviewFact } from "@/lib/market-overview-aggregate";
 
 export const MARKET_SNAPSHOT_SCHEMA_VERSION = 1;
 export const MARKET_SNAPSHOT_MANIFEST_URL = "/data/market-snapshot/manifest.json";
+// Public winning-bid records begin on this date. Earlier user selections are
+// clamped here instead of making a complete snapshot look incomplete and
+// triggering a much slower live portal search.
+export const MARKET_DATA_AVAILABLE_FROM = "2023-01-01";
 
 export type MarketSnapshotPartition = {
   subOu: string;
@@ -116,19 +120,22 @@ export async function loadOverviewFactsFromSnapshot(
   fetcher: typeof fetch = fetch,
 ): Promise<SnapshotFactResult | undefined> {
   const manifest = await readMarketSnapshotManifest(fetcher);
+  const effectiveDateFrom = filters.dateFrom < MARKET_DATA_AVAILABLE_FROM
+    ? MARKET_DATA_AVAILABLE_FROM
+    : filters.dateFrom;
   if (
     !manifest ||
     manifest.schemaVersion !== MARKET_SNAPSHOT_SCHEMA_VERSION ||
     manifest.status !== "ready" ||
     !manifest.generatedAt ||
     !manifest.coverage ||
-    filters.dateFrom < manifest.coverage.dateFrom ||
+    effectiveDateFrom < manifest.coverage.dateFrom ||
     filters.dateTo > manifest.coverage.dateTo
   ) {
     return undefined;
   }
 
-  const years = new Set(requestedYears(filters.dateFrom, filters.dateTo));
+  const years = new Set(requestedYears(effectiveDateFrom, filters.dateTo));
   const partitions = manifest.partitions.filter((partition) =>
     partition.subOu === subOu && years.has(partition.year)
   );
@@ -143,7 +150,7 @@ export async function loadOverviewFactsFromSnapshot(
     sourceRecords,
     facts: facts.filter((fact) => {
       const decisionDate = dateKey(fact.decisionDate);
-      if (!decisionDate || decisionDate < filters.dateFrom || decisionDate > filters.dateTo) return false;
+      if (!decisionDate || decisionDate < effectiveDateFrom || decisionDate > filters.dateTo) return false;
       if (filters.productGroup !== "all" && fact.productGroup !== filters.productGroup) return false;
       if (companyKey && companyGroupingKey(fact.company) !== companyKey) return false;
       if (hospitalId && fact.buyerId.toLowerCase() !== hospitalId) return false;

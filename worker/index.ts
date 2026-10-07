@@ -4,6 +4,7 @@ import handler from "vinext/server/app-router-entry";
 
 const PORTAL_SEARCH_URL =
   "https://muasamcong.mpi.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
+const MARKET_DATA_AVAILABLE_FROM = "2023-01-01";
 const PORTAL_CACHE_SECONDS = 30 * 60;
 // Keep a bounded request time. Retrieval seeds are intentionally specific so
 // normal portal searches should complete below this boundary; a timeout is
@@ -146,6 +147,14 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
       (filters.dateTo && !/^\d{4}-\d{2}-\d{2}$/.test(filters.dateTo))) {
     return Response.json({ error: "Khoảng thời gian không hợp lệ." }, { status: 400 });
   }
+  filters.dateFrom = !filters.dateFrom || filters.dateFrom < MARKET_DATA_AVAILABLE_FROM
+    ? MARKET_DATA_AVAILABLE_FROM
+    : filters.dateFrom;
+  if (filters.dateTo && filters.dateTo < MARKET_DATA_AVAILABLE_FROM) {
+    filters.dateTo = MARKET_DATA_AVAILABLE_FROM;
+  }
+  url.searchParams.set("dateFrom", filters.dateFrom);
+  if (filters.dateTo) url.searchParams.set("dateTo", filters.dateTo);
 
   const canonicalUrl = new URL(url);
   canonicalUrl.searchParams.delete("refresh");
