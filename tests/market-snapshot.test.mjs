@@ -119,6 +119,29 @@ test("uses a complete 2023 snapshot when the selected start date is earlier than
   assert.deepEqual(result?.facts.map((row) => row.key), ["row-1"]);
 });
 
+
+test("recovers missing alert posting timestamps from the matching snapshot partition", async () => {
+  const partitionPath = "/data/market-snapshot/partitions/2026/endo-stapling.json";
+  const manifest = {
+    schemaVersion: 1,
+    status: "ready",
+    generatedAt: "2026-10-07T00:00:00Z",
+    coverage: { dateFrom: "2023-01-01", dateTo: "2026-10-07" },
+    records: 1,
+    partitions: [{ subOu: "Endo Stapling", year: "2026", path: partitionPath, records: 1 }],
+  };
+  const fetcher = snapshotFetcher(manifest, {
+    [partitionPath]: [fact({ key: "alert-row", publishedAt: "2026-10-08T14:17:20" })],
+  });
+  await snapshot.readMarketSnapshotManifest(fetcher, true);
+  const alerts = await snapshot.addMissingAlertPostingTimes([{
+    key: "alert-row",
+    subOu: "Endo Stapling",
+    decisionDate: "2026-10-08T09:00:00",
+  }], fetcher);
+  assert.equal(alerts[0].publishedAt, "2026-10-08T14:17:20");
+});
+
 test("collector keeps a complete raw-field snapshot and incremental change log", async () => {
   const script = await readFile(path.join(root, "scripts", "sync-market-snapshot.ts"), "utf8");
   const workflow = await readFile(path.join(root, ".github", "workflows", "update-market-snapshot.yml"), "utf8");

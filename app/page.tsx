@@ -27,7 +27,7 @@ import {
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
-import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
+import { MARKET_DATA_AVAILABLE_FROM, addMissingAlertPostingTimes, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
 import { alertsFromDailyChanges, formatActualPostingTime, type TenderAlert, type TenderAlertSource } from "@/lib/tender-alerts";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
@@ -2328,7 +2328,8 @@ function AlertCenter() {
       const response = await fetch(`/api/alerts?reader=${encodeURIComponent(activeReaderId)}&limit=100`, { cache: "no-store" });
       if (response.ok) {
         const data = await response.json() as { alerts?: TenderAlert[]; unreadCount?: number };
-        setAlerts(Array.isArray(data.alerts) ? data.alerts : []);
+        const loadedAlerts = Array.isArray(data.alerts) ? data.alerts : [];
+        setAlerts(await addMissingAlertPostingTimes(loadedAlerts));
         setUnreadCount(Number(data.unreadCount || 0));
         setSource("d1");
         return;
@@ -2347,8 +2348,9 @@ function AlertCenter() {
       const fallbackAlerts = manifest?.lastSync?.mode === "incremental"
         ? alertsFromDailyChanges(changes).sort((left, right) => right.detectedAt.localeCompare(left.detectedAt)).slice(0, 100)
         : [];
+      const alertsWithPostingTimes = await addMissingAlertPostingTimes(fallbackAlerts);
       const readIds = readLocalAlertIds();
-      const withReadState = fallbackAlerts.map((alert) => ({
+      const withReadState = alertsWithPostingTimes.map((alert) => ({
         ...alert,
         readAt: readIds.has(alert.id) ? alert.detectedAt : null,
       }));
