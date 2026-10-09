@@ -16,8 +16,7 @@
     "data:sync": "node --import tsx scripts/sync-market-snapshot.ts --mode incremental",
     "data:full": "node --import tsx scripts/sync-market-snapshot.ts --mode full",
     "data:import": "node --import tsx scripts/sync-market-snapshot.ts --mode import",
-    "data:reclassify": "node --import tsx scripts/sync-market-snapshot.ts --mode reclassify",
-    "alerts:publish": "node --import tsx scripts/publish-tender-alerts.ts"
+    "data:reclassify": "node --import tsx scripts/sync-market-snapshot.ts --mode reclassify"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
