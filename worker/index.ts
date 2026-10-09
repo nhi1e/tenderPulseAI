@@ -336,6 +336,95 @@ async function readAlertAsset<T>(env: Env, pathname: string): Promise<T | undefi
   return response.json() as Promise<T>;
 }
 
+
+function alertDecisionYear(value: string | undefined) {
+  const match = String(value || "").match(/^(\d{4})-\d{2}-\d{2}/);
+  return match?.[1] || "";
+}
+
+async function addSnapshotAlertPostingTimes(
+  env: Env,
+  alerts: TenderAlert[],
+  partitions: Array<{ subOu: string; year: string; path: string }>,
+) {
+  const missing = alerts.filter((alert) => !alert.publishedAt && alert.key && alert.subOu);
+  const partitionsByPath = new Map<string, { subOu: string; year: string; path: string }>();
+  const keysByPath = new Map<string, Set<string>>();
+  for (const alert of missing) {
+    const year = alertDecisionYear(alert.decisionDate);
+    const partition = partitions.find((candidate) => candidate.subOu === alert.subOu && candidate.year === year);
+    if (!partition) continue;
+    partitionsByPath.set(partition.path, partition);
+    const keys = keysByPath.get(partition.path) || new Set<string>();
+    keys.add(alert.key);
+    keys.add(alert.sourceId);
+    keysByPath.set(partition.path, keys);
+  }
+
+  const postingTimes = new Map<string, string>();
+  const results = await Promise.all([...partitionsByPath.values()].map(async (partition) => {
+    const facts = await readAlertAsset<Array<{ key?: string; sourceId?: string; publishedAt?: string }>>(env, partition.path);
+    for (const fact of facts || []) {
+      if (!fact.publishedAt) continue;
+      const keys = keysByPath.get(partition.path)!;
+      if (fact.key && keys.has(fact.key)) postingTimes.set(fact.key, fact.publishedAt);
+      if (fact.sourceId && keys.has(fact.sourceId)) postingTimes.set(fact.sourceId, fact.publishedAt);
+    }
+    return { path: partition.path, facts: facts?.length || 0 };
+  }));
+
+  const enriched = alerts.map((alert) => {
+    if (alert.publishedAt) return alert;
+    const publishedAt = postingTimes.get(alert.key) || postingTimes.get(alert.sourceId);
+    return publishedAt ? { ...alert, publishedAt } : alert;
+  });
+  console.info("[TenderPulse:alerts] snapshot posting-time enrichment", {
+    alerts: alerts.length,
+    missing: missing.length,
+    partitions: results,
+    recovered: enriched.filter((alert, index) => !alerts[index]?.publishedAt && Boolean(alert.publishedAt)).length,
+  });
+  return enriched;
+}
+
+async function handleSnapshotAlerts(request: Request, env: Env) {
+  if (request.method !== "GET") return Response.json({ error: "Method not allowed." }, { status: 405 });
+  const startedAt = Date.now();
+  try {
+    const manifest = await readAlertAsset<{
+      generatedAt?: string | null;
+      lastSync?: { mode?: string };
+      partitions?: Array<{ subOu: string; year: string; path: string; records?: number }>;
+    }>(env, "/data/market-snapshot/manifest.json");
+    const changes = await readAlertAsset<{
+      generatedAt?: string;
+      new?: TenderAlertSource[];
+      changed?: TenderAlertSource[];
+    }>(env, "/data/market-snapshot/daily-changes.json");
+    if (!manifest?.generatedAt || manifest.lastSync?.mode !== "incremental" || !changes?.generatedAt || changes.generatedAt !== manifest.generatedAt) {
+      return Response.json({ alerts: [], unreadCount: 0, source: "snapshot" }, {
+        headers: { "Cache-Control": "private, no-store" },
+      });
+    }
+    const limit = Math.max(1, Math.min(200, Math.floor(Number(new URL(request.url).searchParams.get("limit")) || 100)));
+    const alerts = alertsFromDailyChanges(changes)
+      .sort((left, right) => right.detectedAt.localeCompare(left.detectedAt))
+      .slice(0, limit);
+    const enriched = await addSnapshotAlertPostingTimes(env, alerts, manifest.partitions || []);
+    console.info("[TenderPulse:alerts] snapshot feed ready", {
+      generatedAt: changes.generatedAt,
+      alerts: enriched.length,
+      elapsedMs: Date.now() - startedAt,
+    });
+    return Response.json({ alerts: enriched, unreadCount: enriched.length, source: "snapshot" }, {
+      headers: { "Cache-Control": "private, no-store" },
+    });
+  } catch (error) {
+    console.error("[TenderPulse:alerts] snapshot feed failed", error);
+    return Response.json({ error: "Could not load snapshot alerts." }, { status: 500 });
+  }
+}
+
 async function ingestLatestSnapshotAlerts(env: Env) {
   if (!env.DB) return 0;
   const manifest = await readAlertAsset<{
@@ -424,6 +513,10 @@ const worker = {
 
     if (url.pathname === "/api/alerts") {
       return handleAlerts(request, env);
+    }
+
+    if (url.pathname === "/api/alerts/snapshot") {
+      return handleSnapshotAlerts(request, env);
     }
 
     if (url.pathname === "/api/alerts/read") {

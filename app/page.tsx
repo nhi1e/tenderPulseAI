@@ -2335,6 +2335,23 @@ function AlertCenter() {
         return;
       }
 
+      // Serve the snapshot fallback through the Worker so alert timestamps are
+      // recovered from the same static assets binding used by scheduled ingest.
+      const snapshotResponse = await fetch("/api/alerts/snapshot?limit=100", { cache: "no-store" });
+      if (snapshotResponse.ok) {
+        const data = await snapshotResponse.json() as { alerts?: TenderAlert[] };
+        const snapshotAlerts = Array.isArray(data.alerts) ? data.alerts : [];
+        const readIds = readLocalAlertIds();
+        const withReadState = snapshotAlerts.map((alert) => ({
+          ...alert,
+          readAt: readIds.has(alert.id) ? alert.detectedAt : null,
+        }));
+        setAlerts(withReadState);
+        setUnreadCount(withReadState.filter((alert) => !alert.readAt).length);
+        setSource("snapshot");
+        return;
+      }
+
       const [manifest, changesResponse] = await Promise.all([
         readMarketSnapshotManifest(fetch, true),
         fetch("/data/market-snapshot/daily-changes.json", { cache: "no-store" }),

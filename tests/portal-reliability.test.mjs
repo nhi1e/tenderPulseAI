@@ -82,3 +82,11 @@ test("serves a per-browser read state and a snapshot fallback for alert availabi
   assert.match(page, /alertsFromDailyChanges\(changes\)/);
   assert.match(page, /New Mua Sắm Công entries/);
 });
+
+test("enriches the deployed snapshot alert fallback from Worker assets", () => {
+  assert.match(worker, /url\.pathname === "\/api\/alerts\/snapshot"/);
+  assert.match(worker, /addSnapshotAlertPostingTimes\(env, alerts, manifest\.partitions/);
+  assert.match(worker, /keys\.add\(alert\.sourceId\)/);
+  assert.match(worker, /fact\.publishedAt/);
+  assert.match(page, /fetch\("\/api\/alerts\/snapshot\?limit=100"/);
+});
