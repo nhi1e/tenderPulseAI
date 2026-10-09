@@ -28,7 +28,7 @@ import {
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
 import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
-import { alertsFromDailyChanges, type TenderAlert, type TenderAlertSource } from "@/lib/tender-alerts";
+import { alertsFromDailyChanges, formatActualPostingTime, type TenderAlert, type TenderAlertSource } from "@/lib/tender-alerts";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
@@ -2438,13 +2438,20 @@ function AlertCenter() {
     {show && <div className="alert-panel">
       <div className="alert-panel-head"><div><strong>{copy(language, "New Mua Sắm Công entries", "KQLCNT mới trên Mua Sắm Công")}</strong><small>{latestDetectedAt ? `${copy(language, "Last checked", "Kiểm tra gần nhất")} ${new Date(latestDetectedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : copy(language, "Alerts begin after the next incremental update.", "Cảnh báo sẽ bắt đầu sau lần cập nhật tăng dần tiếp theo.")}</small></div><button type="button" onClick={() => setShow(false)}>{copy(language, "Close", "Đóng")}</button></div>
       <div className="alert-panel-actions"><button type="button" disabled={!unreadCount} onClick={() => void markRead([], true)}><CheckCheck />{copy(language, "Mark all read", "Đánh dấu đã đọc")}</button><button type="button" disabled={!alerts.length || exporting} onClick={() => void exportAlerts()}><Download />{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export", "Xuất Excel")}</button></div>
-      {loading ? <div className="alert-panel-state"><LoaderCircle className="spin" />{copy(language, "Loading alerts…", "Đang tải cảnh báo…")}</div> : error ? <div className="alert-panel-state is-error">{error}</div> : alerts.length ? <div className="alert-list">{alerts.map((alert) => <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => { if (!alert.readAt) void markRead([alert.id]); }}>
-        <span className={`alert-kind is-${alert.kind}`}>{alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật")}</span>
-        <strong>{alert.productName || copy(language, "Unnamed product", "Sản phẩm chưa có tên")}</strong>
-        <span>{[alert.subOu, alert.productGroup].filter(Boolean).join(" · ")}</span>
-        <span>{[alert.hospital, alert.company].filter(Boolean).join(" · ")}</span>
-        <small>{[alert.tenderNotice ? `TBMT ${alert.tenderNotice}` : "", alert.decisionDate].filter(Boolean).join(" · ")}</small>
-      </button>)}</div> : <div className="alert-panel-state">{copy(language, "No new classified entries yet.", "Chưa có KQLCNT mới đã được phân loại.")}</div>}
+      {loading ? <div className="alert-panel-state"><LoaderCircle className="spin" />{copy(language, "Loading alerts…", "Đang tải cảnh báo…")}</div> : error ? <div className="alert-panel-state is-error">{error}</div> : alerts.length ? <div className="alert-list">{alerts.map((alert) => {
+        const postingTime = formatActualPostingTime(alert.publishedAt, localeFor(language));
+        const metadata = [
+          alert.tenderNotice ? `TBMT ${alert.tenderNotice}` : "",
+          postingTime ? copy(language, `Posted ${postingTime}`, `Đăng lúc ${postingTime}`) : "",
+        ].filter(Boolean);
+        return <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => { if (!alert.readAt) void markRead([alert.id]); }}>
+          <span className={`alert-kind is-${alert.kind}`}>{alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật")}</span>
+          <strong>{alert.productName || copy(language, "Unnamed product", "Sản phẩm chưa có tên")}</strong>
+          <span>{[alert.subOu, alert.productGroup].filter(Boolean).join(" · ")}</span>
+          <span>{[alert.hospital, alert.company].filter(Boolean).join(" · ")}</span>
+          {metadata.length ? <small>{metadata.join(" · ")}</small> : null}
+        </button>;
+      })}</div> : <div className="alert-panel-state">{copy(language, "No new classified entries yet.", "Chưa có KQLCNT mới đã được phân loại.")}</div>}
       <div className="alert-panel-foot">{source === "d1" ? copy(language, "Synced alert history", "Lịch sử cảnh báo đã đồng bộ") : copy(language, "Showing the latest saved snapshot", "Đang hiển thị bản cập nhật đã lưu gần nhất")}</div>
     </div>}
   </div>;
