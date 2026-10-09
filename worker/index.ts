@@ -15,7 +15,6 @@ const PORTAL_REQUEST_TIMEOUT_MS = 25_000;
 interface Env {
   ASSETS: Fetcher;
   DB?: D1Database;
-  ALERT_INGEST_TOKEN?: string;
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -275,6 +274,7 @@ async function handleAlerts(request: Request, env: Env) {
   if (!readerId) return Response.json({ error: "reader is required." }, { status: 400 });
   const unreadClause = unreadOnly ? "AND r.alert_id IS NULL" : "";
   try {
+    await ingestLatestSnapshotAlerts(env);
     const [feed, count] = await env.DB.batch([
       env.DB.prepare(`
         SELECT a.id, a.kind, a.detected_at, a.payload_json, r.read_at
@@ -330,75 +330,82 @@ async function handleAlertRead(request: Request, env: Env) {
   }
 }
 
-async function handleAlertIngest(request: Request, env: Env) {
-  if (request.method !== "POST") return Response.json({ error: "Method not allowed." }, { status: 405 });
-  if (!env.DB) return Response.json({ error: "Alert database is not configured.", code: "ALERT_DATABASE_NOT_CONFIGURED" }, { status: 503 });
-  const configuredToken = String(env.ALERT_INGEST_TOKEN || "").trim();
-  if (!configuredToken) return Response.json({ error: "Alert ingestion is not configured." }, { status: 503 });
-  if (request.headers.get("Authorization") !== `Bearer ${configuredToken}`) {
-    return Response.json({ error: "Unauthorized." }, { status: 401 });
-  }
-  try {
-    const body = await request.json() as {
-      generatedAt?: string;
-      new?: TenderAlertSource[];
-      changed?: TenderAlertSource[];
-    };
-    const generatedAt = clean(body.generatedAt || "", 40);
-    if (!generatedAt || Number.isNaN(Date.parse(generatedAt))) {
-      return Response.json({ error: "generatedAt must be an ISO timestamp." }, { status: 400 });
-    }
-    const newRows = Array.isArray(body.new) ? body.new.slice(0, 250) : [];
-    const changedRows = Array.isArray(body.changed) ? body.changed.slice(0, Math.max(0, 250 - newRows.length)) : [];
-    const alerts = alertsFromDailyChanges({ generatedAt, new: newRows, changed: changedRows });
-    const rows = alerts.map((alert) => ({
-      id: alert.id,
-      sourceKey: alert.key,
-      kind: alert.kind,
-      contentHash: alert.contentHash,
-      detectedAt: alert.detectedAt,
-      syncGeneratedAt: generatedAt,
-      subOu: alert.subOu,
-      productGroup: alert.productGroup,
-      hospital: alert.hospital,
-      buyerId: alert.buyerId,
-      productName: alert.productName,
-      company: alert.company,
-      tenderNotice: alert.tenderNotice,
-      decisionDate: alert.decisionDate,
-      payloadJson: JSON.stringify(alert),
-    }));
-    const chunks = Array.from({ length: Math.ceil(rows.length / 25) }, (_, index) => rows.slice(index * 25, (index + 1) * 25));
-    const statements = chunks.map((chunk) => env.DB!.prepare(`
-      INSERT OR IGNORE INTO tender_alerts (
-        id, source_key, kind, content_hash, detected_at, sync_generated_at,
-        sub_ou, product_group, hospital, buyer_id, product_name, company,
-        tender_notice, decision_date, payload_json
-      )
-      SELECT
-        json_extract(value, '$.id'), json_extract(value, '$.sourceKey'),
-        json_extract(value, '$.kind'), json_extract(value, '$.contentHash'),
-        json_extract(value, '$.detectedAt'), json_extract(value, '$.syncGeneratedAt'),
-        json_extract(value, '$.subOu'), json_extract(value, '$.productGroup'),
-        json_extract(value, '$.hospital'), json_extract(value, '$.buyerId'),
-        json_extract(value, '$.productName'), json_extract(value, '$.company'),
-        json_extract(value, '$.tenderNotice'), json_extract(value, '$.decisionDate'),
-        json_extract(value, '$.payloadJson')
-      FROM json_each(?)
-    `).bind(JSON.stringify(chunk)));
-    if (!statements.length) {
-      return Response.json({ received: 0, inserted: 0 });
-    }
-    const results = await env.DB.batch(statements);
-    const inserted = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
-    await env.DB.prepare(`
-      INSERT INTO alert_sync_runs (generated_at, received_at, new_records, changed_records, inserted_alerts)
-      VALUES (?, ?, ?, ?, ?)
-    `).bind(generatedAt, new Date().toISOString(), newRows.length, changedRows.length, inserted).run();
-    return Response.json({ received: alerts.length, inserted });
-  } catch (error) {
-    return alertDatabaseError(error);
-  }
+async function readAlertAsset<T>(env: Env, pathname: string): Promise<T | undefined> {
+  const response = await env.ASSETS.fetch(new Request(`https://tenderpulse-assets.local${pathname}`));
+  if (!response.ok) return undefined;
+  return response.json() as Promise<T>;
+}
+
+async function ingestLatestSnapshotAlerts(env: Env) {
+  if (!env.DB) return 0;
+  const manifest = await readAlertAsset<{
+    lastSync?: { mode?: string };
+    generatedAt?: string | null;
+  }>(env, "/data/market-snapshot/manifest.json");
+  // Ignore full/import baselines so the first deployment does not generate
+  // alerts for the entire history.
+  if (!manifest?.generatedAt || manifest.lastSync?.mode !== "incremental") return 0;
+  const previousRun = await env.DB.prepare(
+    "SELECT generated_at FROM alert_sync_runs WHERE generated_at = ? LIMIT 1",
+  ).bind(manifest.generatedAt).first();
+  if (previousRun) return 0;
+
+  const changes = await readAlertAsset<{
+    generatedAt?: string;
+    new?: TenderAlertSource[];
+    changed?: TenderAlertSource[];
+  }>(env, "/data/market-snapshot/daily-changes.json");
+  if (!changes?.generatedAt || changes.generatedAt !== manifest.generatedAt) return 0;
+  const newRows = Array.isArray(changes.new) ? changes.new : [];
+  const changedRows = Array.isArray(changes.changed) ? changes.changed : [];
+  const alerts = alertsFromDailyChanges(changes);
+  const rows = alerts.map((alert) => ({
+    id: alert.id,
+    sourceKey: alert.key,
+    kind: alert.kind,
+    contentHash: alert.contentHash,
+    detectedAt: alert.detectedAt,
+    syncGeneratedAt: changes.generatedAt,
+    subOu: alert.subOu,
+    productGroup: alert.productGroup,
+    hospital: alert.hospital,
+    buyerId: alert.buyerId,
+    productName: alert.productName,
+    company: alert.company,
+    tenderNotice: alert.tenderNotice,
+    decisionDate: alert.decisionDate,
+    payloadJson: JSON.stringify(alert),
+  }));
+  const chunks = Array.from({ length: Math.ceil(rows.length / 25) }, (_, index) => rows.slice(index * 25, (index + 1) * 25));
+  const statements = chunks.map((chunk) => env.DB!.prepare(`
+    INSERT OR IGNORE INTO tender_alerts (
+      id, source_key, kind, content_hash, detected_at, sync_generated_at,
+      sub_ou, product_group, hospital, buyer_id, product_name, company,
+      tender_notice, decision_date, payload_json
+    )
+    SELECT
+      json_extract(value, '$.id'), json_extract(value, '$.sourceKey'),
+      json_extract(value, '$.kind'), json_extract(value, '$.contentHash'),
+      json_extract(value, '$.detectedAt'), json_extract(value, '$.syncGeneratedAt'),
+      json_extract(value, '$.subOu'), json_extract(value, '$.productGroup'),
+      json_extract(value, '$.hospital'), json_extract(value, '$.buyerId'),
+      json_extract(value, '$.productName'), json_extract(value, '$.company'),
+      json_extract(value, '$.tenderNotice'), json_extract(value, '$.decisionDate'),
+      json_extract(value, '$.payloadJson')
+    FROM json_each(?)
+  `).bind(JSON.stringify(chunk)));
+  const results = statements.length ? await env.DB.batch(statements) : [];
+  const inserted = results.reduce((total, result) => total + Number(result.meta?.changes || 0), 0);
+  await env.DB.prepare(`
+    INSERT OR IGNORE INTO alert_sync_runs (generated_at, received_at, new_records, changed_records, inserted_alerts)
+    VALUES (?, ?, ?, ?, ?)
+  `).bind(changes.generatedAt, new Date().toISOString(), newRows.length, changedRows.length, inserted).run();
+  console.info("[TenderPulse:alerts] incremental snapshot ingested", {
+    generatedAt: changes.generatedAt,
+    received: alerts.length,
+    inserted,
+  });
+  return inserted;
 }
 
 // Image security config. SVG sources with .svg extension auto-skip the
@@ -423,10 +430,6 @@ const worker = {
       return handleAlertRead(request, env);
     }
 
-    if (url.pathname === "/api/alerts/ingest") {
-      return handleAlertIngest(request, env);
-    }
-
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
@@ -439,6 +442,11 @@ const worker = {
     }
 
     return handler.fetch(request, env, ctx);
+  },
+  async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext) {
+    ctx.waitUntil(ingestLatestSnapshotAlerts(env).catch((error) => {
+      console.error("[TenderPulse:alerts] scheduled ingestion failed", error);
+    }));
   },
 };
 
