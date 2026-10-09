@@ -2363,7 +2363,9 @@ function AlertCenter() {
   async function markRead(alertIds: string[], all = false) {
     if (!alertIds.length && !all) return;
     const readAt = new Date().toISOString();
-    const ids = all ? alerts.filter((alert) => !alert.readAt).map((alert) => alert.id) : alertIds;
+    const unreadIds = new Set(alerts.filter((alert) => !alert.readAt).map((alert) => alert.id));
+    const ids = all ? [...unreadIds] : [...new Set(alertIds)].filter((id) => unreadIds.has(id));
+    if (!ids.length) return;
     rememberLocalAlertIds(ids);
     setAlerts((current) => current.map((alert) => ids.includes(alert.id) ? { ...alert, readAt } : alert));
     setUnreadCount((current) => all ? 0 : Math.max(0, current - ids.length));
@@ -2420,7 +2422,7 @@ function AlertCenter() {
     {show && <div className="alert-panel">
       <div className="alert-panel-head"><div><strong>{copy(language, "New Mua Sắm Công entries", "KQLCNT mới trên Mua Sắm Công")}</strong><small>{latestDetectedAt ? `${copy(language, "Last checked", "Kiểm tra gần nhất")} ${new Date(latestDetectedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : copy(language, "Alerts begin after the next incremental update.", "Cảnh báo sẽ bắt đầu sau lần cập nhật tăng dần tiếp theo.")}</small></div><button type="button" onClick={() => setShow(false)}>{copy(language, "Close", "Đóng")}</button></div>
       <div className="alert-panel-actions"><button type="button" disabled={!unreadCount} onClick={() => void markRead([], true)}><CheckCheck />{copy(language, "Mark all read", "Đánh dấu đã đọc")}</button><button type="button" disabled={!alerts.length || exporting} onClick={() => void exportAlerts()}><Download />{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export", "Xuất Excel")}</button></div>
-      {loading ? <div className="alert-panel-state"><LoaderCircle className="spin" />{copy(language, "Loading alerts…", "Đang tải cảnh báo…")}</div> : error ? <div className="alert-panel-state is-error">{error}</div> : alerts.length ? <div className="alert-list">{alerts.map((alert) => <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => void markRead([alert.id])}>
+      {loading ? <div className="alert-panel-state"><LoaderCircle className="spin" />{copy(language, "Loading alerts…", "Đang tải cảnh báo…")}</div> : error ? <div className="alert-panel-state is-error">{error}</div> : alerts.length ? <div className="alert-list">{alerts.map((alert) => <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => { if (!alert.readAt) void markRead([alert.id]); }}>
         <span className={`alert-kind is-${alert.kind}`}>{alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật")}</span>
         <strong>{alert.productName || copy(language, "Unnamed product", "Sản phẩm chưa có tên")}</strong>
         <span>{[alert.subOu, alert.productGroup].filter(Boolean).join(" · ")}</span>
