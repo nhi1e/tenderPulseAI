@@ -469,14 +469,29 @@ function factYear(fact: SnapshotFact) {
 function alertSummary(fact: SnapshotFact) {
   return {
     key: fact.key,
+    sourceId: fact.sourceId,
+    contentHash: fact.contentHash,
     subOu: fact.subOu,
     productGroup: fact.productGroup,
+    classificationKeyword: fact.classificationKeyword,
     hospital: fact.hospital,
+    sourceHospital: fact.sourceHospital,
     buyerId: fact.buyerId,
     productName: fact.productName,
+    productCode: fact.productCode,
+    model: fact.model,
+    brand: fact.brand,
+    manufacturer: fact.manufacturer,
     company: fact.company,
+    supplier: fact.supplier,
+    supplierCode: fact.supplierCode,
+    tender: fact.tender,
+    tenderNotice: fact.tenderNotice,
     value: fact.value,
+    units: fact.units,
+    unitPrice: fact.unitPrice,
     decisionDate: fact.decisionDate,
+    publishedAt: fact.publishedAt,
   };
 }
 

@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `alert_sync_runs_generated_at_idx` ON `alert_sync_runs` (`generated_at`);

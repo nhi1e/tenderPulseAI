@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const worker = await readFile(path.join(root, "worker", "index.ts"), "utf8");
 const page = await readFile(path.join(root, "app", "page.tsx"), "utf8");
+const workflow = await readFile(path.join(root, ".github", "workflows", "update-market-snapshot.yml"), "utf8");
 
 test("keeps a bounded portal timeout after narrowing expensive searches", () => {
   assert.match(worker, /PORTAL_REQUEST_TIMEOUT_MS\s*=\s*25_000/);
@@ -62,4 +63,22 @@ test("enforces the public data boundary of January 1, 2023", () => {
   assert.doesNotMatch(page, /type="date"/);
   assert.match(page, /boundedSearchFilters\(filters\)/);
   assert.match(page, /boundedOverviewFilters\(draft\)/);
+});
+
+test("ingests only incremental snapshot changes into the alert database", () => {
+  assert.match(workflow, /npm run data:sync|sync-market-snapshot/);
+  assert.doesNotMatch(workflow, /Publish new-entry alerts|ALERT_INGEST_TOKEN/);
+  assert.match(worker, /manifest\.lastSync\?\.mode !== "incremental"/);
+  assert.match(worker, /daily-changes\.json/);
+  assert.match(worker, /ingestLatestSnapshotAlerts\(env\)/);
+  assert.match(worker, /INSERT OR IGNORE INTO tender_alerts/);
+  assert.doesNotMatch(worker, /\/api\/alerts\/ingest|ALERT_INGEST_TOKEN/);
+});
+
+test("serves a per-browser read state and a snapshot fallback for alert availability", () => {
+  assert.match(worker, /LEFT JOIN alert_reads/);
+  assert.match(worker, /INSERT OR REPLACE INTO alert_reads/);
+  assert.match(page, /ALERT_READER_KEY/);
+  assert.match(page, /alertsFromDailyChanges\(changes\)/);
+  assert.match(page, /New Mua Sắm Công entries/);
 });
