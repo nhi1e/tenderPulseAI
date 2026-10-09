@@ -2,8 +2,8 @@
   "source": {
     "workbook": "bổ sung rule mới 01.10.xlsx",
     "sheet": "Danh mục rule keyword cần edit",
-    "version": "2026-10-06",
-    "staffReview": "TenderPulseAI_staff_rule_review_23.9.xlsx / 01_Trùng rule; bổ sung rule mới 01.10.xlsx",
+    "version": "2026-10-08",
+    "staffReview": "TenderPulseAI_staff_rule_review_23.9.xlsx / 01_Trùng rule; bổ sung rule mới 01.10.xlsx; bổ sung exclude tên thiết bị bắt đầu bằng 'dây' cho Dao siêu âm ngày 08.10",
     "staffException": "Xác nhận 06.10: băng ghim Meril cho dụng cụ cắt nối thẳng an toàn được xếp vào Băng ghim nội soi dù mô tả không có từ nội soi; các exclude vẫn áp dụng.",
     "normalization": "Unicode NFC, lowercase, replace line breaks with spaces, collapse whitespace, trim, preserve Vietnamese diacritics"
   },
@@ -16,10 +16,10 @@
       "keywords": ["Dao siêu âm", "Dao mổ siêu âm", "Tay ( lưỡi) dao siêu âm", "Lưỡi dao siêu âm", "Dao cắt siêu âm", "Dao cắt cầm máu siêu âm", "Lưỡi dao"],
       "confirmations": ["Siêu âm"],
       "exclusions": [
-        { "fields": ["productName"], "match": "startsWith", "terms": ["Dây dẫn", "bộ phát", "bộ dây", "bộ phận chuyển đổi", "pin sạc", "sạc pin", "khay hấp", "khay lắp", "hệ thống", "bộ phận truyền xung động", "Phụ kiện", "ống chụp", "dây dao", "dây cáp", "bộ sạc", "khay sạc", "pin", "bàn đạp"] },
+        { "fields": ["productName"], "match": "startsWith", "terms": ["dây", "bộ phát", "bộ dây", "bộ phận chuyển đổi", "pin sạc", "sạc pin", "khay hấp", "khay lắp", "hệ thống", "bộ phận truyền xung động", "Phụ kiện", "ống chụp", "dây dao", "dây cáp", "bộ sạc", "khay sạc", "pin", "bàn đạp"] },
         { "fields": ["productName", "brand", "configuration"], "match": "contains", "terms": ["CUSA", "robot"] }
       ],
-      "method": "Tên sản phẩm phải có một cụm trong rổ keyword và Tên/Nhãn hiệu/Cấu hình phải có “siêu âm”. Loại dây dao, dây/cáp, bộ hoặc khay sạc, pin, bàn đạp, phụ kiện, hệ thống, CUSA và robot theo đúng phạm vi trường được duyệt ngày 01.10."
+      "method": "Tên sản phẩm phải có một cụm trong rổ keyword và Tên/Nhãn hiệu/Cấu hình phải có “siêu âm”. Loại mọi sản phẩm có tên thiết bị bắt đầu bằng “dây”, cùng bộ hoặc khay sạc, pin, bàn đạp, phụ kiện, hệ thống, CUSA và robot theo đúng phạm vi trường đã duyệt."
     },
     {
       "id": 2,

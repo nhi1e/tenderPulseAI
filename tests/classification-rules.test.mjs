@@ -183,7 +183,7 @@ test("classifies Lexington Endo Stapling devices and cartridges from the staff s
 
 
 test("loads the 01.10 staff rule revision", () => {
-  assert.equal(rules.classificationSource.version, "2026-10-06");
+  assert.equal(rules.classificationSource.version, "2026-10-08");
   assert.equal(rules.classificationSource.sheet, "Danh mục rule keyword cần edit");
 });
 
@@ -319,6 +319,12 @@ test("applies the new 01.10 accessory exclusions", () => {
   assert.equal(rules.evaluateProductRule({
     productName: "Dây dao siêu âm",
   }, ultrasonic).reason, "exclusion");
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dây tưới dao siêu âm",
+  }, ultrasonic).reason, "exclusion");
+  assert.equal(rules.evaluateProductRule({
+    productName: "Dụng cụ dao siêu âm",
+  }, ultrasonic).reason, "matched");
   assert.equal(rules.evaluateProductRule({
     productName: "Bàn đạp cho dao siêu âm",
   }, ultrasonic).reason, "exclusion");
