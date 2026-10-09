@@ -44,12 +44,6 @@ jobs:
           SYNC_MODE: ${{ github.event.inputs.mode || 'incremental' }}
         run: node --import tsx scripts/sync-market-snapshot.ts --mode "$SYNC_MODE"
 
-      - name: Publish new-entry alerts
-        env:
-          TENDERPULSE_ALERTS_URL: ${{ vars.TENDERPULSE_ALERTS_URL }}
-          TENDERPULSE_ALERT_INGEST_TOKEN: ${{ secrets.TENDERPULSE_ALERT_INGEST_TOKEN }}
-        run: npm run alerts:publish
-
       - name: Commit updated snapshot
         run: |
           if git diff --quiet -- public/data/market-snapshot; then
