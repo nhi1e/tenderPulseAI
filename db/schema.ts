@@ -1,4 +1,4 @@
-import { index, integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const tenderAlerts = sqliteTable("tender_alerts", {
   id: text("id").primaryKey(),
@@ -38,4 +38,6 @@ export const alertSyncRuns = sqliteTable("alert_sync_runs", {
   newRecords: integer("new_records").notNull().default(0),
   changedRecords: integer("changed_records").notNull().default(0),
   insertedAlerts: integer("inserted_alerts").notNull().default(0),
-});
+}, (table) => [
+  uniqueIndex("alert_sync_runs_generated_at_idx").on(table.generatedAt),
+]);
