@@ -195,6 +195,20 @@ function boundedOverviewFilters(filters: OverviewFilterState): OverviewFilterSta
 }
 
 const marketDataStartDate = new Date(2023, 0, 1);
+const BUSINESS_TIME_ZONE = "Asia/Ho_Chi_Minh";
+
+function dateInputValueInTimeZone(date: Date, timeZone = BUSINESS_TIME_ZONE) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+  return year && month && day ? `${year}-${month}-${day}` : date.toISOString().slice(0, 10);
+}
 
 function parseDateInput(value: string) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
@@ -218,7 +232,9 @@ function BoundedDatePicker({
 }) {
   const language = useLanguage();
   const [open, setOpen] = useState(false);
-  const today = useMemo(() => new Date(), []);
+  // Use the business timezone on both server and browser so "today" is stable
+  // during hydration, even when the user's timezone is on the previous date.
+  const today = useMemo(() => parseDateInput(dateInputValueInTimeZone(new Date())) || marketDataStartDate, []);
   const selected = parseDateInput(value);
   const minimum = parseDateInput(min) || marketDataStartDate;
   const requestedMaximum = parseDateInput(max || "") || today;
@@ -790,10 +806,10 @@ function dateInputValue(date: Date) {
   return `${year}-${month}-${day}`;
 }
 function defaultOverviewFilters(): OverviewFilterState {
-  const today = new Date();
+  const today = dateInputValueInTimeZone(new Date());
   return {
-    dateFrom: `${today.getFullYear()}-01-01`,
-    dateTo: dateInputValue(today),
+    dateFrom: `${today.slice(0, 4)}-01-01`,
+    dateTo: today,
     hospital: "",
     subOu: "all",
     productGroup: "all",
