@@ -58,6 +58,31 @@ function cleanNumber(value: unknown) {
   return Number.isFinite(number) ? number : 0;
 }
 
+
+export function formatActualPostingTime(value: string | undefined, locale: string) {
+  const match = /^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})(?::(\\d{2})(?:\\.\\d+)?)?(?:Z|[+-]\\d{2}:?\\d{2})?$/.exec(cleanText(value, 80));
+  if (!match) return "";
+
+  const [, year, month, day, hour, minute, second] = match;
+  // Mua Sắm Công uses 23:59:59 as an end-of-day marker when only a date is known.
+  if (hour === "23" && minute === "59" && second === "59") return "";
+
+  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+  if (
+    date.getUTCFullYear() !== Number(year) ||
+    date.getUTCMonth() !== Number(month) - 1 ||
+    date.getUTCDate() !== Number(day)
+  ) return "";
+
+  const dateLabel = new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+  return `${dateLabel} ${hour}:${minute}`;
+}
+
 function stableHash(value: string) {
   let hash = 0x811c9dc5;
   for (let index = 0; index < value.length; index += 1) {

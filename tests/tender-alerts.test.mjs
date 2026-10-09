@@ -52,3 +52,12 @@ test("keeps new and updated portal entries as separate alert events", () => {
 test("rejects alert rows without a stable source key", () => {
   assert.equal(alerts.tenderAlertFromChange("new", { productName: "Unknown" }, "2026-10-07T18:00:00.000Z"), undefined);
 });
+
+test("shows only real publication timestamps and omits date-only end-of-day markers", () => {
+  const actual = alerts.formatActualPostingTime("2026-10-08T14:17:20", "en-US");
+  assert.match(actual, /2026/);
+  assert.match(actual, /14:17$/);
+  assert.equal(alerts.formatActualPostingTime("2026-10-08T23:59:59", "en-US"), "");
+  assert.equal(alerts.formatActualPostingTime("2026-10-08", "en-US"), "");
+  assert.equal(alerts.formatActualPostingTime(undefined, "en-US"), "");
+});
