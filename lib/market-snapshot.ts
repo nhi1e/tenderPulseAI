@@ -114,6 +114,49 @@ async function readPartition(path: string, fetcher: typeof fetch) {
   return partitionPromises.get(path)!;
 }
 
+/** Fill missing portal publication timestamps on alert rows using the snapshot partition. */
+export async function addMissingAlertPostingTimes<T extends {
+  key?: string;
+  subOu?: string;
+  decisionDate?: string;
+  publishedAt?: string;
+}>(alerts: T[], fetcher: typeof fetch = fetch): Promise<T[]> {
+  const missing = alerts.filter((alert) => !alert.publishedAt && alert.key && alert.subOu);
+  if (!missing.length) return alerts;
+
+  const manifest = await readMarketSnapshotManifest(fetcher);
+  if (!manifest?.partitions?.length) return alerts;
+
+  const keysByPartition = new Map<string, Set<string>>();
+  const partitionByPath = new Map(manifest.partitions.map((partition) => [partition.path, partition]));
+  for (const alert of missing) {
+    const year = dateKey(alert.decisionDate || "").slice(0, 4);
+    if (!year) continue;
+    const partition = manifest.partitions.find((candidate) => candidate.subOu === alert.subOu && candidate.year === year);
+    if (!partition) continue;
+    const keys = keysByPartition.get(partition.path) || new Set<string>();
+    keys.add(alert.key!);
+    keysByPartition.set(partition.path, keys);
+  }
+
+  if (!keysByPartition.size) return alerts;
+  const postingTimes = new Map<string, string>();
+  await Promise.all([...keysByPartition.entries()].map(async ([path, keys]) => {
+    const partition = partitionByPath.get(path)!;
+    const facts = await readPartition(partition.path, fetcher);
+    for (const fact of facts) {
+      if (keys.has(fact.key) && fact.publishedAt) postingTimes.set(fact.key, fact.publishedAt);
+    }
+  }));
+
+  return alerts.map((alert) => {
+    if (alert.publishedAt || !alert.key) return alert;
+    const publishedAt = postingTimes.get(alert.key);
+    return publishedAt ? { ...alert, publishedAt } : alert;
+  });
+}
+
+
 export async function loadOverviewFactsFromSnapshot(
   subOu: string,
   filters: SnapshotOverviewFilters,
