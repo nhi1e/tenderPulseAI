@@ -97,7 +97,7 @@ Pass every raw part in the same command. The importer accepts the Vietnamese col
 
 - `manifest.json`: coverage and partition inventory
 - `partitions/<year>/<sub-ou>.json`: dashboard and export records
-- `daily-changes.json`: new, changed, and removed records for the future alert interface
+- `daily-changes.json`: new, changed, and removed records used by the alert feature
 
 Review the counts, then commit `public/data/market-snapshot`.
 
@@ -125,7 +125,7 @@ npm run data:reclassify
 
 The GitHub Actions workflow `.github/workflows/update-market-snapshot.yml` runs every day at 01:30 Vietnam time and commits changed snapshot files. It can also be started manually with `incremental` or `full` mode from the Actions tab. The repository must allow GitHub Actions to write contents.
 
-The initial checked-in manifest is intentionally `empty`; until the first import or full sync is committed, the overview continues using the existing live-search fallback.
+The checked-in manifest describes the latest saved snapshot. If no ready snapshot is available, the overview continues using the existing live-search fallback.
 
 ## New-entry alerts
 
@@ -136,33 +136,24 @@ Each incremental run:
 1. rechecks the rolling portal window;
 2. applies the approved classification, exclusion, hospital and manufacturer rules;
 3. compares the classified record key and content hash with the saved snapshot;
-4. sends only new and changed records to the protected alert endpoint;
-5. stores deduplicated events in D1 and updates the dashboard notification badge.
+4. writes only new and changed records to `daily-changes.json`;
+5. lets the deployed Worker read that file from its own asset binding and stores deduplicated alert events in D1 when the notification feed is opened.
 
 The page falls back to the latest `daily-changes.json` when D1 is not configured, so the most recent incremental alerts remain visible on that browser. D1 adds persistent history and per-browser read state across deployments.
 
 ### One-time D1 setup
 
-Create a small database for alert history and apply the generated migration:
+Create a small database for alert history and apply the migration:
 
 ```bash
 npx wrangler login
 npx wrangler d1 create tenderpulse-alerts
 npx wrangler d1 execute tenderpulse-alerts --remote --file=drizzle/0000_tranquil_bastion.sql
+npx wrangler d1 execute tenderpulse-alerts --remote --file=drizzle/0001_alert_sync_dedupe.sql
 ```
 
-In the Cloudflare Worker settings, add a D1 binding named `DB` pointing to `tenderpulse-alerts`. Also add an encrypted Worker secret named `ALERT_INGEST_TOKEN` with a long random value.
+In the Cloudflare Worker settings, add a D1 binding named `DB` pointing to `tenderpulse-alerts`.
 
-Add the same value to the GitHub repository secret `TENDERPULSE_ALERT_INGEST_TOKEN`. Optionally add a repository variable named `TENDERPULSE_ALERTS_URL` when the production endpoint is not:
+No GitHub secret, cross-service upload, or public ingestion endpoint is required. The Worker reads the deployed snapshot assets itself, and the alert IDs plus unique sync timestamp make repeated feed requests safe. If the latest snapshot is incremental, the first feed request imports its changes. Full/import baselines are ignored to avoid historical alerts.
 
-```text
-https://tenderpulseai.tnhile2004.workers.dev/api/alerts/ingest
-```
-
-The ingestion endpoint rejects requests without the matching bearer token. Repeated workflow runs are safe: each alert ID includes the classified content hash and D1 ignores duplicates.
-
-To test publication manually after an incremental sync:
-
-```bash
-TENDERPULSE_ALERT_INGEST_TOKEN="your-token" npm run alerts:publish
-```
+Without D1, the panel still shows the latest incremental change file on that browser and saves read state locally. D1 adds cross-deployment alert history and per-browser read state.
