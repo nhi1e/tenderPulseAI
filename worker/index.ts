@@ -425,6 +425,35 @@ async function handleSnapshotAlerts(request: Request, env: Env) {
   }
 }
 
+async function handleOpenTenderAlerts(request: Request, env: Env) {
+  if (request.method !== "GET") return Response.json({ error: "Method not allowed." }, { status: 405 });
+  try {
+    const feed = await readAlertAsset<{
+      generatedAt?: string;
+      baseline?: boolean;
+      searchTerms?: number;
+      activeNoticesMatched?: number;
+      items?: Array<Record<string, unknown>>;
+    }>(env, "/data/open-tender-alerts/alerts.json");
+    if (!feed) {
+      return Response.json({ generatedAt: null, baseline: true, items: [] }, {
+        headers: { "Cache-Control": "private, no-store" },
+      });
+    }
+    const limit = Math.max(1, Math.min(500, Math.floor(Number(new URL(request.url).searchParams.get("limit")) || 200)));
+    return Response.json({
+      generatedAt: feed.generatedAt || null,
+      baseline: Boolean(feed.baseline),
+      searchTerms: Number(feed.searchTerms || 0),
+      activeNoticesMatched: Number(feed.activeNoticesMatched || 0),
+      items: (Array.isArray(feed.items) ? feed.items : []).slice(0, limit),
+    }, { headers: { "Cache-Control": "private, no-store" } });
+  } catch (error) {
+    console.error("[TenderPulse:open-tenders] alert feed failed", error);
+    return Response.json({ error: "Could not load open tender alerts." }, { status: 500 });
+  }
+}
+
 async function ingestLatestSnapshotAlerts(env: Env) {
   if (!env.DB) return 0;
   const manifest = await readAlertAsset<{
@@ -517,6 +546,10 @@ const worker = {
 
     if (url.pathname === "/api/alerts/snapshot") {
       return handleSnapshotAlerts(request, env);
+    }
+
+    if (url.pathname === "/api/open-tender-alerts") {
+      return handleOpenTenderAlerts(request, env);
     }
 
     if (url.pathname === "/api/alerts/read") {
