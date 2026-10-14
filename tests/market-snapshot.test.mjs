@@ -47,6 +47,16 @@ function snapshotFetcher(manifest, partitions) {
   };
 }
 
+test("splits portal searches at the 10,000-row cap into non-overlapping dates", () => {
+  assert.equal(snapshot.isPortalQuerySaturated(9_999), false);
+  assert.equal(snapshot.isPortalQuerySaturated(10_000), true);
+  assert.deepEqual(snapshot.splitDateWindow("2026-06-01", "2026-06-30"), [
+    { dateFrom: "2026-06-01", dateTo: "2026-06-15" },
+    { dateFrom: "2026-06-16", dateTo: "2026-06-30" },
+  ]);
+  assert.equal(snapshot.splitDateWindow("2026-06-01", "2026-06-01"), undefined);
+});
+
 test("filters a ready snapshot by date, hospital ID, product group, and mapped company", async () => {
   const partitionPath = "/data/market-snapshot/partitions/2026/endo-stapling.json";
   const manifest = {

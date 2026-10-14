@@ -3,6 +3,29 @@ import type { OverviewFact } from "@/lib/market-overview-aggregate";
 
 export const MARKET_SNAPSHOT_SCHEMA_VERSION = 1;
 export const MARKET_SNAPSHOT_MANIFEST_URL = "/data/market-snapshot/manifest.json";
+
+// The portal search service caps a query at 10,000 rows. A capped response
+// reports 10,000 as its total even when more results match, so dense date
+// windows must be split before the remaining pages are collected.
+export const PORTAL_QUERY_RESULT_CAP = 10_000;
+
+export function isPortalQuerySaturated(totalElements: number) {
+  return Number.isFinite(totalElements) && totalElements >= PORTAL_QUERY_RESULT_CAP;
+}
+
+export function splitDateWindow(dateFrom: string, dateTo: string) {
+  const start = Date.parse(`${dateFrom}T00:00:00.000Z`);
+  const end = Date.parse(`${dateTo}T00:00:00.000Z`);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start >= end) return undefined;
+  const totalDays = Math.floor((end - start) / 86_400_000) + 1;
+  const leftDays = Math.floor(totalDays / 2);
+  const leftEnd = new Date(start + (leftDays - 1) * 86_400_000).toISOString().slice(0, 10);
+  const rightStart = new Date(start + leftDays * 86_400_000).toISOString().slice(0, 10);
+  return [
+    { dateFrom, dateTo: leftEnd },
+    { dateFrom: rightStart, dateTo },
+  ] as const;
+}
 // Public winning-bid records begin on this date. Earlier user selections are
 // clamped here instead of making a complete snapshot look incomplete and
 // triggering a much slower live portal search.
