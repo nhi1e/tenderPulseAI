@@ -11,7 +11,9 @@ import {
 import { mappedCompanyName } from "../lib/company-mapping";
 import { hospitalName } from "../lib/hospital-identity";
 import {
+  isPortalQuerySaturated,
   MARKET_SNAPSHOT_SCHEMA_VERSION,
+  splitDateWindow,
   type MarketSnapshotManifest,
   type SnapshotFact,
 } from "../lib/market-snapshot";
@@ -340,6 +342,17 @@ async function fetchPortalPage(page: number, dateFrom: string, dateTo: string, a
 
 async function fetchWindow(window: { dateFrom: string; dateTo: string }) {
   const first = await fetchPortalPage(0, window.dateFrom, window.dateTo);
+  const totalElements = first.totalElements ?? first.content.length;
+  if (isPortalQuerySaturated(totalElements)) {
+    const halves = splitDateWindow(window.dateFrom, window.dateTo);
+    if (!halves) {
+      throw new Error(`Portal returned its ${totalElements.toLocaleString()}-row cap for ${window.dateFrom}. Split this day further before accepting a complete snapshot.`);
+    }
+    console.warn(`[snapshot] portal reached ${totalElements.toLocaleString()} rows for ${window.dateFrom}–${window.dateTo}; splitting the date window to avoid omitted records`);
+    const [left, right] = await Promise.all(halves.map(fetchWindow));
+    return [...left, ...right];
+  }
+
   const totalPages = Math.max(1, first.totalPages || 1);
   if (totalPages > MAX_PAGES_PER_WINDOW) {
     throw new Error(`${window.dateFrom}–${window.dateTo} has ${totalPages} pages; split the window before continuing.`);
