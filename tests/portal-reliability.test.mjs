@@ -75,18 +75,19 @@ test("ingests only incremental snapshot changes into the alert database", () => 
   assert.doesNotMatch(worker, /\/api\/alerts\/ingest|ALERT_INGEST_TOKEN/);
 });
 
-test("serves a per-browser read state and a snapshot fallback for alert availability", () => {
-  assert.match(worker, /LEFT JOIN alert_reads/);
-  assert.match(worker, /INSERT OR REPLACE INTO alert_reads/);
-  assert.match(page, /ALERT_READER_KEY/);
-  assert.match(page, /alertsFromDailyChanges\(changes\)/);
-  assert.match(page, /New Mua Sắm Công entries/);
+test("serves open tender invitations from the dedicated notice feed", () => {
+  assert.match(worker, /url\.pathname === "\/api\/open-tender-alerts"/);
+  assert.match(worker, /open-tender-alerts\/alerts\.json/);
+  assert.match(page, /fetch\("\/api\/open-tender-alerts\?limit=200"/);
+  assert.match(page, /Open tender invitations/);
+  assert.match(page, /matchedKeywords/);
+  assert.doesNotMatch(page, /alertsFromDailyChanges\(changes\)/);
+  assert.doesNotMatch(page, /KQLCNT mới trên Mua Sắm Công/);
 });
 
-test("enriches the deployed snapshot alert fallback from Worker assets", () => {
+test("keeps award snapshot alert APIs separate from open tender notices", () => {
   assert.match(worker, /url\.pathname === "\/api\/alerts\/snapshot"/);
   assert.match(worker, /addSnapshotAlertPostingTimes\(env, alerts, manifest\.partitions/);
-  assert.match(worker, /keys\.add\(alert\.sourceId\)/);
   assert.match(worker, /fact\.publishedAt/);
-  assert.match(page, /fetch\("\/api\/alerts\/snapshot\?limit=100"/);
+  assert.match(worker, /url\.pathname === "\/api\/open-tender-alerts"/);
 });

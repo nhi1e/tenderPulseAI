@@ -23,7 +23,7 @@ Live Medtronic market-intelligence dashboard for Vietnam public procurement awar
 - Competitor aliases normalized before value-share and unit-share calculations
 - One completed overview load per filter scope is cached for the current browser session
 - Reload-snapshot control to clear the session cache and read the saved partitions again
-- New-entry alerts for classified Mua Sắm Công records, with read state and Excel export
+- Daily alerts for newly posted, still-open tender invitations matched against approved product keywords in the portal “goods” field
 - A partitioned daily market snapshot for fast overview loading without repeated full live searches
 - English interface by default with a persistent English/Vietnamese switch
 
@@ -97,7 +97,7 @@ Pass every raw part in the same command. The importer accepts the Vietnamese col
 
 - `manifest.json`: coverage and partition inventory
 - `partitions/<year>/<sub-ou>.json`: dashboard and export records
-- `daily-changes.json`: new, changed, and removed records used by the alert feature
+- `daily-changes.json`: new, changed, and removed award records for snapshot auditing
 
 Review the counts, then commit `public/data/market-snapshot`.
 
@@ -127,33 +127,20 @@ The GitHub Actions workflow `.github/workflows/update-market-snapshot.yml` runs 
 
 The checked-in manifest describes the latest saved snapshot. If no ready snapshot is available, the overview continues using the existing live-search fallback.
 
-## New-entry alerts
+## Open tender invitation alerts
 
-Alerts are created only after an **incremental** snapshot refresh. A full/import baseline is deliberately ignored so the first deployment does not label every historical award as new.
+The alert panel tracks open tender invitations (Thông báo mời thầu chưa đóng thầu), not awarded-result records (KQLCNT). The daily GitHub Actions workflow searches the official Mua Sắm Công portal’s `goods` field using the approved inclusion keywords in `data/classification-rules.json`, and keeps only notices whose bid-closing time is still in the future.
 
-Each incremental run:
+The first run creates a baseline and does not alert on notices already present. Later daily runs compare stable notice IDs and content hashes, then publish newly found or changed active notices to `public/data/open-tender-alerts/alerts.json`. The Worker serves that feed at `/api/open-tender-alerts`; read/unread status is saved in each browser’s local storage. Excel export includes the notice number, package title, buyer, posting and closing times, matched goods keywords, and portal link.
 
-1. rechecks the rolling portal window;
-2. applies the approved classification, exclusion, hospital and manufacturer rules;
-3. compares the classified record key and content hash with the saved snapshot;
-4. writes only new and changed records to `daily-changes.json`;
-5. lets the deployed Worker read that file from its own asset binding and stores deduplicated alert events in D1 when the notification feed is opened.
-
-The page falls back to the latest `daily-changes.json` when D1 is not configured, so the most recent incremental alerts remain visible on that browser. D1 adds persistent history and per-browser read state across deployments.
-
-### One-time D1 setup
-
-Create a small database for alert history and apply the migration:
+The workflow runs daily at 01:30 Vietnam time and can also be started manually from GitHub Actions. To run a first baseline locally:
 
 ```bash
-npx wrangler login
-npx wrangler d1 create tenderpulse-alerts
-npx wrangler d1 execute tenderpulse-alerts --remote --file=drizzle/0000_tranquil_bastion.sql
-npx wrangler d1 execute tenderpulse-alerts --remote --file=drizzle/0001_alert_sync_dedupe.sql
+npm run alerts:sync -- --baseline
 ```
 
-In the Cloudflare Worker settings, add a D1 binding named `DB` pointing to `tenderpulse-alerts`.
+To run a later incremental scan locally:
 
-No GitHub secret, cross-service upload, or public ingestion endpoint is required. The Worker reads the deployed snapshot assets itself, and the alert IDs plus unique sync timestamp make repeated feed requests safe. If the latest snapshot is incremental, the first feed request imports its changes. Full/import baselines are ignored to avoid historical alerts.
-
-Without D1, the panel still shows the latest incremental change file on that browser and saves read state locally. D1 adds cross-deployment alert history and per-browser read state.
+```bash
+npm run alerts:sync
+```

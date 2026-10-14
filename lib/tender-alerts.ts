@@ -60,7 +60,7 @@ function cleanNumber(value: unknown) {
 
 
 export function formatActualPostingTime(value: string | undefined, locale: string) {
-  const match = /^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})(?::(\\d{2})(?:\\.\\d+)?)?(?:Z|[+-]\\d{2}:?\\d{2})?$/.exec(cleanText(value, 80));
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?$/.exec(cleanText(value, 80));
   if (!match) return "";
 
   const [, year, month, day, hour, minute, second] = match;

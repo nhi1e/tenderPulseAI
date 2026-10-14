@@ -1,0 +1,47 @@
+name: Update open tender alerts
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run at the same daily Vietnam-time window as the market snapshot refresh.
+    - cron: "30 18 * * *"
+
+permissions:
+  contents: write
+
+# Share the repo-level lock with the market snapshot workflow because both
+# workflows commit generated files to the default branch.
+concurrency:
+  group: market-snapshot
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - run: npm ci
+
+      - name: Search open tender notices using product keywords
+        run: npm run alerts:sync
+
+      - name: Commit notice alerts and deduplication state
+        run: |
+          if git diff --quiet -- public/data/open-tender-alerts/alerts.json data/open-tender-alerts/state.json; then
+            echo "No open tender alert changes."
+            exit 0
+          fi
+          git config user.name "tenderpulse-data-bot"
+          git config user.email "tenderpulse-data-bot@users.noreply.github.com"
+          git add public/data/open-tender-alerts/alerts.json data/open-tender-alerts/state.json
+          git commit -m "Update open tender notice alerts"
+          git push
