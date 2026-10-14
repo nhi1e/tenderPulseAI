@@ -144,3 +144,11 @@ To run a later incremental scan locally:
 ```bash
 npm run alerts:sync
 ```
+
+To populate the alert feed once with currently open notices posted during the past week, run:
+
+```bash
+npm run alerts:sync -- --lookback 7 --backfill
+```
+
+This records the fetched notices as seen, so later daily runs report only new or changed notices. Use `--baseline` instead when you want the first scan to stay silent.
