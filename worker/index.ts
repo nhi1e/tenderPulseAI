@@ -330,9 +330,17 @@ async function handleAlertRead(request: Request, env: Env) {
   }
 }
 
-async function readAlertAsset<T>(env: Env, pathname: string): Promise<T | undefined> {
-  const response = await env.ASSETS.fetch(new Request(`https://tenderpulse-assets.local${pathname}`));
-  if (!response.ok) return undefined;
+async function readAlertAsset<T>(env: Env, pathname: string, fallbackBaseUrl?: string): Promise<T | undefined> {
+  let response: Response | undefined;
+  if (env.ASSETS) {
+    response = await env.ASSETS.fetch(new Request(new URL(pathname, "https://tenderpulse-assets.local")));
+  }
+  // In Vite development the Worker assets binding may not expose files in the
+  // public directory. The app's dev server serves them at the incoming origin.
+  if ((!response || !response.ok) && fallbackBaseUrl) {
+    response = await fetch(new URL(pathname, fallbackBaseUrl));
+  }
+  if (!response?.ok) return undefined;
   return response.json() as Promise<T>;
 }
 
@@ -434,7 +442,7 @@ async function handleOpenTenderAlerts(request: Request, env: Env) {
       searchTerms?: number;
       activeNoticesMatched?: number;
       items?: Array<Record<string, unknown>>;
-    }>(env, "/data/open-tender-alerts/alerts.json");
+    }>(env, "/data/open-tender-alerts/alerts.json", request.url);
     if (!feed) {
       return Response.json({ generatedAt: null, baseline: true, items: [] }, {
         headers: { "Cache-Control": "private, no-store" },
