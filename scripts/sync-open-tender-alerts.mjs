@@ -24,6 +24,10 @@ function option(name, fallback) {
 const lookbackDays = Math.max(1, Math.min(30, Number(option("--lookback", "7")) || 7));
 const concurrency = Math.max(1, Math.min(6, Number(option("--concurrency", "4")) || 4));
 const forceBaseline = process.argv.includes("--baseline");
+// One-time historical population: make currently active notices posted in the
+// lookback window visible as alerts, then persist them as seen so later daily
+// runs only report new or changed notices. A normal first run stays silent.
+const backfill = process.argv.includes("--backfill");
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -102,7 +106,7 @@ async function mapConcurrent(values, limit, fn) {
 async function main() {
   const generatedAt = new Date().toISOString();
   const previousState = await readJson(STATE_PATH);
-  const isBaseline = forceBaseline || !previousState?.lastSuccessfulSync;
+  const isBaseline = forceBaseline || (!previousState?.lastSuccessfulSync && !backfill);
   const searchTerms = normalizeSearchTerms(classificationRules);
   const from = new Date(Date.now() - lookbackDays * 24 * 60 * 60 * 1000).toISOString();
   const to = generatedAt;
