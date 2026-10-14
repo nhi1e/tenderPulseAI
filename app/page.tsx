@@ -27,8 +27,8 @@ import {
   type ProductClassificationRule,
 } from "@/lib/classification-rules";
 import { MARKET_OVERVIEW_SEARCH_SEEDS } from "@/lib/market-overview-config";
-import { MARKET_DATA_AVAILABLE_FROM, addMissingAlertPostingTimes, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
-import { alertsFromDailyChanges, formatActualPostingTime, type TenderAlert, type TenderAlertSource } from "@/lib/tender-alerts";
+import { MARKET_DATA_AVAILABLE_FROM, loadOverviewFactsFromSnapshot, readMarketSnapshotManifest } from "@/lib/market-snapshot";
+import { formatActualPostingTime } from "@/lib/tender-alerts";
 import { customProductSearchSeeds, recordMatchesCustomProductSearch } from "@/lib/product-search-query";
 import { hospitalDirectoryEntries, hospitalKey, hospitalName, hospitalPortalQuery, hospitalSelectionLabel } from "@/lib/hospital-identity";
 import {
@@ -109,7 +109,6 @@ type OverviewFilterState = {
 type KeywordCatalogItem = { subOu: string; productGroups: string[]; keywords: string[] };
 type KeywordMasterRule = ProductClassificationRule;
 type ActivityItem = { id: string; keyword: string; searchedAt: string; filters: SearchFilters };
-type AlertFeedSource = "d1" | "snapshot";
 type OverviewLoadProgress = { completed: number; total: number; current: string[] };
 type HospitalDirectoryEntry = { name: string; id?: string };
 type CompanyDirectoryEntry = { name: string };
@@ -130,7 +129,6 @@ const HOSPITAL_DIRECTORY_KEY = "tenderpulse.hospital-directory.v1";
 const PRODUCT_DIRECTORY_KEY = "tenderpulse.product-directory.v1";
 const COMPANY_DIRECTORY_KEY = "tenderpulse.company-directory.v8";
 const DIRECTORY_UPDATE_EVENT = "tenderpulse:directory-updated";
-const ALERT_READER_KEY = "tenderpulse.alert-reader.v1";
 const ALERT_LOCAL_READ_KEY = "tenderpulse.alert-read.v1";
 const initialHospitals: HospitalDirectoryEntry[] = [
   ...hospitalDirectoryEntries(),
@@ -2310,70 +2308,53 @@ function rememberLocalAlertIds(ids: string[]) {
   window.localStorage.setItem(ALERT_LOCAL_READ_KEY, JSON.stringify([...stored].slice(-2_000)));
 }
 
+type OpenTenderAlert = {
+  id: string;
+  kind: "new" | "updated";
+  detectedAt: string;
+  noticeId: string;
+  notifyId: string;
+  notifyNo: string;
+  title: string;
+  buyer: string;
+  buyerCode: string;
+  publishedAt: string;
+  bidCloseAt: string;
+  bidForm: string;
+  bidPrice: number;
+  location: string;
+  matchedKeywords: string[];
+  sourceUrl: string;
+  readAt?: string | null;
+};
+
 function AlertCenter() {
   const language = useLanguage();
-  const [readerId, setReaderId] = useState("");
-  const [alerts, setAlerts] = useState<TenderAlert[]>([]);
+  const [alerts, setAlerts] = useState<OpenTenderAlert[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [source, setSource] = useState<AlertFeedSource>("snapshot");
+  const [generatedAt, setGeneratedAt] = useState<string>();
+  const [baseline, setBaseline] = useState(true);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
   const [exporting, setExporting] = useState(false);
 
-  async function loadAlerts(activeReaderId: string) {
+  async function loadAlerts() {
     setLoading(true);
     setError(undefined);
     try {
-      const response = await fetch(`/api/alerts?reader=${encodeURIComponent(activeReaderId)}&limit=100`, { cache: "no-store" });
-      if (response.ok) {
-        const data = await response.json() as { alerts?: TenderAlert[]; unreadCount?: number };
-        const loadedAlerts = Array.isArray(data.alerts) ? data.alerts : [];
-        setAlerts(await addMissingAlertPostingTimes(loadedAlerts));
-        setUnreadCount(Number(data.unreadCount || 0));
-        setSource("d1");
-        return;
-      }
-
-      // Serve the snapshot fallback through the Worker so alert timestamps are
-      // recovered from the same static assets binding used by scheduled ingest.
-      const snapshotResponse = await fetch("/api/alerts/snapshot?limit=100", { cache: "no-store" });
-      if (snapshotResponse.ok) {
-        const data = await snapshotResponse.json() as { alerts?: TenderAlert[] };
-        const snapshotAlerts = Array.isArray(data.alerts) ? data.alerts : [];
-        const readIds = readLocalAlertIds();
-        const withReadState = snapshotAlerts.map((alert) => ({
-          ...alert,
-          readAt: readIds.has(alert.id) ? alert.detectedAt : null,
-        }));
-        setAlerts(withReadState);
-        setUnreadCount(withReadState.filter((alert) => !alert.readAt).length);
-        setSource("snapshot");
-        return;
-      }
-
-      const [manifest, changesResponse] = await Promise.all([
-        readMarketSnapshotManifest(fetch, true),
-        fetch("/data/market-snapshot/daily-changes.json", { cache: "no-store" }),
-      ]);
-      if (!changesResponse.ok) throw new Error("Snapshot alert feed is unavailable.");
-      const changes = await changesResponse.json() as {
-        generatedAt?: string;
-        new?: TenderAlertSource[];
-        changed?: TenderAlertSource[];
-      };
-      const fallbackAlerts = manifest?.lastSync?.mode === "incremental"
-        ? alertsFromDailyChanges(changes).sort((left, right) => right.detectedAt.localeCompare(left.detectedAt)).slice(0, 100)
-        : [];
-      const alertsWithPostingTimes = await addMissingAlertPostingTimes(fallbackAlerts);
+      const response = await fetch("/api/open-tender-alerts?limit=200", { cache: "no-store" });
+      if (!response.ok) throw new Error(copy(language, "The open tender notice feed is unavailable.", "Không thể tải danh sách thông báo mời thầu."));
+      const data = await response.json() as { generatedAt?: string | null; baseline?: boolean; items?: OpenTenderAlert[] };
       const readIds = readLocalAlertIds();
-      const withReadState = alertsWithPostingTimes.map((alert) => ({
+      const loadedAlerts = (Array.isArray(data.items) ? data.items : []).map((alert) => ({
         ...alert,
         readAt: readIds.has(alert.id) ? alert.detectedAt : null,
       }));
-      setAlerts(withReadState);
-      setUnreadCount(withReadState.filter((alert) => !alert.readAt).length);
-      setSource("snapshot");
+      setAlerts(loadedAlerts);
+      setUnreadCount(loadedAlerts.filter((alert) => !alert.readAt).length);
+      setGeneratedAt(data.generatedAt || undefined);
+      setBaseline(Boolean(data.baseline));
     } catch (caught) {
       setAlerts([]);
       setUnreadCount(0);
@@ -2384,14 +2365,8 @@ function AlertCenter() {
   }
 
   useEffect(() => {
-    let storedReader = window.localStorage.getItem(ALERT_READER_KEY) || "";
-    if (!storedReader) {
-      storedReader = crypto.randomUUID();
-      window.localStorage.setItem(ALERT_READER_KEY, storedReader);
-    }
-    setReaderId(storedReader);
-    void loadAlerts(storedReader);
-    const timer = window.setInterval(() => void loadAlerts(storedReader), 5 * 60_000);
+    void loadAlerts();
+    const timer = window.setInterval(() => void loadAlerts(), 5 * 60_000);
     return () => window.clearInterval(timer);
   }, []);
 
@@ -2404,74 +2379,62 @@ function AlertCenter() {
     rememberLocalAlertIds(ids);
     setAlerts((current) => current.map((alert) => ids.includes(alert.id) ? { ...alert, readAt } : alert));
     setUnreadCount((current) => all ? 0 : Math.max(0, current - ids.length));
-    if (source !== "d1" || !readerId) return;
-    try {
-      await fetch("/api/alerts/read", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ readerId, alertIds: all ? undefined : ids, all }),
-      });
-    } catch {
-      // The local read state keeps the interface usable during a brief network interruption.
-    }
   }
 
   async function exportAlerts() {
     setExporting(true);
     try {
       await downloadWorkbook([{
-        name: language === "en" ? "New portal entries" : "KQLCNT mới",
+        name: language === "en" ? "Open tender notices" : "Thông báo mời thầu",
         rows: alerts.map((alert) => ({
           [copy(language, "Status", "Trạng thái")]: alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật"),
           [copy(language, "Detected at", "Thời điểm phát hiện")]: new Date(alert.detectedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" }),
-          "Sub-OU": alert.subOu,
-          [copy(language, "Product group", "Nhóm sản phẩm")]: alert.productGroup,
-          [copy(language, "Hospital / buyer", "Bệnh viện / chủ đầu tư")]: alert.hospital,
-          [copy(language, "Buyer ID", "Mã định danh CĐT")]: alert.buyerId,
-          [copy(language, "Product name", "Tên thiết bị, vật tư y tế")]: alert.productName,
-          [copy(language, "Product code", "Ký mã hiệu")]: alert.productCode,
-          [copy(language, "Brand", "Nhãn hiệu")]: alert.brand,
-          [copy(language, "Manufacturer", "Hãng sản xuất")]: alert.manufacturer,
-          [copy(language, "Normalized company", "Công ty đã quy đổi")]: alert.company,
-          [copy(language, "Winning supplier", "Tên NT trúng thầu")]: alert.supplier,
-          [copy(language, "Tender notice ID", "Mã TBMT")]: alert.tenderNotice,
-          [copy(language, "Award result ID", "Mã KQLCNT")]: alert.tender,
-          [copy(language, "Decision date", "Ngày ban hành quyết định")]: alert.decisionDate,
-          [copy(language, "Publication date", "Ngày đăng tải KQLCNT")]: alert.publishedAt,
-          [copy(language, "Quantity", "Khối lượng")]: alert.units,
-          [copy(language, "Unit price", "Đơn giá trúng thầu")]: alert.unitPrice,
-          [copy(language, "Estimated value", "Thành tiền ước tính")]: alert.value,
+          [copy(language, "Tender notice number", "Mã TBMT")]: alert.notifyNo,
+          [copy(language, "Package title", "Tên gói thầu")]: alert.title,
+          [copy(language, "Buyer / procuring entity", "Bên mời thầu / chủ đầu tư")]: alert.buyer,
+          [copy(language, "Buyer code", "Mã định danh bên mời thầu")]: alert.buyerCode,
+          [copy(language, "Portal posting time", "Ngày đăng tải TBMT")]: formatActualPostingTime(alert.publishedAt, localeFor(language)),
+          [copy(language, "Bid closing time", "Thời điểm đóng thầu")]: alert.bidCloseAt,
+          [copy(language, "Matched goods keywords", "Từ khóa khớp trong danh mục hàng hóa")]: alert.matchedKeywords.join("; "),
+          [copy(language, "Bid form", "Hình thức lựa chọn nhà thầu")]: alert.bidForm,
+          [copy(language, "Estimated package price", "Giá gói thầu dự kiến")]: alert.bidPrice,
+          [copy(language, "Location", "Địa điểm")]: alert.location,
+          [copy(language, "Portal source", "Nguồn trên Cổng Mua Sắm Công")]: alert.sourceUrl,
         })),
-        columns: [12, 21, 18, 30, 40, 20, 52, 24, 24, 34, 28, 40, 18, 22, 22, 22, 14, 20, 22],
-      }], `${dateInputValue(new Date()).split("-").reverse().join("-")}-new-muasamcong-entries.xlsx`);
+        columns: [12, 21, 18, 52, 44, 24, 22, 28, 30, 30, 42, 24],
+      }], `${dateInputValue(new Date()).split("-").reverse().join("-")}-open-tender-notices.xlsx`);
     } finally {
       setExporting(false);
     }
   }
 
-  const latestDetectedAt = alerts[0]?.detectedAt;
   return <div className="alert-menu">
-    <button className={unreadCount ? "has-unread" : ""} type="button" onClick={() => { setShow((current) => !current); if (!show && readerId) void loadAlerts(readerId); }} aria-expanded={show} aria-label={copy(language, "New Mua Sắm Công entries", "KQLCNT mới trên Mua Sắm Công")}>
+    <button className={unreadCount ? "has-unread" : ""} type="button" onClick={() => { setShow((current) => !current); if (!show) void loadAlerts(); }} aria-expanded={show} aria-label={copy(language, "Open tender invitations", "Thông báo mời thầu chưa đóng thầu")}>
       <Bell />{unreadCount ? <span>{unreadCount > 99 ? "99+" : unreadCount}</span> : null}
     </button>
     {show && <div className="alert-panel">
-      <div className="alert-panel-head"><div><strong>{copy(language, "New Mua Sắm Công entries", "KQLCNT mới trên Mua Sắm Công")}</strong><small>{latestDetectedAt ? `${copy(language, "Last checked", "Kiểm tra gần nhất")} ${new Date(latestDetectedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : copy(language, "Alerts begin after the next incremental update.", "Cảnh báo sẽ bắt đầu sau lần cập nhật tăng dần tiếp theo.")}</small></div><button type="button" onClick={() => setShow(false)}>{copy(language, "Close", "Đóng")}</button></div>
+      <div className="alert-panel-head"><div><strong>{copy(language, "Open tender invitations", "Thông báo mời thầu chưa đóng thầu")}</strong><small>{generatedAt ? `${copy(language, "Last checked", "Kiểm tra gần nhất")}: ${new Date(generatedAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" })}` : copy(language, "The first daily scan is being prepared.", "Đang chuẩn bị lần quét dữ liệu đầu tiên.")}</small></div><button type="button" onClick={() => setShow(false)}>{copy(language, "Close", "Đóng")}</button></div>
       <div className="alert-panel-actions"><button type="button" disabled={!unreadCount} onClick={() => void markRead([], true)}><CheckCheck />{copy(language, "Mark all read", "Đánh dấu đã đọc")}</button><button type="button" disabled={!alerts.length || exporting} onClick={() => void exportAlerts()}><Download />{exporting ? copy(language, "Creating…", "Đang tạo…") : copy(language, "Export", "Xuất Excel")}</button></div>
       {loading ? <div className="alert-panel-state"><LoaderCircle className="spin" />{copy(language, "Loading alerts…", "Đang tải cảnh báo…")}</div> : error ? <div className="alert-panel-state is-error">{error}</div> : alerts.length ? <div className="alert-list">{alerts.map((alert) => {
         const postingTime = formatActualPostingTime(alert.publishedAt, localeFor(language));
+        const closingTime = alert.bidCloseAt ? new Date(alert.bidCloseAt).toLocaleString(localeFor(language), { timeZone: "Asia/Ho_Chi_Minh" }) : "";
         const metadata = [
-          alert.tenderNotice ? `TBMT ${alert.tenderNotice}` : "",
+          alert.notifyNo ? `TBMT ${alert.notifyNo}` : "",
           postingTime ? copy(language, `Posted ${postingTime}`, `Đăng lúc ${postingTime}`) : "",
+          closingTime ? copy(language, `Closes ${closingTime}`, `Đóng thầu ${closingTime}`) : "",
         ].filter(Boolean);
-        return <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => { if (!alert.readAt) void markRead([alert.id]); }}>
+        return <button className={`alert-item ${alert.readAt ? "is-read" : ""}`} type="button" key={alert.id} onClick={() => { if (!alert.readAt) void markRead([alert.id]); if (alert.sourceUrl) window.open(alert.sourceUrl, "_blank", "noopener,noreferrer"); }}>
           <span className={`alert-kind is-${alert.kind}`}>{alert.kind === "new" ? copy(language, "New", "Mới") : copy(language, "Updated", "Cập nhật")}</span>
-          <strong>{alert.productName || copy(language, "Unnamed product", "Sản phẩm chưa có tên")}</strong>
-          <span>{[alert.subOu, alert.productGroup].filter(Boolean).join(" · ")}</span>
-          <span>{[alert.hospital, alert.company].filter(Boolean).join(" · ")}</span>
+          <strong>{alert.title || copy(language, "Untitled tender notice", "Thông báo mời thầu chưa có tên")}</strong>
+          <span>{alert.buyer}{alert.buyerCode ? ` · ${alert.buyerCode}` : ""}</span>
+          <span>{alert.matchedKeywords.length ? `${copy(language, "Goods matched", "Hàng hóa khớp từ khóa")}: ${alert.matchedKeywords.join(", ")}` : ""}</span>
+          {alert.location ? <span>{alert.location}</span> : null}
           {metadata.length ? <small>{metadata.join(" · ")}</small> : null}
         </button>;
-      })}</div> : <div className="alert-panel-state">{copy(language, "No new classified entries yet.", "Chưa có KQLCNT mới đã được phân loại.")}</div>}
-      <div className="alert-panel-foot">{source === "d1" ? copy(language, "Synced alert history", "Lịch sử cảnh báo đã đồng bộ") : copy(language, "Showing the latest saved snapshot", "Đang hiển thị bản cập nhật đã lưu gần nhất")}</div>
+      })}</div> : <div className="alert-panel-state">{baseline
+        ? copy(language, "Baseline saved. New open notices will appear after the next daily scan.", "Đã lưu mốc ban đầu. Thông báo mời thầu mới sẽ hiển thị sau lần quét hằng ngày tiếp theo.")
+        : copy(language, "No new or updated open tender notices matched the approved goods keywords.", "Chưa có thông báo mời thầu mới hoặc cập nhật khớp từ khóa hàng hóa đã duyệt.")}</div>}
+      <div className="alert-panel-foot">{copy(language, "Searches approved product keywords in the portal’s goods list; only notices that have not closed are included.", "Tìm từ khóa sản phẩm đã duyệt trong danh mục hàng hóa trên cổng; chỉ gồm thông báo chưa đóng thầu.")}</div>
     </div>}
   </div>;
 }
