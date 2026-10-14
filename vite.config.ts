@@ -14,6 +14,13 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const localBindingConfig = {
   main: "./worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
+  // The Worker reads the generated alert feed and market snapshot through this
+  // binding. Cloudflare provides it in deployment; bind `public/` locally too
+  // so the Vite/Miniflare Worker has the same ASSETS.fetch interface in dev.
+  assets: {
+    directory: "./public",
+    binding: "ASSETS",
+  },
   d1_databases: d1
     ? [
         {
