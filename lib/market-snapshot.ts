@@ -65,7 +65,8 @@ export type SnapshotFact = OverviewFact & {
 export type SnapshotOverviewFilters = {
   dateFrom: string;
   dateTo: string;
-  hospital: string;
+  hospital?: string;
+  hospitals?: string[];
   productGroup: string;
   company: string;
 };
@@ -207,8 +208,13 @@ export async function loadOverviewFactsFromSnapshot(
   );
   const sourceRecords = partitions.reduce((total, partition) => total + partition.records, 0);
   const facts = (await Promise.all(partitions.map((partition) => readPartition(partition.path, fetcher)))).flat();
-  const hospitalId = selectedHospitalId(filters.hospital);
-  const hospitalQuery = normalized(filters.hospital.replace(/\s*\[[^\]]+\]\s*$/, ""));
+  const selectedHospitals = filters.hospitals?.length
+    ? filters.hospitals
+    : filters.hospital ? [filters.hospital] : [];
+  const hospitalSelectors = selectedHospitals.map((selection) => ({
+    id: selectedHospitalId(selection),
+    query: normalized(selection.replace(/\s*\[[^\]]+\]\s*$/, "")),
+  }));
   const companyKey = filters.company !== "all" ? companyGroupingKey(filters.company) : "";
 
   return {
@@ -219,11 +225,10 @@ export async function loadOverviewFactsFromSnapshot(
       if (!decisionDate || decisionDate < effectiveDateFrom || decisionDate > filters.dateTo) return false;
       if (filters.productGroup !== "all" && fact.productGroup !== filters.productGroup) return false;
       if (companyKey && companyGroupingKey(fact.company) !== companyKey) return false;
-      if (hospitalId && fact.buyerId.toLowerCase() !== hospitalId) return false;
-      if (
-        !hospitalId && hospitalQuery &&
-        !normalized(`${fact.hospital} ${fact.sourceHospital} ${fact.buyerId}`).includes(hospitalQuery)
-      ) return false;
+      if (hospitalSelectors.length && !hospitalSelectors.some(({ id, query }) => {
+        if (id) return fact.buyerId.toLowerCase() === id;
+        return query && normalized(`${fact.hospital} ${fact.sourceHospital} ${fact.buyerId}`).includes(query);
+      })) return false;
       return true;
     }),
   };
