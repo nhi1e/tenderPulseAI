@@ -86,6 +86,34 @@ test("filters a ready snapshot by date, hospital ID, product group, and mapped c
   assert.equal(result?.generatedAt, manifest.generatedAt);
 });
 
+test("keeps rows from any selected hospital in a multi-hospital snapshot filter", async () => {
+  const partitionPath = "/data/market-snapshot/partitions/2026/endo-stapling.json";
+  const manifest = {
+    schemaVersion: 1,
+    status: "ready",
+    generatedAt: "2026-10-07T00:00:00Z",
+    coverage: { dateFrom: "2023-01-01", dateTo: "2026-10-07" },
+    records: 3,
+    partitions: [{ subOu: "Endo Stapling", year: "2026", path: partitionPath, records: 3 }],
+  };
+  const fetcher = snapshotFetcher(manifest, {
+    [partitionPath]: [
+      fact(),
+      fact({ key: "row-2", sourceId: "row-2", buyerId: "vn002", hospital: "Bệnh viện 108" }),
+      fact({ key: "row-3", sourceId: "row-3", buyerId: "vn003", hospital: "Bệnh viện C" }),
+    ],
+  });
+  await snapshot.readMarketSnapshotManifest(fetcher, true);
+  const result = await snapshot.loadOverviewFactsFromSnapshot("Endo Stapling", {
+    dateFrom: "2026-01-01",
+    dateTo: "2026-10-07",
+    hospitals: ["Bệnh viện K [vn001]", "Bệnh viện 108 [vn002]"],
+    productGroup: "all",
+    company: "all",
+  }, fetcher);
+  assert.deepEqual(result?.facts.map((row) => row.key), ["row-1", "row-2"]);
+});
+
 test("does not use a snapshot outside its completed coverage", async () => {
   const manifest = {
     schemaVersion: 1,

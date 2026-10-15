@@ -552,6 +552,22 @@ button:disabled { cursor: wait; opacity: .66; }
 .overview-filter .bounded-date-trigger:focus-visible { box-shadow: none; }
 .overview-filter .hospital-autocomplete, .overview-filter .company-autocomplete { height: 31px; border: 0; box-shadow: none; }
 .overview-filter .hospital-autocomplete [data-slot="input-group-control"], .overview-filter .company-autocomplete [data-slot="input-group-control"] { height: 30px; padding: 0; }
+.hospital-multi-trigger { display: flex; width: 100%; min-width: 0; height: 31px; align-items: center; justify-content: space-between; gap: 8px; padding: 0; border: 0; background: transparent; color: #1f3150; text-align: left; font-size: 13px; font-weight: 650; }
+.hospital-multi-trigger > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hospital-multi-chevron { flex: 0 0 auto; color: #6d7a8e; font-size: 18px; line-height: 1; }
+.hospital-multi-popover { z-index: 120; width: min(380px, calc(100vw - 24px)); padding: 10px; border-color: #cad7e9; border-radius: 10px; box-shadow: 0 14px 34px rgba(29, 53, 91, .18); }
+.hospital-multi-popover > input { width: 100%; height: 36px; padding: 0 10px; border: 1px solid #d8e0eb; border-radius: 7px; outline-color: #7fa7df; font-size: 12px; }
+.hospital-multi-actions { display: flex; min-height: 34px; align-items: center; justify-content: space-between; gap: 10px; color: #7b8799; font-size: 11px; }
+.hospital-multi-actions button { border: 0; background: transparent; color: #2863bb; font-size: 11px; font-weight: 750; }
+.hospital-multi-options { display: grid; max-height: 300px; overflow-y: auto; gap: 2px; }
+.hospital-multi-option { display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: start; gap: 8px; padding: 8px; border: 0; border-radius: 7px; background: transparent; text-align: left; }
+.hospital-multi-option:hover, .hospital-multi-option.is-selected { background: #edf4ff; }
+.hospital-multi-check { display: grid; width: 16px; height: 16px; place-items: center; margin-top: 1px; border: 1px solid #b8c6d9; border-radius: 4px; color: #fff; font-size: 11px; font-weight: 800; }
+.hospital-multi-option.is-selected .hospital-multi-check { border-color: #185bd8; background: #185bd8; }
+.hospital-multi-option > span:last-child { display: grid; min-width: 0; gap: 3px; }
+.hospital-multi-option strong { color: #243a5d; font-size: 12px; line-height: 1.35; }
+.hospital-multi-option small, .hospital-multi-empty { color: #7d8aa0; font-size: 10px; }
+.hospital-multi-empty { margin: 10px 4px; }
 .overview-apply { min-width: 108px; border: 0; background: #123f84; color: #fff; font-size: 12px; font-weight: 800; }
 .overview-apply:hover:not(:disabled) { background: #0c326d; }
 .overview-loading { display: grid; gap: 8px; margin-bottom: 12px; padding: 13px 15px; border: 1px solid #b9d0ef; border-radius: 10px; background: #f4f8ff; color: #173a70; }
