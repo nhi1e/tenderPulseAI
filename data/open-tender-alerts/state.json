@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastSuccessfulSync": "2026-10-14T21:54:18.290Z",
+  "lastSuccessfulSync": "2026-10-15T21:40:24.480Z",
   "seen": {
     "IB2600567802-01": {
       "contentHash": "a6fb40d9",
@@ -12,23 +12,23 @@
     },
     "IB2600556173-00": {
       "contentHash": "032676b3",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567213-00": {
       "contentHash": "914168ad",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600564918-01": {
       "contentHash": "06374495",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600553646-00": {
       "contentHash": "57e71f03",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573596-00": {
       "contentHash": "dbcb11df",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571535-00": {
       "contentHash": "907ad177",
@@ -36,23 +36,23 @@
     },
     "IB2600544991-00": {
       "contentHash": "ca690a68",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576119-00": {
       "contentHash": "3419bbc5",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600564773-01": {
       "contentHash": "5f94b4b6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600564657-02": {
       "contentHash": "6017db56",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600565597-00": {
       "contentHash": "53d2d9b8",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600561463-00": {
       "contentHash": "60300b08",
@@ -60,7 +60,7 @@
     },
     "IB2600577268-00": {
       "contentHash": "31765229",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572475-00": {
       "contentHash": "f05ab073",
@@ -68,15 +68,15 @@
     },
     "IB2600567177-01": {
       "contentHash": "93165056",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600546660-01": {
       "contentHash": "9b34102e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573203-00": {
       "contentHash": "b097730c",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569658-00": {
       "contentHash": "2d5cff09",
@@ -84,35 +84,35 @@
     },
     "IB2600567994-01": {
       "contentHash": "24c47948",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577327-00": {
       "contentHash": "3250b452",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575780-00": {
       "contentHash": "903c801e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575885-00": {
       "contentHash": "731b4b6c",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573216-00": {
       "contentHash": "7265c00b",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574405-00": {
       "contentHash": "593d2057",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600565365-01": {
       "contentHash": "5ad96519",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571588-00": {
       "contentHash": "930eb76f",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600570743-00": {
       "contentHash": "2efe6fa6",
@@ -132,7 +132,7 @@
     },
     "IB2600576334-00": {
       "contentHash": "ed112ef8",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567276-00": {
       "contentHash": "b798c282",
@@ -140,7 +140,7 @@
     },
     "IB2600563446-01": {
       "contentHash": "e6b3a64a",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569835-00": {
       "contentHash": "3ba12c3a",
@@ -156,7 +156,7 @@
     },
     "IB2600555234-00": {
       "contentHash": "f9d82e35",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600570111-00": {
       "contentHash": "ff0dd0e5",
@@ -164,11 +164,11 @@
     },
     "IB2600576125-00": {
       "contentHash": "69c0049e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574597-00": {
       "contentHash": "4e0cc746",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569522-00": {
       "contentHash": "d37933e1",
@@ -176,167 +176,167 @@
     },
     "IB2600577405-00": {
       "contentHash": "ffa05f9d",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600561335-00": {
       "contentHash": "003909e6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571770-00": {
       "contentHash": "2c2d355c",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573671-00": {
       "contentHash": "8066f7e2",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575979-00": {
       "contentHash": "2fb422f7",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577082-00": {
       "contentHash": "fb8d2e90",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575823-00": {
       "contentHash": "c969c951",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600566002-01": {
       "contentHash": "2957b958",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575393-00": {
       "contentHash": "a1c967d5",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576876-00": {
       "contentHash": "dd011c55",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575693-00": {
       "contentHash": "fde509ae",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572048-00": {
       "contentHash": "071b7073",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574595-00": {
       "contentHash": "7a7b0d9d",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569090-01": {
       "contentHash": "cf689749",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576283-00": {
       "contentHash": "db5027d3",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575817-00": {
       "contentHash": "86c7c8da",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575868-00": {
       "contentHash": "902a750b",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575939-00": {
       "contentHash": "51af90f7",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574456-00": {
       "contentHash": "b516ac65",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573443-00": {
       "contentHash": "9b07e1a4",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575126-00": {
       "contentHash": "ffedbba1",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574835-00": {
       "contentHash": "6a85a325",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572421-00": {
       "contentHash": "c7600517",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575740-00": {
       "contentHash": "b2065e97",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573991-00": {
       "contentHash": "3d95c1b6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572323-00": {
       "contentHash": "b96aaadd",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574986-00": {
       "contentHash": "4bac4236",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575265-00": {
       "contentHash": "8b0a4547",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573873-01": {
       "contentHash": "af047e0b",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573546-00": {
       "contentHash": "9a2b65e1",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569026-00": {
       "contentHash": "7eeca2f7",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572836-00": {
       "contentHash": "f9a8f35e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573595-00": {
       "contentHash": "da3dc36b",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600565710-00": {
       "contentHash": "abfbb9db",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573738-00": {
       "contentHash": "57427265",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600570834-00": {
       "contentHash": "78d9c383",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572724-01": {
       "contentHash": "cb89fb98",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571957-00": {
       "contentHash": "3f5168fa",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572739-00": {
       "contentHash": "c0d64c84",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573103-00": {
       "contentHash": "769fffa9",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600570514-00": {
       "contentHash": "0030559a",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600546081-01": {
       "contentHash": "42c02b0d",
@@ -464,7 +464,7 @@
     },
     "IB2600572499-00": {
       "contentHash": "1270f0fb",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600451930-01": {
       "contentHash": "4d0aa5cf",
@@ -472,15 +472,15 @@
     },
     "IB2600576220-00": {
       "contentHash": "ff854311",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600565007-00": {
       "contentHash": "05226c97",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574415-00": {
       "contentHash": "12773e5f",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572090-00": {
       "contentHash": "8beef84a",
@@ -492,75 +492,75 @@
     },
     "IB2600573279-00": {
       "contentHash": "14946e53",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572439-00": {
       "contentHash": "5ed32771",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576210-00": {
       "contentHash": "76befe39",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575902-00": {
       "contentHash": "7bc5924e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575899-00": {
       "contentHash": "796126a4",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576299-00": {
       "contentHash": "a006da94",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576336-00": {
       "contentHash": "92009e24",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574823-00": {
       "contentHash": "7de126e1",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575674-00": {
       "contentHash": "030380b2",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575831-00": {
       "contentHash": "50adafbf",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575647-00": {
       "contentHash": "59c65da6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569375-00": {
       "contentHash": "15fa8613",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576065-00": {
       "contentHash": "9ccce85b",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574635-00": {
       "contentHash": "4139f83b",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574569-00": {
       "contentHash": "f83040d1",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575423-00": {
       "contentHash": "49fcd961",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600568348-00": {
       "contentHash": "22c1982a",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574296-00": {
       "contentHash": "7d50c6d6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575205-00": {
       "contentHash": "fb1ac345",
@@ -568,39 +568,39 @@
     },
     "IB2600575602-00": {
       "contentHash": "60fd7feb",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600568489-00": {
       "contentHash": "5876d973",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575134-00": {
       "contentHash": "b4451190",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600566655-00": {
       "contentHash": "4026c263",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600566735-00": {
       "contentHash": "daeb5f79",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575105-00": {
       "contentHash": "4f9f3bac",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569968-00": {
       "contentHash": "1f9e792e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600555694-00": {
       "contentHash": "22cbe35e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569713-00": {
       "contentHash": "ace897a7",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572502-00": {
       "contentHash": "35661d7c",
@@ -608,43 +608,43 @@
     },
     "IB2600571211-00": {
       "contentHash": "d973f823",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567173-00": {
       "contentHash": "11fb1067",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600519041-02": {
       "contentHash": "d12521d2",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600549417-01": {
       "contentHash": "64f91f8a",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600546946-01": {
       "contentHash": "15a699e2",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600557969-00": {
       "contentHash": "67ca0ff6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572903-00": {
       "contentHash": "c2e2a01a",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572657-00": {
       "contentHash": "cf6e1bc9",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571325-00": {
       "contentHash": "3dcec7d9",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567677-00": {
       "contentHash": "33eb0b16",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600540533-01": {
       "contentHash": "c6dfdea2",
@@ -652,11 +652,11 @@
     },
     "IB2600569878-00": {
       "contentHash": "1cbc9c9e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600569618-00": {
       "contentHash": "cdbc47eb",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600568201-00": {
       "contentHash": "20e83538",
@@ -752,7 +752,7 @@
     },
     "IB2600544723-00": {
       "contentHash": "5748198e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567763-00": {
       "contentHash": "e23af11f",
@@ -768,15 +768,15 @@
     },
     "IB2600563072-00": {
       "contentHash": "ff9cb86d",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567070-00": {
       "contentHash": "d9446217",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600573088-00": {
       "contentHash": "87eb4f31",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600570325-00": {
       "contentHash": "f55b728d",
@@ -788,134 +788,1093 @@
     },
     "IB2600574081-00": {
       "contentHash": "fdb1950a",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600578382-00": {
       "contentHash": "8ce844a7",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572475-01": {
       "contentHash": "3db02af0",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575806-00": {
       "contentHash": "5995c988",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600578200-00": {
       "contentHash": "7bd5fcba",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575923-00": {
       "contentHash": "418f17c6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600578572-00": {
       "contentHash": "ca8ecf94",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577107-00": {
       "contentHash": "4a3893a4",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600568598-00": {
       "contentHash": "eab78efa",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600563360-00": {
       "contentHash": "25e8b941",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600568210-01": {
       "contentHash": "2ed910ba",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574581-00": {
       "contentHash": "0c8dbc77",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577067-00": {
       "contentHash": "0bb630ce",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571416-00": {
       "contentHash": "122ba1b8",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576718-00": {
       "contentHash": "28adc2c2",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577165-00": {
       "contentHash": "cfde21c6",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600568506-00": {
       "contentHash": "65bf0971",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600570272-00": {
       "contentHash": "745f22ec",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600576547-00": {
       "contentHash": "16c344a5",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577814-00": {
       "contentHash": "f9eeda14",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600578203-00": {
       "contentHash": "2a5a1538",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600572164-00": {
       "contentHash": "2c5af7ff",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577489-00": {
       "contentHash": "f9c8b20e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577661-00": {
       "contentHash": "ad4a06a0",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571655-00": {
       "contentHash": "879babd3",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600571181-00": {
       "contentHash": "230f9473",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600567794-00": {
       "contentHash": "f6f50c0e",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600574436-00": {
       "contentHash": "c58da779",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600575907-00": {
       "contentHash": "5b37f26c",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600458799-00": {
       "contentHash": "4a2c8203",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577995-00": {
       "contentHash": "85cff0e3",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     },
     "IB2600577904-00": {
       "contentHash": "5080f497",
-      "lastSeenAt": "2026-10-14T21:54:18.290Z"
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600567802-02": {
+      "contentHash": "e2b28b0a",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579173-00": {
+      "contentHash": "f5c62973",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600559542-00": {
+      "contentHash": "244792f1",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577633-00": {
+      "contentHash": "41df6df8",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600578165-00": {
+      "contentHash": "f7578a74",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600578913-00": {
+      "contentHash": "29e3ee77",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579688-00": {
+      "contentHash": "9e2f20c8",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600578106-00": {
+      "contentHash": "39a81e77",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579288-00": {
+      "contentHash": "cf0d96c8",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579287-00": {
+      "contentHash": "3a8cd1ba",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579833-00": {
+      "contentHash": "221441b9",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579301-00": {
+      "contentHash": "8ab89d23",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600572413-00": {
+      "contentHash": "10bb10e2",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577647-00": {
+      "contentHash": "9c88e3e9",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577644-00": {
+      "contentHash": "c47ba27e",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577025-00": {
+      "contentHash": "2c536113",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577205-00": {
+      "contentHash": "65dcdc6b",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577386-00": {
+      "contentHash": "64a48165",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600566960-00": {
+      "contentHash": "c4599dfe",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600578034-00": {
+      "contentHash": "29e17ade",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600578989-00": {
+      "contentHash": "fdf71cbe",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600575205-01": {
+      "contentHash": "15721b8d",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600563957-00": {
+      "contentHash": "a64b4484",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600575036-00": {
+      "contentHash": "2de18521",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600555345-00": {
+      "contentHash": "deaa8840",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600575121-00": {
+      "contentHash": "e79bfcf5",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600575122-00": {
+      "contentHash": "a6e3da30",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600572502-01": {
+      "contentHash": "1038ebd6",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600561469-00": {
+      "contentHash": "354c6341",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600577145-00": {
+      "contentHash": "0dae5e49",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600576895-00": {
+      "contentHash": "e9a16713",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600573166-00": {
+      "contentHash": "53a71e97",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600560578-01": {
+      "contentHash": "9a0aad1a",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600568139-01": {
+      "contentHash": "6c04a840",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600578215-00": {
+      "contentHash": "62f0528c",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
+    },
+    "IB2600579071-00": {
+      "contentHash": "838f1fef",
+      "lastSeenAt": "2026-10-15T21:40:24.480Z"
     }
   },
   "alertHistory": [
+    {
+      "noticeId": "IB2600567802-02",
+      "notifyId": "65516dfa-cf06-4d13-9158-ad42f7e6385a",
+      "notifyNo": "IB2600567802",
+      "title": "Gói thầu: Cung cấp hóa chất, vật tư y tế và linh, phụ kiện để thay thế, sửa chữa các máy xét nghiệm (bao gồm 94 danh mục), bao gồm 06 lô",
+      "buyer": "Bệnh viện Tai Mũi Họng TW",
+      "buyerCode": "vn0101650822",
+      "publishedAt": "2026-10-15T10:22:38.072",
+      "bidCloseAt": "2026-10-26T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 24018104028,
+      "location": "Phường Kim Liên - Thành phố Hà Nội",
+      "matchedKeywords": [
+        "bản cực trung tính",
+        "chỉ tan",
+        "Dụng cụ",
+        "điện cực trung tính",
+        "tay dao điện",
+        "tay dao mổ điện"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=65516dfa-cf06-4d13-9158-ad42f7e6385a&notifyId=65516dfa-cf06-4d13-9158-ad42f7e6385a&notifyNo=IB2600567802&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "e2b28b0a",
+      "id": "new:IB2600567802-02:e2b28b0a",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579173-00",
+      "notifyId": "7e31fbeb-99d7-48a9-8165-87d087429329",
+      "notifyNo": "IB2600579173",
+      "title": "Mua sắm bổ sung vật tư y tế, hóa chất, y dụng cụ cho Bệnh viện Răng - Hàm - Mặt thành phố Đà Nẵng năm 2026 - 2027",
+      "buyer": "Bệnh Viện Răng - Hàm - Mặt thành phố Đà Nẵng",
+      "buyerCode": "vn0401295590",
+      "publishedAt": "2026-10-15T16:20:15.605",
+      "bidCloseAt": "2026-10-23T15:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 583038505,
+      "location": "Phường Thanh Khê - Thành phố Đà Nẵng",
+      "matchedKeywords": [
+        "chỉ catgut",
+        "chỉ khâu",
+        "chỉ không tiêu",
+        "chỉ phẫu thuật",
+        "chỉ silk",
+        "chỉ tan"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=7e31fbeb-99d7-48a9-8165-87d087429329&notifyId=7e31fbeb-99d7-48a9-8165-87d087429329&notifyNo=IB2600579173&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "f5c62973",
+      "id": "new:IB2600579173-00:f5c62973",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600559542-00",
+      "notifyId": "a2a32bed-642d-4ada-a9ce-5d7fda807759",
+      "notifyNo": "IB2600559542",
+      "title": "Gói 1: Mua thiết bị y tế, vật tư xét nghiệm, hóa chất (291 mặt hàng)",
+      "buyer": "Bệnh viện Đa khoa khu vực Ba Tri",
+      "buyerCode": "vnz000008241",
+      "publishedAt": "2026-10-15T14:41:23.24",
+      "bidCloseAt": "2026-11-02T14:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 12248020500,
+      "location": "Xã Ba Tri - Tỉnh Vĩnh Long",
+      "matchedKeywords": [
+        "chỉ catgut",
+        "chỉ khâu",
+        "chỉ không tiêu",
+        "chỉ silk",
+        "chỉ thép khâu",
+        "Dụng cụ",
+        "Lưỡi dao"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=a2a32bed-642d-4ada-a9ce-5d7fda807759&notifyId=a2a32bed-642d-4ada-a9ce-5d7fda807759&notifyNo=IB2600559542&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "244792f1",
+      "id": "new:IB2600559542-00:244792f1",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577633-00",
+      "notifyId": "4cd2c1a7-d2a1-49f7-a2a6-3e61d3d03637",
+      "notifyNo": "IB2600577633",
+      "title": "Mua sắm Vật tư y tế phục vụ công tác chuyên môn tại Bệnh viện Đa khoa khu vực Móng Cái năm 2026 - 2027",
+      "buyer": "Bệnh viện đa khoa khu vực Móng Cái",
+      "buyerCode": "vnz000023107",
+      "publishedAt": "2026-10-15T16:59:47.16",
+      "bidCloseAt": "2026-11-03T10:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 10058139568,
+      "location": "Phường Móng Cái 2 - Thành phố Quảng Ninh; Xã Quảng Hà - Thành phố Quảng Ninh; Xã Đầm Hà - Thành phố Quảng Ninh",
+      "matchedKeywords": [
+        "chỉ khâu",
+        "chỉ không tiêu",
+        "chỉ phẫu thuật",
+        "chỉ tự tiêu",
+        "Dụng cụ",
+        "Lưỡi dao",
+        "súng",
+        "tay dao điện",
+        "tay dao mổ điện"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=4cd2c1a7-d2a1-49f7-a2a6-3e61d3d03637&notifyId=4cd2c1a7-d2a1-49f7-a2a6-3e61d3d03637&notifyNo=IB2600577633&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "41df6df8",
+      "id": "new:IB2600577633-00:41df6df8",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600578165-00",
+      "notifyId": "02f4a69b-84b2-4ff0-92cd-a0155eeac22d",
+      "notifyNo": "IB2600578165",
+      "title": "Cung ứng thiết bị y tế trong phẫu thuật nội soi khớp tại Bệnh viện Chấn thương - Chỉnh hình Nghệ An năm 2027-2028",
+      "buyer": "Bệnh viện chấn thương - chỉnh hình Nghệ An",
+      "buyerCode": "vnz000012820",
+      "publishedAt": "2026-10-15T16:47:02.356",
+      "bidCloseAt": "2026-11-05T14:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 78514825000,
+      "location": "Phường Trường Vinh - Tỉnh Nghệ An",
+      "matchedKeywords": [
+        "chỉ khâu",
+        "chỉ không tiêu",
+        "chỉ phẫu thuật",
+        "chỉ tự tiêu",
+        "dao đốt điện",
+        "lưỡi cắt đốt",
+        "Lưỡi dao",
+        "mảnh ghép",
+        "súng",
+        "tay dao cắt đốt",
+        "tay dao điện",
+        "tay dao đốt",
+        "trocar"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=02f4a69b-84b2-4ff0-92cd-a0155eeac22d&notifyId=02f4a69b-84b2-4ff0-92cd-a0155eeac22d&notifyNo=IB2600578165&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "f7578a74",
+      "id": "new:IB2600578165-00:f7578a74",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600578913-00",
+      "notifyId": "2c9707fe-ce5b-4668-893e-4b5012aca8d4",
+      "notifyNo": "IB2600578913",
+      "title": "Mua sắm vật tư y tế, hoá chất bổ sung năm 2026-2027",
+      "buyer": "Bệnh viện Đa khoa Tiền Hải",
+      "buyerCode": "vn1000751008",
+      "publishedAt": "2026-10-15T09:36:00.376",
+      "bidCloseAt": "2026-10-22T09:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 1862714730,
+      "location": "Xã Ái Quốc - Tỉnh Hưng Yên",
+      "matchedKeywords": [
+        "chỉ khâu",
+        "chỉ không tiêu",
+        "chỉ phẫu thuật",
+        "chỉ tan",
+        "chỉ tự tiêu",
+        "Dụng cụ",
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=2c9707fe-ce5b-4668-893e-4b5012aca8d4&notifyId=2c9707fe-ce5b-4668-893e-4b5012aca8d4&notifyNo=IB2600578913&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "29e3ee77",
+      "id": "new:IB2600578913-00:29e3ee77",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579688-00",
+      "notifyId": "61ce81e0-34e9-4042-808a-a17b8fdbb9de",
+      "notifyNo": "IB2600579688",
+      "title": "Gói thầu số 02: Tư vấn khảo sát lập thiết kế bản vẽ thi công - dự toán",
+      "buyer": "BAN QUẢN LÝ DỰ ÁN ĐẦU TƯ XÂY DỰNG CÔNG TRÌNH GIAO THÔNG TỈNH TÂY NINH",
+      "buyerCode": "vn1102147652",
+      "publishedAt": "2026-10-15T19:51:36.257",
+      "bidCloseAt": "2026-10-23T08:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 13584989000,
+      "location": "Xã Hậu Nghĩa - Tỉnh Tây Ninh; Xã Hiệp Hoà - Tỉnh Tây Ninh; Xã An Ninh - Tỉnh Tây Ninh; Xã Mỹ Quý - Tỉnh Tây Ninh",
+      "matchedKeywords": [
+        "chỉ không tiêu",
+        "chỉ tự tiêu"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=61ce81e0-34e9-4042-808a-a17b8fdbb9de&notifyId=61ce81e0-34e9-4042-808a-a17b8fdbb9de&notifyNo=IB2600579688&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "9e2f20c8",
+      "id": "new:IB2600579688-00:9e2f20c8",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600578106-00",
+      "notifyId": "fd2b0a12-29d0-4d80-af29-1fe65eb37e84",
+      "notifyNo": "IB2600578106",
+      "title": "Gói thầu số 03 (tư vấn): Khảo sát, lập báo cáo nghiên cứu khả thi (bao gồm lập mô hình thông tin công trình - BIM)",
+      "buyer": "PHÒNG KINH TẾ, HẠ TẦNG VÀ ĐÔ THỊ PHƯỜNG XUÂN LỘC",
+      "buyerCode": "vn3604047951",
+      "publishedAt": "2026-10-15T15:01:29.163",
+      "bidCloseAt": "2026-11-03T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 8191472518,
+      "location": "Phường Xuân Lộc - Thành phố Đồng Nai",
+      "matchedKeywords": [
+        "chỉ không tiêu",
+        "chỉ tan",
+        "chỉ tự tiêu",
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=fd2b0a12-29d0-4d80-af29-1fe65eb37e84&notifyId=fd2b0a12-29d0-4d80-af29-1fe65eb37e84&notifyNo=IB2600578106&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "39a81e77",
+      "id": "new:IB2600578106-00:39a81e77",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579288-00",
+      "notifyId": "5b9e186b-dc29-4df0-87d0-719844df2ece",
+      "notifyNo": "IB2600579288",
+      "title": "Mua sắm Vật tư y tế, hóa chất xét nghiệm năm 2026 của Bệnh viện Đa khoa Hưng Hà Thái Bình",
+      "buyer": "Bệnh viện đa khoa Hưng Hà Thái Bình",
+      "buyerCode": "vn1000586121",
+      "publishedAt": "2026-10-15T14:24:22.088",
+      "bidCloseAt": "2026-10-22T16:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 728771500,
+      "location": "Xã Hưng Hà - Tỉnh Hưng Yên",
+      "matchedKeywords": [
+        "chỉ nylon",
+        "Dụng cụ"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=5b9e186b-dc29-4df0-87d0-719844df2ece&notifyId=5b9e186b-dc29-4df0-87d0-719844df2ece&notifyNo=IB2600579288&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "cf0d96c8",
+      "id": "new:IB2600579288-00:cf0d96c8",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579287-00",
+      "notifyId": "2a22fa6a-db71-4374-9f08-b019e042af3d",
+      "notifyNo": "IB2600579287",
+      "title": "Mua sắm hóa chất, sinh phẩm, VTYT đối với các phần (lô) không lựa chọn được nhà thầu của Gói thầu Mua sắm hóa chất, vật tư y tế, sinh phẩm năm 2026-2027 tại Trung tâm Y tế khu vực Liên Chiểu thuộc dự toán Mua sắm hóa chất, vật tư y tế, sinh phẩm năm 2026-2027",
+      "buyer": "TRUNG TÂM Y TẾ KHU VỰC LIÊN CHIỂU",
+      "buyerCode": "vn0400483707",
+      "publishedAt": "2026-10-15T17:18:32.236",
+      "bidCloseAt": "2026-10-26T10:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 261835470,
+      "location": "Phường Hòa Khánh - Thành phố Đà Nẵng",
+      "matchedKeywords": [
+        "chỉ phẫu thuật",
+        "chỉ tan"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=2a22fa6a-db71-4374-9f08-b019e042af3d&notifyId=2a22fa6a-db71-4374-9f08-b019e042af3d&notifyNo=IB2600579287&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "3a8cd1ba",
+      "id": "new:IB2600579287-00:3a8cd1ba",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579833-00",
+      "notifyId": "d17bc0cc-f084-4d49-947b-22aaabc296c8",
+      "notifyNo": "IB2600579833",
+      "title": "Mua sắm vật tư y tế nhóm vật liệu thay thế mắt năm 2026-2027 của Viện Y học biển của Viện Y học biển",
+      "buyer": "Viện Y Học Biển",
+      "buyerCode": "vn0200983491",
+      "publishedAt": "2026-10-15T17:57:01.226",
+      "bidCloseAt": "2026-10-22T09:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 225003200,
+      "location": "Phường Lê Chân - Thành phố Hải Phòng",
+      "matchedKeywords": [
+        "chỉ tan"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=d17bc0cc-f084-4d49-947b-22aaabc296c8&notifyId=d17bc0cc-f084-4d49-947b-22aaabc296c8&notifyNo=IB2600579833&planNo=PL2600340486&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "221441b9",
+      "id": "new:IB2600579833-00:221441b9",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579301-00",
+      "notifyId": "dcd46403-cb43-47a4-b36d-d984e4a868ba",
+      "notifyNo": "IB2600579301",
+      "title": "Mua sắm thiết bị y tế của Bệnh viện Phổi Thái Bình năm 2026-2027",
+      "buyer": "Bệnh viện Phổi Thái Bình",
+      "buyerCode": "vn1000378509",
+      "publishedAt": "2026-10-15T14:20:29.51",
+      "bidCloseAt": "2026-10-22T09:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 1980272500,
+      "location": "Phường Trần Lãm - Tỉnh Hưng Yên",
+      "matchedKeywords": [
+        "chỉ tan",
+        "Dụng cụ",
+        "kẹp phẫu tích"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=dcd46403-cb43-47a4-b36d-d984e4a868ba&notifyId=dcd46403-cb43-47a4-b36d-d984e4a868ba&notifyNo=IB2600579301&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "8ab89d23",
+      "id": "new:IB2600579301-00:8ab89d23",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600572413-00",
+      "notifyId": "5c10be1c-0c15-49a8-b50b-087bcfdcc4c1",
+      "notifyNo": "IB2600572413",
+      "title": "Thực hiện nhiệm vụ dự án",
+      "buyer": "Phòng Kinh tế xã Rờ Kơi",
+      "buyerCode": "vn6101307214",
+      "publishedAt": "2026-10-15T15:46:06.767",
+      "bidCloseAt": "2026-11-02T10:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 22610203517,
+      "location": "Xã Rờ Kơi - Tỉnh Quảng Ngãi",
+      "matchedKeywords": [
+        "Dụng cụ",
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=5c10be1c-0c15-49a8-b50b-087bcfdcc4c1&notifyId=5c10be1c-0c15-49a8-b50b-087bcfdcc4c1&notifyNo=IB2600572413&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "10bb10e2",
+      "id": "new:IB2600572413-00:10bb10e2",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577647-00",
+      "notifyId": "087781e9-deec-4179-8dc6-1e6acafb0e4c",
+      "notifyNo": "IB2600577647",
+      "title": "Di dời thiết bị chuyên dụng Lab Sinh học miệng",
+      "buyer": "Trường Đại học Y khoa Phạm Ngọc Thạch",
+      "buyerCode": "vn0301483706",
+      "publishedAt": "2026-10-15T14:16:24.209",
+      "bidCloseAt": "2026-10-26T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 1423735000,
+      "location": "Phường Hòa Hưng - Thành phố Hồ Chí Minh",
+      "matchedKeywords": [
+        "Dụng cụ"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=087781e9-deec-4179-8dc6-1e6acafb0e4c&notifyId=087781e9-deec-4179-8dc6-1e6acafb0e4c&notifyNo=IB2600577647&planNo=PL2600339892&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "9c88e3e9",
+      "id": "new:IB2600577647-00:9c88e3e9",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577644-00",
+      "notifyId": "6e660330-6fdd-4d08-9d45-1c044f57da64",
+      "notifyNo": "IB2600577644",
+      "title": "Di dời công cụ, dụng cụ, vật tư, hóa chất, thiết bị chuyên dụng phục vụ Nha khoa",
+      "buyer": "Trường Đại học Y khoa Phạm Ngọc Thạch",
+      "buyerCode": "vn0301483706",
+      "publishedAt": "2026-10-15T14:09:45.484",
+      "bidCloseAt": "2026-10-26T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 1647597000,
+      "location": "Phường Hòa Hưng - Thành phố Hồ Chí Minh",
+      "matchedKeywords": [
+        "Dụng cụ",
+        "kẹp phẫu tích",
+        "súng"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=6e660330-6fdd-4d08-9d45-1c044f57da64&notifyId=6e660330-6fdd-4d08-9d45-1c044f57da64&notifyNo=IB2600577644&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "c47ba27e",
+      "id": "new:IB2600577644-00:c47ba27e",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577025-00",
+      "notifyId": "f2236ac2-4558-4322-ad31-b103a6d00707",
+      "notifyNo": "IB2600577025",
+      "title": "Mua bổ sung CCDC phục vụ sản xuất kinh doanh năm 2026 của Công ty Điện lực Phú Thọ (đợt 2)",
+      "buyer": "CÔNG TY ĐIỆN LỰC PHÚ THỌ - CHI NHÁNH TỔNG CÔNG TY ĐIỆN LỰC MIỀN BẮC",
+      "buyerCode": "vnz000011820",
+      "publishedAt": "2026-10-15T10:10:12.652",
+      "bidCloseAt": "2026-11-02T07:07:00",
+      "bidForm": "DTRR",
+      "bidPrice": 17022575520,
+      "location": "Tỉnh Phú Thọ",
+      "matchedKeywords": [
+        "Dụng cụ"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=f2236ac2-4558-4322-ad31-b103a6d00707&notifyId=f2236ac2-4558-4322-ad31-b103a6d00707&notifyNo=IB2600577025&planNo=PL2600348768&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "2c536113",
+      "id": "new:IB2600577025-00:2c536113",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577205-00",
+      "notifyId": "9d7aab4f-bacb-4622-9c49-94c9822cf6b3",
+      "notifyNo": "IB2600577205",
+      "title": "Mua sắm linh kiện, phụ kiện, thiết bị phục vụ công tác chuyên môn năm 2026",
+      "buyer": "Trung tâm Y tế M'Drắk",
+      "buyerCode": "vn6000491694",
+      "publishedAt": "2026-10-15T10:04:33.23",
+      "bidCloseAt": "2026-10-23T09:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 370684399,
+      "location": "Xã M’Drắk - Tỉnh Đắk Lắk",
+      "matchedKeywords": [
+        "Dụng cụ",
+        "kẹp cầm máu",
+        "kẹp phẫu tích"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=9d7aab4f-bacb-4622-9c49-94c9822cf6b3&notifyId=9d7aab4f-bacb-4622-9c49-94c9822cf6b3&notifyNo=IB2600577205&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "65dcdc6b",
+      "id": "new:IB2600577205-00:65dcdc6b",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577386-00",
+      "notifyId": "0ad9ab7a-7fb2-4972-ab80-98c6d8abb5e4",
+      "notifyNo": "IB2600577386",
+      "title": "Gói thầu số 02: Chỉnh lý và số hoá tài liệu lưu trữ",
+      "buyer": "Văn phòng HĐND và UBND phường Liên Hoà",
+      "buyerCode": "vn5702192478",
+      "publishedAt": "2026-10-15T08:58:48.723",
+      "bidCloseAt": "2026-10-26T15:00:00",
+      "bidForm": "CHCT",
+      "bidPrice": 2450242000,
+      "location": "Phường Liên Hòa - Thành phố Quảng Ninh",
+      "matchedKeywords": [
+        "Dụng cụ"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=0ad9ab7a-7fb2-4972-ab80-98c6d8abb5e4&notifyId=0ad9ab7a-7fb2-4972-ab80-98c6d8abb5e4&notifyNo=IB2600577386&planNo=PL2600338751&step=tbmt&processApply=LDT&bidForm=CHCT",
+      "contentHash": "64a48165",
+      "id": "new:IB2600577386-00:64a48165",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600566960-00",
+      "notifyId": "b60c23f8-142e-4a5a-a0ae-717378016cda",
+      "notifyNo": "IB2600566960",
+      "title": "Gói thầu số 18: Trang bị dụng cụ đồ nghề, an toàn, hành chính văn phòng, thiết bị thông tin liên lạc phục vụ QLVH và sửa chữa",
+      "buyer": "TỔNG CÔNG TY TRUYỀN TẢI ĐIỆN QUỐC GIA",
+      "buyerCode": "vn0102743068",
+      "publishedAt": "2026-10-15T08:35:52.382",
+      "bidCloseAt": "2026-10-26T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 785578000,
+      "location": "Thành phố Hải Phòng",
+      "matchedKeywords": [
+        "Dụng cụ"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=b60c23f8-142e-4a5a-a0ae-717378016cda&notifyId=b60c23f8-142e-4a5a-a0ae-717378016cda&notifyNo=IB2600566960&planNo=PL2600078117&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "c4599dfe",
+      "id": "new:IB2600566960-00:c4599dfe",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600578034-00",
+      "notifyId": "594a0115-518d-4e69-8f53-e832715de18d",
+      "notifyNo": "IB2600578034",
+      "title": "Mua sắm cơ sở vật chất, trang thiết bị dạy và học trường Phổ thông dân tộc bán trú Tiểu học và Trung học cơ sở Marie Curie - Mèo Vạc năm 2026",
+      "buyer": "Trường phổ thông dân tộc bán trú tiểu học và trung học cơ sở Marie Curie - Mèo Vạc",
+      "buyerCode": "vn5100518595",
+      "publishedAt": "2026-10-14T22:00:33.217",
+      "bidCloseAt": "2026-10-23T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 4290926000,
+      "location": "Xã Mèo Vạc - Tỉnh Tuyên Quang",
+      "matchedKeywords": [
+        "Dụng cụ",
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=594a0115-518d-4e69-8f53-e832715de18d&notifyId=594a0115-518d-4e69-8f53-e832715de18d&notifyNo=IB2600578034&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "29e17ade",
+      "id": "new:IB2600578034-00:29e17ade",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600578989-00",
+      "notifyId": "aa101284-84b1-4e4f-8abe-e4fca00d3186",
+      "notifyNo": "IB2600578989",
+      "title": "Mua sắm trang thiết bị y tế năm 2026 của Trung tâm Y tế khu vực Tân Trụ",
+      "buyer": "Trung Tâm Y Tế Khu Vực Tân Trụ",
+      "buyerCode": "vn1100772675",
+      "publishedAt": "2026-10-15T11:34:30.873",
+      "bidCloseAt": "2026-10-23T15:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 738407200,
+      "location": "Xã Tân Trụ - Tỉnh Tây Ninh",
+      "matchedKeywords": [
+        "kẹp phẫu tích"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=aa101284-84b1-4e4f-8abe-e4fca00d3186&notifyId=aa101284-84b1-4e4f-8abe-e4fca00d3186&notifyNo=IB2600578989&planNo=PL2600350516&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "fdf71cbe",
+      "id": "new:IB2600578989-00:fdf71cbe",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600575205-01",
+      "notifyId": "fd2cde4e-39d5-4f2d-9f86-222d50b9e6cd",
+      "notifyNo": "IB2600575205",
+      "title": "Gói thầu số 03: Cung cấp dịch vụ thực hiện hệ thống màn hình Led, Led live, thiết bị công nghệ xử lý hình ảnh 3D, thiết bị trình diễn mapping và các thiết bị đi kèm.",
+      "buyer": "TRUNG TÂM NGHỆ THUẬT TP.HCM",
+      "buyerCode": "vn0318943398",
+      "publishedAt": "2026-10-15T17:55:39.754",
+      "bidCloseAt": "2026-10-30T14:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 15789448800,
+      "location": "Phường An Khánh - Thành phố Hồ Chí Minh",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=fd2cde4e-39d5-4f2d-9f86-222d50b9e6cd&notifyId=fd2cde4e-39d5-4f2d-9f86-222d50b9e6cd&notifyNo=IB2600575205&planNo=PL2600345988&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "15721b8d",
+      "id": "new:IB2600575205-01:15721b8d",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600563957-00",
+      "notifyId": "0d413089-f7b0-49f2-b81f-b4875b798305",
+      "notifyNo": "IB2600563957",
+      "title": "Gói thầu 02G-197-TN-ĐTXD2026: Thí nghiệm VTTB các công trình đầu tư xây dựng năm 2026 thuộc kế hoạch BCĐ 197 UBND TP Hà Nội",
+      "buyer": "CÔNG TY ĐIỆN LỰC HOÀN KIẾM",
+      "buyerCode": "vnz000021805",
+      "publishedAt": "2026-10-15T16:35:13.475",
+      "bidCloseAt": "2026-10-26T09:30:00",
+      "bidForm": "DTRR",
+      "bidPrice": 277335684,
+      "location": "Phường Ô Chợ Dừa - Thành phố Hà Nội; Phường Văn Miếu - Quốc Tử Giám - Thành phố Hà Nội",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=0d413089-f7b0-49f2-b81f-b4875b798305&notifyId=0d413089-f7b0-49f2-b81f-b4875b798305&notifyNo=IB2600563957&planNo=PL2600318325&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "a64b4484",
+      "id": "new:IB2600563957-00:a64b4484",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600575036-00",
+      "notifyId": "2c9e4c6d-920a-47d6-982a-da8520823829",
+      "notifyNo": "IB2600575036",
+      "title": "Gói thầu số 02: Phụ tùng ngăn điện phân của bình điện phân BM2.7 Gen 3",
+      "buyer": "CÔNG TY CỔ PHẦN HÓA CHẤT CƠ BẢN MIỀN NAM",
+      "buyerCode": "vn0301446260",
+      "publishedAt": "2026-10-15T16:07:43.331",
+      "bidCloseAt": "2026-11-02T10:30:00",
+      "bidForm": "DTRR",
+      "bidPrice": 37334220000,
+      "location": "Xã Phước An - Thành phố Đồng Nai; Phường Trấn Biên - Thành phố Đồng Nai",
+      "matchedKeywords": [
+        "lưới",
+        "mesh"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=2c9e4c6d-920a-47d6-982a-da8520823829&notifyId=2c9e4c6d-920a-47d6-982a-da8520823829&notifyNo=IB2600575036&planNo=&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "2de18521",
+      "id": "new:IB2600575036-00:2de18521",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600555345-00",
+      "notifyId": "b26f6591-bb18-4a6e-b3c6-4dd5d633a5d6",
+      "notifyNo": "IB2600555345",
+      "title": "Bảo trì, bảo dưỡng hệ thống kỹ thuật và dịch vụ hỗ trợ kỹ thuật 24/7",
+      "buyer": "Cục Công nghệ thông tin và Chuyển đổi số",
+      "buyerCode": "vnz000012096",
+      "publishedAt": "2026-10-15T16:03:12.804",
+      "bidCloseAt": "2026-11-02T09:30:00",
+      "bidForm": "DTRR",
+      "bidPrice": 14525000000,
+      "location": "Thành phố Hà Nội",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=b26f6591-bb18-4a6e-b3c6-4dd5d633a5d6&notifyId=b26f6591-bb18-4a6e-b3c6-4dd5d633a5d6&notifyNo=IB2600555345&planNo=PL2600319387&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "deaa8840",
+      "id": "new:IB2600555345-00:deaa8840",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600575121-00",
+      "notifyId": "b33230de-eec5-4c61-a024-3422964ad12f",
+      "notifyNo": "IB2600575121",
+      "title": "Tư vấn giám sát thi công xây dựng và lắp đặt thiết bị dự án: Nâng cao năng lực vận hành, giảm TTĐN lưới điện đội QLĐL khu vực Yên Khánh, Kim Sơn, tỉnh Ninh Bình năm 2027",
+      "buyer": "CÔNG TY ĐIỆN LỰC NINH BÌNH – CHI NHÁNH TỔNG CÔNG TY ĐIỆN LỰC MIỀN BẮC",
+      "buyerCode": "vn2700277392",
+      "publishedAt": "2026-10-15T15:46:20.113",
+      "bidCloseAt": "2026-10-23T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 505957482,
+      "location": "Tỉnh Ninh Bình",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=b33230de-eec5-4c61-a024-3422964ad12f&notifyId=b33230de-eec5-4c61-a024-3422964ad12f&notifyNo=IB2600575121&planNo=PL2600340854&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "e79bfcf5",
+      "id": "new:IB2600575121-00:e79bfcf5",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600575122-00",
+      "notifyId": "8fdaa725-6653-4084-9d57-83c58db6453d",
+      "notifyNo": "IB2600575122",
+      "title": "Tư vấn giám sát thi công xây dựng và lắp đặt thiết bị dự án: Nâng cao năng lực vận hành, giảm TTĐN lưới điện đội QLĐL khu vực Hải Hậu, Xuân Trường, Ý Yên, tỉnh Ninh Bình năm 2027",
+      "buyer": "CÔNG TY ĐIỆN LỰC NINH BÌNH – CHI NHÁNH TỔNG CÔNG TY ĐIỆN LỰC MIỀN BẮC",
+      "buyerCode": "vn2700277392",
+      "publishedAt": "2026-10-15T15:45:27.76",
+      "bidCloseAt": "2026-10-23T09:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 955401807,
+      "location": "Tỉnh Ninh Bình",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=8fdaa725-6653-4084-9d57-83c58db6453d&notifyId=8fdaa725-6653-4084-9d57-83c58db6453d&notifyNo=IB2600575122&planNo=PL2600340854&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "a6e3da30",
+      "id": "new:IB2600575122-00:a6e3da30",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600572502-01",
+      "notifyId": "439ac02e-f6d4-44b0-abe4-44f5d08c48c8",
+      "notifyNo": "IB2600572502",
+      "title": "56HH-SXKD-2026: Cung cấp vật tư tiêu hao cơ phục vụ công tác sửa chữa bảo dưỡng tại Nhà máy Nhiệt điện Duyên Hải 1, Duyên Hải 3 và Duyên Hải 3 Mở rộng",
+      "buyer": "CÔNG TY NHIỆT ĐIỆN DUYÊN HẢI - CHI NHÁNH TỔNG CÔNG TY PHÁT ĐIỆN 1",
+      "buyerCode": "vnz000017073",
+      "publishedAt": "2026-10-15T13:29:16.302",
+      "bidCloseAt": "2026-10-22T14:00:00",
+      "bidForm": "CHCT",
+      "bidPrice": 4220629131,
+      "location": "Phường Duyên Hải - Tỉnh Vĩnh Long",
+      "matchedKeywords": [
+        "lưới",
+        "Lưỡi dao"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=439ac02e-f6d4-44b0-abe4-44f5d08c48c8&notifyId=439ac02e-f6d4-44b0-abe4-44f5d08c48c8&notifyNo=IB2600572502&planNo=&step=tbmt&processApply=LDT&bidForm=CHCT",
+      "contentHash": "1038ebd6",
+      "id": "new:IB2600572502-01:1038ebd6",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600561469-00",
+      "notifyId": "3537f00d-8556-4df9-87d6-80c5bdfba7bf",
+      "notifyNo": "IB2600561469",
+      "title": "Khảo sát, đánh giá và lập hồ sơ thiết kế xử lý vết rạn nứt dọc mặt đập chính - Công trình thủy điện Srêpốk 3",
+      "buyer": "CÔNG TY THỦY ĐIỆN BUÔN KUỐP- CHI NHÁNH TỔNG CÔNG TY PHÁT ĐIỆN 3 - CÔNG TY CỔ PHẦN",
+      "buyerCode": "vnz000023772",
+      "publishedAt": "2026-10-15T10:50:51.247",
+      "bidCloseAt": "2026-11-04T14:30:00",
+      "bidForm": "DTRR",
+      "bidPrice": 1264580029,
+      "location": "Xã Ea Wer - Tỉnh Đắk Lắk",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=3537f00d-8556-4df9-87d6-80c5bdfba7bf&notifyId=3537f00d-8556-4df9-87d6-80c5bdfba7bf&notifyNo=IB2600561469&planNo=PL2600300378&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "354c6341",
+      "id": "new:IB2600561469-00:354c6341",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600577145-00",
+      "notifyId": "bf5db0ca-6ea1-4c91-80b3-5171ac9c6030",
+      "notifyNo": "IB2600577145",
+      "title": "Gói thầu số 02: Tư vấn kiểm tra, nghiệm thu chất lượng, khối lượng sản phẩm",
+      "buyer": "PHÒNG KINH TẾ XÃ IA CHIM",
+      "buyerCode": "vn6101311475",
+      "publishedAt": "2026-10-15T09:56:32.222",
+      "bidCloseAt": "2026-11-02T08:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 1687734516,
+      "location": "Xã Ia Chim - Tỉnh Quảng Ngãi",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=bf5db0ca-6ea1-4c91-80b3-5171ac9c6030&notifyId=bf5db0ca-6ea1-4c91-80b3-5171ac9c6030&notifyNo=IB2600577145&planNo=PL2600344094&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "0dae5e49",
+      "id": "new:IB2600577145-00:0dae5e49",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600576895-00",
+      "notifyId": "a61596e0-52fd-442a-888d-8b00fabfce93",
+      "notifyNo": "IB2600576895",
+      "title": "Gói thầu số 01: Đo đạc lập, chỉnh lý bản đồ địa chính; đăng ký đất đai, lập hồ sơ địa chính, cấp Giấy chứng nhận; xây dựng cơ sở dữ liệu địa chính",
+      "buyer": "PHÒNG KINH TẾ XÃ IA CHIM",
+      "buyerCode": "vn6101311475",
+      "publishedAt": "2026-10-15T09:53:33.343",
+      "bidCloseAt": "2026-11-02T08:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 38281220099,
+      "location": "Xã Ia Chim - Tỉnh Quảng Ngãi",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=a61596e0-52fd-442a-888d-8b00fabfce93&notifyId=a61596e0-52fd-442a-888d-8b00fabfce93&notifyNo=IB2600576895&planNo=PL2600344094&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "e9a16713",
+      "id": "new:IB2600576895-00:e9a16713",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600573166-00",
+      "notifyId": "1f58fc87-b47a-457e-a50d-2f561d48ee3b",
+      "notifyNo": "IB2600573166",
+      "title": "Gói thầu số 2: Tư vấn giám sát thi công công trình: \"Cải tạo lưới điện khu vực tập trung đông người Quận Tân Bình",
+      "buyer": "CHI NHÁNH TỔNG CÔNG TY ĐIỆN LỰC THÀNH PHỐ HỒ CHÍ MINH TNHH - CÔNG TY ĐIỆN LỰC SÀI GÒN",
+      "buyerCode": "vnz000023123",
+      "publishedAt": "2026-10-15T09:21:20.056",
+      "bidCloseAt": "2026-11-02T10:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 846229834,
+      "location": "Phường Bảy Hiền - Thành phố Hồ Chí Minh; Phường Tân Sơn Hòa - Thành phố Hồ Chí Minh",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=1f58fc87-b47a-457e-a50d-2f561d48ee3b&notifyId=1f58fc87-b47a-457e-a50d-2f561d48ee3b&notifyNo=IB2600573166&planNo=PL2600340917&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "53a71e97",
+      "id": "new:IB2600573166-00:53a71e97",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600560578-01",
+      "notifyId": "446febb5-0cca-4b46-84dc-0c8c477ba035",
+      "notifyNo": "IB2600560578",
+      "title": "Gói thầu số 01: Tư vấn Đo đạc, lập bản đồ địa chính; chỉnh lý bản đồ địa chính; đăng ký đất đai, lập hồ sơ địa chính, cấp giấy CNQSD đất; xây dựng CSDL đất đai",
+      "buyer": "Phòng Xây dựng, Nông nghiệp và Môi trường xã Kon Plông",
+      "buyerCode": "vnz000053055",
+      "publishedAt": "2026-10-15T09:07:22.801",
+      "bidCloseAt": "2026-10-26T16:50:00",
+      "bidForm": "DTRR",
+      "bidPrice": 59209050000,
+      "location": "Xã Kon Plông - Tỉnh Quảng Ngãi",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=446febb5-0cca-4b46-84dc-0c8c477ba035&notifyId=446febb5-0cca-4b46-84dc-0c8c477ba035&notifyNo=IB2600560578&planNo=PL2600318923&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "9a0aad1a",
+      "id": "new:IB2600560578-01:9a0aad1a",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600568139-01",
+      "notifyId": "3f8ff4a2-de5e-4327-b9a4-c81fd39ce713",
+      "notifyNo": "IB2600568139",
+      "title": "Gói thầu số 02: Tư vấn giám sát, kiểm tra nghiệm thu",
+      "buyer": "Phòng Xây dựng, Nông nghiệp và Môi trường xã Kon Plông",
+      "buyerCode": "vnz000053055",
+      "publishedAt": "2026-10-15T09:02:43.993",
+      "bidCloseAt": "2026-10-26T16:55:00",
+      "bidForm": "DTRR",
+      "bidPrice": 2151541000,
+      "location": "Xã Kon Plông - Tỉnh Quảng Ngãi",
+      "matchedKeywords": [
+        "lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=3f8ff4a2-de5e-4327-b9a4-c81fd39ce713&notifyId=3f8ff4a2-de5e-4327-b9a4-c81fd39ce713&notifyNo=IB2600568139&planNo=PL2600318923&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "6c04a840",
+      "id": "new:IB2600568139-01:6c04a840",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600578215-00",
+      "notifyId": "221014a2-8260-4559-ac86-980fe901b6d6",
+      "notifyNo": "IB2600578215",
+      "title": "Mua sắm vật liệu, thiết bị hàng hóa phục vụ xây dựng công trình căng tin bán hàng trại giam Xuân Hà năm 2026",
+      "buyer": "Trại giam Xuân Hà – Cục C10 – Bộ Công an",
+      "buyerCode": "vnz000005293",
+      "publishedAt": "2026-10-15T08:23:01.587",
+      "bidCloseAt": "2026-10-22T09:00:00",
+      "bidForm": "CGTTRG",
+      "bidPrice": 957429550,
+      "location": "Xã Toàn Lưu - Tỉnh Hà Tĩnh",
+      "matchedKeywords": [
+        "lưới",
+        "tấm lưới"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=221014a2-8260-4559-ac86-980fe901b6d6&notifyId=221014a2-8260-4559-ac86-980fe901b6d6&notifyNo=IB2600578215&planNo=&step=tbmt&processApply=LDT&bidForm=CGTTRG",
+      "contentHash": "62f0528c",
+      "id": "new:IB2600578215-00:62f0528c",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
+    {
+      "noticeId": "IB2600579071-00",
+      "notifyId": "f11d63ae-55d3-4ef0-a534-6af1d079e649",
+      "notifyNo": "IB2600579071",
+      "title": "Phi tư vấn Kiểm định, thử tải cầu",
+      "buyer": "Trung tâm Quản lý Giao thông và Hạ tầng kỹ thuật Thành phố Hồ Chí Minh",
+      "buyerCode": "vn0319406879",
+      "publishedAt": "2026-10-15T15:51:23.498",
+      "bidCloseAt": "2026-10-26T10:00:00",
+      "bidForm": "DTRR",
+      "bidPrice": 284772745,
+      "location": "Xã Dầu Tiếng - Thành phố Hồ Chí Minh",
+      "matchedKeywords": [
+        "súng"
+      ],
+      "sourceUrl": "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection?render=detail-v2&type=es-notify-contractor&stepCode=notify-contractor-step-1-tbmt&id=f11d63ae-55d3-4ef0-a534-6af1d079e649&notifyId=f11d63ae-55d3-4ef0-a534-6af1d079e649&notifyNo=IB2600579071&planNo=PL2600347128&step=tbmt&processApply=LDT&bidForm=DTRR",
+      "contentHash": "838f1fef",
+      "id": "new:IB2600579071-00:838f1fef",
+      "kind": "new",
+      "detectedAt": "2026-10-15T21:40:24.480Z"
+    },
     {
       "noticeId": "IB2600574081-00",
       "notifyId": "628dd04a-06f0-43d7-b8f8-9539162f96e9",
