@@ -37,6 +37,27 @@ test("emits structured timing logs for portal pages, seeds, and Sub-OUs", () => 
   assert.match(page, /\[TenderPulse\] overview load complete/);
 });
 
+test("includes upstream portal status and request ID in failure diagnostics", () => {
+  assert.match(worker, /code: "PORTAL_UPSTREAM_HTTP_ERROR"/);
+  assert.match(worker, /portalStatus: portalResponse\.status/);
+  assert.match(worker, /X-TenderPulse-Request": requestId/);
+  assert.match(page, /portalStatus: data\?\.portalStatus/);
+  assert.match(page, /requestId: data\?\.requestId/);
+});
+
+test("uses accurate dashboard messaging when every Sub-OU fails", () => {
+  assert.match(page, /successfulSlices\.length\s*\?\s*copy\(language/);
+  assert.match(page, /Could not load any Sub-OUs/);
+  assert.match(page, /Không thể tải dữ liệu Sub-OU nào/);
+});
+
+test("uses saved data first and queries only the uncovered trailing dates", () => {
+  assert.match(page, /loadOverviewFactsFromSnapshot\(subOu, nextFilters, fetch, true\)/);
+  assert.match(page, /updating only dates missing from daily snapshot/);
+  assert.match(page, /dateFrom: liveDateFrom/);
+  assert.match(page, /Live portal data unavailable after/);
+});
+
 test("loads independent overview seeds with bounded concurrency", () => {
   assert.match(page, /const seedConcurrency = Math\.min\(2, seeds\.length\)/);
   assert.match(page, /Promise\.all\(Array\.from\(\{ length: seedConcurrency \}, \(\) => runSeedWorker\(\)\)\)/);
@@ -44,7 +65,7 @@ test("loads independent overview seeds with bounded concurrency", () => {
 });
 
 test("prefers the daily snapshot and reloads it without forcing live portal searches", () => {
-  assert.match(page, /loadOverviewFactsFromSnapshot\(subOu, nextFilters\)/);
+  assert.match(page, /loadOverviewFactsFromSnapshot\(subOu, nextFilters, fetch, true\)/);
   assert.match(page, /if \(!forceRefresh\)/);
   assert.match(page, /Sub-OU loaded from daily snapshot/);
   assert.match(page, /tenderpulse\.overview-session-cache\.v16/);

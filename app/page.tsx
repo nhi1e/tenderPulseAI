@@ -552,9 +552,21 @@ async function fetchPortalPage(keyword: string, page: number, filters: SearchFil
     throw lastError instanceof Error ? lastError : new Error("Could not connect to the data service.");
   }
   const body = await response.text();
-  let data: { page?: PortalPage; error?: string } | undefined;
+  let data: {
+    page?: PortalPage;
+    error?: string;
+    code?: string;
+    portalStatus?: number;
+    requestId?: string;
+  } | undefined;
   try {
-    data = body ? JSON.parse(body) as { page?: PortalPage; error?: string } : undefined;
+    data = body ? JSON.parse(body) as {
+      page?: PortalPage;
+      error?: string;
+      code?: string;
+      portalStatus?: number;
+      requestId?: string;
+    } : undefined;
   } catch {
     console.error("[TenderPulse] invalid proxy response", {
       keyword,
@@ -570,6 +582,9 @@ async function fetchPortalPage(keyword: string, page: number, filters: SearchFil
       page,
       status: response.status,
       error: data?.error,
+      code: data?.code,
+      portalStatus: data?.portalStatus,
+      requestId: data?.requestId || response.headers.get("X-TenderPulse-Request") || undefined,
     });
     throw new Error(data?.error || "Could not retrieve this portal page.");
   }
@@ -1648,34 +1663,68 @@ function MarketOverview() {
     snapshotOnly = false,
   ) {
     const subOuStartedAt = performance.now();
+    let snapshot: Awaited<ReturnType<typeof loadOverviewFactsFromSnapshot>> = undefined;
     if (!forceRefresh) {
-      const snapshot = await loadOverviewFactsFromSnapshot(subOu, nextFilters);
+      snapshot = await loadOverviewFactsFromSnapshot(subOu, nextFilters, fetch, true);
       if (snapshot) {
         console.info("[TenderPulse] Sub-OU loaded from daily snapshot", {
           subOu,
           generatedAt: snapshot.generatedAt,
+          coveredDateFrom: snapshot.coveredDateFrom,
+          coveredDateTo: snapshot.coveredDateTo,
+          completeCoverage: snapshot.completeCoverage,
           facts: snapshot.facts.length,
           sourceRecords: snapshot.sourceRecords,
           elapsedMs: Math.round(performance.now() - subOuStartedAt),
         });
+        if (snapshot.completeCoverage) {
+          return {
+            fetchedAt: snapshot.generatedAt,
+            slice: aggregateOverviewFacts(subOu, snapshot.facts, {
+              sourceTotalElements: snapshot.sourceRecords,
+              truncated: false,
+              failedQueries: [],
+            }),
+          };
+        }
+      }
+    }
+    if (snapshotOnly) {
+      if (snapshot) {
         return {
           fetchedAt: snapshot.generatedAt,
           slice: aggregateOverviewFacts(subOu, snapshot.facts, {
             sourceTotalElements: snapshot.sourceRecords,
             truncated: false,
-            failedQueries: [],
+            failedQueries: [`Saved data covers through ${snapshot.coveredDateTo}; later dates were not refreshed.`],
           }),
         };
       }
-    }
-    if (snapshotOnly) {
       throw new Error(copy(language, "The saved snapshot does not cover this date range.", "Dữ liệu đã lưu chưa bao phủ khoảng thời gian này."));
     }
 
-    const facts = new Map<string, OverviewFact>();
-    let sourceTotalElements = 0;
+    const facts = new Map<string, OverviewFact>((snapshot?.facts || []).map((fact) => [fact.key, fact]));
+    let sourceTotalElements = snapshot?.sourceRecords || 0;
     let truncated = false;
     const failedQueries: string[] = [];
+    let liveDateFrom = nextFilters.dateFrom;
+    if (snapshot && !snapshot.completeCoverage) {
+      const nextDate = new Date(`${snapshot.coveredDateTo}T00:00:00.000Z`);
+      nextDate.setUTCDate(nextDate.getUTCDate() + 1);
+      liveDateFrom = nextDate.toISOString().slice(0, 10);
+    }
+    const liveFilters = {
+      ...overviewSearchFilters(nextFilters),
+      dateFrom: liveDateFrom,
+    };
+    if (snapshot && !snapshot.completeCoverage) {
+      console.info("[TenderPulse] updating only dates missing from daily snapshot", {
+        subOu,
+        snapshotThrough: snapshot.coveredDateTo,
+        liveDateFrom,
+        liveDateTo: nextFilters.dateTo,
+      });
+    }
     const rules = keywordMaster.filter((rule) =>
       rule.subOu === subOu &&
       (nextFilters.productGroup === "all" || rule.productGroup === nextFilters.productGroup),
@@ -1722,7 +1771,7 @@ function MarketOverview() {
           for (const selectedHospital of selectedHospitals) {
             try {
               const result = await collectLiveWinningBids(seed, {
-                ...overviewSearchFilters(nextFilters),
+                ...liveFilters,
                 hospital: selectedHospital ? hospitalPortalQuery(selectedHospital) : "",
               }, {
                 maxPages: 25,
@@ -1775,13 +1824,16 @@ function MarketOverview() {
     };
     await Promise.all(Array.from({ length: seedConcurrency }, () => runSeedWorker()));
 
-    if (seeds.length && !successfulQueries) {
+    if (seeds.length && !successfulQueries && !snapshot) {
       console.error("[TenderPulse] Sub-OU failed", {
         subOu,
         seeds,
         elapsedMs: Math.round(performance.now() - subOuStartedAt),
       });
       throw new Error(copy(language, `Could not update ${subOu}.`, `Không thể cập nhật ${subOu}.`));
+    }
+    if (seeds.length && !successfulQueries && snapshot) {
+      failedQueries.push(`Live portal data unavailable after ${snapshot.coveredDateTo}`);
     }
 
     console.info("[TenderPulse] Sub-OU complete", {
@@ -1892,7 +1944,16 @@ function MarketOverview() {
       });
       if (index + 1 < pendingTargets.length) await new Promise((resolve) => setTimeout(resolve, 250));
     }
-    if (failures.length) setError(copy(language, `Could not load: ${failures.join(", ")}. The remaining Sub-OUs are still shown.`, `Chưa thể tải: ${failures.join(", ")}. Các Sub-OU còn lại vẫn được hiển thị.`));
+    if (failures.length) {
+      const message = successfulSlices.length
+        ? copy(language,
+          `Could not load: ${failures.join(", ")}. The successfully loaded Sub-OUs are still shown.`,
+          `Chưa thể tải: ${failures.join(", ")}. Các Sub-OU tải thành công vẫn được hiển thị.`)
+        : copy(language,
+          `Could not load any Sub-OUs (${failures.join(", ")}). No overview data is currently available. Try again later.`,
+          `Không thể tải dữ liệu Sub-OU nào (${failures.join(", ")}). Hiện chưa có dữ liệu tổng quan. Vui lòng thử lại sau.`);
+      setError(message);
+    }
     setLastLoadSummary({ succeeded, total: targets.length });
     const sortedSlices = successfulSlices.sort((left, right) => subOuOrder.indexOf(left.name) - subOuOrder.indexOf(right.name));
     setSlices(sortedSlices);

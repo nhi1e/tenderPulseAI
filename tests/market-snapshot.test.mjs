@@ -135,6 +135,34 @@ test("does not use a snapshot outside its completed coverage", async () => {
   assert.equal(result, undefined);
 });
 
+test("returns the covered snapshot prefix when partial coverage is explicitly allowed", async () => {
+  const partitionPath = "/data/market-snapshot/partitions/2026/endo-stapling.json";
+  const manifest = {
+    schemaVersion: 1,
+    status: "ready",
+    generatedAt: "2026-10-07T00:00:00Z",
+    coverage: { dateFrom: "2023-01-01", dateTo: "2026-10-07" },
+    records: 2,
+    partitions: [{ subOu: "Endo Stapling", year: "2026", path: partitionPath, records: 2 }],
+  };
+  const fetcher = snapshotFetcher(manifest, {
+    [partitionPath]: [
+      fact({ decisionDate: "2026-10-07T00:00:00" }),
+      fact({ key: "newer-row", sourceId: "newer-row", decisionDate: "2026-10-08T00:00:00" }),
+    ],
+  });
+  await snapshot.readMarketSnapshotManifest(fetcher, true);
+  const result = await snapshot.loadOverviewFactsFromSnapshot("Endo Stapling", {
+    dateFrom: "2026-01-01",
+    dateTo: "2026-10-09",
+    productGroup: "all",
+    company: "all",
+  }, fetcher, true);
+  assert.deepEqual(result?.facts.map((row) => row.key), ["row-1"]);
+  assert.equal(result?.coveredDateTo, "2026-10-07");
+  assert.equal(result?.completeCoverage, false);
+});
+
 test("uses a complete 2023 snapshot when the selected start date is earlier than portal availability", async () => {
   const partitionPath = "/data/market-snapshot/partitions/2026/endo-stapling.json";
   const manifest = {
