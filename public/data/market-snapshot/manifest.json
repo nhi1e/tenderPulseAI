@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "status": "ready",
-  "generatedAt": "2026-10-15T21:37:53.479Z",
+  "generatedAt": "2026-10-17T20:49:25.991Z",
   "coverage": {
     "dateFrom": "2023-01-01",
-    "dateTo": "2026-10-16"
+    "dateTo": "2026-10-18"
   },
-  "records": 18926,
+  "records": 19009,
   "partitions": [
     {
       "subOu": "A&I",
@@ -138,51 +138,51 @@
       "subOu": "A&I",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/a-i.json",
-      "records": 192
+      "records": 198
     },
     {
       "subOu": "Endo Stapling",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/endo-stapling.json",
-      "records": 285
+      "records": 296
     },
     {
       "subOu": "ES",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/es.json",
-      "records": 222
+      "records": 226
     },
     {
       "subOu": "Hernia",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/hernia.json",
-      "records": 338
+      "records": 349
     },
     {
       "subOu": "Open Stapling",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/open-stapling.json",
-      "records": 240
+      "records": 248
     },
     {
       "subOu": "Suture",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/suture.json",
-      "records": 2740
+      "records": 2773
     },
     {
       "subOu": "VS&D",
       "year": "2026",
       "path": "/data/market-snapshot/partitions/2026/vs-d.json",
-      "records": 302
+      "records": 312
     }
   ],
   "lastSync": {
     "mode": "incremental",
-    "dateFrom": "2026-09-15",
-    "dateTo": "2026-10-16",
-    "newRecords": 68,
+    "dateFrom": "2026-09-16",
+    "dateTo": "2026-10-18",
+    "newRecords": 110,
     "changedRecords": 0,
-    "removedRecords": 61
+    "removedRecords": 27
   }
 }
