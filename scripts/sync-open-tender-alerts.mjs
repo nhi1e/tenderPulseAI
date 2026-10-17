@@ -10,7 +10,8 @@ import {
   normalizeSearchTerms,
 } from "../lib/open-tender-alerts.mjs";
 
-const SEARCH_URL = "https://muasamcong.mpi.gov.vn/o/egp-portal-contractor-selection-v2/services/smart/search?token=";
+const PORTAL_ORIGIN = "https://muasamcong.mof.gov.vn";
+const SEARCH_URL = `${PORTAL_ORIGIN}/o/egp-portal-contractor-selection-v2/services/smart/search?token=`;
 const OUTPUT_ROOT = path.resolve(process.env.TENDERPULSE_OPEN_TENDER_ALERTS_ROOT || "public/data/open-tender-alerts");
 const STATE_PATH = path.resolve(process.env.TENDERPULSE_OPEN_TENDER_ALERTS_STATE || "data/open-tender-alerts/state.json");
 const ALERTS_PATH = path.join(OUTPUT_ROOT, "alerts.json");
@@ -55,8 +56,8 @@ async function fetchPage(keyword, pageNumber, from, to, attempt = 1) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json; charset=utf-8",
-      Origin: "https://muasamcong.mpi.gov.vn",
-      Referer: "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection",
+      Origin: PORTAL_ORIGIN,
+      Referer: `${PORTAL_ORIGIN}/vi/web/guest/contractor-selection`,
     },
     body: JSON.stringify(buildOpenTenderSearchPayload(keyword, pageNumber, from, to)),
     // A redirect can silently turn this POST into a GET, which the portal
