@@ -200,7 +200,15 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
         status: portalResponse.status,
         elapsedMs: Date.now() - requestStartedAt,
       });
-      return Response.json({ error: `Portal request failed with status ${portalResponse.status}.` }, { status: 502 });
+      return Response.json({
+        error: `Portal request failed with status ${portalResponse.status}.`,
+        code: "PORTAL_UPSTREAM_HTTP_ERROR",
+        portalStatus: portalResponse.status,
+        requestId,
+      }, {
+        status: 502,
+        headers: { "X-TenderPulse-Request": requestId },
+      });
     }
     const portalElapsedMs = Date.now() - requestStartedAt;
     const headers = new Headers();
@@ -231,9 +239,14 @@ async function handlePortalPage(request: Request, ctx: ExecutionContext) {
       return Response.json({
         error: "Cổng Mua Sắm Công phản hồi quá chậm cho truy vấn này.",
         code: "PORTAL_TIMEOUT",
-      }, { status: 504 });
+        requestId,
+      }, { status: 504, headers: { "X-TenderPulse-Request": requestId } });
     }
-    return Response.json({ error: "Không thể kết nối với Cổng Mua Sắm Công." }, { status: 502 });
+    return Response.json({
+      error: "Không thể kết nối với Cổng Mua Sắm Công.",
+      code: "PORTAL_CONNECTION_ERROR",
+      requestId,
+    }, { status: 502, headers: { "X-TenderPulse-Request": requestId } });
   }
 }
 

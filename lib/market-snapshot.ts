@@ -75,6 +75,9 @@ export type SnapshotFactResult = {
   facts: SnapshotFact[];
   generatedAt: string;
   sourceRecords: number;
+  coveredDateFrom: string;
+  coveredDateTo: string;
+  completeCoverage: boolean;
 };
 
 let manifestPromise: Promise<MarketSnapshotManifest | undefined> | undefined;
@@ -185,6 +188,7 @@ export async function loadOverviewFactsFromSnapshot(
   subOu: string,
   filters: SnapshotOverviewFilters,
   fetcher: typeof fetch = fetch,
+  allowPartialCoverage = false,
 ): Promise<SnapshotFactResult | undefined> {
   const manifest = await readMarketSnapshotManifest(fetcher);
   const effectiveDateFrom = filters.dateFrom < MARKET_DATA_AVAILABLE_FROM
@@ -197,12 +201,16 @@ export async function loadOverviewFactsFromSnapshot(
     !manifest.generatedAt ||
     !manifest.coverage ||
     effectiveDateFrom < manifest.coverage.dateFrom ||
-    filters.dateTo > manifest.coverage.dateTo
+    effectiveDateFrom > manifest.coverage.dateTo ||
+    (filters.dateTo > manifest.coverage.dateTo && !allowPartialCoverage)
   ) {
     return undefined;
   }
 
-  const years = new Set(requestedYears(effectiveDateFrom, filters.dateTo));
+  const coveredDateTo = filters.dateTo > manifest.coverage.dateTo
+    ? manifest.coverage.dateTo
+    : filters.dateTo;
+  const years = new Set(requestedYears(effectiveDateFrom, coveredDateTo));
   const partitions = manifest.partitions.filter((partition) =>
     partition.subOu === subOu && years.has(partition.year)
   );
@@ -220,9 +228,12 @@ export async function loadOverviewFactsFromSnapshot(
   return {
     generatedAt: manifest.generatedAt,
     sourceRecords,
+    coveredDateFrom: effectiveDateFrom,
+    coveredDateTo,
+    completeCoverage: coveredDateTo === filters.dateTo,
     facts: facts.filter((fact) => {
       const decisionDate = dateKey(fact.decisionDate);
-      if (!decisionDate || decisionDate < effectiveDateFrom || decisionDate > filters.dateTo) return false;
+      if (!decisionDate || decisionDate < effectiveDateFrom || decisionDate > coveredDateTo) return false;
       if (filters.productGroup !== "all" && fact.productGroup !== filters.productGroup) return false;
       if (companyKey && companyGroupingKey(fact.company) !== companyKey) return false;
       if (hospitalSelectors.length && !hospitalSelectors.some(({ id, query }) => {
