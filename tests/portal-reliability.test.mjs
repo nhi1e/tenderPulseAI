@@ -6,8 +6,18 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const worker = await readFile(path.join(root, "worker", "index.ts"), "utf8");
+const snapshotCollector = await readFile(path.join(root, "scripts", "sync-market-snapshot.ts"), "utf8");
 const page = await readFile(path.join(root, "app", "page.tsx"), "utf8");
 const workflow = await readFile(path.join(root, ".github", "workflows", "update-market-snapshot.yml"), "utf8");
+
+test("uses the current Mua Sắm Công host for winning-bid API requests", () => {
+  for (const source of [worker, snapshotCollector]) {
+    assert.match(source, /https:\/\/muasamcong\.mof\.gov\.vn\/o\/egp-portal-winning-bid-data\/services\/smart\/search_prc/);
+    assert.match(source, /Origin: "https:\/\/muasamcong\.mof\.gov\.vn"/);
+    assert.match(source, /Referer: "https:\/\/muasamcong\.mof\.gov\.vn/);
+    assert.doesNotMatch(source, /muasamcong\.mpi\.gov\.vn/);
+  }
+});
 
 test("keeps a bounded portal timeout after narrowing expensive searches", () => {
   assert.match(worker, /PORTAL_REQUEST_TIMEOUT_MS\s*=\s*25_000/);
