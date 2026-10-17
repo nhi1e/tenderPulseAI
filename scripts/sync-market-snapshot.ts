@@ -19,7 +19,7 @@ import {
 } from "../lib/market-snapshot";
 
 const PORTAL_SEARCH_URL =
-  "https://muasamcong.mpi.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
+  "https://muasamcong.mof.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
 const PAGE_SIZE = 1000;
 const MAX_PAGES_PER_WINDOW = 250;
 const DEFAULT_BASELINE_START = "2023-01-01";
@@ -322,8 +322,8 @@ async function fetchPortalPage(page: number, dateFrom: string, dateTo: string, a
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Origin: "https://muasamcong.mpi.gov.vn",
-      Referer: "https://muasamcong.mpi.gov.vn/web/guest/winning-bid-data",
+      Origin: "https://muasamcong.mof.gov.vn",
+      Referer: "https://muasamcong.mof.gov.vn/web/guest/winning-bid-data",
     },
     body: JSON.stringify(portalPayload(page, dateFrom, dateTo)),
     signal: AbortSignal.timeout(60_000),

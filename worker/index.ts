@@ -4,7 +4,7 @@ import handler from "vinext/server/app-router-entry";
 import { alertsFromDailyChanges, type TenderAlert, type TenderAlertSource } from "@/lib/tender-alerts";
 
 const PORTAL_SEARCH_URL =
-  "https://muasamcong.mpi.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
+  "https://muasamcong.mof.gov.vn/o/egp-portal-winning-bid-data/services/smart/search_prc";
 const MARKET_DATA_AVAILABLE_FROM = "2023-01-01";
 const PORTAL_CACHE_SECONDS = 30 * 60;
 // Keep a bounded request time. Retrieval seeds are intentionally specific so
@@ -103,8 +103,8 @@ async function fetchPortalPage(
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Origin: "https://muasamcong.mpi.gov.vn",
-      Referer: "https://muasamcong.mpi.gov.vn/web/guest/winning-bid-data",
+      Origin: "https://muasamcong.mof.gov.vn",
+      Referer: "https://muasamcong.mof.gov.vn/web/guest/winning-bid-data",
     },
     body,
     signal: AbortSignal.timeout(PORTAL_REQUEST_TIMEOUT_MS),
