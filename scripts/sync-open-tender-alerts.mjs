@@ -10,7 +10,7 @@ import {
   normalizeSearchTerms,
 } from "../lib/open-tender-alerts.mjs";
 
-const SEARCH_URL = "https://muasamcong.mpi.gov.vn/o/egp-portal-contractor-selection-v2/services/smart/search?token=fake";
+const SEARCH_URL = "https://muasamcong.mpi.gov.vn/o/egp-portal-contractor-selection-v2/services/smart/search?token=";
 const OUTPUT_ROOT = path.resolve(process.env.TENDERPULSE_OPEN_TENDER_ALERTS_ROOT || "public/data/open-tender-alerts");
 const STATE_PATH = path.resolve(process.env.TENDERPULSE_OPEN_TENDER_ALERTS_STATE || "data/open-tender-alerts/state.json");
 const ALERTS_PATH = path.join(OUTPUT_ROOT, "alerts.json");
@@ -59,8 +59,15 @@ async function fetchPage(keyword, pageNumber, from, to, attempt = 1) {
       Referer: "https://muasamcong.mpi.gov.vn/vi/web/guest/contractor-selection",
     },
     body: JSON.stringify(buildOpenTenderSearchPayload(keyword, pageNumber, from, to)),
+    // A redirect can silently turn this POST into a GET, which the portal
+    // rejects with 405 and hides the original redirect target.
+    redirect: "manual",
     signal: AbortSignal.timeout(30_000),
   });
+  if (response.status >= 300 && response.status < 400) {
+    const location = response.headers.get("Location") || "(no Location header)";
+    throw new Error(`Portal search redirected (${response.status}) for “${keyword}”, page ${pageNumber}: ${location}`);
+  }
   if (!response.ok) {
     const detail = (await response.text()).slice(0, 400);
     if (attempt < 4 && (response.status === 429 || response.status >= 500)) {
