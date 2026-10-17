@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 import {
   buildOpenTenderSearchPayload,
@@ -12,6 +13,7 @@ const range = {
   from: "2026-10-07T00:00:00.000Z",
   to: "2026-10-14T00:00:00.000Z",
 };
+const collectorSource = await readFile(new URL("../scripts/sync-open-tender-alerts.mjs", import.meta.url), "utf8");
 
 const portalRecord = {
   notifyNo: "IB2600123456",
@@ -45,12 +47,22 @@ test("queries the official tender invitation goods field and open notices only",
   assert.deepEqual(body.query[0].filters[3], { fieldName: "bidCloseDate", searchType: "range", from: range.to, to: null });
 });
 
+test("does not send the placeholder portal token or follow redirects that can turn POST into GET", () => {
+  assert.match(collectorSource, /PORTAL_ORIGIN = "https:\/\/muasamcong\.mof\.gov\.vn"/);
+  assert.match(collectorSource, /\/o\/egp-portal-contractor-selection-v2\/services\/smart\/search\?token=/);
+  assert.doesNotMatch(collectorSource, /muasamcong\.mpi\.gov\.vn/);
+  assert.doesNotMatch(collectorSource, /token=fake/i);
+  assert.match(collectorSource, /method: "POST"/);
+  assert.match(collectorSource, /redirect: "manual"/);
+});
+
 test("normalizes an open tender notice with buyer, dates, matched terms and portal link", () => {
   const notice = normalizePortalNotice(portalRecord, ["ghim khâu", "ghim khâu"]);
   assert.equal(notice.noticeId, "IB2600123456");
   assert.equal(notice.notifyNo, "IB2600123456");
   assert.equal(notice.title, "Mua sắm thiết bị phẫu thuật");
   assert.equal(notice.buyer, "Bệnh viện A");
+  assert.equal(new URL(notice.sourceUrl).hostname, "muasamcong.mof.gov.vn");
   assert.deepEqual(notice.matchedKeywords, ["ghim khâu"]);
   assert.match(notice.sourceUrl, /notice-id-1/);
   assert.equal(normalizePortalNotice({ ...portalRecord, notifyNo: "" }), undefined);
